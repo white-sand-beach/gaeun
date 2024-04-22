@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "mainColor": "#FFAF38", // 메인 컬러 주황색
+      }
+    },
   },
   plugins: [],
 }
