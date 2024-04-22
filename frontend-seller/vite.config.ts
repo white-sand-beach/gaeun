@@ -1,7 +1,23 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
+import { VitePWA } from "vite-plugin-pwa"
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: "autoUpdate",
+      manifest: {
+        name: "오늘잡슈",
+        short_name: "오늘잡슈",
+        start_url: "/",
+        display: "standalone",
+        theme_color: "#FFAF38",
+        icons: [
+          // 아이콘 추후 설정
+        ]
+      }
+    })
+  ],
 })
