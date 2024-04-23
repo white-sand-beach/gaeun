@@ -22,4 +22,7 @@ public class Category extends BaseTime {
 
     @Column(nullable = false, length = 10)
     private String name;
+
+    @Column(nullable = false)
+    private String image;
 }
