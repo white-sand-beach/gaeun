@@ -33,7 +33,7 @@
   }
 
   .detail-btn {
-    @apply max-h-[30px] h-full border border-mainColorbg-mainColor text-mainColor text-xs rounded-[5px]
+    @apply max-h-[30px] h-full border border-mainColor text-mainColor text-xs rounded-[5px]
   }
 }
 
