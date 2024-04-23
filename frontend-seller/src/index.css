@@ -2,8 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-    @apply flex justify-center items-center
-    min-w-[360px] w-full h-screen
-    border border-orange-500
+@layer base {
+  html, body, #root {
+    @apply flex flex-row justify-center items-center
+    min-w-[800px] w-full h-screen
+  }
+
+  h1 {
+    @apply text-3xl text-orange-500 font-bold
+  }
+
+  header {
+    @apply absolute top-0 flex flex-row justify-center items-center 
+    w-full max-h-[60px] h-full bg-mainColor
+  }
+
+  footer {
+    @apply absolute bottom-0 flex flex-row justify-center items-center gap-3
+    w-full max-h-[60px] h-full bg-mainColor
+  }
+}
+
+@layer components {
+  .main-layout {
+    @apply relative flex flex-col justify-center items-center w-full h-full
+  }
+  
+  .common-btn {
+    @apply min-w-[300px] max-h-[40px] h-full bg-mainColor text-white font-bold rounded-[5px]
+  }
+
+  .detail-btn {
+    @apply max-h-[30px] h-full border border-mainColorbg-mainColor text-mainColor text-xs rounded-[5px]
+  }
+}
+
+/* 스크롤바 투명하게 설정 */
+::-webkit-scrollbar {
+  width: 0px;
+  display: none;
 }

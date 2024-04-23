@@ -1,18 +1,17 @@
+// 내부 import
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+
+// 컴포넌트 import
+import LogIn from "./components/login/LogIn.tsx"
+
 const App = () => {
   return (
-    <div className="text-3xl font-bold text-orange-500">
-      <h1>Hello World!!</h1>
-      <h1>Hello World!!</h1>
-      <h1>Hello World!!</h1>
-      <h1>Hello World!!</h1>
-      <h1>Hello World!!</h1>
-      <h1>Hello World!!</h1>
-      <h1>Hello World!!</h1>
-      <h1>Hello World!!</h1>
-      <h1>Hello World!!</h1>
-      <h1>Hello World!!</h1>
-    </div>
-  )
-}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LogIn />}/>
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
-export default App
+export default App;
