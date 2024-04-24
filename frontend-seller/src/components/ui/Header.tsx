@@ -1,8 +1,8 @@
 const Header = () => {
     return (
-        <div>
-            <h1>하단바</h1>
-        </div>
+        <header>
+            <h1>상단바</h1>
+        </header>
     );
 };
 
