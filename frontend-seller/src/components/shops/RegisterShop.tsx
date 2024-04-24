@@ -18,7 +18,7 @@ const RegisterShop = () => {
             <input type="text" placeholder="대표자명을 입력해주세요." className="w-[240px] border-b-2" />
 
             {/* 추가 정보 입력하는 페이지로 이동 */}
-            <button className="common-btn mt-20">다음</button>
+            <button className="mt-20 common-btn">다음</button>
         </div>
     );
 };
