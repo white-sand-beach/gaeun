@@ -16,11 +16,19 @@
   }
 
   .footer-button {
-    @apply w-[300px] rounded-lg bg-myColor text-white text-sm font-semibold py-3
+    @apply fixed bottom-8 w-[300px] rounded-lg bg-myColor text-white text-sm font-semibold py-3
+  }
+
+  .center {
+    @apply flex justify-center items-center
   }
 
   .white-button {
     @apply border-gray-400 border-[1px] bg-white rounded-lg text-xs p-2 mr-2 mt-4
+  }
+
+  .orange-hover-button {
+    @apply w-[140px] border-[1px] border-myColor rounded-lg py-3 text-myColor text-xs font-extrabold hover:bg-myColor hover:text-white
   }
 
   .text-xxxs {

@@ -1,3 +1,6 @@
+
+import CountButton from "../components/button/CountButton";
+
 import right from "../assets/right.png";
 
 const Cart = () => {
@@ -6,16 +9,16 @@ const Cart = () => {
       <div className="flex justify-center">
         <div className="border-gray-400 border-2 rounded-lg w-[300px]">
           {/* 가게 로고 및 가게명 전체 삭제 기능 */}
-          <div className="flex justify-between items-center p-2">
+          <div className="flex items-center justify-between p-2">
             <div className="flex items-center">
               <img
                 className="w-4 h-4 rounded-full"
                 src="https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/09/18/1e586277-48ba-4e8a-9b98-d8cdbe075d86.jpg"
                 alt=""
               />
-              <p className="ml-2 font-bold text-sm">가게 이름 · OO점</p>
+              <p className="ml-2 text-sm font-bold">가게 이름 · OO점</p>
             </div>
-            <p className="font-bold text-xxxs text-gray-400">전체 삭제</p>
+            <p className="font-bold text-gray-400 text-xxxs">전체 삭제</p>
           </div>
           <hr />
 
@@ -30,14 +33,14 @@ const Cart = () => {
               />
               {/* 음식 정보 */}
               <div className="ml-2">
-                <h1 className="text-md font-extrabold"> 음식 이름 </h1>
-                <p className="text-xs text-gray-400 font-bold">
+                <h1 className="font-extrabold text-md"> 음식 이름 </h1>
+                <p className="text-xs font-bold text-gray-400">
                   음식재료 + 음식재료 + 재료
                 </p>
                 <div className="flex items-center text-xs font-extrabold">
                   <span className="line-through">19,900원</span>
                   <img
-                    className="mx-2 w-3 h-3"
+                    className="w-3 h-3 mx-2"
                     src={right}
                     alt="오른쪽 화살표"
                   />
@@ -47,11 +50,7 @@ const Cart = () => {
             </div>
             {/* 버튼 컴포넌트로 만들 예정 */}
             <div className="flex justify-end ">
-              <div className="flex justify-between px-4 border-gray-200 border-2 rounded-xl w-[80px] font-bold text-sm py-1">
-                <span>-</span>
-                <span>1</span>
-                <span>+</span>
-              </div>
+              <CountButton/>
             </div>
           </div>
           <hr />
@@ -67,14 +66,14 @@ const Cart = () => {
               />
               {/* 음식 정보 */}
               <div className="ml-2">
-                <h1 className="text-md font-extrabold"> 음식 이름 </h1>
-                <p className="text-xs text-gray-400 font-bold">
+                <h1 className="font-extrabold text-md"> 음식 이름 </h1>
+                <p className="text-xs font-bold text-gray-400">
                   음식재료 + 음식재료 + 재료
                 </p>
                 <div className="flex items-center text-xs font-extrabold">
                   <span className="line-through">19,900원</span>
                   <img
-                    className="mx-2 w-3 h-3"
+                    className="w-3 h-3 mx-2"
                     src={right}
                     alt="오른쪽 화살표"
                   />
@@ -84,16 +83,12 @@ const Cart = () => {
             </div>
             {/* 버튼 컴포넌트로 만들 예정 */}
             <div className="flex justify-end ">
-              <div className="flex justify-between px-4 border-gray-200 border-2 rounded-xl w-[80px] font-bold text-sm py-1">
-                <span>-</span>
-                <span>1</span>
-                <span>+</span>
-              </div>
+              <CountButton/>
             </div>
           </div>
           <hr />
 
-          <div className="flex justify-center items-center p-2">
+          <div className="flex items-center justify-center p-2">
             <div className="text-xs font-extrabold">+ 메뉴추가</div>
           </div>
         </div>
@@ -101,7 +96,7 @@ const Cart = () => {
 
       <div className="flex justify-center pt-4">
         <div className="border-gray-400 border-2 rounded-lg w-[300px] ">
-          <h1 className="text-xs font-bold p-2">결제 금액을 확인해주세요</h1>
+          <h1 className="p-2 text-xs font-bold">결제 금액을 확인해주세요</h1>
           <hr />
           <div className="p-3">
             <div className="flex justify-between">
