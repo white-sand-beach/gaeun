@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  footer {
+    @apply flex flex-col justify-center items-center w-[20%]
+  }
+
+  hr {
+    @apply border-[1px]
+  }
+
+  .footer-div {
+    @apply text-xs text-gray-500 font-bold mt-2
+  }
+
+  .footer-button {
+    @apply w-[300px] rounded-lg bg-myColor text-white text-sm font-semibold py-3
+  }
+
+  .text-xxxs {
+    @apply text-[9px]
+  }
+  
+  .text-xxs {
+    @apply text-[10px]
+  }
+}
+
+@layer components {
+
+}
