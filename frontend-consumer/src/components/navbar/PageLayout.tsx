@@ -5,7 +5,7 @@ import Footer from './Footer';
 // 상단바를 숨기고 싶은 경로 목록
 const hideNavBarLayoutPaths = ['/none'];
 // 하단바를 숨기고 싶은 경로 목록
-const hideFooterLayoutPaths = ['/none'];
+const hideFooterLayoutPaths = ['/cart'];
 
 const PageLayout = () => {
   const location = useLocation();
