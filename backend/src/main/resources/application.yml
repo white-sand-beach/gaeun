@@ -43,3 +43,6 @@ spring:
             user-name-attribute: id
 
 base-url: ${BASE_URL}
+
+secret:
+  jwt-secret-key: ${JWT_SECRET_KEY}
