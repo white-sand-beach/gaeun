@@ -10,7 +10,7 @@ const Cart = () => {
             <div className="flex items-center">
               <img
                 className="w-4 h-4 rounded-full"
-                src="https://img.hankyung.com/photo/202403/01.36047379.1.jpg"
+                src="https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/09/18/1e586277-48ba-4e8a-9b98-d8cdbe075d86.jpg"
                 alt=""
               />
               <p className="ml-2 font-bold text-sm">가게 이름 · OO점</p>
@@ -24,8 +24,8 @@ const Cart = () => {
             <div className="flex items-center">
               {/* 음식 이미지 */}
               <img
-                className="w-16 h-16"
-                src="https://img.hankyung.com/photo/202403/01.36047379.1.jpg"
+                className="w-16 h-16 rounded-md"
+                src="https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/09/18/1e586277-48ba-4e8a-9b98-d8cdbe075d86.jpg"
                 alt=""
               />
               {/* 음식 정보 */}
@@ -61,8 +61,8 @@ const Cart = () => {
             <div className="flex items-center">
               {/* 음식 이미지 */}
               <img
-                className="w-16 h-16"
-                src="https://img.hankyung.com/photo/202403/01.36047379.1.jpg"
+                className="w-16 h-16 rounded-md"
+                src="https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/09/18/1e586277-48ba-4e8a-9b98-d8cdbe075d86.jpg"
                 alt=""
               />
               {/* 음식 정보 */}
