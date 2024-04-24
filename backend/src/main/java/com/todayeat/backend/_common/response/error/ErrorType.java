@@ -17,6 +17,29 @@ public enum ErrorType {
     /**
      * CUSTOM ERROR
      */
+    // consumer
+
+    // favorite
+
+    // review
+
+    // location
+
+    // cart
+
+    // order
+
+    // seller
+    EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "이미 존재하는 이메일입니다."),
+
+    // store
+
+    // category
+
+    // menu
+
+    // store
+
     ;
 
     private HttpStatus httpStatus;
