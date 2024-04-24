@@ -1,5 +1,7 @@
 package com.todayeat.backend._common.config;
 
+import com.todayeat.backend._common.filter.JwtAuthenticationFilter;
+import com.todayeat.backend._common.filter.JwtExceptionFilter;
 import com.todayeat.backend.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import com.todayeat.backend.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import com.todayeat.backend.oauth2.repository.OAuth2AuthorizationRepository;
@@ -14,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -25,6 +28,9 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     private final OAuth2AuthorizationRepository oAuth2AuthorizationRepository;
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -50,6 +56,8 @@ public class SecurityConfig {
                                 .successHandler(oAuth2AuthenticationSuccessHandler)
                                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class)
                 ;
 
         return http.build();

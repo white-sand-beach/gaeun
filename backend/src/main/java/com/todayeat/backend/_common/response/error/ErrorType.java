@@ -17,6 +17,8 @@ public enum ErrorType {
     /**
      * CUSTOM ERROR
      */
+    // token
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     ;
 
     private HttpStatus httpStatus;
