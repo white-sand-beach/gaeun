@@ -2,6 +2,7 @@ package com.todayeat.backend._common.config;
 
 import com.todayeat.backend.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import com.todayeat.backend.oauth2.handler.OAuth2AuthenticationSuccessHandler;
+import com.todayeat.backend.oauth2.repository.OAuth2AuthorizationRepository;
 import com.todayeat.backend.oauth2.service.OAuth2Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ public class SecurityConfig {
     private final OAuth2Service oAuth2Service;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    private final OAuth2AuthorizationRepository oAuth2AuthorizationRepository;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -43,7 +45,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(configure ->
-                        configure.userInfoEndpoint(config -> config.userService(oAuth2Service))
+                        configure.authorizationEndpoint(config -> config.authorizationRequestRepository(oAuth2AuthorizationRepository))
+                                .userInfoEndpoint(config -> config.userService(oAuth2Service))
                                 .successHandler(oAuth2AuthenticationSuccessHandler)
                                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 )
