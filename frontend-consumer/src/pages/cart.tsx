@@ -2,8 +2,8 @@ import right from "../assets/right.png";
 
 const Cart = () => {
   return (
-    <div>
-      <div className="flex justify-center pt-20">
+    <div className="pt-20 pb-8">
+      <div className="flex justify-center">
         <div className="border-gray-400 border-2 rounded-lg w-[300px]">
           {/* 가게 로고 및 가게명 전체 삭제 기능 */}
           <div className="flex justify-between items-center p-2">

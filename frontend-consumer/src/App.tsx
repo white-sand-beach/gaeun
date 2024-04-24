@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import PageLayout from "./components/navbar/PageLayout";
 import Cart from "./pages/cart";
+import Alarm from "./pages/alarm";
 
 const queryClient = new QueryClient();
 
@@ -15,6 +16,7 @@ const App = () => {
         <PageLayout/>
         <Routes>
           <Route path="/cart" element={<Cart/>} />
+          <Route path="/alarm" element={<Alarm/>} />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>
