@@ -12,7 +12,7 @@
   }
 
   .footer-div {
-    @apply text-xs text-gray-500 font-bold mt-2
+    @apply text-xxxs text-gray-500 font-bold mt-1
   }
 
   .footer-button {
