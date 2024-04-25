@@ -3,7 +3,7 @@ package com.todayeat.backend.oauth2.service;
 import com.todayeat.backend.oauth2.dto.response.KakaoOAuth2Response;
 import com.todayeat.backend.oauth2.dto.response.OAuth2Response;
 import com.todayeat.backend.oauth2.dto.auth.OAuth2UserAuthentication;
-import com.todayeat.backend.oauth2.dto.response.status.OAuth2Provider;
+import com.todayeat.backend.oauth2.dto.response.OAuth2Provider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

@@ -1,6 +1,5 @@
 package com.todayeat.backend.oauth2.dto.response;
 
-import com.todayeat.backend.oauth2.dto.response.status.OAuth2Provider;
 import lombok.Builder;
 import lombok.ToString;
 

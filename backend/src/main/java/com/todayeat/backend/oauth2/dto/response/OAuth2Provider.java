@@ -1,4 +1,4 @@
-package com.todayeat.backend.oauth2.dto.response.status;
+package com.todayeat.backend.oauth2.dto.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
