@@ -37,7 +37,7 @@ public class OAuth2UserPrincipal implements OAuth2User {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add((GrantedAuthority) () -> "CONSUMER");
+        collection.add((GrantedAuthority) () -> "ROLE_CONSUMER");
         return collection;
     }
 

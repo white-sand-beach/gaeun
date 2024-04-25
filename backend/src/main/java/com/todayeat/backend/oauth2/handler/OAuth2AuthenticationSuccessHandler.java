@@ -6,6 +6,7 @@ import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.consumer.service.ConsumerService;
 import com.todayeat.backend.oauth2.dto.auth.OAuth2UserPrincipal;
 import com.todayeat.backend.oauth2.repository.OAuth2AuthorizationRepository;
+import com.todayeat.backend.refreshtoken.service.RefreshTokenService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,7 +31,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final OAuth2AuthorizationRepository oAuth2AuthorizationRepository;
     private final CookieUtil cookieUtil;
     private final JwtUtil jwtUtil;
-    private final ConsumerService                          consumerService;
+    private final ConsumerService consumerService;
+    private final RefreshTokenService refreshTokenService;
 
     @Value("${oauth2.login-callback-uri}")
     private String loginCallbackUri;
@@ -125,8 +127,20 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private String getLoginUrl(Authentication authentication, String redirectUri, Long memberId, String nextPage) {
 
+        // 기존에 토큰이 존재하면 삭제
+        refreshTokenService.deleteIfPresent(memberId, "CONSUMER");
+
+        // 토큰 생성
+        String accessToken = jwtUtil.createAccessToken(authentication, memberId);
+        String refreshToken = jwtUtil.createRefreshToken();
+
+        // 토큰 저장
+        refreshTokenService.create(refreshToken, accessToken, memberId, "CONSUMER");
+
+        // 리다이렉트
         return UriComponentsBuilder.fromUriString(redirectUri)
-                .queryParam("access-token", jwtUtil.createAccessToken(authentication, memberId))
+                .queryParam("access-token", accessToken)
+                .queryParam("refresh-token", refreshToken)
                 .queryParam("next-page", nextPage)
                 .build().toUriString();
     }

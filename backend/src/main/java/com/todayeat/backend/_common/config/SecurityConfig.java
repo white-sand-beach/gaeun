@@ -70,7 +70,8 @@ public class SecurityConfig {
             .authorizeHttpRequests((auth) -> auth
                     .requestMatchers(whiteList).permitAll()
                     .requestMatchers(sellerList).hasRole("SELLER")
-                    .anyRequest().authenticated())
+                    .anyRequest().permitAll())
+//                    .anyRequest().authenticated())
             // RESTful API
             .sessionManagement((session) -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

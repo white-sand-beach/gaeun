@@ -1,6 +1,7 @@
 package com.todayeat.backend._common.util;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -23,7 +24,7 @@ import java.util.*;
 @Component
 public class JwtUtil {
 
-    // TODO: refresh token 발급, 토큰 저장 및 재발급 로직 구현
+    // TODO: 토큰 재발급 로직 구현
 
     private final long ACCESS_TOKEN_VALID_TIME = (60 * 1000) * 30; // 30분
     private final String AUTHORITIES_KEY = "role";
@@ -62,6 +63,13 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String createRefreshToken() {
+
+        log.info("[JwtUtil.createRefreshToken]");
+
+        return UUID.randomUUID().toString();
+    }
+
 //    public boolean isExpiredToken(String token) {
 //
 //        return getClaims(token).getExpiration().before(new Date());
@@ -95,6 +103,32 @@ public class JwtUtil {
 
         return getClaims(token).get(AUTHORITIES_KEY, String.class);
     }
+
+//    public Long getMemberIdFromExpiredToken(String token) {
+//
+//        log.info("[JwtUtil.getMemberIdFromExpiredToken]");
+//
+//        try {
+//            Claims claims = getClaims(token);
+//            return Long.parseLong(claims.getSubject());
+//        } catch (ExpiredJwtException e) {
+//            Claims expiredClaims = e.getClaims();
+//            return Long.parseLong(expiredClaims.getSubject());
+//        }
+//    }
+
+//    public String getRoleFromExpiredToken(String token) {
+//
+//        log.info("[JwtUtil.getRoleFromExpiredToken]");
+//
+//        try {
+//            Claims claims = getClaims(token);
+//            return claims.get(AUTHORITIES_KEY, String.class);
+//        } catch (ExpiredJwtException e) {
+//            Claims expiredClaims = e.getClaims();
+//            return expiredClaims.get(AUTHORITIES_KEY, String.class);
+//        }
+//    }
 
     private Claims getClaims(String token) {
 
