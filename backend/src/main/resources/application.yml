@@ -13,6 +13,7 @@ spring:
       maximum-pool-size: 2
 
   jpa:
+    database-platform: org.hibernate.dialect.MariaDBDialect
     hibernate:
       ddl-auto: update
     properties:
