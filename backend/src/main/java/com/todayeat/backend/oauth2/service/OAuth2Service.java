@@ -2,7 +2,7 @@ package com.todayeat.backend.oauth2.service;
 
 import com.todayeat.backend.oauth2.dto.response.KakaoOAuth2Response;
 import com.todayeat.backend.oauth2.dto.response.OAuth2Response;
-import com.todayeat.backend.oauth2.dto.auth.OAuth2UserAuthentication;
+import com.todayeat.backend.oauth2.dto.auth.OAuth2UserPrincipal;
 import com.todayeat.backend.oauth2.dto.response.OAuth2Provider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class OAuth2Service extends DefaultOAuth2UserService {
         log.info("userInfo: {}", oAuth2Response.toString());
 
         // 인증 정보
-        return OAuth2UserAuthentication.of(oAuth2Response);
+        return OAuth2UserPrincipal.of(oAuth2Response);
     }
 
     private OAuth2Response getOAuth2Response(String registrationId,

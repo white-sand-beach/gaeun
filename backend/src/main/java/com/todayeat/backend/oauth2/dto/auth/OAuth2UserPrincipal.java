@@ -11,16 +11,16 @@ import java.util.Collection;
 import java.util.Map;
 
 @Getter
-public class OAuth2UserAuthentication implements OAuth2User {
+public class OAuth2UserPrincipal implements OAuth2User {
 
     private final OAuth2Response userInfo;
 
     @Builder
-    private OAuth2UserAuthentication(OAuth2Response userInfo) {
+    private OAuth2UserPrincipal(OAuth2Response userInfo) {
         this.userInfo = userInfo;
     }
 
-    public static OAuth2UserAuthentication of(OAuth2Response userInfo) {
+    public static OAuth2UserPrincipal of(OAuth2Response userInfo) {
 
         return builder()
                 .userInfo(userInfo)
