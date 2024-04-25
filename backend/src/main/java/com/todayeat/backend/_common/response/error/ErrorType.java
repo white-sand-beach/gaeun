@@ -17,6 +17,29 @@ public enum ErrorType {
     /**
      * CUSTOM ERROR
      */
+    // consumer
+
+    // favorite
+
+    // review
+
+    // location
+
+    // cart
+
+    // order
+
+    // seller
+    EMAIL_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
+
+    // store
+
+    // category
+
+    // menu
+
+    // store
+
     // token
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     ;
