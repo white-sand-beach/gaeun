@@ -15,7 +15,40 @@ export default defineConfig({
         display: "standalone",
         theme_color: "#FFAF38",
         icons: [
-          // 아이콘 추후 설정
+          {
+            src: "/icons/size-16.png",
+            sizes: "16x16"
+          },
+          {
+            src: "/icons/size-16.png",
+            sizes: "48x48"
+          },
+          {
+            src: "/icons/size-16.png",
+            sizes: "72x72"
+          },
+          {
+            src: "/icons/size-16.png",
+            sizes: "128x128"
+          },
+          {
+            src: "/icons/size-16.png",
+            sizes: "144x144"
+          },
+          {
+            src: "/icons/size-16.png",
+            sizes: "152x152"
+          },
+          {
+            src: "/icons/size-16.png",
+            sizes: "192x192",
+            purpose: "maskable"
+          },
+          {
+            src: "/icons/size-16.png",
+            sizes: "512x512",
+            purpose: "maskable"
+          },
         ]
       }
     })
