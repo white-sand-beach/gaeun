@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Main from "./components/ui/Main.tsx";
 import LogIn from "./components/login/LogIn.tsx"
 import SignUp from "./components/login/SignUp.tsx";
+import SignupFinish from "./components/login/SignupFinish.tsx";
 import RegisterShop from "./components/shops/RegisterShop.tsx";
 import RegisterFood from "./components/foods/RegisterFood.tsx";
 import ListOrder from "./components/list/ListOrder.tsx";
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/signupFin" element={<SignupFinish />} />
           <Route path="/register/shop" element={<RegisterShop />} />
           <Route path="/register/food" element={<RegisterFood />} />
           <Route path="/test/main" element={<ListOrder />} />
