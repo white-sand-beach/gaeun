@@ -24,7 +24,7 @@
   }
 
   .white-button {
-    @apply border-gray-400 border-[1px] bg-white rounded-lg text-xs p-2 mr-2 mt-4
+    @apply border-gray-400 border-[1px] bg-white rounded-lg text-xxs font-bold p-2 
   }
 
   .orange-hover-button {
