@@ -3,9 +3,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import PageLayout from "./components/navbar/PageLayout";
-import Cart from "./pages/cart";
-import Alarm from "./pages/alarm";
-import Favorite from "./pages/favorite"
+import Cart from "./pages/Cart";
+import Alarm from "./pages/Alarm";
+import Favorite from "./pages/Favorite"
+import OrderDatail from "./pages/order/OrderDatail"
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/cart" element={<Cart/>} />
           <Route path="/alarm" element={<Alarm/>} />
           <Route path="/favorite" element={<Favorite/>} />
+          <Route path="/order-detail" element={<OrderDatail/>} />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>
