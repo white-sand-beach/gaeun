@@ -46,3 +46,6 @@ base-url: ${BASE_URL}
 
 secret:
   jwt-secret-key: ${JWT_SECRET_KEY}
+
+oauth2:
+  login-callback-uri: ${LOGIN_CALLBACK_URI}
