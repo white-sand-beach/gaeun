@@ -1,6 +1,7 @@
 package com.todayeat.backend.consumer.entity;
 
 import com.todayeat.backend._common.entity.BaseTime;
+import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
 import com.todayeat.backend.oauth2.dto.response.OAuth2Provider;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -43,5 +44,10 @@ public class Consumer extends BaseTime {
         this.nickname = nickname;
         this.profileImage = profileImage;
         this.phoneNumber = phoneNumber;
+    }
+
+    public void update(UpdateConsumerRequest request) {
+        this.nickname = request.getNickname();
+        this.phoneNumber = request.getPhoneNumber();
     }
 }

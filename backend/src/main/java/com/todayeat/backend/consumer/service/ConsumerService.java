@@ -1,5 +1,7 @@
 package com.todayeat.backend.consumer.service;
 
+import com.todayeat.backend._common.util.SecurityUtil;
+import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.consumer.mapper.ConsumerMapper;
 import com.todayeat.backend.consumer.repository.ConsumerRepository;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ConsumerService {
 
     private final ConsumerRepository consumerRepository;
+    private final SecurityUtil securityUtil;
 
     @Transactional
     public Long create(OAuth2UserPrincipal principal) {
@@ -29,7 +32,14 @@ public class ConsumerService {
         return consumer.getId();
     }
 
-    // TODO: 회원 정보 수정
+    @Transactional
+    public void update(UpdateConsumerRequest request) {
+
+        log.info("[ConsumerService.update]");
+
+        Consumer consumer = securityUtil.getConsumer();
+        consumer.update(request);
+    }
 
     public Consumer getConsumerOrNull(OAuth2Provider socialType, String email) {
         return consumerRepository.findBySocialTypeAndEmail(socialType, email)

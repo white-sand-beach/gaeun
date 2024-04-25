@@ -35,6 +35,9 @@ public class SecurityConfig {
     @Value("${SELLER_LIST}")
     private String[] sellerList;
 
+    @Value("${CONSUMER_LIST}")
+    private String[] consumerList;
+
     @Value("${SELLER_URL}")
     private String sellerURL;
 
@@ -70,8 +73,8 @@ public class SecurityConfig {
             .authorizeHttpRequests((auth) -> auth
                     .requestMatchers(whiteList).permitAll()
                     .requestMatchers(sellerList).hasRole("SELLER")
-                    .anyRequest().permitAll())
-//                    .anyRequest().authenticated())
+                    .requestMatchers(consumerList).hasRole("CONSUMER")
+                    .anyRequest().authenticated())
             // RESTful API
             .sessionManagement((session) -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
