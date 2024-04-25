@@ -1,6 +1,5 @@
 import OrderDetailButton from "../button/OrderDetailButton";
-
-import phone from "../../assets/search/phone.png";
+import CallButton from "../button/CallButton";
 
 const Ordertarget = () => {
   return (
@@ -18,10 +17,7 @@ const Ordertarget = () => {
           </div>
         </div>
         <div className="flex items-center justify-between mx-4 mb-2">
-          <button className="flex items-center">
-            <img className="w-4" src={phone} alt="전화" />
-            <p className="ml-1 font-bold text-gray-400 text-xxs">전화</p>
-          </button>
+          <CallButton />
           <OrderDetailButton />
         </div>
       </div>

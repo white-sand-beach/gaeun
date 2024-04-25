@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  footer {
+  .footer {
     @apply flex flex-col justify-center items-center w-[20%]
   }
 

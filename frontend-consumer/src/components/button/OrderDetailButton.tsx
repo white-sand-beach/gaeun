@@ -1,7 +1,13 @@
+import { Link } from "react-router-dom";
+
 const OrderDetailButton = () => {
   return (
-    <button className="white-button">{`상세내역 보러가기 >`}</button>
-  )
-}
+    <>
+      <Link to="/order-detail">
+        <button className="white-button">{`상세내역 보러가기 >`}</button>
+      </Link>
+    </>
+  );
+};
 
 export default OrderDetailButton;
