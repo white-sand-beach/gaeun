@@ -8,6 +8,7 @@ import Alarm from "./pages/Alarm";
 import Favorite from "./pages/Favorite"
 import OrderDatail from "./pages/order/OrderDatail"
 import OrderList from "./pages/order/OrderList"
+import OrderState from "./pages/order/OrderState"
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/favorite" element={<Favorite/>} />
           <Route path="/order-detail" element={<OrderDatail/>} />
           <Route path="/order-list" element={<OrderList/>} />
+          <Route path="/order-state" element={<OrderState/>} />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>
