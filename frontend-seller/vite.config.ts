@@ -8,6 +8,10 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
+      // 개발 환경에서 자동으로 service-worker 생성해줌
+      devOptions: {
+        enabled: true
+      },
       manifest: {
         name: "오늘잡슈",
         short_name: "오늘잡슈",
@@ -17,35 +21,43 @@ export default defineConfig({
         icons: [
           {
             src: "/icons/size-16.png",
+            type: "image/png",
             sizes: "16x16"
           },
           {
-            src: "/icons/size-16.png",
+            src: "/icons/size-48.png",
+            type: "image/png",
             sizes: "48x48"
           },
           {
-            src: "/icons/size-16.png",
+            src: "/icons/size-72.png",
+            type: "image/png",
             sizes: "72x72"
           },
           {
-            src: "/icons/size-16.png",
+            src: "/icons/size-128.png",
+            type: "image/png",
             sizes: "128x128"
           },
           {
-            src: "/icons/size-16.png",
+            src: "/icons/size-144.png",
+            type: "image/png",
             sizes: "144x144"
           },
           {
-            src: "/icons/size-16.png",
+            src: "/icons/size-152.png",
+            type: "image/png",
             sizes: "152x152"
           },
           {
-            src: "/icons/size-16.png",
+            src: "/icons/size-192.png",
+            type: "image/png",
             sizes: "192x192",
             purpose: "maskable"
           },
           {
-            src: "/icons/size-16.png",
+            src: "/icons/size-512.png",
+            type: "image/png",
             sizes: "512x512",
             purpose: "maskable"
           },
