@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static com.todayeat.backend._common.response.error.ErrorType.EMAIL_ALREADY_EXIST;
+import static com.todayeat.backend._common.response.error.ErrorType.EMAIL_CONFLICT;
 
 @Service
 @RequiredArgsConstructor
@@ -20,12 +20,12 @@ public class SellerService {
 
     public void signup(SignupSellerRequest signupSellerRequest) {
 
-        Seller seller = SellerMapper.INSTANCE.signupSellerRequestToSeller(signupSellerRequest, passwordEncoder);
+        if (sellerRepository.existsByEmail(signupSellerRequest.getEmail())) {
 
-        if (sellerRepository.existsByEmail(seller.getEmail())) {
-
-            throw new BusinessException(EMAIL_ALREADY_EXIST);
+            throw new BusinessException(EMAIL_CONFLICT);
         }
+
+        Seller seller = SellerMapper.INSTANCE.signupSellerRequestToSeller(signupSellerRequest, passwordEncoder);
 
         sellerRepository.save(seller);
     }

@@ -30,7 +30,7 @@ public enum ErrorType {
     // order
 
     // seller
-    EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "이미 존재하는 이메일입니다."),
+    EMAIL_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
 
     // store
 
