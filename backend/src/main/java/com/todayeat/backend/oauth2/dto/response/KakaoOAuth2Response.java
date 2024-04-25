@@ -1,22 +1,24 @@
 package com.todayeat.backend.oauth2.dto.response;
 
 import lombok.Builder;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Map;
 
 @ToString
+@Setter
 public class KakaoOAuth2Response implements OAuth2Response {
 
-    private OAuth2Provider provider;
+    private OAuth2Provider socialType;
     private String email;
-    private String profileImgUrl;
+    private String profileImage;
 
     @Builder
-    private KakaoOAuth2Response(OAuth2Provider provider, String email, String profileImgUrl) {
-        this.provider = provider;
+    private KakaoOAuth2Response(OAuth2Provider socialType, String email, String profileImage) {
+        this.socialType = socialType;
         this.email = email;
-        this.profileImgUrl = profileImgUrl;
+        this.profileImage = profileImage;
     }
 
     public static KakaoOAuth2Response of(Map<String, Object> attributes) {
@@ -25,15 +27,14 @@ public class KakaoOAuth2Response implements OAuth2Response {
         Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
 
         return builder()
-                .provider(OAuth2Provider.KAKAO)
+                .socialType(OAuth2Provider.KAKAO)
                 .email((String) kakaoAccount.get("email"))
-                .profileImgUrl((String) kakaoProfile.get("profile_image_url"))
+                .profileImage((String) kakaoProfile.get("profile_image_url"))
                 .build();
     }
 
-    @Override
-    public OAuth2Provider getProvider() {
-        return provider;
+    public OAuth2Provider getSocialType() {
+        return socialType;
     }
 
     @Override
@@ -42,8 +43,8 @@ public class KakaoOAuth2Response implements OAuth2Response {
     }
 
     @Override
-    public String getProfileImgUrl() {
-        return profileImgUrl;
+    public String getProfileImage() {
+        return profileImage;
     }
     
 }

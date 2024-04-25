@@ -23,6 +23,8 @@ import java.util.*;
 @Component
 public class JwtUtil {
 
+    // TODO: refresh token 발급, 토큰 저장 및 재발급 로직 구현
+
     private final long ACCESS_TOKEN_VALID_TIME = (60 * 1000) * 30; // 30분
     private final String AUTHORITIES_KEY = "role";
 

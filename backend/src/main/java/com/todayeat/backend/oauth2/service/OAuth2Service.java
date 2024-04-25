@@ -36,14 +36,6 @@ public class OAuth2Service extends DefaultOAuth2UserService {
                 .getClientRegistration()
                 .getRegistrationId();
 
-        // 액세스 토큰
-        String accessToken = oAuth2UserRequest
-                .getAccessToken()
-                .getTokenValue();
-
-        log.info("registrationId : {}", registrationId);
-        log.info("accessToken : {}", accessToken);
-
         // 유저 정보
         OAuth2Response oAuth2Response = getOAuth2Response(registrationId, oAuth2User.getAttributes());
 
