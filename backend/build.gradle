@@ -44,6 +44,9 @@ dependencies {
     // security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    // mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail:3.2.0'
 }
 
 tasks.named('test') {
