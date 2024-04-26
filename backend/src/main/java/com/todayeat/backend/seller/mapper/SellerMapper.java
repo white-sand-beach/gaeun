@@ -14,7 +14,6 @@ public interface SellerMapper {
 
     SellerMapper INSTANCE = Mappers.getMapper(SellerMapper.class);
 
-    @Mapping(target = "role", constant = "ROLE_SELLER")
     @Mapping(target = "password", qualifiedByName = "encodePassword")
     Seller signupSellerRequestToSeller(SignupSellerRequest signupSellerRequest, @Context PasswordEncoder passwordEncoder);
 

@@ -5,10 +5,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.Setter;
 
-@Setter
 @Getter
+@Schema(name = "판매자 회원가입 요청")
 public class SignupSellerRequest {
 
     @Email(message = "email: 올바른 형식이 아닙니다.")
