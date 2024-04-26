@@ -7,7 +7,6 @@ import com.todayeat.backend.seller.dto.request.FindEmailSellerRequest;
 import com.todayeat.backend.seller.dto.request.SignupSellerRequest;
 import com.todayeat.backend.seller.dto.response.CheckEmailSellerResponse;
 import com.todayeat.backend.seller.dto.response.FindEmailSellerResponse;
-import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.mapper.SellerMapper;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,38 +36,24 @@ public class SellerService implements UserDetailsService {
             throw new BusinessException(EMAIL_CONFLICT);
         }
 
-        Seller seller = SellerMapper.INSTANCE.signupSellerRequestToSeller(signupSellerRequest, passwordEncoder);
-        log.info("seller.getEmail(): {}", seller.getEmail());
-
-        sellerRepository.save(seller);
+        sellerRepository.save(SellerMapper.INSTANCE.signupSellerRequestToSeller(signupSellerRequest, passwordEncoder));
     }
 
     public CheckEmailSellerResponse checkEmail(CheckEmailRequest checkEmailRequest) {
 
         log.info("checkEmailRequest.getEmail() : {}", checkEmailRequest.getEmail());
 
-        boolean isValid = sellerRepository.existsByEmail(checkEmailRequest.getEmail());
-        log.info("isValid : {}", isValid);
-
-        CheckEmailSellerResponse checkEmailSellerResponse = new CheckEmailSellerResponse();
-        checkEmailSellerResponse.setValid(isValid);
-
-        return checkEmailSellerResponse;
+        return SellerMapper.INSTANCE.toCheckEmailSellerResponse(
+                sellerRepository.existsByEmail(checkEmailRequest.getEmail()));
     }
 
     public FindEmailSellerResponse findEmail(FindEmailSellerRequest findEmailSellerRequest) {
 
         log.info("findEmailSellerRequest.getPhoneNumber() : {}", findEmailSellerRequest.getPhoneNumber());
 
-        Seller seller = sellerRepository.findByPhoneNumber(findEmailSellerRequest.getPhoneNumber());
-
-        if (seller == null) {
-
-            throw new BusinessException(PHONE_NUMBER_NOT_FOUND);
-        }
-        log.info("seller.getEmail() : {}", seller.getEmail());
-
-        return SellerMapper.INSTANCE.SellerToFindEmailSellerResponse(seller);
+        return SellerMapper.INSTANCE.SellerToFindEmailSellerResponse(
+                sellerRepository.findByPhoneNumber(findEmailSellerRequest.getPhoneNumber())
+                        .orElseThrow(() -> new BusinessException(PHONE_NUMBER_NOT_FOUND)));
     }
 
     @Override
@@ -76,14 +61,8 @@ public class SellerService implements UserDetailsService {
 
         log.info("email : {}", email);
 
-        Seller seller = sellerRepository.findByEmail(email);
-        log.info("seller : {}", seller);
-
-        if (seller == null) {
-
-            throw new BusinessException(EMAIL_NOT_FOUND);
-        }
-
-        return new SellerCustomUserDetails(seller);
+        return new SellerCustomUserDetails(
+                sellerRepository.findByEmail(email)
+                        .orElseThrow(() -> new BusinessException(EMAIL_NOT_FOUND)));
     }
 }

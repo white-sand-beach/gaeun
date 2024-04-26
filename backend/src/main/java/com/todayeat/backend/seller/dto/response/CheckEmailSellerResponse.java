@@ -8,5 +8,5 @@ import lombok.Setter;
 public class CheckEmailSellerResponse {
 
     @Schema(description = "사용 가능 여부", example = "true")
-    private boolean isValid;
+    private Boolean isValid;
 }

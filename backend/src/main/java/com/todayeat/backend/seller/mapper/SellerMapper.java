@@ -19,6 +19,9 @@ public interface SellerMapper {
     @Mapping(target = "password", qualifiedByName = "encodePassword")
     Seller signupSellerRequestToSeller(SignupSellerRequest signupSellerRequest, @Context PasswordEncoder passwordEncoder);
 
+    @Mapping(source = "isValid", target = "isValid")
+    CheckEmailSellerResponse toCheckEmailSellerResponse(Boolean isValid);
+
     FindEmailSellerResponse SellerToFindEmailSellerResponse(Seller seller);
 
     @Named("encodePassword")
