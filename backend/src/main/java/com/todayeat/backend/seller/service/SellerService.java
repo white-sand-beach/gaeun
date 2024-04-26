@@ -21,7 +21,7 @@ import static com.todayeat.backend._common.response.error.ErrorType.EMAIL_NOT_FO
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SellerAuthService implements UserDetailsService {
+public class SellerService implements UserDetailsService {
 
     private final SellerRepository sellerRepository;
     private final PasswordEncoder passwordEncoder;
