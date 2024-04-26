@@ -12,6 +12,13 @@ const Map: React.FC = () => {
   // 현재 터치의 Y좌표를 기록하는 상태
   const [currentTouchY, setCurrentTouchY] = useState<number>(0);
 
+  const gpsButtonClass = isOpen
+    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-4 mb-80"
+    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-4 mb-7";
+  const listButtonClass = isOpen
+    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-80"
+    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-7";
+
   useEffect(() => {
     // 컴포넌트가 마운트될 때 스크롤을 막습니다.
     document.body.style.overflow = "hidden";
@@ -21,6 +28,16 @@ const Map: React.FC = () => {
       document.body.style.overflow = "";
     };
   }, []);
+
+  const listButtonClick = () => {
+    if (isOpen && !isExpanded) {
+      // isOpen은 true이고, isExpanded는 false일 때
+      setIsExpanded(true); // 패널을 확장시킵니다.
+    } else if (!isOpen) {
+      // isOpen이 false일 때
+      setIsOpen(true); // 패널을 반 틈 엽니다.
+    }
+  };
 
   // 사용자가 터치를 시작했을 때 호출되는 함수
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -96,16 +113,16 @@ const Map: React.FC = () => {
       </div>
       <div className="w-full h-screen border border-black bg-emerald-300">
         {/* 왼쪽 버튼 */}
-        <button className="absolute p-3 transform -translate-y-1/2 bg-white rounded-full shadow-xl left-4 bottom-4">
+        <button className={gpsButtonClass}>
           <div className="flex items-center justify-center w-5 h-5 rounded-full">
             <img src={gps} alt="Gps Icon" className="object-cover" />
           </div>
         </button>
 
         {/* 오른쪽 버튼 */}
-        <button className="absolute p-3 transform -translate-y-1/2 bg-white rounded-full shadow-xl right-4 bottom-4">
+        <button className={listButtonClass} onClick={listButtonClick}>
           <div className="flex items-center justify-center w-5 h-5 rounded-full">
-            <img src={list} alt="List Icon " className="object-cover" />
+            <img src={list} alt="List Icon " className="object-cover w-3 h-3" />
           </div>
         </button>
       </div>
