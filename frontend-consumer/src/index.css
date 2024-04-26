@@ -4,30 +4,49 @@
 
 @layer base {
   footer {
-    @apply flex flex-col justify-center items-center w-[20%]
+    @apply flex flex-col justify-center items-center w-[20%];
   }
 
   hr {
-    @apply border-[1px]
+    @apply border-[1px];
   }
 
   .footer-div {
-    @apply text-xs text-gray-500 font-bold mt-2
+    @apply mt-2 text-xs font-bold text-gray-500;
   }
 
   .footer-button {
-    @apply w-[300px] rounded-lg bg-myColor text-white text-sm font-semibold py-3
+    @apply w-[300px] rounded-lg bg-myColor text-white text-sm font-semibold py-3;
   }
 
   .text-xxxs {
-    @apply text-[9px]
+    @apply text-[9px];
   }
-  
+
   .text-xxs {
-    @apply text-[10px]
+    @apply text-[10px];
   }
 }
 
 @layer components {
+}
 
+body {
+  height: 100vh;
+  /* 텍스트 드래그 방지 */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  /* overflow: hidden; */
+  /* padding: 16px; */
+  /* box-sizing: border-box; */
+  /* border: 1px solid black; */
 }
