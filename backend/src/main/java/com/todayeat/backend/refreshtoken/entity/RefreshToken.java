@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @ToString
 @Getter
@@ -17,7 +18,7 @@ public class RefreshToken implements Serializable {
     @Id
     private String refreshToken;
 
-    private String accessToken;
+    private Date expiration;
 
     @Indexed
     private Long memberId;
@@ -26,17 +27,17 @@ public class RefreshToken implements Serializable {
     private String role;
 
     @Builder
-    private RefreshToken(String refreshToken, String accessToken, Long memberId, String role) {
+    private RefreshToken(String refreshToken, Date expiration, Long memberId, String role) {
         this.refreshToken = refreshToken;
-        this.accessToken = accessToken;
+        this.expiration = expiration;
         this.memberId = memberId;
         this.role = role;
     }
 
-    public static RefreshToken of(String refreshToken, String accessToken, Long memberId, String role) {
+    public static RefreshToken of(String refreshToken, Date expiration, Long memberId, String role) {
         return builder()
                 .refreshToken(refreshToken)
-                .accessToken(accessToken)
+                .expiration(expiration)
                 .memberId(memberId)
                 .role(role)
                 .build();

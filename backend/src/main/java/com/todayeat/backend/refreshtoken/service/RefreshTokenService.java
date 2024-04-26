@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -16,11 +18,11 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public void create(String refreshToken, String accessToken, Long memberId, String role) {
+    public void create(String refreshToken, Date expiration, Long memberId, String role) {
 
         log.info("[RefreshTokenService.create]");
 
-        RefreshToken saveRefreshToken = RefreshToken.of(refreshToken, accessToken, memberId, role);
+        RefreshToken saveRefreshToken = RefreshToken.of(refreshToken, expiration, memberId, role);
         refreshTokenRepository.save(saveRefreshToken);
     }
 
@@ -30,6 +32,6 @@ public class RefreshTokenService {
         log.info("[RefreshTokenService.delete]");
 
         refreshTokenRepository.findByMemberIdAndRole(memberId, role)
-                .ifPresent(refreshToken -> refreshTokenRepository.delete(refreshToken));
+                .ifPresent(refreshTokenRepository::delete);
     }
 }

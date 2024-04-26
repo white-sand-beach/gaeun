@@ -128,14 +128,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private String getLoginUrl(Authentication authentication, String redirectUri, Long memberId, String nextPage) {
 
         // 기존에 토큰이 존재하면 삭제
-        refreshTokenService.deleteIfPresent(memberId, "CONSUMER");
+//        refreshTokenService.deleteIfPresent(memberId, "CONSUMER");
 
         // 토큰 생성
         String accessToken = jwtUtil.createAccessToken(authentication, memberId);
         String refreshToken = jwtUtil.createRefreshToken();
 
         // 토큰 저장
-        refreshTokenService.create(refreshToken, accessToken, memberId, "CONSUMER");
+        refreshTokenService.create(refreshToken, jwtUtil.getExpiration(accessToken), memberId, "CONSUMER");
 
         // 리다이렉트
         return UriComponentsBuilder.fromUriString(redirectUri)

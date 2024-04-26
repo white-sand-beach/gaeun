@@ -69,10 +69,10 @@ public class JwtUtil {
         return UUID.randomUUID().toString();
     }
 
-//    public boolean isExpiredToken(String token) {
-//
-//        return getClaims(token).getExpiration().before(new Date());
-//    }
+    public Date getExpiration(String token) {
+
+        return getClaims(token).getExpiration();
+    }
 
     public Authentication getAuthentication(String token) {
         log.info("[JwtUtil.getAuthentication]");
