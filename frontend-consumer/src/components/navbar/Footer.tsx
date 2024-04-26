@@ -6,9 +6,10 @@ import map from "../../assets/footer/map.png";
 import order from "../../assets/footer/order.png";
 import profile from "../../assets/footer/profile.png";
 
+// bg-gray-100 rounded-2xl 지우지마용 ㅠㅠ
 const Footer = () => {
   return (
-    <div className="fixed flex bg-white w-full p-2 bottom-0 border-t-2">
+    <div className="fixed flex bg-white w-full p-2 bottom-0 border-t-2 rounded-t-lg">
         <Link className="footer" to="/search">
           <img src={search} alt="검색" />
           <div className="footer-div">검색</div>

@@ -12,10 +12,12 @@ const NavBar = () => {
   };
 
   return (
-    <div className="fixed flex justify-between items-center bg-myColor w-full p-4">
+    <div className="fixed between bg-myColor w-full p-4 rounded-b-lg">
+      <div className="w-[33%]">
       <img src={back} alt="뒤로가기" onClick={handleBackClick} />
-      <div className="font-extrabold">현재위치</div>
-      <div className="flex w-20 justify-end">
+      </div>
+      <div className="w-[34%] text-center font-extrabold">현재위치</div>
+      <div className="flex w-[33%] justify-end">
         <Link to="/alarm">
           <img src={ring} alt="알림" />
         </Link>

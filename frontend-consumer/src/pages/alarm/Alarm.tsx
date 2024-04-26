@@ -1,15 +1,15 @@
-import OrderDetailButton from "../components/button/OrderDetailButton";
+import OrderDetailButton from "../../components/button/OrderDetailButton";
 
 const Alarm = () => {
   return (
     <div className="pt-14">
       {/* 컴포넌트로 만들 거에요 */}
       <div className="bg-orange-100">
-        <div className="flex items-center justify-between px-4 pt-2 text-xs font-bold text-gray-400">
+        <div className="between px-4 pt-2 text-xs font-bold text-gray-400">
           <p>4.18(목) 17:04</p>
           <p className="text-xxs">주문 성공</p>
         </div>
-        <div className="flex items-center justify-between pb-2 pl-6">
+        <div className="between pb-2 pl-6">
           <div className="font-bold">
             <h1>가게명</h1>
             <p className="text-gray-400 text-xxs">
@@ -30,11 +30,11 @@ const Alarm = () => {
 
       {/* 컴포넌트로 만들 거에요 */}
       <div className="bg-white">
-        <div className="flex items-center justify-between px-4 pt-2">
+        <div className="between px-4 pt-2">
           <p className="text-xs font-bold text-gray-500">4.18(목) 17:04</p>
           <p className="text-xs font-bold text-gray-400">주문 성공</p>
         </div>
-        <div className="flex items-center justify-between pb-2 pl-6">
+        <div className="between pb-2 pl-6">
           <div className="font-bold">
             <h1>가게명</h1>
             <p className="text-gray-400 text-xxs">

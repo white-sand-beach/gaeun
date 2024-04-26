@@ -11,20 +11,28 @@
     @apply border-[1px]
   }
 
+  .search {
+    @apply w-[300px] flex justify-between px-2 py-3 border-2 rounded-xl
+  }
+
   .footer-div {
     @apply text-xxxs text-gray-500 font-bold mt-1
   }
 
   .footer-button {
-    @apply fixed bottom-8 w-[300px] rounded-lg bg-myColor text-white text-sm font-semibold py-3
+    @apply w-[300px] rounded-lg bg-myColor text-white text-sm font-semibold py-3
   }
 
   .center {
     @apply flex justify-center items-center
   }
+  
+  .between {
+    @apply flex justify-between items-center
+  }
 
-  .white-button {
-    @apply border-gray-400 border-[1px] bg-white rounded-lg text-xxs font-bold p-2 
+  .order-detail-button {
+    @apply border-gray-400 border-[1px] bg-white rounded-lg text-xxs font-bold p-2 hover:bg-gray-50
   }
 
   .orange-hover-button {
