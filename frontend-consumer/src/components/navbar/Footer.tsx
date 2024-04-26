@@ -8,7 +8,7 @@ import profile from "../../assets/footer/profile.png";
 
 const Footer = () => {
   return (
-    <div className="fixed flex bg-white w-full p-2 bottom-0 border-t-2">
+    <div className="fixed flex bg-white w-full p-2 bottom-0 border-t-2 rounded-t-lg">
         <Link className="footer" to="/search">
           <img src={search} alt="검색" />
           <div className="footer-div">검색</div>

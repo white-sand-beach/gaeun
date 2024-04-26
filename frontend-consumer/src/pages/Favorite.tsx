@@ -11,7 +11,7 @@ const Favorite = () => {
       <div className="bg-white">
         {/* 찜 리스트 */}
         <div>
-          <div className="flex justify-between items-center p-4">
+          <div className="between p-4">
             <div className="flex items-center">
               <img
                 className="w-20 h-2w-20 rounded-lg"
@@ -35,7 +35,7 @@ const Favorite = () => {
           <hr className="mx-4" />
         </div>
         <div>
-          <div className="flex justify-between items-center p-4">
+          <div className="between p-4">
             <div className="flex items-center">
               <img
                 className="w-20 h-2w-20 rounded-lg"

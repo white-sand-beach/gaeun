@@ -6,9 +6,10 @@ import PageLayout from "./components/navbar/PageLayout";
 import Cart from "./pages/Cart";
 import Alarm from "./pages/Alarm";
 import Favorite from "./pages/Favorite"
-import OrderDatail from "./pages/order/OrderDatail"
+import OrderDetail from "./pages/order/OrderDetail"
 import OrderList from "./pages/order/OrderList"
 import OrderState from "./pages/order/OrderState"
+import SearchPage from "./pages/search/SearchPage";
 
 const queryClient = new QueryClient();
 
@@ -22,9 +23,10 @@ const App = () => {
           <Route path="/cart" element={<Cart/>} />
           <Route path="/alarm" element={<Alarm/>} />
           <Route path="/favorite" element={<Favorite/>} />
-          <Route path="/order-detail" element={<OrderDatail/>} />
+          <Route path="/order-detail" element={<OrderDetail/>} />
           <Route path="/order-list" element={<OrderList/>} />
           <Route path="/order-state" element={<OrderState/>} />
+          <Route path="/search" element={<SearchPage/>} />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>

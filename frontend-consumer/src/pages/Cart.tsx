@@ -1,4 +1,3 @@
-
 import CountButton from "../components/button/CountButton";
 
 import right from "../assets/right.png";
@@ -9,7 +8,7 @@ const Cart = () => {
       <div className="flex justify-center">
         <div className="border-gray-400 border-2 rounded-lg w-[300px]">
           {/* 가게 로고 및 가게명 전체 삭제 기능 */}
-          <div className="flex items-center justify-between p-2">
+          <div className="between p-2">
             <div className="flex items-center">
               <img
                 className="w-4 h-4 rounded-full"
@@ -50,7 +49,7 @@ const Cart = () => {
             </div>
             {/* 버튼 컴포넌트로 만들 예정 */}
             <div className="flex justify-end ">
-              <CountButton/>
+              <CountButton />
             </div>
           </div>
           <hr />
@@ -83,7 +82,7 @@ const Cart = () => {
             </div>
             {/* 버튼 컴포넌트로 만들 예정 */}
             <div className="flex justify-end ">
-              <CountButton/>
+              <CountButton />
             </div>
           </div>
           <hr />
@@ -95,27 +94,27 @@ const Cart = () => {
       </div>
 
       <div className="flex justify-center pt-4">
-        <div className="border-gray-400 border-2 rounded-lg w-[300px] ">
-          <h1 className="p-2 text-xs font-bold">결제 금액을 확인해주세요</h1>
+        <div className="border-gray-400 border-2 rounded-lg w-[300px] text-xs font-bold">
+          <h1 className="p-2">결제 금액을 확인해주세요</h1>
           <hr />
           <div className="p-3">
-            <div className="flex justify-between">
-              <p className="text-xs font-bold">상품 금액</p>
-              <p className="text-xs font-bold">42,800원</p>
+            <div className="between">
+              <p>상품 금액</p>
+              <p>42,800원</p>
             </div>
-            <div className="flex justify-between">
-              <p className="text-xs font-bold">할인 금액</p>
-              <p className="text-xs font-bold text-red-500">13,800원</p>
+            <div className="between">
+              <p>할인 금액</p>
+              <p className="text-red-500">13,800원</p>
             </div>
           </div>
           <hr />
-          <div className="flex justify-between p-3">
-          <p className="text-xs font-bold">총 결제 금액</p>
-          <p className="text-xs font-bold">29,800원</p>
+          <div className="between p-3">
+            <p>총 결제 금액</p>
+            <p>29,800원</p>
           </div>
         </div>
       </div>
-      <div className="flex justify-center pt-4">
+      <div className="flex justify-center pt-12">
         <button className="footer-button">29,800원 결제하기</button>
       </div>
     </div>

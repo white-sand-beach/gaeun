@@ -4,7 +4,7 @@ import OrderDetailButton from "../../components/button/OrderDetailButton";
 const OrderState = () => {
   return (
     <div className="pt-16">
-      <header className="flex justify-between mx-4 mt-2 items center">
+      <header className="between mx-4 mt-2">
         <p className="text-sm font-bold">사장님이 열심히 준비하는 중이에요!</p>
         <div className="p-2 text-xs text-white rounded-lg bg-myColor font- bold">
           5분 남음
@@ -21,7 +21,7 @@ const OrderState = () => {
 
           <div className="mt-4">
             <p>가게가 마감하기 전에 반드시 픽업해주세요!</p>
-            <div className="flex justify-between items-center mt-1">
+            <div className="between mt-1">
               <div className="flex text-sm text-black space-x-2">
                 <p>마감 시간</p>
                 <p>21:00</p>
@@ -40,7 +40,7 @@ const OrderState = () => {
       />
       <img
         className="rounded-md"
-        src="https://cdn.spotvnews.co.kr/news/photo/202310/637185_931372_1012.jpg"
+        src="https://wimg.mk.co.kr/news/cms/202305/25/news-p.v1.20230525.6d276631f7624c4780068876d92b978c_P1.jpg"
         alt=""
       />
     </div>

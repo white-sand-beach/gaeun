@@ -2,7 +2,7 @@ import searchIcon from "../../assets/search/searchIcon.png";
 
 const OrderSearch = () => {
   return (
-    <div className="w-[300px] flex justify-between p-2 border-2 rounded-xl">
+    <div className="search">
       <input
         className="w-[250px] text-xs pl-2"
         type="text"

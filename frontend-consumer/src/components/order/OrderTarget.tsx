@@ -5,7 +5,7 @@ const Ordertarget = () => {
   return (
     <div>
       <div className="w-[300px] border-2 rounded-xl mb-2">
-        <div className="flex items-center justify-between px-4 pt-2 text-xs font-bold text-gray-400">
+        <div className="between px-4 pt-2 text-xs font-bold text-gray-400">
           <p>4.18(목)</p>
           <p className="text-xxs">구매 상태</p>
         </div>
@@ -16,7 +16,7 @@ const Ordertarget = () => {
             <p className="ml-2 text-red-500">31,900원</p>
           </div>
         </div>
-        <div className="flex items-center justify-between mx-4 mb-2">
+        <div className="between mx-4 mb-2">
           <CallButton />
           <OrderDetailButton />
         </div>
