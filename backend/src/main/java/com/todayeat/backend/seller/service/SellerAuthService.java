@@ -2,6 +2,7 @@ package com.todayeat.backend.seller.service;
 
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend.seller.dto.SellerCustomUserDetails;
+import com.todayeat.backend.seller.dto.request.CheckEmailRequest;
 import com.todayeat.backend.seller.dto.request.SignupSellerRequest;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.mapper.SellerMapper;
@@ -56,5 +57,15 @@ public class SellerAuthService implements UserDetailsService {
         }
 
         return new SellerCustomUserDetails(seller);
+    }
+
+    public Boolean checkEmail(CheckEmailRequest checkEmailRequest) {
+
+        if (sellerRepository.existsByEmail(checkEmailRequest.getEmail())) {
+
+            return false;
+        }
+
+        return true;
     }
 }
