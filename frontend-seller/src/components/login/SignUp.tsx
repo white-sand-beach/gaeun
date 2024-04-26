@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const SignUp = () => {
+    const navigate = useNavigate()
     return (
         <div className="main-layout w-[400px] gap-3">
             {/* 이메일 입력 */}
@@ -41,7 +44,7 @@ const SignUp = () => {
             </div>
 
             {/* 가입하기 */}
-            <button className="common-btn">가입하기</button>
+            <button className="common-btn" onClick={() => navigate("/signupFin")}>가입하기</button>
         </div>
     );
 };
