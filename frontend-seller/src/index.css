@@ -4,8 +4,8 @@
 
 @layer base {
   html, body, #root {
-    @apply flex flex-row justify-center items-center
-    w-screen h-screen
+    @apply flex flex-col justify-center items-center
+    w-full h-screen
   }
 
   h1 {
@@ -29,7 +29,7 @@
   }
   
   .common-btn {
-    @apply min-w-[300px] max-h-[40px] h-full bg-mainColor text-white font-bold rounded-[5px]
+    @apply min-w-[300px] min-h-[40px] bg-mainColor text-white font-bold rounded-[5px]
   }
 
   .detail-btn {
