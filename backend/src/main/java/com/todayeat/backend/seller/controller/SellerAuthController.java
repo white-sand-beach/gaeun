@@ -16,7 +16,7 @@ public class SellerAuthController implements SellerAuthControllerDocs {
     private final SellerService sellerService;
 
     @Override
-    public SuccessResponse signup(SignupSellerRequest signupSellerRequest) {
+    public SuccessResponse<Void> signup(SignupSellerRequest signupSellerRequest) {
 
         sellerService.signup(signupSellerRequest);
         return SuccessResponse.of(CREATE_SELLER_SUCCESS);

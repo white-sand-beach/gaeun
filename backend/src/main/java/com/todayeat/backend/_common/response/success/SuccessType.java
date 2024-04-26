@@ -18,6 +18,7 @@ public enum SuccessType {
 
     // seller
     CREATE_SELLER_SUCCESS("판매자 회원가입에 성공하였습니다."),
+    CHECK_EMAIL_SUCCESS("아이디(이메일) 사용 가능 여부 확인에 성공하였습니다."),
 
     // store
 
