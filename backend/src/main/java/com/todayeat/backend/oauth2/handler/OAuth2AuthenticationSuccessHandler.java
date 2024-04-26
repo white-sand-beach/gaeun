@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -49,12 +50,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
 
-        String targetUrl = getTargetUrl(request, authentication);
-        clearAuthenticationAttributes(request, response); // 쿠키 삭제
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        sendRedirectToTargetUrl(request, response, authentication);
     }
 
-    private String getTargetUrl(HttpServletRequest request, Authentication authentication) {
+    private void sendRedirectToTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
         log.info("[OAuth2AuthenticationSuccessHandler.getTargetUrl]");
 
@@ -70,7 +69,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // 유저 인증 정보
         OAuth2UserPrincipal oAuth2UserPrincipal = getOAuth2UserAuthentication(authentication);
         if (oAuth2UserPrincipal == null) {
-            return getFailUrl(redirectUri);
+            sendRedirectToFailUrl(request, response, redirectUri);
+            return;
         }
 
         // 로그인
@@ -82,15 +82,21 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
             // 로그인
             if (consumer != null) {
-                return getLoginUrl(authentication, redirectUri, consumer.getId(), "login");
+                sendRedirectToLoginUrl(request, response,
+                                    authentication, consumer.getId(),
+                                    redirectUri, "login");
+                return;
             }
 
             // 회원가입
-            return getLoginUrl(authentication, redirectUri, consumerService.create(oAuth2UserPrincipal), "sign-up");
+            sendRedirectToLoginUrl(request, response,
+                    authentication, consumerService.create(oAuth2UserPrincipal),
+                    redirectUri, "login");
+            return;
         }
 
         // TODO: 회원탈퇴, 로그아웃 로직 구현
-        return getFailUrl(redirectUri);
+        sendRedirectToFailUrl(request, response, redirectUri);
     }
 
     private String getRedirectUriFromRequest(HttpServletRequest request) {
@@ -118,14 +124,19 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         return null;
     }
 
-    private String getFailUrl(String redirectUri) {
+    private void sendRedirectToFailUrl(HttpServletRequest request, HttpServletResponse response, String redirectUri) throws IOException {
 
-        return UriComponentsBuilder.fromUriString(redirectUri)
+        String targetUrl = UriComponentsBuilder.fromUriString(redirectUri)
                 .queryParam("error", "login-fail")
                 .build().toUriString();
+
+        clearAuthenticationAttributes(request, response); // 쿠키 삭제
+        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
-    private String getLoginUrl(Authentication authentication, String redirectUri, Long memberId, String nextPage) {
+    private void sendRedirectToLoginUrl(HttpServletRequest request, HttpServletResponse response,
+                                          Authentication authentication, Long memberId,
+                                          String redirectUri, String nextPage) throws IOException {
 
         // 기존에 토큰이 존재하면 삭제
 //        refreshTokenService.deleteIfPresent(memberId, "CONSUMER");
@@ -138,11 +149,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         refreshTokenService.create(refreshToken, jwtUtil.getExpiration(accessToken), memberId, "CONSUMER");
 
         // 리다이렉트
-        return UriComponentsBuilder.fromUriString(redirectUri)
-                .queryParam("access-token", accessToken)
-                .queryParam("refresh-token", refreshToken)
-                .queryParam("next-page", nextPage)
-                .build().toUriString();
+        String targetUrl = UriComponentsBuilder.fromUriString(redirectUri)
+                    .queryParam("next-page", nextPage)
+                    .build().toUriString(); // 주소
+        response.setHeader(HttpHeaders.AUTHORIZATION, accessToken); // 액세스 토큰 담기
+
+        clearAuthenticationAttributes(request, response); // 쿠키 삭제
+        cookieUtil.addCookie(response, "RefreshToken", refreshToken, 100); // 리프레시 토큰 담기
+
+        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
     private void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {

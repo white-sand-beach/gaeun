@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -100,6 +101,8 @@ public class SecurityConfig {
             config.setAllowedHeaders(Collections.singletonList("*"));
             // preflight 요청의 결과를 캐시할 시간 지정
             config.setMaxAge(3600L);
+            // "Authorization" 헤더 허용
+            config.addExposedHeader(HttpHeaders.AUTHORIZATION);
 
             return config;
         };
