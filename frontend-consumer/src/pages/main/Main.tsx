@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import list from "../../assets/map/list.png";
 import gps from "../../assets/map/gps.png";
+import KakaoMap from "./Kakaomap";
 
-const Map: React.FC = () => {
+const Main: React.FC = () => {
   // 패널이 열려있는지 여부를 관리하는 상태
   const [isOpen, setIsOpen] = useState<boolean>(true);
   // 패널이 확장된 상태인지 여부를 관리하는 상태
@@ -13,11 +14,11 @@ const Map: React.FC = () => {
   const [currentTouchY, setCurrentTouchY] = useState<number>(0);
 
   const gpsButtonClass = isOpen
-    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-4 mb-80"
-    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-4 mb-7";
+    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-4 mb-80 z-10"
+    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-4 mb-7 z-10";
   const listButtonClass = isOpen
-    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-80"
-    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-7";
+    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-80 z-10"
+    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-7 z-10";
 
   useEffect(() => {
     // 컴포넌트가 마운트될 때 스크롤을 막습니다.
@@ -112,6 +113,7 @@ const Map: React.FC = () => {
         </div>
       </div>
       <div className="w-full h-screen border border-black bg-emerald-300">
+        <KakaoMap />
         {/* 왼쪽 버튼 */}
         <button className={gpsButtonClass}>
           <div className="flex items-center justify-center w-5 h-5 rounded-full">
@@ -225,4 +227,4 @@ const Map: React.FC = () => {
   );
 };
 
-export default Map;
+export default Main;
