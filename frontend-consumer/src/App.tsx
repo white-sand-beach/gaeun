@@ -3,9 +3,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import PageLayout from "./components/navbar/PageLayout";
-import Cart from "./pages/Cart";
-import Alarm from "./pages/Alarm";
-import Favorite from "./pages/Favorite"
+import Cart from "./pages/cart/Cart";
+import Alarm from "./pages/alarm/Alarm";
+import Favorite from "./pages/favorite/Favorite"
 import OrderDetail from "./pages/order/OrderDetail"
 import OrderList from "./pages/order/OrderList"
 import OrderState from "./pages/order/OrderState"

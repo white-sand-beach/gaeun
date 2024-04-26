@@ -6,7 +6,7 @@ const OrderState = () => {
     <div className="pt-16">
       <header className="between mx-4 mt-2">
         <p className="text-sm font-bold">사장님이 열심히 준비하는 중이에요!</p>
-        <div className="p-2 text-xs text-white rounded-lg bg-myColor font- bold">
+        <div className="p-2 text-xxs text-white rounded-lg bg-myColor font- bold">
           5분 남음
         </div>
       </header>

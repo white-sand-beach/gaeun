@@ -20,7 +20,7 @@
   }
 
   .footer-button {
-    @apply fixed bottom-4 w-[300px] rounded-lg bg-myColor text-white text-sm font-semibold py-3
+    @apply w-[300px] rounded-lg bg-myColor text-white text-sm font-semibold py-3
   }
 
   .center {
