@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import NavBar from "./NavBar";
+import NavBar from "./Navbar";
 import Footer from "./Footer";
 
 // 상단바를 숨기고 싶은 경로 목록
