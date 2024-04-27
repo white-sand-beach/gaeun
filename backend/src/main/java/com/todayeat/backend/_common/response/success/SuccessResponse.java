@@ -35,7 +35,7 @@ public class SuccessResponse <T>{
                 .build();
     }
 
-    public static SuccessResponse of(SuccessType successType) {
+    public static SuccessResponse<Void> of(SuccessType successType) {
         return SuccessResponse.<Void>builder()
                 .code(HttpStatus.OK.value())
                 .msg(successType.getMsg())
