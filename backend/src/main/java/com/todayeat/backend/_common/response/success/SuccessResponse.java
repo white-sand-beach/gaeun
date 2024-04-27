@@ -1,5 +1,6 @@
 package com.todayeat.backend._common.response.success;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -8,10 +9,15 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(name = "SuccessResponse", description = "성공 응답")
 public class SuccessResponse <T>{
 
+    @Schema(description = "상태 코드", example = "200")
     private int code;
+
+    @Schema(description = "상태 메시지", example = "성공")
     private String msg;
+
     private T data;
 
     @Builder
