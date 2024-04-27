@@ -3,6 +3,12 @@ import list from "../../assets/map/list.png";
 import gps from "../../assets/map/gps.png";
 import KakaoMap from "./Kakaomap";
 
+interface LocationState {
+  lat: number | undefined;
+  lng: number | undefined;
+  updateCounter: number; // 변경 횟수를 추적
+}
+
 const Main: React.FC = () => {
   // 패널이 열려있는지 여부를 관리하는 상태
   const [isOpen, setIsOpen] = useState<boolean>(true);
@@ -20,6 +26,41 @@ const Main: React.FC = () => {
   const listButtonClass = isOpen
     ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-80 z-10"
     : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-7 z-10";
+  const [location, setLocation] = useState<LocationState>({
+    lat: undefined,
+    lng: undefined,
+    updateCounter: 0,
+  });
+
+  const handleGPSButtonClick = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log(location);
+          // 강제 업데이트를 트리거하려면 상태를 갱신할 때마다 updateCounter를 증가시키기
+          setLocation((prev) => ({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+            updateCounter: prev.updateCounter + 1, // 항상 증가시키기
+          }));
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          setLocation((prev) => ({
+            ...prev,
+            updateCounter: prev.updateCounter + 1, // 오류가 발생하면 updateCounter만 증가
+          }));
+        },
+        { enableHighAccuracy: true }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      setLocation((prev) => ({
+        ...prev,
+        updateCounter: prev.updateCounter + 1, // 지원하지 않을 때도 updateCounter 증가
+      }));
+    }
+  };
 
   useEffect(() => {
     // 컴포넌트가 마운트될 때 스크롤을 막습니다.
@@ -114,9 +155,15 @@ const Main: React.FC = () => {
         </div>
       </div>
       <div className="w-full h-screen borde">
-        <KakaoMap key={isOpen ? "large-map" : "small-map"} height={mapHeight} />
+        <KakaoMap
+          key={isOpen ? "large-map" : "small-map"}
+          height={mapHeight}
+          lat={location.lat}
+          lng={location.lng}
+          updateCounter={location.updateCounter}
+        />
         {/* 왼쪽 버튼 */}
-        <button className={gpsButtonClass}>
+        <button className={gpsButtonClass} onClick={handleGPSButtonClick}>
           <div className="flex items-center justify-center w-5 h-5 rounded-full">
             <img src={gps} alt="Gps Icon" className="object-cover" />
           </div>
