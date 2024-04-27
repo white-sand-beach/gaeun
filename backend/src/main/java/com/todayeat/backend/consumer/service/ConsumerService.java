@@ -50,13 +50,12 @@ public class ConsumerService {
     }
 
     public Consumer getConsumerOrNull(OAuth2Provider socialType, String email) {
+
         return consumerRepository.findBySocialTypeAndEmail(socialType, email)
                 .orElse(null);
     }
 
     public CheckNicknameResponse checkNickname(CheckNicknameRequest request) {
-
-        log.info("[ConsumerService.checkNickname]");
 
         // 존재하면 -> isValid = false (닉네임 사용 불가)
         // 존재하지 않으면 -> isValid = true (닉네임 사용 가능)
@@ -65,13 +64,12 @@ public class ConsumerService {
 
     public GetConsumerResponse get() {
 
-        log.info("[ConsumerService.get]");
-
         Consumer consumer = securityUtil.getConsumer();
         return ConsumerMapper.INSTANCE.consumerToGetConsumerResponse(consumer);
     }
 
     private boolean existsByNickname(String nickname) {
+
         return consumerRepository.existsByNicknameAndDeletedAtIsNull(nickname);
     }
 }
