@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum SuccessType {
     // consumer
+    UPDATE_CONSUMER_SUCCESS("소비자 정보 수정에 성공하였습니다."),
 
     // favorite
 

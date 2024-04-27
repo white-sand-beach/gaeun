@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,8 +33,19 @@ public class SecurityConfig {
     @Value("${SELLER_LIST}")
     private String[] sellerList;
 
+    @Value("${CONSUMER_LIST}")
+    private String[] consumerList;
+
     @Value("${SELLER_URL}")
     private String sellerURL;
+
+    private final OAuth2Service oAuth2Service;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    private final OAuth2AuthorizationRepository oAuth2AuthorizationRepository;
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     private final AuthenticationConfiguration authenticationConfiguration;
 
@@ -50,16 +63,25 @@ public class SecurityConfig {
                 .formLogin(auth -> auth.disable())
                 // HTTP Basic 인증 방식 비활성화
                 .httpBasic(auth -> auth.disable())
-
+                // oauth2 설정
+                .oauth2Login(configure ->
+                        configure.authorizationEndpoint(config -> config.authorizationRequestRepository(oAuth2AuthorizationRepository))
+                                .userInfoEndpoint(config -> config.userService(oAuth2Service))
+                                .successHandler(oAuth2AuthenticationSuccessHandler)
+                                .failureHandler(oAuth2AuthenticationFailureHandler)
+                )
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(whiteList).permitAll()
                         .requestMatchers(sellerList).hasRole("SELLER")
+                        .requestMatchers(consumerList).hasRole("CONSUMER")
                         .anyRequest().authenticated())
                 .addFilterAt(new SellerLoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class)
                 // RESTful API
                 .sessionManagement((session) -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // filter
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
 
         return http.build();
     }
@@ -79,6 +101,8 @@ public class SecurityConfig {
             config.setAllowedHeaders(Collections.singletonList("*"));
             // preflight 요청의 결과를 캐시할 시간 지정
             config.setMaxAge(3600L);
+            // "Authorization" 헤더 허용
+            config.addExposedHeader(HttpHeaders.AUTHORIZATION);
 
             return config;
         };
@@ -95,4 +119,13 @@ public class SecurityConfig {
 
         return configuration.getAuthenticationManager();
     }
+
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+
+        return web -> web.ignoring() // 시큐리티 적용 X
+                .requestMatchers("/error", "/favicon.ico");
+    }
 }
+
