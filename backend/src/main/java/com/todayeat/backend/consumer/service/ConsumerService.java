@@ -30,8 +30,6 @@ public class ConsumerService {
     @Transactional
     public Long create(OAuth2UserPrincipal principal) {
 
-        log.info("[ConsumerService.create]");
-
         Consumer consumer = ConsumerMapper.INSTANCE.oAuth2PrincipalToConsumer(principal.getUserInfo());
         consumerRepository.save(consumer);
 
@@ -40,8 +38,6 @@ public class ConsumerService {
 
     @Transactional
     public void update(UpdateConsumerRequest request) {
-
-        log.info("[ConsumerService.update]");
 
         Consumer consumer = securityUtil.getConsumer();
 
