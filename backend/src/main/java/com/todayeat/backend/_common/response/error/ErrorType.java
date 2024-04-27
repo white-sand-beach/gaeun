@@ -52,7 +52,8 @@ public enum ErrorType {
 
     // token
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
-    TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "Http Header에 토큰이 없습니다.")
+    TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "Http Header에 토큰이 없습니다."),
+    ROLE_MISMATCH(HttpStatus.FORBIDDEN, "해당 요청에 대한 권한이 없습니다."),
     ;
 
     private HttpStatus httpStatus;
