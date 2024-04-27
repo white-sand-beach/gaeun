@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "consumers", description = "소비자")
-@RequestMapping("/api/consumers")
+@RequestMapping("/consumers")
 public interface ConsumerControllerDocs {
 
     @Operation(summary = "소비자 회원 정보 수정",
