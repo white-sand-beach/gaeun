@@ -5,6 +5,7 @@ import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.dto.request.CheckNicknameRequest;
 import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
 import com.todayeat.backend.consumer.dto.response.CheckNicknameResponse;
+import com.todayeat.backend.consumer.dto.response.GetConsumerResponse;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.consumer.mapper.ConsumerMapper;
 import com.todayeat.backend.consumer.repository.ConsumerRepository;
@@ -64,6 +65,14 @@ public class ConsumerService {
         // 존재하면 -> isValid = false (닉네임 사용 불가)
         // 존재하지 않으면 -> isValid = true (닉네임 사용 가능)
         return CheckNicknameResponse.of(!existsByNickname(request.getNickname()));
+    }
+
+    public GetConsumerResponse get() {
+
+        log.info("[ConsumerService.get]");
+
+        Consumer consumer = securityUtil.getConsumer();
+        return ConsumerMapper.INSTANCE.consumerToGetConsumerResponse(consumer);
     }
 
     private boolean existsByNickname(String nickname) {
