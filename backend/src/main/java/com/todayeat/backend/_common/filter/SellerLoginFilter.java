@@ -28,7 +28,7 @@ public class SellerLoginFilter extends UsernamePasswordAuthenticationFilter {
     public SellerLoginFilter(AuthenticationManager authenticationManager) {
 
         this.authenticationManager = authenticationManager;
-        setFilterProcessesUrl("/api/auth/login");
+        setFilterProcessesUrl("/auth/login");
     }
 
     @Override

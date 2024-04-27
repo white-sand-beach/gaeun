@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "판매자 auth Controller")
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public interface SellerAuthControllerDocs {
 
     @Operation(summary = "판매자 회원 가입")
