@@ -15,7 +15,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "consumers", description = "소비자")
-@RequestMapping("/consumers")
+@RequestMapping("/api/consumers")
 public interface ConsumerControllerDocs {
 
     @Operation(summary = "회원 정보 수정",

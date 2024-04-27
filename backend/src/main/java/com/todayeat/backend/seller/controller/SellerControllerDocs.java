@@ -4,6 +4,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "판매자 Controller")
-@RequestMapping("/sellers")
+@RequestMapping("/api/sellers")
 public interface SellerControllerDocs {
 }
