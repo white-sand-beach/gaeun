@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum SuccessType {
     // consumer
     UPDATE_CONSUMER_SUCCESS("소비자 정보 수정에 성공하였습니다."),
+    CHECK_NICKNAME_SUCCESS("닉네임 중복 확인에 성공하였습니다."),
 
     // favorite
 

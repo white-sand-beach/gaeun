@@ -19,6 +19,7 @@ public enum ErrorType {
      */
     // consumer
     CONSUMER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 소비자를 찾을 수 없습니다."),
+    NICKNAME_CONFLICT(HttpStatus.CONFLICT, "이미 사용중인 닉네임입니다."),
 
     // favorite
 
