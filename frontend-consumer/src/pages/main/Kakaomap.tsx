@@ -10,9 +10,10 @@ declare global {
 interface KakaoMapProps {
   lat?: number;
   lng?: number;
+  height?: string;
 }
 
-const KakaoMap: React.FC<KakaoMapProps> = ({ lat, lng }) => {
+const KakaoMap: React.FC<KakaoMapProps> = ({ lat, lng, height }) => {
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -69,7 +70,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({ lat, lng }) => {
     map.panBy(0, mapHeight * -1);
   };
 
-  return <div ref={mapRef} style={{ width: "100%", height: "100%" }}></div>;
+  return <div ref={mapRef} style={{ width: "100%", height: height }}></div>;
 };
 
 export default KakaoMap;

@@ -12,7 +12,8 @@ const Main: React.FC = () => {
   const [startTouchY, setStartTouchY] = useState<number>(0);
   // 현재 터치의 Y좌표를 기록하는 상태
   const [currentTouchY, setCurrentTouchY] = useState<number>(0);
-
+  // 지도의 높이를 패널 상태에 따라 결정
+  const mapHeight = isOpen ? "300px" : "100%";
   const gpsButtonClass = isOpen
     ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-4 mb-80 z-10"
     : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-4 mb-7 z-10";
@@ -112,8 +113,8 @@ const Main: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-screen border border-black bg-emerald-300">
-        <KakaoMap />
+      <div className="w-full h-screen borde">
+        <KakaoMap key={isOpen ? "large-map" : "small-map"} height={mapHeight} />
         {/* 왼쪽 버튼 */}
         <button className={gpsButtonClass}>
           <div className="flex items-center justify-center w-5 h-5 rounded-full">
