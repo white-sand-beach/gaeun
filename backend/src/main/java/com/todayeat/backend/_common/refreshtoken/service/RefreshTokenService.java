@@ -1,7 +1,7 @@
-package com.todayeat.backend.refreshtoken.service;
+package com.todayeat.backend._common.refreshtoken.service;
 
-import com.todayeat.backend.refreshtoken.entity.RefreshToken;
-import com.todayeat.backend.refreshtoken.repository.RefreshTokenRepository;
+import com.todayeat.backend._common.refreshtoken.entity.RefreshToken;
+import com.todayeat.backend._common.refreshtoken.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.todayeat.backend.consumer.dto.response;
 
-import com.todayeat.backend.oauth2.dto.response.OAuth2Provider;
+import com.todayeat.backend._common.oauth2.dto.response.OAuth2Provider;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;

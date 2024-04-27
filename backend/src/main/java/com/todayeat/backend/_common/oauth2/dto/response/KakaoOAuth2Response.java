@@ -1,4 +1,4 @@
-package com.todayeat.backend.oauth2.dto.response;
+package com.todayeat.backend._common.oauth2.dto.response;
 
 import lombok.Builder;
 import lombok.ToString;

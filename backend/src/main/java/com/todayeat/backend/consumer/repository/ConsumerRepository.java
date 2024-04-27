@@ -1,7 +1,7 @@
 package com.todayeat.backend.consumer.repository;
 
 import com.todayeat.backend.consumer.entity.Consumer;
-import com.todayeat.backend.oauth2.dto.response.OAuth2Provider;
+import com.todayeat.backend._common.oauth2.dto.response.OAuth2Provider;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

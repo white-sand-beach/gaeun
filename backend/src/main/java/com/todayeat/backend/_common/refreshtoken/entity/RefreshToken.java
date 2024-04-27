@@ -1,4 +1,4 @@
-package com.todayeat.backend.refreshtoken.entity;
+package com.todayeat.backend._common.refreshtoken.entity;
 
 import lombok.Builder;
 import lombok.Getter;

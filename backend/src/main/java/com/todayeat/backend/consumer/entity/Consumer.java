@@ -2,7 +2,7 @@ package com.todayeat.backend.consumer.entity;
 
 import com.todayeat.backend._common.entity.BaseTime;
 import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
-import com.todayeat.backend.oauth2.dto.response.OAuth2Provider;
+import com.todayeat.backend._common.oauth2.dto.response.OAuth2Provider;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
