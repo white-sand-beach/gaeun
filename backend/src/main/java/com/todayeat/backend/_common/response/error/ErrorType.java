@@ -14,9 +14,12 @@ public enum ErrorType {
     PATH_VARIABLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "Path Variable이 없습니다."),
     REQUEST_PARAM_NOT_FOUND(HttpStatus.BAD_REQUEST, "Request Param이 없습니다."),
 
+
     /**
      * CUSTOM ERROR
      */
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버에서 에러가 발생하였습니다."),
+
     // consumer
     CONSUMER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 소비자를 찾을 수 없습니다."),
     NICKNAME_CONFLICT(HttpStatus.CONFLICT, "이미 사용중인 닉네임입니다."),
@@ -54,6 +57,9 @@ public enum ErrorType {
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "Http Header에 토큰이 없습니다."),
     ROLE_MISMATCH(HttpStatus.FORBIDDEN, "해당 요청에 대한 권한이 없습니다."),
+
+    //image
+    IMAGE_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 형식의 파일이 아닙니다."),
     ;
 
     private HttpStatus httpStatus;

@@ -130,7 +130,6 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
 
