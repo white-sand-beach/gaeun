@@ -3,16 +3,14 @@ package com.todayeat.backend.location.entity;
 import com.todayeat.backend._common.entity.BaseTime;
 import com.todayeat.backend.consumer.entity.Consumer;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 
 @Getter
 @Entity
+@ToString
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE location SET deleted_at = CONVERT_TZ(NOW(), '+00:00', '+09:00') WHERE location_id = ?")
@@ -24,7 +22,7 @@ public class Location extends BaseTime {
     private Long id;
 
     @Embedded
-    private Address address;
+    private Coordinate coordinate;
 
     @Column(length = 10, nullable = true)
     private String alias;
@@ -34,7 +32,7 @@ public class Location extends BaseTime {
     private Boolean isSelected;
 
     @Column(nullable = false)
-    @ColumnDefault("2") // 임시
+    @ColumnDefault("2")
     private Integer radius;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,11 +40,15 @@ public class Location extends BaseTime {
     private Consumer consumer;
 
     @Builder
-    private Location(Address address, String alias, Boolean isSelected, Integer radius, Consumer consumer) {
-        this.address = address;
+    private Location(Coordinate coordinate, String alias, Boolean isSelected, Integer radius, Consumer consumer) {
+        this.coordinate = coordinate;
         this.alias = alias;
         this.isSelected = isSelected;
         this.radius = radius;
         this.consumer = consumer;
+    }
+
+    public void updateIsSelected() {
+        this.isSelected = !this.isSelected;
     }
 }

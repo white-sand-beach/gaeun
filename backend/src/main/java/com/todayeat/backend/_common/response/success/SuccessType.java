@@ -14,6 +14,7 @@ public enum SuccessType {
     // review
 
     // location
+    CREATE_LOCATION_SUCCESS("위치 등록에 성공하였습니다."),
 
     // cart
 

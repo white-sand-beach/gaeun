@@ -20,7 +20,7 @@ public class ConsumerController implements ConsumerControllerDocs {
     private final ConsumerService consumerService;
 
     @Override
-    public SuccessResponse update(UpdateConsumerRequest request) {
+    public SuccessResponse<Void> update(UpdateConsumerRequest request) {
 
         consumerService.update(request);
         return SuccessResponse.of(UPDATE_CONSUMER_SUCCESS);

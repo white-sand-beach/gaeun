@@ -2,7 +2,7 @@ package com.todayeat.backend._common.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.todayeat.backend._common.response.error.ErrorType;
-import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.todayeat.backend._common.response.error.ErrorType.INVALID_TOKEN;
+import static com.todayeat.backend._common.response.error.ErrorType.TOKEN_INVALID;
 
 @Component
 public class JwtExceptionFilter extends OncePerRequestFilter {
@@ -25,8 +25,8 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 
         try {
             filterChain.doFilter(request, response); // 다음 필터로 넘기기
-        } catch (Exception e) {
-            setErrorResponse(response, INVALID_TOKEN);
+        } catch (JwtException e) {
+            setErrorResponse(response, TOKEN_INVALID);
         }
     }
 

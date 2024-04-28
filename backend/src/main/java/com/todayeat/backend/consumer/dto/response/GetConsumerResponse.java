@@ -2,11 +2,10 @@ package com.todayeat.backend.consumer.dto.response;
 
 import com.todayeat.backend._common.oauth2.dto.response.OAuth2Provider;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Schema(name = "GetConsumerResponse", description = "소비자 프로필 조회 응답")
 public class GetConsumerResponse {
 
@@ -21,4 +20,12 @@ public class GetConsumerResponse {
 
     @Schema(description = "이메일", example = "pangdoonbabo@naver.com")
     private String email;
+
+    @Builder
+    private GetConsumerResponse(String profileImage, String nickname, OAuth2Provider socialType, String email) {
+        this.profileImage = profileImage;
+        this.nickname = nickname;
+        this.socialType = socialType;
+        this.email = email;
+    }
 }
