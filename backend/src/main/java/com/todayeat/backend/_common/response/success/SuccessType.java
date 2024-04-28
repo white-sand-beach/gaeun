@@ -30,6 +30,7 @@ public enum SuccessType {
     UPDATE_PHONE_NUMBER_SELLER_SUCCESS("판매자 전화번호 수정에 성공하였습니다."),
 
     // store
+    CREATE_STORE_SUCCESS("가게 등록에 성공하였습니다."),
 
     // category
 
