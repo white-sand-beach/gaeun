@@ -38,6 +38,8 @@ public enum ErrorType {
     TEMP_PASSWORD_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 임시 비밀번호입니다."),
     EMAIL_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "이메일이 일치하지 않습니다."),
     PASSWORD_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다."),
+    NEW_CHECK_PASSWORD_BAD_REQUEST(HttpStatus.UNAUTHORIZED, "새 비밀번호와 확인 비밀번호가 일치하지 않습니다."),
+    NEW_PASSWORD_BAD_REQUEST(HttpStatus.BAD_REQUEST, "새로운 비밀번호를 입력해야 합니다."),
     SELLER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "판매자 인증에 실패했습니다."),
 
     // store

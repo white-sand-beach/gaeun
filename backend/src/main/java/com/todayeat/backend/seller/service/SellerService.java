@@ -143,6 +143,16 @@ public class SellerService implements UserDetailsService {
     @Transactional
     public void updatePassword(UpdatePasswordSellerRequest updatePasswordSellerRequest) {
 
+        if(!updatePasswordSellerRequest.getNewPassword().equals(updatePasswordSellerRequest.getCheckPassword())) {
+
+            throw new BusinessException(NEW_CHECK_PASSWORD_BAD_REQUEST);
+        }
+
+        if(updatePasswordSellerRequest.getOldPassword().equals(updatePasswordSellerRequest.getNewPassword())) {
+
+            throw new BusinessException(NEW_PASSWORD_BAD_REQUEST);
+        }
+
         Seller seller = securityUtil.getSeller();
 
         String oldPassword = passwordEncoder.encode(updatePasswordSellerRequest.getOldPassword());

@@ -29,6 +29,12 @@ public interface SellerControllerDocs {
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema()))
+    @ApiResponse(responseCode = "400",
+            description = "새 비밀번호와 확인 비밀번호가 일치하지 않습니다.",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "400",
+            description = "새로운 비밀번호를 입력해야 합니다.",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "401",
             description = "비밀번호가 일치하지 않습니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
