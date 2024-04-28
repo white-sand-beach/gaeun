@@ -1,9 +1,9 @@
-package com.todayeat.backend.oauth2.service;
+package com.todayeat.backend._common.oauth2.service;
 
-import com.todayeat.backend.oauth2.dto.response.KakaoOAuth2Response;
-import com.todayeat.backend.oauth2.dto.response.OAuth2Response;
-import com.todayeat.backend.oauth2.dto.auth.OAuth2UserPrincipal;
-import com.todayeat.backend.oauth2.dto.response.OAuth2Provider;
+import com.todayeat.backend._common.oauth2.dto.response.KakaoOAuth2Response;
+import com.todayeat.backend._common.oauth2.dto.response.OAuth2Response;
+import com.todayeat.backend._common.oauth2.dto.auth.OAuth2UserPrincipal;
+import com.todayeat.backend._common.oauth2.dto.response.OAuth2Provider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -22,8 +22,6 @@ public class OAuth2Service extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
-
-        log.info("[OAuth2Service.loadUser]");
 
         // 기본 OAuth2UserService 객체 생성
         OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();

@@ -2,6 +2,7 @@ package com.todayeat.backend.seller.service;
 
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.MailUtil;
+import com.todayeat.backend._common.util.RedisUtil;
 import com.todayeat.backend.seller.dto.SellerCustomUserDetails;
 import com.todayeat.backend.seller.dto.request.*;
 import com.todayeat.backend.seller.dto.response.CheckEmailSellerResponse;
@@ -12,27 +13,38 @@ import com.todayeat.backend.seller.mapper.SellerMapper;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Random;
 
 import static com.todayeat.backend._common.response.error.ErrorType.*;
 
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class SellerService implements UserDetailsService {
 
     private final SellerRepository sellerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RedisUtil redisUtil;
     private final MailUtil mailUtil;
 
+    @Value("${spring.mail.auth-code-expiration-millis}")
+    private long authCodeExpirationMillis;
+
+    private static final String AUTH_CODE_PREFIX = "AuthCode ";
+
+    @Transactional
     public void signup(SignupSellerRequest signupSellerRequest) {
 
         log.info("signupSellerRequest.getEmail() : {}", signupSellerRequest.getEmail());
@@ -57,52 +69,75 @@ public class SellerService implements UserDetailsService {
 
         log.info("findEmailSellerRequest.getPhoneNumber() : {}", findEmailSellerRequest.getPhoneNumber());
 
-        return SellerMapper.INSTANCE.SellerToFindEmailSellerResponse(
-                sellerRepository.findByPhoneNumber(findEmailSellerRequest.getPhoneNumber())
-                        .orElseThrow(() -> new BusinessException(PHONE_NUMBER_NOT_FOUND)));
-    }
+        List<Seller> sellerList = sellerRepository.findByPhoneNumber(findEmailSellerRequest.getPhoneNumber());
 
-    public void getTempPassword(GetTempPasswordSellerRequest getTempPasswordSellerRequest) {
+        if (sellerList.isEmpty()) {
 
-        log.info("getTempPasswordSellerRequest.getEmail() : {}", getTempPasswordSellerRequest.getEmail());
-
-        Seller seller = sellerRepository.findByPhoneNumber(getTempPasswordSellerRequest.getPhoneNumber())
-                .orElseThrow(() -> new BusinessException(PHONE_NUMBER_NOT_FOUND));
-
-        if (!seller.getEmail().equals(getTempPasswordSellerRequest.getEmail())) {
-
-            throw new BusinessException(EMAIL_UNAUTHORIZED);
+            throw new BusinessException(PHONE_NUMBER_NOT_FOUND);
         }
 
-        sendCertification(getTempPasswordSellerRequest.getEmail());
+        return SellerMapper.INSTANCE.sellerListToFindEmailSellerResponse(sellerList);
     }
 
-    public CheckTempPasswordSellerResponse checkTempPassword(CheckTempPasswordSellerRequest checkTempPasswordSellerRequest) {
+    @Transactional
+    public void createTempPassword(CreateTempPasswordSellerRequest createTempPasswordSellerRequest) {
 
-        log.info("checkTempPasswordSellerRequest.getTempPassword() : {}", checkTempPasswordSellerRequest.getTempPassword());
+        log.info("createTempPasswordSellerRequest.getEmail() : {}", createTempPasswordSellerRequest.getEmail());
 
-        if (sellerRepository.existsByEmail(checkTempPasswordSellerRequest.getEmail())) {
+        List<Seller> sellerList = sellerRepository.findByPhoneNumber(createTempPasswordSellerRequest.getPhoneNumber());
 
-            throw new BusinessException(EMAIL_CONFLICT);
-        }
+        Seller seller = sellerList.stream()
+                .filter(s -> s.getEmail().equals(createTempPasswordSellerRequest.getEmail()))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException(EMAIL_UNAUTHORIZED));
 
-        // todo redis에서 비교
-        
-        // todo 임시 비밀번호로 비밀번호 업데이트
+        log.info("seller : {}", seller.getEmail());
 
-        return null;
-    }
-
-    private void sendCertification(String email) {
-
-        String title = "today-eat 이메일 인증 번호";
         String authCode = createCode();
 
         log.info("authCode : {}", authCode);
 
-        mailUtil.sendEmail(email, title, "<h3>인증코드</h3>" + authCode);
+        sendCertification(seller.getEmail(), authCode);
 
-        // todo redis에 저장
+        redisUtil.setKeyValue(AUTH_CODE_PREFIX + seller.getEmail(),
+                authCode, authCodeExpirationMillis);
+    }
+
+    @Transactional
+    public CheckTempPasswordSellerResponse checkTempPassword(CheckTempPasswordSellerRequest checkTempPasswordSellerRequest) {
+
+        log.info("checkTempPasswordSellerRequest.getTempPassword() : {}", checkTempPasswordSellerRequest.getTempPassword());
+
+        Seller seller = sellerRepository.findByEmail(checkTempPasswordSellerRequest.getEmail())
+                .orElseThrow(() -> new BusinessException(EMAIL_NOT_FOUND));
+
+        String authCode = redisUtil.getValueByKey(AUTH_CODE_PREFIX + checkTempPasswordSellerRequest.getEmail());
+
+        log.info("authCode : {}", authCode);
+
+        if (authCode == null) {
+
+            throw new BusinessException(TEMP_PASSWORD_NOT_FOUND);
+        }
+
+        boolean passwordMatches = authCode.equals(checkTempPasswordSellerRequest.getTempPassword());
+
+        log.info("passwordMatches : {}", passwordMatches);
+
+        if (passwordMatches) {
+
+            seller.updatePassword(passwordEncoder.encode(authCode));
+        }
+
+        return SellerMapper.INSTANCE.toCheckTempPasswordSellerResponse(passwordMatches);
+    }
+
+    private void sendCertification(String email, String authCode) {
+
+        String title = "today-eat 이메일 인증 번호";
+        String text = "<h3>인증코드</h3>" + authCode;
+
+        mailUtil.sendEmail(email, title, text);
     }
 
     private String createCode() {

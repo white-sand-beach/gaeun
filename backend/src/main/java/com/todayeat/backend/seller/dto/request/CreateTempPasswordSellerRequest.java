@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @Schema(name = "판매자 임시 비밀번호 생성 요청")
-public class GetTempPasswordSellerRequest {
+public class CreateTempPasswordSellerRequest {
 
     @Email(message = "email: 올바른 형식이 아닙니다.")
     @Size(max = 50, message = "email: 최대 50자까지 입력 가능합니다.")
