@@ -1,22 +1,22 @@
 package com.todayeat.backend._common.filter;
 
+import com.todayeat.backend._common.refreshtoken.service.RefreshTokenService;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
+import com.todayeat.backend._common.util.CookieUtil;
+import com.todayeat.backend._common.util.JwtUtil;
 import com.todayeat.backend.seller.dto.SellerCustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.util.Collection;
-import java.util.Iterator;
 
 import static com.todayeat.backend._common.response.error.ErrorType.*;
 
@@ -25,9 +25,17 @@ public class SellerLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
 
-    public SellerLoginFilter(AuthenticationManager authenticationManager) {
+    private final JwtUtil jwtUtil;
+    private final CookieUtil cookieUtil;
+
+    private final RefreshTokenService refreshTokenService;
+
+    public SellerLoginFilter(AuthenticationManager authenticationManager, CookieUtil cookieUtil, JwtUtil jwtUtil, RefreshTokenService refreshTokenService) {
 
         this.authenticationManager = authenticationManager;
+        this.cookieUtil = cookieUtil;
+        this.jwtUtil = jwtUtil;
+        this.refreshTokenService = refreshTokenService;
         setFilterProcessesUrl("/api/auth/login");
     }
 
@@ -56,20 +64,14 @@ public class SellerLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         SellerCustomUserDetails sellerCustomUserDetails = (SellerCustomUserDetails) authentication.getPrincipal();
 
-        String email = sellerCustomUserDetails.getEmail();
+        String accessToken = jwtUtil.createAccessToken(authentication, sellerCustomUserDetails.getId());
+        String refreshToken = jwtUtil.createRefreshToken();
 
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-        GrantedAuthority auth = iterator.next();
+        refreshTokenService.create(refreshToken, jwtUtil.getExpiration(accessToken), sellerCustomUserDetails.getId(), "SELLER");
 
-        log.info("auth: {}", auth);
+        response.setHeader(HttpHeaders.AUTHORIZATION, accessToken); // 액세스 토큰 담기
 
-        String role = auth.getAuthority();
-
-        log.info("email: {}", email);
-        log.info("role: {}", role);
-
-        // todo jwt 발급
+        cookieUtil.addCookie(response, "RefreshToken", refreshToken, 100); // 리프레시 토큰 담기
     }
 
     @Override

@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface SellerRepository extends JpaRepository<Seller, Long> {
 
+    Optional<Seller> findByIdAndDeletedAtIsNull(Long id);
+
     Optional<Seller> findByEmail(String email);
 
     List<Seller> findByPhoneNumber(String phoneNumber);
