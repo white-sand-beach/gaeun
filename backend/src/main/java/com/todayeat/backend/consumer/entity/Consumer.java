@@ -3,12 +3,16 @@ package com.todayeat.backend.consumer.entity;
 import com.todayeat.backend._common.entity.BaseTime;
 import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
 import com.todayeat.backend._common.oauth2.dto.response.OAuth2Provider;
+import com.todayeat.backend.location.entity.Location;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,6 +40,9 @@ public class Consumer extends BaseTime {
 
     @Column(length = 20, nullable = true)
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "consumer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Location> locations = new ArrayList<>();
 
     @Builder
     private Consumer(OAuth2Provider socialType, String email, String nickname, String profileImage, String phoneNumber) {
