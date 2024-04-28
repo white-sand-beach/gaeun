@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class S3Util {
         }
 
         // 새로운 파일 이름 생성
-        String fileName = createFileName(multipartFile, createDirName(directoryType, dirNamePrincipalId));
+        String fileName = createFileName(directoryType, dirNamePrincipalId, getFileExtension(multipartFile));
 
         // s3 버킷에 이미지 객체 저장
         try {
@@ -43,15 +44,10 @@ public class S3Util {
             log.error("S3Util upload putObject error : ", e);
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR);
         }
-
+        log.info(amazonS3.getUrl(bucket, fileName).toString());
         // 이미지 객체 url 반환
         return amazonS3.getUrl(bucket, fileName).toString();
 
-    }
-
-    // 저장할 파일의 경로 생성
-    private String createDirName(DirectoryType directoryType, Long dirNamePrincipalId) {
-        return directoryType.getDirNamePrincipal() + "/" + dirNamePrincipalId + "/" + directoryType.getDirNameAttribute();
     }
 
     // 저장할 파일의 메타 데이터 생성
@@ -63,8 +59,14 @@ public class S3Util {
         return metadata;
     }
 
+    // 저장할 파일의 확장자 반환
+    private String getFileExtension(MultipartFile multipartFile) {
+        return StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
+    }
+
     // 저장할 파일의 이름 생성
-    private String createFileName(MultipartFile multipartFile, String dirName) {
-        return dirName + "/" + UUID.randomUUID() + "_" + multipartFile.getOriginalFilename();
+    private String createFileName(DirectoryType directoryType, Long dirNamePrincipalId, String fileExtension) {
+        return directoryType.getDirNamePrincipal() + "/" + dirNamePrincipalId + "/"
+                + directoryType.getDirNameAttribute() + "/" + UUID.randomUUID() + "." + fileExtension;
     }
 }
