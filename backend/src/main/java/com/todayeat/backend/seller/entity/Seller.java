@@ -34,4 +34,12 @@ public class Seller extends BaseTime {
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updatePhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }

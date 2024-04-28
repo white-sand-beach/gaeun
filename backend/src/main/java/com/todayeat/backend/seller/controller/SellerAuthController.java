@@ -38,9 +38,9 @@ public class SellerAuthController implements SellerAuthControllerDocs {
     }
 
     @Override
-    public SuccessResponse<Void> getTempPassword(GetTempPasswordSellerRequest getTempPasswordSellerRequest) {
+    public SuccessResponse<Void> createTempPassword(CreateTempPasswordSellerRequest createTempPasswordSellerRequest) {
 
-        sellerService.getTempPassword(getTempPasswordSellerRequest);
+        sellerService.createTempPassword(createTempPasswordSellerRequest);
         return SuccessResponse.of(GET_TEMP_PASSWORD_SUCCESS);
     }
 
