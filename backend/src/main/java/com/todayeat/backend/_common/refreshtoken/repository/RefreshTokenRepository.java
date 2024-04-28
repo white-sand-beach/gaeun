@@ -1,6 +1,6 @@
-package com.todayeat.backend.refreshtoken.repository;
+package com.todayeat.backend._common.refreshtoken.repository;
 
-import com.todayeat.backend.refreshtoken.entity.RefreshToken;
+import com.todayeat.backend._common.refreshtoken.entity.RefreshToken;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

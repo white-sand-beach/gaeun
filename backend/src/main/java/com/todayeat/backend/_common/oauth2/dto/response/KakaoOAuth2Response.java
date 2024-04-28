@@ -1,13 +1,11 @@
-package com.todayeat.backend.oauth2.dto.response;
+package com.todayeat.backend._common.oauth2.dto.response;
 
 import lombok.Builder;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Map;
 
 @ToString
-@Setter
 public class KakaoOAuth2Response implements OAuth2Response {
 
     private OAuth2Provider socialType;

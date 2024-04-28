@@ -1,12 +1,12 @@
-package com.todayeat.backend.oauth2.handler;
+package com.todayeat.backend._common.oauth2.handler;
 
+import com.todayeat.backend._common.oauth2.repository.OAuth2AuthorizationRepository;
 import com.todayeat.backend._common.util.CookieUtil;
 import com.todayeat.backend._common.util.JwtUtil;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.consumer.service.ConsumerService;
-import com.todayeat.backend.oauth2.dto.auth.OAuth2UserPrincipal;
-import com.todayeat.backend.oauth2.repository.OAuth2AuthorizationRepository;
-import com.todayeat.backend.refreshtoken.service.RefreshTokenService;
+import com.todayeat.backend._common.oauth2.dto.auth.OAuth2UserPrincipal;
+import com.todayeat.backend._common.refreshtoken.service.RefreshTokenService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,9 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-
-import static com.todayeat.backend.oauth2.repository.OAuth2AuthorizationRepository.MODE_PARAM_COOKIE_NAME;
-import static com.todayeat.backend.oauth2.repository.OAuth2AuthorizationRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -101,14 +98,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private String getRedirectUriFromRequest(HttpServletRequest request) {
 
-        return cookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
+        return cookieUtil.getCookie(request, OAuth2AuthorizationRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
                 .orElse(loginCallbackUri);
     }
 
     private String getModeFromRequest(HttpServletRequest request) {
 
-        return cookieUtil.getCookie(request, MODE_PARAM_COOKIE_NAME)
+        return cookieUtil.getCookie(request, OAuth2AuthorizationRepository.MODE_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
                 .orElse(null);
     }

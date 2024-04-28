@@ -1,16 +1,22 @@
 package com.todayeat.backend.consumer.service;
 
+import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
+import com.todayeat.backend.consumer.dto.request.CheckNicknameRequest;
 import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
+import com.todayeat.backend.consumer.dto.response.CheckNicknameResponse;
+import com.todayeat.backend.consumer.dto.response.GetConsumerResponse;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.consumer.mapper.ConsumerMapper;
 import com.todayeat.backend.consumer.repository.ConsumerRepository;
-import com.todayeat.backend.oauth2.dto.auth.OAuth2UserPrincipal;
-import com.todayeat.backend.oauth2.dto.response.OAuth2Provider;
+import com.todayeat.backend._common.oauth2.dto.auth.OAuth2UserPrincipal;
+import com.todayeat.backend._common.oauth2.dto.response.OAuth2Provider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.todayeat.backend._common.response.error.ErrorType.NICKNAME_CONFLICT;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,11 +40,36 @@ public class ConsumerService {
     public void update(UpdateConsumerRequest request) {
 
         Consumer consumer = securityUtil.getConsumer();
+
+        // 닉네임 중복 검사
+        if (existsByNickname(request.getNickname())) {
+            throw new BusinessException(NICKNAME_CONFLICT);
+        }
+
         consumer.update(request);
     }
 
     public Consumer getConsumerOrNull(OAuth2Provider socialType, String email) {
+
         return consumerRepository.findBySocialTypeAndEmail(socialType, email)
                 .orElse(null);
+    }
+
+    public CheckNicknameResponse checkNickname(CheckNicknameRequest request) {
+
+        // 존재하면 -> isValid = false (닉네임 사용 불가)
+        // 존재하지 않으면 -> isValid = true (닉네임 사용 가능)
+        return CheckNicknameResponse.of(!existsByNickname(request.getNickname()));
+    }
+
+    public GetConsumerResponse get() {
+
+        Consumer consumer = securityUtil.getConsumer();
+        return ConsumerMapper.INSTANCE.consumerToGetConsumerResponse(consumer);
+    }
+
+    private boolean existsByNickname(String nickname) {
+
+        return consumerRepository.existsByNicknameAndDeletedAtIsNull(nickname);
     }
 }
