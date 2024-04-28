@@ -60,6 +60,7 @@ public enum ErrorType {
 
     // image
     IMAGE_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 형식의 파일이 아닙니다."),
+    IMAGE_URL_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 url형식이 잘못되었습니다."),
     ;
 
     private HttpStatus httpStatus;

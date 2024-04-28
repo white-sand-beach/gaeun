@@ -41,13 +41,23 @@ public class S3Util {
         try {
             amazonS3.putObject(bucket, fileName, multipartFile.getInputStream(), createMetadata(multipartFile));
         } catch (AmazonServiceException | IOException e) {
-            log.error("S3Util upload putObject error : ", e);
+            log.error("S3Util uploadImage putObject error : ", e);
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR);
         }
         log.info(amazonS3.getUrl(bucket, fileName).toString());
         // 이미지 객체 url 반환
         return amazonS3.getUrl(bucket, fileName).toString();
 
+    }
+
+    //S3 버킷의 이미지 객체 삭제, 이미지 수정시 기존 이미지 제거에 사용
+    public void deleteImage(String fileUrl) {
+        try {
+            amazonS3.deleteObject(bucket, getS3ObjetKey(fileUrl));
+        } catch (AmazonServiceException e) {
+            log.error("S3Util deleteImage deleteObject error : ", e);
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // 저장할 파일의 메타 데이터 생성
@@ -68,5 +78,15 @@ public class S3Util {
     private String createFileName(DirectoryType directoryType, Long dirNamePrincipalId, String fileExtension) {
         return directoryType.getDirNamePrincipal() + "/" + dirNamePrincipalId + "/"
                 + directoryType.getDirNameAttribute() + "/" + UUID.randomUUID() + "." + fileExtension;
+    }
+
+    // fileUrl로 S3 Object key값 추출하기
+    private String getS3ObjetKey(String fileUrl) {
+        int startIndex = fileUrl.indexOf('/', fileUrl.indexOf("//") + 2);
+
+        if(startIndex < 0)
+            throw new BusinessException(ErrorType.IMAGE_URL_FORMAT_INVALID);
+
+        return fileUrl.substring(startIndex + 1);
     }
 }
