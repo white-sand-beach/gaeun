@@ -3,10 +3,10 @@ package com.todayeat.backend._common.config;
 import com.todayeat.backend._common.filter.JwtAuthenticationFilter;
 import com.todayeat.backend._common.filter.JwtExceptionFilter;
 import com.todayeat.backend._common.filter.SellerLoginFilter;
-import com.todayeat.backend.oauth2.handler.OAuth2AuthenticationFailureHandler;
-import com.todayeat.backend.oauth2.handler.OAuth2AuthenticationSuccessHandler;
-import com.todayeat.backend.oauth2.repository.OAuth2AuthorizationRepository;
-import com.todayeat.backend.oauth2.service.OAuth2Service;
+import com.todayeat.backend._common.oauth2.handler.OAuth2AuthenticationFailureHandler;
+import com.todayeat.backend._common.oauth2.handler.OAuth2AuthenticationSuccessHandler;
+import com.todayeat.backend._common.oauth2.repository.OAuth2AuthorizationRepository;
+import com.todayeat.backend._common.oauth2.service.OAuth2Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -44,6 +45,9 @@ public class SecurityConfig {
 
     @Value("${SELLER_URL}")
     private String sellerURL;
+
+    @Value("${CONSUMER_URL}")
+    private String consumerURL;
 
     private final OAuth2Service oAuth2Service;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
@@ -98,7 +102,7 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
 
             // FRONT 주소 허용
-            config.setAllowedOrigins(Collections.singletonList(sellerURL));
+            config.setAllowedOrigins(Arrays.asList(sellerURL, consumerURL));
             // 모든 REST Method 허용
             config.setAllowedMethods(Collections.singletonList("*"));
             // credential 값 허용

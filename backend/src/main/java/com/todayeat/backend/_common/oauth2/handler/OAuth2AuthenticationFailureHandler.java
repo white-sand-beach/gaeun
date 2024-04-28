@@ -1,7 +1,7 @@
-package com.todayeat.backend.oauth2.handler;
+package com.todayeat.backend._common.oauth2.handler;
 
+import com.todayeat.backend._common.oauth2.repository.OAuth2AuthorizationRepository;
 import com.todayeat.backend._common.util.CookieUtil;
-import com.todayeat.backend.oauth2.repository.OAuth2AuthorizationRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-
-import static com.todayeat.backend.oauth2.repository.OAuth2AuthorizationRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Slf4j
 @Component
@@ -49,7 +47,7 @@ public class OAuth2AuthenticationFailureHandler implements AuthenticationFailure
 
     private String getRedirectUriFromRequest(HttpServletRequest request) {
 
-        return cookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
+        return cookieUtil.getCookie(request, OAuth2AuthorizationRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
                 .orElse(loginCallbackUri);
     }

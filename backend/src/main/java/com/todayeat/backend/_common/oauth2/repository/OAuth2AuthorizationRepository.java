@@ -1,4 +1,4 @@
-package com.todayeat.backend.oauth2.repository;
+package com.todayeat.backend._common.oauth2.repository;
 
 import com.todayeat.backend._common.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;

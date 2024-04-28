@@ -1,6 +1,6 @@
-package com.todayeat.backend.oauth2.dto.auth;
+package com.todayeat.backend._common.oauth2.dto.auth;
 
-import com.todayeat.backend.oauth2.dto.response.OAuth2Response;
+import com.todayeat.backend._common.oauth2.dto.response.OAuth2Response;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
