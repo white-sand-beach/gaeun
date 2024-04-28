@@ -3,11 +3,13 @@ package com.todayeat.backend.seller.service;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.MailUtil;
 import com.todayeat.backend._common.util.RedisUtil;
+import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.seller.dto.SellerCustomUserDetails;
 import com.todayeat.backend.seller.dto.request.*;
 import com.todayeat.backend.seller.dto.response.CheckEmailSellerResponse;
 import com.todayeat.backend.seller.dto.response.CheckTempPasswordSellerResponse;
 import com.todayeat.backend.seller.dto.response.FindEmailSellerResponse;
+import com.todayeat.backend.seller.dto.response.GetSellerResponse;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.mapper.SellerMapper;
 import com.todayeat.backend.seller.repository.SellerRepository;
@@ -36,6 +38,7 @@ public class SellerService implements UserDetailsService {
 
     private final SellerRepository sellerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SecurityUtil securityUtil;
     private final RedisUtil redisUtil;
     private final MailUtil mailUtil;
 
@@ -130,6 +133,42 @@ public class SellerService implements UserDetailsService {
         }
 
         return SellerMapper.INSTANCE.toCheckTempPasswordSellerResponse(passwordMatches);
+    }
+
+    public GetSellerResponse getInfo() {
+
+        return SellerMapper.INSTANCE.sellerToGetSellerResponse(securityUtil.getSeller());
+    }
+
+    @Transactional
+    public void updatePassword(UpdatePasswordSellerRequest updatePasswordSellerRequest) {
+
+        if(!updatePasswordSellerRequest.getNewPassword().equals(updatePasswordSellerRequest.getCheckPassword())) {
+
+            throw new BusinessException(NEW_CHECK_PASSWORD_BAD_REQUEST);
+        }
+
+        if(updatePasswordSellerRequest.getOldPassword().equals(updatePasswordSellerRequest.getNewPassword())) {
+
+            throw new BusinessException(NEW_PASSWORD_BAD_REQUEST);
+        }
+
+        Seller seller = securityUtil.getSeller();
+
+        String oldPassword = passwordEncoder.encode(updatePasswordSellerRequest.getOldPassword());
+        if(!seller.getPassword().equals(oldPassword)) {
+
+            throw new BusinessException(PASSWORD_UNAUTHORIZED);
+        }
+
+        String newPassword = passwordEncoder.encode(updatePasswordSellerRequest.getNewPassword());
+        seller.updatePassword(newPassword);
+    }
+
+    @Transactional
+    public void updatePhoneNumber(UpdatePhoneNumberSellerRequest updatePhoneNumberSellerRequest) {
+
+        securityUtil.getSeller().updatePhoneNumber(updatePhoneNumberSellerRequest.getPhoneNumber());
     }
 
     private void sendCertification(String email, String authCode) {
