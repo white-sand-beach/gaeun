@@ -1,9 +1,9 @@
 package com.todayeat.backend._common.util;
 
-import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend.consumer.repository.ConsumerRepository;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -19,8 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.*;
-
-import static com.todayeat.backend._common.response.error.ErrorType.INVALID_TOKEN;
 
 @Slf4j
 @Component
@@ -93,16 +91,16 @@ public class JwtUtil {
 
             return consumerRepository.findByIdAndDeletedAtIsNull(getMemberId(token))
                     .map(consumer -> new UsernamePasswordAuthenticationToken(consumer, null, authList))
-                    .orElseThrow(() -> new BusinessException(INVALID_TOKEN));
+                    .orElseThrow(() -> new JwtException(null));
         }
         if (authorities.equals("ROLE_SELLER")) {
 
             return sellerRepository.findByIdAndDeletedAtIsNull(getMemberId(token))
                     .map(seller -> new UsernamePasswordAuthenticationToken(seller, null, authList))
-                    .orElseThrow(() -> new BusinessException(INVALID_TOKEN));
+                    .orElseThrow(() -> new JwtException(null));
         }
 
-        throw new BusinessException(INVALID_TOKEN);
+        throw new JwtException(null);
     }
 
     public Long getMemberId(String token) {
