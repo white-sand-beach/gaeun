@@ -58,7 +58,7 @@ public enum ErrorType {
     TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "Http Header에 토큰이 없습니다."),
     ROLE_MISMATCH(HttpStatus.FORBIDDEN, "해당 요청에 대한 권한이 없습니다."),
 
-    //image
+    // image
     IMAGE_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 형식의 파일이 아닙니다."),
     ;
 
