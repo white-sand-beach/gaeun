@@ -4,6 +4,7 @@ import com.todayeat.backend.seller.dto.request.SignupSellerRequest;
 import com.todayeat.backend.seller.dto.response.CheckEmailSellerResponse;
 import com.todayeat.backend.seller.dto.response.CheckTempPasswordSellerResponse;
 import com.todayeat.backend.seller.dto.response.FindEmailSellerResponse;
+import com.todayeat.backend.seller.dto.response.GetSellerResponse;
 import com.todayeat.backend.seller.entity.Seller;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -37,6 +38,8 @@ public interface SellerMapper {
 
     @Mapping(source = "isValid", target = "isValid")
     CheckTempPasswordSellerResponse toCheckTempPasswordSellerResponse(Boolean isValid);
+
+    GetSellerResponse sellerToGetSellerResponse(Seller seller);
 
     @Named("encodePassword")
     default String encodePassword(String password, @Context PasswordEncoder passwordEncoder) {
