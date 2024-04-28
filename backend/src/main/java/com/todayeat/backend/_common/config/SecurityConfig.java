@@ -7,6 +7,9 @@ import com.todayeat.backend._common.oauth2.handler.OAuth2AuthenticationFailureHa
 import com.todayeat.backend._common.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import com.todayeat.backend._common.oauth2.repository.OAuth2AuthorizationRepository;
 import com.todayeat.backend._common.oauth2.service.OAuth2Service;
+import com.todayeat.backend._common.refreshtoken.service.RefreshTokenService;
+import com.todayeat.backend._common.util.CookieUtil;
+import com.todayeat.backend._common.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -49,15 +52,20 @@ public class SecurityConfig {
     @Value("${CONSUMER_URL}")
     private String consumerURL;
 
-    private final OAuth2Service oAuth2Service;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    private final OAuth2Service oAuth2Service;
     private final OAuth2AuthorizationRepository oAuth2AuthorizationRepository;
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtExceptionFilter jwtExceptionFilter;
+    private final JwtUtil jwtUtil;
 
     private final AuthenticationConfiguration authenticationConfiguration;
+
+    private final CookieUtil cookieUtil;
+
+    private final RefreshTokenService refreshTokenService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -85,7 +93,7 @@ public class SecurityConfig {
                         .requestMatchers(sellerList).hasRole("SELLER")
                         .requestMatchers(consumerList).hasRole("CONSUMER")
                         .anyRequest().authenticated())
-                .addFilterAt(new SellerLoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(new SellerLoginFilter(authenticationManager(authenticationConfiguration), cookieUtil, jwtUtil, refreshTokenService), UsernamePasswordAuthenticationFilter.class)
                 // RESTful API
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -130,6 +138,7 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
 
@@ -137,4 +146,3 @@ public class SecurityConfig {
                 .requestMatchers("/error", "/favicon.ico");
     }
 }
-

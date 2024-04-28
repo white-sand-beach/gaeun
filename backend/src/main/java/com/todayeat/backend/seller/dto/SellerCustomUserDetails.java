@@ -30,9 +30,19 @@ public class SellerCustomUserDetails implements UserDetails {
         return collection;
     }
 
+    public Long getId() {
+
+        return seller.getId();
+    }
+
     public String getEmail() {
 
         return seller.getEmail();
+    }
+
+    public String getPhoneNumber() {
+
+        return seller.getPhoneNumber();
     }
 
     @Override

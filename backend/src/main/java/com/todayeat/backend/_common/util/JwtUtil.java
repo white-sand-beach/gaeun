@@ -1,6 +1,9 @@
 package com.todayeat.backend._common.util;
 
+import com.todayeat.backend.consumer.repository.ConsumerRepository;
+import com.todayeat.backend.seller.repository.SellerRepository;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -12,19 +15,19 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.*;
 
 @Slf4j
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class JwtUtil {
 
     // TODO: 토큰 재발급 로직 구현
-
+    private final ConsumerRepository consumerRepository;
+    private final SellerRepository sellerRepository;
     private final long ACCESS_TOKEN_VALID_TIME = (60 * 1000) * 30; // 30분
     private final String AUTHORITIES_KEY = "role";
 
@@ -77,15 +80,25 @@ public class JwtUtil {
     public Authentication getAuthentication(String token) {
         log.info("[JwtUtil.getAuthentication]");
 
-        Claims claims = getClaims(token);
-
         // 권한
-        String authorities = claims.get(AUTHORITIES_KEY, String.class);
+        String authorities = getRole(token);
         List<GrantedAuthority> authList = new ArrayList<>();
         authList.add(new SimpleGrantedAuthority(authorities));
 
-        User user = new User(claims.getSubject(), "", authList);
-        return new UsernamePasswordAuthenticationToken(user, token, authList);
+        if (authorities.equals("ROLE_CONSUMER")) {
+
+            return consumerRepository.findByIdAndDeletedAtIsNull(getMemberId(token))
+                    .map(consumer -> new UsernamePasswordAuthenticationToken(consumer, null, authList))
+                    .orElseThrow(() -> new JwtException(null));
+        }
+        if (authorities.equals("ROLE_SELLER")) {
+
+            return sellerRepository.findByIdAndDeletedAtIsNull(getMemberId(token))
+                    .map(seller -> new UsernamePasswordAuthenticationToken(seller, null, authList))
+                    .orElseThrow(() -> new JwtException(null));
+        }
+
+        throw new JwtException(null);
     }
 
     public Long getMemberId(String token) {
