@@ -1,6 +1,8 @@
 package com.todayeat.backend.seller.mapper;
 
 import com.todayeat.backend.seller.dto.request.SignupSellerRequest;
+import com.todayeat.backend.seller.dto.response.CheckEmailSellerResponse;
+import com.todayeat.backend.seller.dto.response.FindEmailSellerResponse;
 import com.todayeat.backend.seller.entity.Seller;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -14,9 +16,13 @@ public interface SellerMapper {
 
     SellerMapper INSTANCE = Mappers.getMapper(SellerMapper.class);
 
-    @Mapping(target = "role", constant = "ROLE_SELLER")
     @Mapping(target = "password", qualifiedByName = "encodePassword")
     Seller signupSellerRequestToSeller(SignupSellerRequest signupSellerRequest, @Context PasswordEncoder passwordEncoder);
+
+    @Mapping(source = "isValid", target = "isValid")
+    CheckEmailSellerResponse toCheckEmailSellerResponse(Boolean isValid);
+
+    FindEmailSellerResponse SellerToFindEmailSellerResponse(Seller seller);
 
     @Named("encodePassword")
     default String encodePassword(String password, @Context PasswordEncoder passwordEncoder) {
