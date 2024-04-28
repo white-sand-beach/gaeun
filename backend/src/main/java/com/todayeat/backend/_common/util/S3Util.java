@@ -27,7 +27,7 @@ public class S3Util {
     private String bucket;
 
     // S3 버킷에 이미지 파일 업로
-    public String upload(MultipartFile multipartFile, DirectoryType directoryType, Long dirNamePrincipalId) {
+    public String uploadImage(MultipartFile multipartFile, DirectoryType directoryType, Long dirNamePrincipalId) {
         // 이미지 형식의 파일인지 확인
         if(!Objects.requireNonNull(multipartFile.getContentType()).contains("image")) {
             throw new BusinessException(ErrorType.IMAGE_FORMAT_INVALID);
