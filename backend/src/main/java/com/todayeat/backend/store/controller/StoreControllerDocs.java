@@ -4,6 +4,8 @@ import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
+import com.todayeat.backend.store.dto.response.GetDetailStoreConsumerResponse;
+import com.todayeat.backend.store.dto.response.GetDetailStoreSellerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,6 +30,28 @@ public interface StoreControllerDocs {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('SELLER')")
     SuccessResponse<Void> create(@ModelAttribute @Valid CreateStoreRequest createStoreRequest);
+
+    @Operation(summary = "소비자 가게 상세 조회")
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetDetailStoreConsumerResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "존재하지 않는 가게입니다.",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @GetMapping(value = "/{store-id}/detail-consumer")
+    @PreAuthorize("hasRole('CONSUMER')")
+    SuccessResponse<GetDetailStoreConsumerResponse> getDetailConsumer(@PathVariable("store-id") Long storeId);
+
+    @Operation(summary = "판매자 가게 상세 조회")
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetDetailStoreSellerResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "존재하지 않는 가게입니다.",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @GetMapping(value = "/{store-id}/detail-seller")
+    @PreAuthorize("hasRole('SELLER')")
+    SuccessResponse<GetDetailStoreSellerResponse> getDetailSeller(@PathVariable("store-id") Long storeId);
 
     @Operation(summary = "가게 수정")
     @ApiResponse(responseCode = "200",

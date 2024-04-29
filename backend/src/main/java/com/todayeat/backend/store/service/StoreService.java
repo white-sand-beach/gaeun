@@ -7,6 +7,8 @@ import com.todayeat.backend.location.entity.Coordinate;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
+import com.todayeat.backend.store.dto.response.GetDetailStoreConsumerResponse;
+import com.todayeat.backend.store.dto.response.GetDetailStoreSellerResponse;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.mapper.StoreMapper;
 import com.todayeat.backend.store.repository.StoreRepository;
@@ -39,6 +41,24 @@ public class StoreService {
 
         Seller seller = securityUtil.getSeller();
         storeRepository.save(StoreMapper.INSTANCE.createStoreRequestToStore(createStoreRequest, seller, seller.getId(), s3Util));
+    }
+
+    public GetDetailStoreConsumerResponse getDetailConsumer(Long storeId) {
+
+        GetDetailStoreConsumerResponse getDetailStoreConsumerResponse = StoreMapper.INSTANCE.storeToGetDetailStoreConsumerResponse(
+                storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                        .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
+
+        //todo getDetailStoreConsumerResponse에 찜 여부 넣어야 함
+
+        return getDetailStoreConsumerResponse;
+    }
+
+    public GetDetailStoreSellerResponse getDetailSeller(Long storeId) {
+
+        return StoreMapper.INSTANCE.storeToGetDetailStoreSellerResponse(
+                storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                        .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
     }
 
     @Transactional
