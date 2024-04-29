@@ -28,14 +28,18 @@ public class Seller extends BaseTime {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(nullable = false)
-    private String role;
-
     @Builder
-    private Seller(String email, String password, String phoneNumber, String role) {
+    private Seller(String email, String password, String phoneNumber) {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
-        this.role = role;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updatePhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
