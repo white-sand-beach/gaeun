@@ -18,7 +18,7 @@ const SearchPage = () => {
         />
       </div>
 
-      <div className="border-y-2 border-gray-200 mr-4">
+      <div className="border-y-2">
         <ServiceBanner />
       </div>
       <hr className="border-4 border-gray-100" />
