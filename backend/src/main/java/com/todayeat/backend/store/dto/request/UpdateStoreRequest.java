@@ -10,18 +10,13 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@Schema(name = "가게 등록 요청")
-public class CreateStoreRequest {
+@Schema(name = "가게 수정 요청")
+public class UpdateStoreRequest {
 
     @NotBlank(message = "registeredName: 빈 값이 아니어야 합니다.")
     @Size(max = 50, message = "registeredName: 최대 길이는 50자입니다.")
     @Schema(description = "상호명", example = "상호")
     private String registeredName;
-
-    @NotBlank(message = "registeredNo: 빈 값이 아니어야 합니다.")
-    @Size(max = 10, message = "registeredNo: 최대 길이는 10자입니다.")
-    @Schema(description = "사업자 등록번호", example = "0123456789")
-    private String registeredNo;
 
     @NotBlank(message = "bossName: 빈 값이 아니어야 합니다.")
     @Size(max = 10, message = "bossName: 최대 길이는 10자입니다.")
