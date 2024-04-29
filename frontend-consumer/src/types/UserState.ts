@@ -1,6 +1,5 @@
 // 상태 인터페이스 정의 !
 interface UserState {
-  id: number;
   email: string;
   nickName: string;
   profileImg?: string;

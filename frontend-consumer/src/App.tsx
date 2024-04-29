@@ -5,11 +5,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PageLayout from "./components/navbar/PageLayout";
 import Cart from "./pages/cart/Cart";
 import Alarm from "./pages/alarm/Alarm";
-import Favorite from "./pages/favorite/Favorite"
-import OrderDetail from "./pages/order/OrderDetail"
-import OrderList from "./pages/order/OrderList"
-import OrderState from "./pages/order/OrderState"
+import Favorite from "./pages/favorite/Favorite";
+import OrderDetail from "./pages/order/OrderDetail";
+import OrderList from "./pages/order/OrderList";
+import OrderState from "./pages/order/OrderState";
 import SearchPage from "./pages/search/SearchPage";
+import Login from "./pages/accounts/Login";
 
 const queryClient = new QueryClient();
 
@@ -18,15 +19,16 @@ const App = () => {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-        <PageLayout/>
+        <PageLayout />
         <Routes>
-          <Route path="/cart" element={<Cart/>} />
-          <Route path="/alarm" element={<Alarm/>} />
-          <Route path="/favorite" element={<Favorite/>} />
-          <Route path="/order-detail" element={<OrderDetail/>} />
-          <Route path="/order-list" element={<OrderList/>} />
-          <Route path="/order-state" element={<OrderState/>} />
-          <Route path="/search" element={<SearchPage/>} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/alarm" element={<Alarm />} />
+          <Route path="/favorite" element={<Favorite />} />
+          <Route path="/order-detail" element={<OrderDetail />} />
+          <Route path="/order-list" element={<OrderList />} />
+          <Route path="/order-state" element={<OrderState />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>
