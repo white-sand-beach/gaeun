@@ -28,14 +28,14 @@ public interface SellerAuthControllerDocs {
             description = "이미 존재하는 이메일입니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping()
-    public SuccessResponse<Void> signup(@RequestBody @Valid SignupSellerRequest signupSellerRequest);
+    SuccessResponse<Void> signup(@RequestBody @Valid SignupSellerRequest signupSellerRequest);
 
     @Operation(summary = "아이디(이메일) 사용 가능 여부 확인")
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema(implementation = CheckEmailSellerResponse.class)))
     @PostMapping("/check-email")
-    public SuccessResponse<CheckEmailSellerResponse> checkEmail(@RequestBody @Valid CheckEmailSellerRequest checkEmailSellerRequest);
+    SuccessResponse<CheckEmailSellerResponse> checkEmail(@RequestBody @Valid CheckEmailSellerRequest checkEmailSellerRequest);
 
     @Operation(summary = "전화번호로 아이디(이메일) 확인")
     @ApiResponse(responseCode = "200",
@@ -45,7 +45,7 @@ public interface SellerAuthControllerDocs {
             description = "존재하지 않는 전화번호입니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping("/find-email")
-    public SuccessResponse<FindEmailSellerResponse> fineEmail(@RequestBody @Valid FindEmailSellerRequest findEmailSellerRequest);
+    SuccessResponse<FindEmailSellerResponse> fineEmail(@RequestBody @Valid FindEmailSellerRequest findEmailSellerRequest);
 
     @Operation(summary = "임시 비밀번호 생성")
     @ApiResponse(responseCode = "200",
@@ -58,7 +58,7 @@ public interface SellerAuthControllerDocs {
             description = "메일 전송에 실패했습니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping("/get-temp-password")
-    public SuccessResponse<Void> createTempPassword(@RequestBody @Valid CreateTempPasswordSellerRequest createTempPasswordSellerRequest);
+    SuccessResponse<Void> createTempPassword(@RequestBody @Valid CreateTempPasswordSellerRequest createTempPasswordSellerRequest);
 
     @Operation(summary = "임시 비밀번호 확인")
     @ApiResponse(responseCode = "200",
@@ -71,5 +71,5 @@ public interface SellerAuthControllerDocs {
             description = "존재하지 않는 임시 비밀번호입니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping("/check-temp-password")
-    public SuccessResponse<CheckTempPasswordSellerResponse> checkTempPassword(@RequestBody @Valid CheckTempPasswordSellerRequest checkTempPasswordSellerRequest);
+    SuccessResponse<CheckTempPasswordSellerResponse> checkTempPassword(@RequestBody @Valid CheckTempPasswordSellerRequest checkTempPasswordSellerRequest);
 }

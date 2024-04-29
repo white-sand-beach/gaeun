@@ -146,4 +146,3 @@ public class SecurityConfig {
                 .requestMatchers("/error", "/favicon.ico");
     }
 }
-

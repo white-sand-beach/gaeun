@@ -1,6 +1,7 @@
 package com.todayeat.backend.store.service;
 
 import com.todayeat.backend._common.response.error.exception.BusinessException;
+import com.todayeat.backend._common.util.S3Util;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
@@ -22,6 +23,7 @@ public class StoreService {
     private final StoreRepository storeRepository;
 
     private final SecurityUtil securityUtil;
+    private final S3Util s3Util;
 
     @Transactional
     public void create(CreateStoreRequest createStoreRequest) {
@@ -32,6 +34,6 @@ public class StoreService {
         }
 
         Seller seller = securityUtil.getSeller();
-        storeRepository.save(StoreMapper.INSTANCE.createStoreRequestToStore(createStoreRequest, seller));
+        storeRepository.save(StoreMapper.INSTANCE.createStoreRequestToStore(createStoreRequest, seller, seller.getId(), s3Util));
     }
 }
