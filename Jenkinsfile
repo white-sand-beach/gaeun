@@ -2,6 +2,15 @@ pipeline {
     agent any
 
     stages {
+        stage("CURRENT ID, GROUPS") {
+            steps {
+                script {
+                    sh 'id'
+                    sh 'groups'
+                }
+            }
+        }
+
         stage("checkout_fe_seller") {
             steps {
                 script {
@@ -63,6 +72,16 @@ pipeline {
             }
         }
 
+        stage("secret.yml download") {
+            steps {
+                withCredentials([file(credentialsId: 'application-secret', variable: 'configFile')]) {
+                    script {
+                        sh 'cp -rf $configFile ./backend/src/main/resources/application-secret.yml'
+                    }
+                }
+            }
+        }
+
         stage('be_build'){
             steps{
                 script {
@@ -76,7 +95,8 @@ pipeline {
                     }
 
                     sh 'docker build -t be ./backend'
-                    def dockerCmd = "docker run -e DB_PASSWORD=${env.DB_PASSWORD} -e DB_URL=${env.DB_URL} -e DB_USERNAME=${env.DB_USERNAME} -e BASE_URL=${env.BASE_URL} -e SELLER_URL=${env.SELLER_URL} -e WHITE_LIST=${env.WHITE_LIST} -e SELLER_LIST=${env.SELLER_LIST} -e S3_BUCKET_NAME=${env.S3_BUCKET_NAME} -e S3_ACCESS_KEY=${env.S3_ACCESS_KEY} -e S3_SECRET_KEY=${env.S3_SECRET_KEY} -d --name be -p 8081:8081 be"
+                    def dockerCmd = "docker run -d --name be -p 8081:8081 be"
+
                     sh dockerCmd 
                 }
             }
