@@ -92,3 +92,4 @@ public class SellerLoginFilter extends UsernamePasswordAuthenticationFilter {
         throw new BusinessException(SELLER_UNAUTHORIZED);
     }
 }
+
