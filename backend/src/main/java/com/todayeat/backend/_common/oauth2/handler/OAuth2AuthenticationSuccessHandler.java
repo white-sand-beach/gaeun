@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -148,13 +147,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // 리다이렉트
         String targetUrl = UriComponentsBuilder.fromUriString(redirectUri)
                     .queryParam("next-page", nextPage)
+                    .queryParam("access-token", accessToken)
                     .build().toUriString(); // 주소
-        response.setHeader(HttpHeaders.AUTHORIZATION, accessToken); // 액세스 토큰 담기
+//        response.setHeader(HttpHeaders.AUTHORIZATION, accessToken); // 액세스 토큰 담기
 
         clearAuthenticationAttributes(request, response); // 쿠키 삭제
         cookieUtil.addCookie(response, "RefreshToken", refreshToken, 100); // 리프레시 토큰 담기
 
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        response.sendRedirect(targetUrl);
     }
 
     private void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
