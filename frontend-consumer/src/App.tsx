@@ -6,6 +6,7 @@ import PageLayout from "./components/navbar/PageLayout";
 import Main from "./pages/main/Main";
 import Profile from "./pages/mypage/Profile";
 import Cart from "./pages/cart/Cart";
+import AddCart from "./pages/cart/AddCart";
 import Alarm from "./pages/alarm/Alarm";
 import Favorite from "./pages/favorite/Favorite";
 import OrderDetail from "./pages/order/OrderDetail";
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/order-state" element={<OrderState  />} />
           <Route path="/search" element={<SearchPage  />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/add-cart" element={<AddCart />} />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>

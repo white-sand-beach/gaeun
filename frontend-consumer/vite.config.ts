@@ -8,9 +8,9 @@ export default defineConfig({
   plugins: [million.vite({ auto: true }) ,react(),VitePWA({
     registerType: "autoUpdate",
     // 개발 환경에서 자동으로 service-worker 생성해줌
-    devOptions: {
-      enabled: true
-    },
+    // devOptions: {
+    //   enabled: true
+    // },
     manifest: {
       name: "오늘잡슈",
       short_name: "오늘잡슈",
