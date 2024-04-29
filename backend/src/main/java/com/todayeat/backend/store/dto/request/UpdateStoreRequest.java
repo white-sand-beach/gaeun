@@ -50,7 +50,7 @@ public class UpdateStoreRequest {
     @Schema(description = "가게명", example = "가게")
     private String name;
 
-    @Schema(description = "대표 이미지", example = "https://s3.ap-northeast-2.amazonaws.com/today-eat/img.jpg ")
+    @Schema(description = "대표 이미지", example = "img.jpg")
     private MultipartFile image;
 
     @Schema(description = "영업 시간", example = "24시")

@@ -47,7 +47,7 @@ public enum ErrorType {
     // store
     STORE_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 사업자 등록번호입니다."),
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 가게입니다."),
-    STORE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "유효하지 않은 가게입니다."),
+    STORE_FORBIDDEN(HttpStatus.FORBIDDEN, "금지된 가게 요청입니다."),
 
     // category
 

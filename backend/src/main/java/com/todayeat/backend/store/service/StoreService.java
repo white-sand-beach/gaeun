@@ -1,6 +1,5 @@
 package com.todayeat.backend.store.service;
 
-import com.todayeat.backend._common.entity.DirectoryType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.S3Util;
 import com.todayeat.backend._common.util.SecurityUtil;
@@ -50,7 +49,7 @@ public class StoreService {
 
         if (store.getSeller().getId() != securityUtil.getSeller().getId()) {
 
-            throw new BusinessException(STORE_UNAUTHORIZED);
+            throw new BusinessException(STORE_FORBIDDEN);
         }
 
         store.updateStore(
