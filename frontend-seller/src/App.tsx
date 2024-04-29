@@ -8,10 +8,10 @@ import SignUp from "./components/login/SignUp.tsx";
 import SignupFinish from "./components/login/SignupFinish.tsx";
 import RegisterShop from "./components/shops/RegisterShop.tsx";
 import RegisterFood from "./components/foods/RegisterFood.tsx";
-import ListOrder from "./components/list/ListOrder.tsx";
 import AlarmPage from "./components/alarm/AlarmPage.tsx";
-
 import MainLayout from "./components/ui/MainLayout.tsx";
+
+import OrderListPage from "./pages/list/OrderlistPage.tsx";
 
 
 const App = () => {
@@ -25,7 +25,7 @@ const App = () => {
           <Route path="/signupFin" element={<SignupFinish />} />
           <Route path="/register/shop" element={<RegisterShop />} />
           <Route path="/register/food" element={<RegisterFood />} />
-          <Route path="/test/main" element={<ListOrder />} />
+          <Route path="/test/main" element={<OrderListPage />} />
           <Route path="/alarm" element={<AlarmPage />} />
         </Route>
       </Routes>
