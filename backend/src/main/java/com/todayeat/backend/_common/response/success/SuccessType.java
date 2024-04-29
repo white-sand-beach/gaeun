@@ -19,6 +19,7 @@ public enum SuccessType {
     GET_SELECTED_LOCATION_SUCCESS("선택된 위치 조회에 성공하였습니다."),
     UPDATE_LOCATION_SUCCESS("위치 수정에 성공하였습니다."),
     UPDATE_SELECTED_LOCATION_SUCCESS("위치 선택에 성공하였습니다."),
+    DELETE_LOCATION_SUCCESS("위치 삭제에 성공하였습니다."),
 
     // cart
 

@@ -80,4 +80,17 @@ public interface LocationControllerDocs {
             content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
     @PutMapping("/{location-id}/selected")
     SuccessResponse<Void> updateSelected(@PathVariable("location-id") Long locationId);
+
+    @Operation(summary = "위치 삭제",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          path variable로 location-id 넣어주세요. \n
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @ApiResponse(responseCode = "404",
+            description = "위치 조회 정보 없음",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
+    @DeleteMapping("/{location-id}")
+    SuccessResponse<Void> delete(@PathVariable("location-id") Long locationId);
 }

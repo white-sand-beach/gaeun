@@ -93,6 +93,18 @@ public class LocationService {
         getLocationByIdAndConsumer(locationId, consumer).updateIsSelected();
     }
 
+    @Transactional
+    public void delete(Long locationId) {
+
+        Consumer consumer = securityUtil.getConsumer();
+
+        // 해당 위치 찾기
+        Location location = getLocationByIdAndConsumer(locationId, consumer);
+
+        // 삭제
+        locationRepository.delete(location);
+    }
+
     private void updateIsSelectedFalse(Consumer consumer) {
         locationRepository.findByConsumerAndIsSelectedIsTrueAndDeletedAtIsNull(consumer)
                 .ifPresent(Location::updateIsSelected);

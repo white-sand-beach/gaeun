@@ -52,4 +52,11 @@ public class LocationController implements LocationControllerDocs {
         locationService.updateSelected(locationId);
         return SuccessResponse.of(UPDATE_SELECTED_LOCATION_SUCCESS);
     }
+
+    @Override
+    public SuccessResponse<Void> delete(Long locationId) {
+
+        locationService.delete(locationId);
+        return SuccessResponse.of(DELETE_LOCATION_SUCCESS);
+    }
 }
