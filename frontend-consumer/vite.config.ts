@@ -7,8 +7,9 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig({
   plugins: [million.vite({ auto: true }) ,react(),VitePWA({
     registerType: "autoUpdate",
-    workbox: {
-      globPatterns: ["**/*.{js,jsx,ico,png,svg}"],
+    // 개발 환경에서 자동으로 service-worker 생성해줌
+    devOptions: {
+      enabled: true
     },
     manifest: {
       name: "오늘잡슈",
