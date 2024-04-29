@@ -5,7 +5,7 @@
 @layer base {
   html, body, #root {
     @apply flex flex-col justify-center items-center
-    w-full h-screen
+    w-screen h-screen
   }
 
   h1 {
@@ -34,6 +34,14 @@
 
   .detail-btn {
     @apply max-h-[30px] h-full border border-mainColor text-mainColor text-xs rounded-[5px]
+  }
+
+  .sm-list-view {
+    @apply flex flex-col justify-center items-center gap-3
+  }
+
+  .normal-list-view {
+    @apply grid grid-cols-2 gap-3
   }
 }
 
