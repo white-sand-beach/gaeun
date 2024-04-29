@@ -1,7 +1,7 @@
 const ListOrder = () => {
     return (
         <div className="main-layout">
-            <div className="fixed flex flex-col items-center gap-4 overflow-y-scroll top-[60px] max-h-[calc(100vh-120px)] h-full p-2">
+            <div className="fixed flex flex-col items-center gap-4 overflow-y-scroll top-[60px] max-h-[calc(100vh-60px)] h-full p-2">
                 {/* 주문 현황 내역 */}
                 <div className="flex flex-col w-[360px] h-[160px] border-2 p-4 rounded-[5px] shadow-lg">
                     {/* 주문번호 및 주문일자 */}
@@ -100,7 +100,7 @@ const ListOrder = () => {
                 </div>
 
                 {/* 마감 버튼 하단 고정 */}
-                <button className="fixed common-btn bottom-[100px]">마감 시작</button>
+                <button className="fixed common-btn bottom-[50px]">마감 시작</button>
             </div>
         </div>
     );

@@ -6,7 +6,7 @@ import Logo from "/icons/size-192.png"
 
 const LogIn = () => {
     return (
-        <div className="main-layout gap-3">
+        <div className="gap-3 main-layout">
             <img src={Logo} alt="메인로고" width="200px" className="mb-[20px]" />
             <input type="text" placeholder="이메일" className="min-w-[300px] min-h-[50px] border border-[#7F7F7F] font-bold p-3 rounded-[5px]" />
             <input type="password" placeholder="비밀번호" className="min-w-[300px] min-h-[50px] border border-[#7F7F7F] font-bold p-3 rounded-[5px]" />
