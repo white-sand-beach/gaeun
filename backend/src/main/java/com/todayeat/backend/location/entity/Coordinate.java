@@ -26,4 +26,12 @@ public class Coordinate {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    static public Coordinate of(String address, BigDecimal latitude, BigDecimal longitude) {
+        return builder()
+                .address(address)
+                .latitude(latitude)
+                .longitude(longitude)
+                .build();
+    }
 }

@@ -94,4 +94,19 @@ public class Store extends BaseTime {
         this.favoriteCnt = favoriteCnt;
         this.seller = seller;
     }
+
+    public void updateStore(String registeredName, String bossName, Coordinate coordinate, String tel,
+                            String name, String image, String operatingTime, String holiday, String originCountry,
+                            String introduction) {
+        this.registeredName = registeredName;
+        this.bossName = bossName;
+        this.coordinate = coordinate;
+        this.tel = tel;
+        this.name = name;
+        this.image = image;
+        this.operatingTime = operatingTime;
+        this.holiday = holiday;
+        this.originCountry = originCountry;
+        this.introduction = introduction;
+    }
 }
