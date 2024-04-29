@@ -10,22 +10,22 @@ import java.math.BigDecimal;
 @Schema(name = "가게 등록 요청")
 public class CreateStoreRequest {
 
-    @NotBlank(message = "registeredName: 값이 null이 아니어야 합니다.")
-    @Size(max = 100, message = "registeredName: 최대 길이는 100자입니다.")
+    @NotBlank(message = "registeredName: 빈 값이 아니어야 합니다.")
+    @Size(max = 50, message = "registeredName: 최대 길이는 50자입니다.")
     @Schema(description = "상호명", example = "상호")
     private String registeredName;
 
-    @NotBlank(message = "registeredNo: 값이 null이 아니어야 합니다.")
+    @NotBlank(message = "registeredNo: 빈 값이 아니어야 합니다.")
     @Size(max = 10, message = "registeredNo: 최대 길이는 10자입니다.")
     @Schema(description = "사업자 등록번호", example = "0123456789")
     private String registeredNo;
 
-    @NotBlank(message = "bossName: 값이 null이 아니어야 합니다.")
+    @NotBlank(message = "bossName: 빈 값이 아니어야 합니다.")
     @Size(max = 10, message = "bossName: 최대 길이는 10자입니다.")
     @Schema(description = "대표자명", example = "대표자")
     private String bossName;
 
-    @NotBlank(message = "address: 값이 null이 아니어야 합니다.")
+    @NotBlank(message = "address: 빈 값이 아니어야 합니다.")
     @Size(max = 50, message = "address: 길이가 1에서 50 사이여야 합니다.")
     @Schema(description = "주소", example = "OO OO시 O로 OOO")
     private String address;
@@ -33,13 +33,13 @@ public class CreateStoreRequest {
     @NotNull(message = "latitude: 값이 null이 아니어야 합니다.")
     @DecimalMin(value = "33", message = "latitude: 33 이상이어야 합니다.")
     @DecimalMax(value = "38", message = "latitude: 38 이하이어야 합니다.")
-    @Schema(description = "위도", example = "36.9369")
+    @Schema(description = "위도", example = "36.936936")
     private BigDecimal latitude;
 
     @NotNull(message = "longitude: 값이 null이 아니어야 합니다.")
     @DecimalMin(value = "124", message = "longitude: 124 이상이어야 합니다.")
     @DecimalMax(value = "132", message = "longitude: 132 이하이어야 합니다.")
-    @Schema(description = "경도", example = "124.8421")
+    @Schema(description = "경도", example = "124.816326")
     private BigDecimal longitude;
 
     @Size(min = 7, max = 20, message = "tel: 올바른 번호를 입력해주세요.")
@@ -47,7 +47,7 @@ public class CreateStoreRequest {
     @Schema(description = "전화번호", example = "01012345678")
     private String tel;
 
-    @NotBlank(message = "name: 값이 null이 아니어야 합니다.")
+    @NotBlank(message = "name: 빈 값이 아니어야 합니다.")
     @Size(max = 10, message = "name: 최대 길이는 10자입니다.")
     @Schema(description = "가게명", example = "가게")
     private String name;
@@ -66,13 +66,4 @@ public class CreateStoreRequest {
 
     @Schema(description = "소개", example = "방씀다")
     private String introduction;
-
-    @Schema(description = "영업중 여부", example = "false")
-    private boolean isOpened = false;
-
-    @Schema(description = "리뷰 수", example = "0")
-    private int reviewCnt = 0;
-
-    @Schema(description = "찜 수", example = "0")
-    private int favoriteCnt = 0;
 }

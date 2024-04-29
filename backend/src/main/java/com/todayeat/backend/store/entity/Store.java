@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 
@@ -57,12 +58,15 @@ public class Store extends BaseTime {
     private String introduction;
 
     @Column(nullable = false)
+    @ColumnDefault("false")
     private boolean isOpened;
 
     @Column(nullable = false)
+    @ColumnDefault("0")
     private int reviewCnt;
 
     @Column(nullable = false)
+    @ColumnDefault("0")
     private int favoriteCnt;
 
     @OneToOne(fetch = FetchType.LAZY)
