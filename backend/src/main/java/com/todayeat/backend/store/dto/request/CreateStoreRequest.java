@@ -3,10 +3,13 @@ package com.todayeat.backend.store.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
 @Getter
+@Setter
 @Schema(name = "가게 등록 요청")
 public class CreateStoreRequest {
 
@@ -53,7 +56,7 @@ public class CreateStoreRequest {
     private String name;
 
     @Schema(description = "대표 이미지", example = "https://s3.ap-northeast-2.amazonaws.com/today-eat/img.jpg ")
-    private String image;
+    private MultipartFile image;
 
     @Schema(description = "영업 시간", example = "24시")
     private String operatingTime;

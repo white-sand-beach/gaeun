@@ -8,9 +8,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "가게 Controller")
@@ -21,7 +22,7 @@ public interface StoreControllerDocs {
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema()))
-    @PostMapping()
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('SELLER')")
-    public SuccessResponse<Void> create(@RequestBody @Valid CreateStoreRequest createStoreRequest);
+    SuccessResponse<Void> create(@ModelAttribute @Valid CreateStoreRequest createStoreRequest);
 }
