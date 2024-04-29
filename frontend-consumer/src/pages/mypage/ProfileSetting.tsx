@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useUserStore from "../../store/UserStore";
-import UserState from "../../types/User.State";
+import UserState from "../../types/UserState";
 
 const ProfileSetting = () => {
   const [isHintVisible, setHintVisible] = useState(false);
