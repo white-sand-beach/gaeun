@@ -8,6 +8,7 @@ const hideNavBarLayoutPaths = ["/login"];
 const hideFooterLayoutPaths = [
   "/login",
   "/cart",
+  "/add-cart",
   "/alarm",
   "/order-list",
   "/order-detail",
