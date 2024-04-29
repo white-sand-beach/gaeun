@@ -2,6 +2,7 @@ package com.todayeat.backend.location.controller;
 
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.location.dto.request.CreateLocationRequest;
+import com.todayeat.backend.location.dto.request.UpdateLocationRequest;
 import com.todayeat.backend.location.dto.response.GetLocationResponse;
 import com.todayeat.backend.location.service.LocationService;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.todayeat.backend._common.response.success.SuccessType.CREATE_LOCATION_SUCCESS;
-import static com.todayeat.backend._common.response.success.SuccessType.GET_LOCATIONS_SUCCESS;
+import static com.todayeat.backend._common.response.success.SuccessType.*;
 
 @Slf4j
 @RestController
@@ -31,5 +31,12 @@ public class LocationController implements LocationControllerDocs {
     public SuccessResponse<List<GetLocationResponse>> getList() {
 
         return SuccessResponse.of(locationService.getList(), GET_LOCATIONS_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<Void> update(Long locationId, UpdateLocationRequest request) {
+
+        locationService.update(locationId, request);
+        return SuccessResponse.of(UPDATE_LOCATION_SUCCESS);
     }
 }

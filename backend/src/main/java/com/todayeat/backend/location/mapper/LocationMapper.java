@@ -2,7 +2,9 @@ package com.todayeat.backend.location.mapper;
 
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.location.dto.request.CreateLocationRequest;
+import com.todayeat.backend.location.dto.request.UpdateLocationRequest;
 import com.todayeat.backend.location.dto.response.GetLocationResponse;
+import com.todayeat.backend.location.entity.Coordinate;
 import com.todayeat.backend.location.entity.Location;
 import lombok.Builder;
 import org.mapstruct.Mapper;
@@ -24,4 +26,5 @@ public interface LocationMapper {
     @Mapping(source = "location.coordinate.latitude", target = "longitude")
     GetLocationResponse locationToGetLocationResponse(Location location);
 
+    Coordinate updateLocationRequestToCoordinate(UpdateLocationRequest request);
 }

@@ -15,4 +15,6 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
     boolean existsByConsumerAndCoordinate_LatitudeAndCoordinate_LongitudeAndDeletedAtIsNull(Consumer consumer, BigDecimal latitude, BigDecimal longitude);
 
     List<Location> findAllByConsumerAndDeletedAtIsNull(Consumer consumer);
+
+    Optional<Location> findByIdAndConsumerAndDeletedAtIsNull(Long locationId, Consumer consumer);
 }

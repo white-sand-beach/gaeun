@@ -1,5 +1,6 @@
 package com.todayeat.backend.location.entity;
 
+import com.todayeat.backend.location.dto.request.UpdateLocationRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Builder;

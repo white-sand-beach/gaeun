@@ -4,6 +4,7 @@ import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.location.dto.request.CreateLocationRequest;
+import com.todayeat.backend.location.dto.request.UpdateLocationRequest;
 import com.todayeat.backend.location.dto.response.GetLocationResponse;
 import com.todayeat.backend.location.entity.Location;
 import com.todayeat.backend.location.mapper.LocationMapper;
@@ -13,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static com.todayeat.backend._common.response.error.ErrorType.LOCATION_CONFLICT;
+import static com.todayeat.backend._common.response.error.ErrorType.LOCATION_NOT_FOUND;
 
 @Slf4j
 @Service
@@ -33,7 +34,11 @@ public class LocationService {
         Consumer consumer = securityUtil.getConsumer();
 
         // 위도, 경도가 같으면 중복 에러
-        validateAddress(consumer, request.getLatitude(), request.getLongitude());
+        if (locationRepository
+                .existsByConsumerAndCoordinate_LatitudeAndCoordinate_LongitudeAndDeletedAtIsNull
+                        (consumer, request.getLatitude(), request.getLongitude())) {
+            throw new BusinessException(LOCATION_CONFLICT);
+        }
 
         // dto -> entity
         Location location = LocationMapper.INSTANCE.createLocationRequestToLocation(consumer, request);
@@ -48,6 +53,7 @@ public class LocationService {
     }
 
     public List<GetLocationResponse> getList() {
+
         Consumer consumer = securityUtil.getConsumer();
 
         return locationRepository.findAllByConsumerAndDeletedAtIsNull(consumer)
@@ -55,9 +61,16 @@ public class LocationService {
                 .toList();
     }
 
-    private void validateAddress(Consumer consumer, BigDecimal latitude, BigDecimal longitude) {
-        if (locationRepository.existsByConsumerAndCoordinate_LatitudeAndCoordinate_LongitudeAndDeletedAtIsNull(consumer, latitude, longitude)) {
-            throw new BusinessException(LOCATION_CONFLICT);
-        }
+    @Transactional
+    public void update(Long locationId, UpdateLocationRequest request) {
+
+        Consumer consumer = securityUtil.getConsumer();
+
+        // 해당 위치 찾기
+        Location location = locationRepository.findByIdAndConsumerAndDeletedAtIsNull(locationId, consumer)
+                .orElseThrow(() -> new BusinessException(LOCATION_NOT_FOUND)); // 없으면 에러
+
+        // 수정
+        location.updateLocation(request);
     }
 }

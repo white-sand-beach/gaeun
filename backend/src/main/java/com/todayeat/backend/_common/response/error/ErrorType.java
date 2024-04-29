@@ -27,6 +27,7 @@ public enum ErrorType {
 
     // location
     LOCATION_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 주소입니다."),
+    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 위치입니다."),
 
     // cart
 

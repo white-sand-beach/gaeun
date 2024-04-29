@@ -2,6 +2,8 @@ package com.todayeat.backend.location.entity;
 
 import com.todayeat.backend._common.entity.BaseTime;
 import com.todayeat.backend.consumer.entity.Consumer;
+import com.todayeat.backend.location.dto.request.UpdateLocationRequest;
+import com.todayeat.backend.location.mapper.LocationMapper;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -50,5 +52,11 @@ public class Location extends BaseTime {
 
     public void updateIsSelected() {
         this.isSelected = !this.isSelected;
+    }
+
+    public void updateLocation(UpdateLocationRequest request) {
+        this.coordinate = LocationMapper.INSTANCE.updateLocationRequestToCoordinate(request);
+        this.alias = request.getAlias();
+        this.radius = request.getRadius();
     }
 }
