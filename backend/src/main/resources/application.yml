@@ -37,7 +37,7 @@ spring:
             scope:
               - account_email
               - profile_image
-            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            redirect-uri: "${BASE_URL}/{action}/oauth2/code/{registrationId}"
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
