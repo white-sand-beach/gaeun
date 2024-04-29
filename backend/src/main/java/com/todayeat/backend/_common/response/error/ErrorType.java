@@ -43,6 +43,7 @@ public enum ErrorType {
     SELLER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "판매자 인증에 실패했습니다."),
 
     // store
+    STORE_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 사업자 등록번호입니다."),
 
     // category
 
