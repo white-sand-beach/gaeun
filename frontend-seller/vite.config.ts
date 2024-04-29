@@ -66,6 +66,7 @@ export default defineConfig({
     })
   ],
   server: {
+    open: "/seller",
     port: 5174
   }
 })

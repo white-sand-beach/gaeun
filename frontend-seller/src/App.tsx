@@ -16,7 +16,7 @@ import MainLayout from "./components/ui/MainLayout.tsx";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/seller">
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Main />} />
