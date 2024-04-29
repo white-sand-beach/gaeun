@@ -22,18 +22,18 @@ pipeline {
         stage('fe_seller_build'){
             steps{
                 script {
-                    def feSellerRunning = sh(script: 'docker ps -a --filter "name=feSeller" --format "{{.Names}}"', returnStdout: true).trim()
+                    def feSellerRunning = sh(script: 'docker ps -a --filter "name=fe-seller" --format "{{.Names}}"', returnStdout: true).trim()
                     sh 'echo ${feSellerRunning}'
                     if (feSellerRunning) {
                         // fe container is running, stop and remove it
-                        sh 'docker stop feSeller'
-                        sh 'docker rm feSeller'
-                        sh 'docker rmi feSeller'
+                        sh 'docker stop fe-seller'
+                        sh 'docker rm fe-seller'
+                        sh 'docker rmi fe-seller'
                     }
                 }
                 
-                sh 'docker build -t feSeller ./frontend-seller'
-                sh 'docker run -d --name feSeller -p 5174:5174 feSeller'   
+                sh 'docker build -t fe-seller ./frontend-seller'
+                sh 'docker run -d --name fe-seller -p 5174:5174 fe-seller'   
             }
         }
 
@@ -49,18 +49,18 @@ pipeline {
         stage('fe_consumer_build'){
             steps{
                 script {
-                    def feConsumerRunning = sh(script: 'docker ps -a --filter "name=feConsumer" --format "{{.Names}}"', returnStdout: true).trim()
+                    def feConsumerRunning = sh(script: 'docker ps -a --filter "name=fe-consumer" --format "{{.Names}}"', returnStdout: true).trim()
                     sh 'echo ${feConsumerRunning}'
                     if (feConsumerRunning) {
                         // fe container is running, stop and remove it
-                        sh 'docker stop feConsumer'
-                        sh 'docker rm feConsumer'
-                        sh 'docker rmi feConsumer'
+                        sh 'docker stop fe-consumer'
+                        sh 'docker rm fe-consumer'
+                        sh 'docker rmi fe-consumer'
                     }
                 }
                 
-                sh 'docker build -t feConsumer ./frontend-consumer'
-                sh 'docker run -d --name feConsumer -p 5173:5173 feConsumer'   
+                sh 'docker build -t fe-consumer ./frontend-consumer'
+                sh 'docker run -d --name fe-consumer -p 5173:5173 fe-consumer'   
             }
         }
 
