@@ -12,12 +12,13 @@ import OrderDetail from "./pages/order/OrderDetail";
 import OrderList from "./pages/order/OrderList";
 import OrderState from "./pages/order/OrderState";
 import SearchPage from "./pages/search/SearchPage";
+import ProfileSetting from "./pages/mypage/ProfileSetting";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/consumer">
       <QueryClientProvider client={queryClient}>
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         <PageLayout />
@@ -25,13 +26,13 @@ const App = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/" element={<Main />} />
           <Route path="/profile" element={<Profile />} />.
-          <Route path="/cart" element={<Cart />} />
           <Route path="/alarm" element={<Alarm />} />
           <Route path="/favorite" element={<Favorite />} />
           <Route path="/order-detail" element={<OrderDetail />} />
           <Route path="/order-list" element={<OrderList />} />
           <Route path="/order-state" element={<OrderState />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/ProfileSetting" element={<ProfileSetting />} />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>
