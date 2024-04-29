@@ -65,4 +65,18 @@ public class StoreService {
                 updateStoreRequest.getIntroduction()
         );
     }
+
+    @Transactional
+    public void updateIsOpened(Long storeId) {
+
+        Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
+
+        if (store.getSeller().getId() != securityUtil.getSeller().getId()) {
+
+            throw new BusinessException(STORE_FORBIDDEN);
+        }
+
+        store.updateIsOpened();
+    }
 }
