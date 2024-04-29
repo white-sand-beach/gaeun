@@ -26,23 +26,17 @@ const App = () => {
         <PageLayout />
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/profile" element={<Profile />} />.
-          <Route path="/alarm" element={<Alarm />} />
-          <Route path="/favorite" element={<Favorite />} />
-          <Route path="/order-detail" element={<OrderDetail />} />
-          <Route path="/order-list" element={<OrderList />} />
-          <Route path="/order-state" element={<OrderState />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/ProfileSetting" element={<ProfileSetting />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/alarm" element={<Alarm />} />
-          <Route path="/favorite" element={<Favorite />} />
-          <Route path="/order-detail" element={<OrderDetail />} />
-          <Route path="/order-list" element={<OrderList />} />
-          <Route path="/order-state" element={<OrderState />} />
-          <Route path="/search" element={<SearchPage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/alarm" element={<Alarm />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/add-cart" element={<AddCart />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/favorite" element={<Favorite />} />
+          <Route path="/order-state" element={<OrderState />} />
+          <Route path="/order-detail" element={<OrderDetail />} />
+          <Route path="/order-list" element={<OrderList />} />
+          <Route path="/profile" element={<Profile />} />.
+          <Route path="/ProfileSetting" element={<ProfileSetting />} />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>
