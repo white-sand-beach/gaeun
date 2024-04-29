@@ -15,6 +15,7 @@ import OrderState from "./pages/order/OrderState";
 import SearchPage from "./pages/search/SearchPage";
 import ProfileSetting from "./pages/mypage/ProfileSetting";
 import Login from "./pages/accounts/Login";
+import Shop from "./pages/shop/Shop";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/order-list" element={<OrderList />} />
           <Route path="/profile" element={<Profile />} />.
           <Route path="/ProfileSetting" element={<ProfileSetting />} />
+          <Route path="/shop" element={<Shop />} />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>

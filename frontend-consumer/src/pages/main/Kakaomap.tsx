@@ -11,7 +11,7 @@ interface KakaoMapProps {
   lat?: number | undefined;
   lng?: number | undefined;
   height: string;
-  updateCounter: number;
+  updateCounter?: number;
 }
 
 const KakaoMap: React.FC<KakaoMapProps> = ({
