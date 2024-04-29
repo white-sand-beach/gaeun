@@ -4,7 +4,7 @@ import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.location.dto.request.CreateLocationRequest;
-import com.todayeat.backend.location.entity.Coordinate;
+import com.todayeat.backend.location.dto.response.GetLocationResponse;
 import com.todayeat.backend.location.entity.Location;
 import com.todayeat.backend.location.mapper.LocationMapper;
 import com.todayeat.backend.location.repository.LocationRepository;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static com.todayeat.backend._common.response.error.ErrorType.LOCATION_CONFLICT;
 
@@ -35,18 +36,23 @@ public class LocationService {
         validateAddress(consumer, request.getLatitude(), request.getLongitude());
 
         // dto -> entity
-        Coordinate coordinate = LocationMapper.INSTANCE.createLocationRequestToCoordinate(request);
-        Location location = LocationMapper.INSTANCE.createLocationRequestToLocation(consumer, coordinate, request);
-
-        log.info("coordinate: {}", coordinate.toString());
+        Location location = LocationMapper.INSTANCE.createLocationRequestToLocation(consumer, request);
         log.info("location: {}", location.toString());
 
         // 현재 기본 주소 -> false
         locationRepository.findByConsumerAndIsSelectedIsTrueAndDeletedAtIsNull(consumer)
-                .ifPresent(l -> l.updateIsSelected());
+                .ifPresent(Location::updateIsSelected);
 
         // 저장
         locationRepository.save(location);
+    }
+
+    public List<GetLocationResponse> getList() {
+        Consumer consumer = securityUtil.getConsumer();
+
+        return locationRepository.findAllByConsumerAndDeletedAtIsNull(consumer)
+                .stream().map(LocationMapper.INSTANCE::locationToGetLocationResponse)
+                .toList();
     }
 
     private void validateAddress(Consumer consumer, BigDecimal latitude, BigDecimal longitude) {
