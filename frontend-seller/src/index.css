@@ -5,7 +5,7 @@
 @layer base {
   html, body, #root {
     @apply flex flex-col justify-center items-center
-    w-full h-screen
+    w-screen h-screen
   }
 
   h1 {
@@ -34,6 +34,16 @@
 
   .detail-btn {
     @apply max-h-[30px] h-full border border-mainColor text-mainColor text-xs rounded-[5px]
+  }
+
+  /* 화면 작게 볼 때 리스트 1열로 출력 */
+  .normal-list-view {
+    @apply flex flex-col justify-center items-center gap-3
+  }
+
+  /* 화면 넓게 볼 때 리스트 2열로 출력 */
+  .lg-list-view {
+    @apply grid grid-cols-2 gap-3
   }
 }
 
