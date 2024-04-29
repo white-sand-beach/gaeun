@@ -45,4 +45,11 @@ public class LocationController implements LocationControllerDocs {
         locationService.update(locationId, request);
         return SuccessResponse.of(UPDATE_LOCATION_SUCCESS);
     }
+
+    @Override
+    public SuccessResponse<Void> updateSelected(Long locationId) {
+
+        locationService.updateSelected(locationId);
+        return SuccessResponse.of(UPDATE_SELECTED_LOCATION_SUCCESS);
+    }
 }

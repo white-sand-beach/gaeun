@@ -63,7 +63,21 @@ public interface LocationControllerDocs {
             description = "성공")
     @ApiResponse(responseCode = "404",
             description = "위치 조회 정보 없음",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = GetLocationResponse.class))))
-    @PutMapping("{location-id}")
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
+    @PutMapping("/{location-id}")
     SuccessResponse<Void> update(@PathVariable("location-id") Long locationId, @RequestBody @Valid UpdateLocationRequest request);
+
+    @Operation(summary = "위치 선택",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          path variable로 location-id 넣어주세요. \n
+                          기존에 선택되어 있던 위치의 선택을 해제하고, location-id를 선택합니다.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @ApiResponse(responseCode = "404",
+            description = "위치 조회 정보 없음",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = ErrorResponse.class))))
+    @PutMapping("/{location-id}/selected")
+    SuccessResponse<Void> updateSelected(@PathVariable("location-id") Long locationId);
 }

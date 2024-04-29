@@ -44,11 +44,10 @@ public class LocationService {
         Location location = LocationMapper.INSTANCE.createLocationRequestToLocation(consumer, request);
         log.info("location: {}", location.toString());
 
-        // 현재 기본 주소 -> false
-        locationRepository.findByConsumerAndIsSelectedIsTrueAndDeletedAtIsNull(consumer)
-                .ifPresent(Location::updateIsSelected);
+        // 현재 기본 주소 -> isSelected = false
+        updateIsSelectedFalse(consumer);
 
-        // 저장
+        // 저장 (요청 주소 -> isSelected = true)
         locationRepository.save(location);
     }
 
@@ -76,10 +75,31 @@ public class LocationService {
         Consumer consumer = securityUtil.getConsumer();
 
         // 해당 위치 찾기
-        Location location = locationRepository.findByIdAndConsumerAndDeletedAtIsNull(locationId, consumer)
-                .orElseThrow(() -> new BusinessException(LOCATION_NOT_FOUND)); // 없으면 에러
+        Location location = getLocationByIdAndConsumer(locationId, consumer);
 
         // 수정
         location.updateLocation(request);
+    }
+
+    @Transactional
+    public void updateSelected(Long locationId) {
+
+        Consumer consumer = securityUtil.getConsumer();
+
+        // 현재 기본 주소 -> isSelected = false
+        updateIsSelectedFalse(consumer);
+
+        // 요청 주소 -> isSelected = true
+        getLocationByIdAndConsumer(locationId, consumer).updateIsSelected();
+    }
+
+    private void updateIsSelectedFalse(Consumer consumer) {
+        locationRepository.findByConsumerAndIsSelectedIsTrueAndDeletedAtIsNull(consumer)
+                .ifPresent(Location::updateIsSelected);
+    }
+
+    private Location getLocationByIdAndConsumer(Long locationId, Consumer consumer) {
+        return locationRepository.findByIdAndConsumerAndDeletedAtIsNull(locationId, consumer)
+                .orElseThrow(() -> new BusinessException(LOCATION_NOT_FOUND)); // 없으면 에러
     }
 }
