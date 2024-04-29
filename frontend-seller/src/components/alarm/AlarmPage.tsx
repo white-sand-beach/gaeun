@@ -1,4 +1,6 @@
-const AlarmPage = () => {
+import React from "react";
+
+const AlarmPage: React.FC = () => {
     const alarms = [
         {
             id: 1,
