@@ -43,6 +43,8 @@ public enum SuccessType {
 
     // store
 
+    // token
+    REISSUE_TOKEN_SUCCESS("토큰 재발급에 성공하였습니다."),
     ;
 
     private final String msg;

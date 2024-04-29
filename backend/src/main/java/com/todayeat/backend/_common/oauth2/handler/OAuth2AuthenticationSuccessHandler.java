@@ -152,7 +152,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 //        response.setHeader(HttpHeaders.AUTHORIZATION, accessToken); // 액세스 토큰 담기
 
         clearAuthenticationAttributes(request, response); // 쿠키 삭제
-        cookieUtil.addCookie(response, "RefreshToken", refreshToken, 100); // 리프레시 토큰 담기
+        cookieUtil.addCookie(response, "RefreshToken", refreshToken, 60 * 60 * 24 * 14); // 리프레시 토큰 담기
 
         response.sendRedirect(targetUrl);
     }

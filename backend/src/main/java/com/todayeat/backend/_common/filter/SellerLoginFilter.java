@@ -71,7 +71,7 @@ public class SellerLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         response.setHeader(HttpHeaders.AUTHORIZATION, accessToken); // 액세스 토큰 담기
 
-        cookieUtil.addCookie(response, "RefreshToken", refreshToken, 100); // 리프레시 토큰 담기
+        cookieUtil.addCookie(response, "RefreshToken", refreshToken, 60 * 60 * 24 * 14); // 리프레시 토큰 담기
     }
 
     @Override
