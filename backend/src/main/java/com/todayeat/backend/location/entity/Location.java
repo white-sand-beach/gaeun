@@ -12,7 +12,6 @@ import org.hibernate.annotations.SQLDelete;
 
 @Getter
 @Entity
-@ToString
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE location SET deleted_at = CONVERT_TZ(NOW(), '+00:00', '+09:00') WHERE location_id = ?")

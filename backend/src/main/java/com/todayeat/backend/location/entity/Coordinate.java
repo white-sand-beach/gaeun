@@ -1,17 +1,14 @@
 package com.todayeat.backend.location.entity;
 
-import com.todayeat.backend.location.dto.request.UpdateLocationRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 
 @Getter
-@ToString
 @Embeddable
 @NoArgsConstructor
 public class Coordinate {

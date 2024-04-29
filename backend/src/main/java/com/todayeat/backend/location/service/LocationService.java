@@ -42,7 +42,6 @@ public class LocationService {
 
         // dto -> entity
         Location location = LocationMapper.INSTANCE.createLocationRequestToLocation(consumer, request);
-        log.info("location: {}", location.toString());
 
         // 현재 기본 주소 -> isSelected = false
         updateIsSelectedFalse(consumer);
