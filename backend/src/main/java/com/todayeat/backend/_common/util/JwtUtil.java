@@ -26,10 +26,8 @@ import java.util.*;
 public class JwtUtil {
 
     // TODO: 토큰 재발급 로직 구현
-
     private final ConsumerRepository consumerRepository;
     private final SellerRepository sellerRepository;
-
     private final long ACCESS_TOKEN_VALID_TIME = (60 * 1000) * 30; // 30분
     private final String AUTHORITIES_KEY = "role";
 
