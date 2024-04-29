@@ -112,11 +112,6 @@ const Main: React.FC = () => {
     }
   };
 
-  // 패널 내부 스크롤 이벤트 핸들러
-  const handleScroll = (e) => {
-    // 여기서는 아무 것도 하지 않습니다. 단지 스크롤을 허용만 하면 됩니다.
-  };
-
   // 이 값은 실제 높이를 계산하거나 CSS에서 지정한 높이값을 사용해야 합니다.
   const topContainerHeight = 116; // 예시 높이값
 
@@ -203,7 +198,6 @@ const Main: React.FC = () => {
             {/* 패널 내부 스크롤 부분 */}
             <div
               className="flex flex-col gap-2 p-2 overflow-y-auto "
-              onScroll={handleScroll}
               style={{ maxHeight: isExpanded ? "467px" : "212px" }}
             >
               {/* 음식점 하나하나 넣는 장소  */}
