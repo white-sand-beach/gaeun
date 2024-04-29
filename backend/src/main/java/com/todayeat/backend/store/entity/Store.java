@@ -1,7 +1,7 @@
 package com.todayeat.backend.store.entity;
 
 import com.todayeat.backend._common.entity.BaseTime;
-import com.todayeat.backend.location.entity.Address;
+import com.todayeat.backend.location.entity.Coordinate;
 import com.todayeat.backend.seller.entity.Seller;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -33,7 +33,7 @@ public class Store extends BaseTime {
     private String bossName;
 
     @Embedded
-    private Address address;
+    private Coordinate coordinate;
 
     @Column(nullable = false, length = 20)
     private String tel;
