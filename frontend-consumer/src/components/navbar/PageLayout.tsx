@@ -3,10 +3,11 @@ import NavBar from "./NavBar";
 import Footer from "./Footer";
 
 // 상단바를 숨기고 싶은 경로 목록
-const hideNavBarLayoutPaths = ['/login'];
+const hideNavBarLayoutPaths = ["/login"];
 // 하단바를 숨기고 싶은 경로 목록
 const hideFooterLayoutPaths = [
-  "/login', '/cart",
+  "/login",
+  "/cart",
   "/alarm",
   "/order-list",
   "/order-detail",
