@@ -18,6 +18,9 @@ const Header: React.FC = () => {
         case "/test/main":
             title = "주문현황";
             break;
+        case "/notification":
+            title = "알림"
+            break;
     }
     return (
         <header>
