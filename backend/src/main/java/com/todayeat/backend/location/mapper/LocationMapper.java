@@ -24,6 +24,7 @@ public interface LocationMapper {
     @Mapping(source = "location.coordinate.address", target = "address")
     @Mapping(source = "location.coordinate.latitude", target = "latitude")
     @Mapping(source = "location.coordinate.latitude", target = "longitude")
+    @Mapping(source = "location.id", target = "locationId")
     GetLocationResponse locationToGetLocationResponse(Location location);
 
     Coordinate updateLocationRequestToCoordinate(UpdateLocationRequest request);

@@ -43,13 +43,27 @@ public interface LocationControllerDocs {
     @GetMapping
     SuccessResponse<List<GetLocationResponse>> getList();
 
+    @Operation(summary = "선택된 위치 조회",
+            description = """
+                          `ROLE_CONSUMER`
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetLocationResponse.class)))
+    @GetMapping("/selected")
+    SuccessResponse<GetLocationResponse> getSelected();
+
     @Operation(summary = "위치 수정",
             description = """
                           `ROLE_CONSUMER` \n
+                          path variable로 location-id 넣어주세요. \n
                           request body 넣어주세요.
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공")
+    @ApiResponse(responseCode = "404",
+            description = "위치 조회 정보 없음",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = GetLocationResponse.class))))
     @PutMapping("{location-id}")
     SuccessResponse<Void> update(@PathVariable("location-id") Long locationId, @RequestBody @Valid UpdateLocationRequest request);
 }

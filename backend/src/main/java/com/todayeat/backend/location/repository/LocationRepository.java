@@ -17,4 +17,6 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
     List<Location> findAllByConsumerAndDeletedAtIsNull(Consumer consumer);
 
     Optional<Location> findByIdAndConsumerAndDeletedAtIsNull(Long locationId, Consumer consumer);
+
+    Optional<Location> findByConsumerAndIsSelectedIsTrueAndDeletedAtNull(Consumer consumer);
 }

@@ -61,6 +61,15 @@ public class LocationService {
                 .toList();
     }
 
+    public GetLocationResponse getSelected() {
+
+        Consumer consumer = securityUtil.getConsumer();
+
+        return locationRepository.findByConsumerAndIsSelectedIsTrueAndDeletedAtNull(consumer)
+                .map(LocationMapper.INSTANCE::locationToGetLocationResponse)
+                .orElse(null);
+    }
+
     @Transactional
     public void update(Long locationId, UpdateLocationRequest request) {
 
