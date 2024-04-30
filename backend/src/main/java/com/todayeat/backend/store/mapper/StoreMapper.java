@@ -24,9 +24,8 @@ public interface StoreMapper {
     @Mapping(target = "coordinate.address", source = "createStoreRequest.address")
     @Mapping(target = "coordinate.latitude", source = "createStoreRequest.latitude")
     @Mapping(target = "coordinate.longitude", source = "createStoreRequest.longitude")
-    @Mapping(target = "seller", source = "seller")
     @Mapping(target = "image", source = "createStoreRequest.image", qualifiedByName = "imageToURL")
-    Store createStoreRequestToStore(CreateStoreRequest createStoreRequest, Seller seller, @Context Long id, @Context S3Util s3Util);
+    Store createStoreRequestToStore(CreateStoreRequest createStoreRequest, @Context Long id, @Context S3Util s3Util);
 
     @Mapping(target = ".", source = "coordinate")
     GetSellerStoreResponse storeToGetSellerStoreResponse(Store store);

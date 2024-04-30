@@ -1,6 +1,7 @@
 package com.todayeat.backend.seller.entity;
 
 import com.todayeat.backend._common.entity.BaseTime;
+import com.todayeat.backend.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -28,6 +29,10 @@ public class Seller extends BaseTime {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store;
+
     @Builder
     private Seller(String email, String password, String phoneNumber) {
         this.email = email;
@@ -41,5 +46,9 @@ public class Seller extends BaseTime {
 
     public void updatePhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void updateStore(Store store) {
+        this.store = store;
     }
 }

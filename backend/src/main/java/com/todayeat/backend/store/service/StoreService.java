@@ -19,7 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.todayeat.backend._common.entity.DirectoryType.SELLER_STORE_IMAGE;
-import static com.todayeat.backend._common.response.error.ErrorType.*;
+import static com.todayeat.backend._common.response.error.ErrorType.STORE_CONFLICT;
+import static com.todayeat.backend._common.response.error.ErrorType.STORE_NOT_FOUND;
 
 @Slf4j
 @Service
@@ -41,14 +42,16 @@ public class StoreService {
         }
 
         Seller seller = securityUtil.getSeller();
-        storeRepository.save(StoreMapper.INSTANCE.createStoreRequestToStore(createStoreRequest, seller, seller.getId(), s3Util));
+        Store store = storeRepository.save(StoreMapper.INSTANCE.createStoreRequestToStore(createStoreRequest, seller.getId(), s3Util));
+
+        seller.updateStore(store);
     }
 
     public GetSellerStoreResponse getSellerStore(Long storeId) {
 
         return StoreMapper.INSTANCE.storeToGetSellerStoreResponse(
                 storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                        .filter(s -> s.getSeller().getId().equals(securityUtil.getSeller().getId()))
+                        .filter(store -> securityUtil.getSeller().getStore().getId() == storeId)
                         .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
     }
 
@@ -74,7 +77,7 @@ public class StoreService {
     public void update(Long storeId, UpdateStoreRequest updateStoreRequest) {
 
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                .filter(s -> s.getSeller().getId().equals(securityUtil.getSeller().getId()))
+                .filter(s -> securityUtil.getSeller().getStore().getId() == storeId)
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
 
         store.updateStore(
@@ -95,7 +98,7 @@ public class StoreService {
     public void updateIsOpened(Long storeId) {
 
         storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                .filter(s -> s.getSeller().getId().equals(securityUtil.getSeller().getId()))
+                .filter(store -> securityUtil.getSeller().getStore().getId() == storeId)
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)).updateIsOpened();
     }
 }
