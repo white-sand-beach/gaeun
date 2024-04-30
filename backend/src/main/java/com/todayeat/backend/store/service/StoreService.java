@@ -9,6 +9,7 @@ import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.GetDetailStoreConsumerResponse;
 import com.todayeat.backend.store.dto.response.GetDetailStoreSellerResponse;
+import com.todayeat.backend.store.dto.response.GetInfoStoreResponse;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.mapper.StoreMapper;
 import com.todayeat.backend.store.repository.StoreRepository;
@@ -57,6 +58,13 @@ public class StoreService {
     public GetDetailStoreSellerResponse getDetailSeller(Long storeId) {
 
         return StoreMapper.INSTANCE.storeToGetDetailStoreSellerResponse(
+                storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                        .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
+    }
+
+    public GetInfoStoreResponse getInfo(Long storeId) {
+
+        return StoreMapper.INSTANCE.storeToGetInfoStoreResponse(
                 storeRepository.findByIdAndDeletedAtIsNull(storeId)
                         .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
     }

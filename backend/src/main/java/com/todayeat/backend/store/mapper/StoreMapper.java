@@ -5,6 +5,7 @@ import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.response.GetDetailStoreConsumerResponse;
 import com.todayeat.backend.store.dto.response.GetDetailStoreSellerResponse;
+import com.todayeat.backend.store.dto.response.GetInfoStoreResponse;
 import com.todayeat.backend.store.entity.Store;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -32,6 +33,9 @@ public interface StoreMapper {
 
     @Mapping(target = ".", source = "coordinate")
     GetDetailStoreSellerResponse storeToGetDetailStoreSellerResponse(Store store);
+
+    @Mapping(target = ".", source = "coordinate")
+    GetInfoStoreResponse storeToGetInfoStoreResponse(Store store);
 
     @Named("imageToURL")
     default String imageToURL(MultipartFile image, @Context Long id, @Context S3Util s3Util) {

@@ -5,6 +5,7 @@ import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.GetDetailStoreConsumerResponse;
 import com.todayeat.backend.store.dto.response.GetDetailStoreSellerResponse;
+import com.todayeat.backend.store.dto.response.GetInfoStoreResponse;
 import com.todayeat.backend.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,12 @@ public class StoreController implements StoreControllerDocs {
     public SuccessResponse<GetDetailStoreSellerResponse> getDetailSeller(Long storeId) {
 
         return SuccessResponse.of(storeService.getDetailSeller(storeId), GET_STORE_DETAIL_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<GetInfoStoreResponse> getInfo(Long storeId) {
+
+        return SuccessResponse.of(storeService.getInfo(storeId), GET_STORE_DETAIL_SUCCESS);
     }
 
     @Override
