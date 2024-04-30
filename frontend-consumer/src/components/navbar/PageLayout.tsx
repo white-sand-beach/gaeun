@@ -14,6 +14,7 @@ const hideFooterLayoutPaths = [
   "/order-detail",
   "/order-state",
   "/search",
+  "/sign-up",
 ];
 
 const PageLayout = () => {

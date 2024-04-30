@@ -5,7 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 const KakaoLoginButton = () => {
   const handleKakaoLogin = () => {
     const redirectUri = encodeURIComponent(
-      `${window.location.origin}/login-callback`
+      `${window.location.origin}/consumer/login-callback`
     );
     const loginUrl = `${API_BASE_URL}/oauth2/authorization/kakao?redirect_uri=${redirectUri}&mode=login`;
     window.location.href = loginUrl;

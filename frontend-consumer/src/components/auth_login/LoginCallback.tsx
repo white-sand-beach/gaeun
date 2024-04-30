@@ -1,22 +1,28 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 
 const LoginCallback = () => {
   const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(['accessToken']);
 
   useEffect(() => {
     const handleLoginCallback = async () => {
       try {
         const params = new URL(window.location.href);
         const nextPage = params.searchParams.get("next-page");
+        const accessToken = params.searchParams.get("access-token");
+        
+        if (accessToken) {
+          setCookie('accessToken', accessToken, { path: '/' });
+        }
 
-        // const acessToken = params.searchParams.get("Authorization");
-        // localStorage.setItem("acessToken", acessToken)
-
+        console.log(cookies)
+        
         if (nextPage === "login") {
-          navigate("/"); // 로그인 페이ll지로 이동
+          navigate("/"); // 로그인 페이지로 이동
         } else if (nextPage === "sign-up") {
-          navigate("/signup"); // 회원가입 페이지로 이동
+          navigate("/sign-up"); // 회원가입 페이지로 이동
         }
       } catch (error) {
         console.error("로그인 콜백 처리 중 에러 발생:", error);
@@ -24,7 +30,7 @@ const LoginCallback = () => {
     };
 
     handleLoginCallback();
-  }, [navigate]);
+  }, [navigate, setCookie]);
 
   return <div>로그인 중...</div>;
 };

@@ -12,7 +12,7 @@ const AddCart = () => {
       {/* 음식 정보 */}
       <CartInfo />
       <div className="center py-4 border-b-2">
-        <div className="w-[330px] border-2 border-green-400 rounded-3xl">
+        <div className="w-[330px] border-2 border-green-400 rounded-3xl shadow-lg">
           <ServiceBanner />
         </div>
       </div>
@@ -22,9 +22,9 @@ const AddCart = () => {
         <p className="font-extrabold mr-44">수량</p>
         <CountButton />
       </div>
-      <hr className="border-4 border-gray-100" />
+      <hr className="border-4 border-gray-100 " />
       <div className="center">
-      <AddCartButton />
+        <AddCartButton />
       </div>
     </div>
   );

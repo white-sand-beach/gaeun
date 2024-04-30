@@ -36,7 +36,7 @@
   }
 
   .orange-hover-button {
-    @apply w-[140px] border-[1px] border-myColor rounded-lg py-3 text-myColor text-xs font-extrabold hover:bg-myColor hover:text-white;
+    @apply border-myColor rounded-lg text-myColor text-xs font-extrabold hover:bg-myColor hover:text-white;
   }
 
   .text-xxxs {
