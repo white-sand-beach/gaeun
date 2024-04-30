@@ -52,6 +52,7 @@ public enum ErrorType {
     STORE_FORBIDDEN(HttpStatus.FORBIDDEN, "금지된 가게 요청입니다."),
 
     // category
+    CATEGORY_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 카테고리입니다."),
 
     // menu
 

@@ -33,7 +33,7 @@ public class Seller extends BaseTime {
     private String registeredNo;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", nullable = false)
+    @JoinColumn(name = "store_id", nullable = true)
     private Store store;
 
     @Builder
