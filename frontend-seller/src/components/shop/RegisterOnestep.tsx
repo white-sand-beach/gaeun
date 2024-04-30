@@ -18,6 +18,8 @@ const RegisterShop = () => {
                 <p className="mt-10">대표자명</p>
                 <input type="text" placeholder="대표자명을 입력해주세요." className="w-[240px] border-b-2" />
             </div>
+
+            <button className="mt-2 common-btn">다음</button>
         </>
     );
 };
