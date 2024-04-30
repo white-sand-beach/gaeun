@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.todayeat.backend._common.entity.DirectoryType.SELLER_STORE_IMAGE;
-import static com.todayeat.backend._common.response.error.ErrorType.STORE_CONFLICT;
 import static com.todayeat.backend._common.response.error.ErrorType.STORE_NOT_FOUND;
 
 @Slf4j
@@ -35,11 +34,6 @@ public class StoreService {
 
     @Transactional
     public void create(CreateStoreRequest createStoreRequest) {
-
-        if (storeRepository.existsByRegisteredNo(createStoreRequest.getRegisteredNo())) {
-
-            throw new BusinessException(STORE_CONFLICT);
-        }
 
         Seller seller = securityUtil.getSeller();
         Store store = storeRepository.save(StoreMapper.INSTANCE.createStoreRequestToStore(createStoreRequest, seller.getId(), s3Util));

@@ -21,10 +21,11 @@ public enum SuccessType {
 
     // seller
     CREATE_SELLER_SUCCESS("판매자 회원가입에 성공하였습니다."),
-    CHECK_EMAIL_SUCCESS("아이디(이메일) 사용 가능 여부 확인에 성공하였습니다."),
-    GET_EMAIL_SUCCESS("아이디(이메일) 확인에 성공하였습니다."),
-    GET_TEMP_PASSWORD_SUCCESS("임시 비밀번호 생성에 성공하였습니다."),
-    CHECK_TEMP_PASSWORD_SUCCESS("임시 비밀번호 확인에 성공하였습니다."),
+    CHECK_EMAIL_SUCCESS("판매자 아이디(이메일) 사용 가능 여부 확인에 성공하였습니다."),
+    CHECK_REGISTERED_NO_SUCCESS("판매자 사업자 등록번호 사용 가능 여부 확인에 성공하였습니다."),
+    GET_EMAIL_SUCCESS("판매자 아이디(이메일) 확인에 성공하였습니다."),
+    GET_TEMP_PASSWORD_SUCCESS("판매자 임시 비밀번호 생성에 성공하였습니다."),
+    CHECK_TEMP_PASSWORD_SUCCESS("판매자 임시 비밀번호 확인에 성공하였습니다."),
     GET_SELLER_SUCCESS("판매자 회원 정보 조회에 성공하였습니다."),
     UPDATE_PASSWORD_SELLER_SUCCESS("판매자 비밀번호 수정에 성공하였습니다."),
     UPDATE_PHONE_NUMBER_SELLER_SUCCESS("판매자 전화번호 수정에 성공하였습니다."),

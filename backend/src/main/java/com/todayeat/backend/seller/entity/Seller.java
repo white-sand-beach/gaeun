@@ -29,15 +29,19 @@ public class Seller extends BaseTime {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @Column(nullable = false, length = 10)
+    private String registeredNo;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
     @Builder
-    private Seller(String email, String password, String phoneNumber) {
+    private Seller(String email, String password, String phoneNumber, String registeredNo) {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.registeredNo = registeredNo;
     }
 
     public void updatePassword(String password) {

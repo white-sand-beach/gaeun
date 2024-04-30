@@ -2,10 +2,10 @@ package com.todayeat.backend.store.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
-
-import java.math.BigDecimal;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Schema(name = "소비자 가게 상세 조회 응답")
 public class GetConsumerDetailStoreResponse {
 
