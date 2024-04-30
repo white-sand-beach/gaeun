@@ -33,6 +33,8 @@ public class RefreshTokenService {
     @Value("${secret.refresh-token-expired-time}")
     private int REFRESH_TOKEN_EXPIRED_TIME;
 
+    private static String REFRESH_TOKEN_COOKIE_NAME = "RefreshToken";
+
     @Transactional
     public void create(String refreshToken, Date expiration, Long memberId, String role) {
 
@@ -62,7 +64,7 @@ public class RefreshTokenService {
         refreshTokenRepository.delete(refreshToken);
 
         // 쿠키 삭제
-        cookieUtil.deleteCookie(request, response, "RefreshToken");
+        cookieUtil.deleteCookie(request, response, REFRESH_TOKEN_COOKIE_NAME);
 
         // 토큰 재발급
         Authentication authentication = jwtUtil.getAuthenticationFromExpiredToken(accessTokenValue);
@@ -79,7 +81,7 @@ public class RefreshTokenService {
 
         // 토큰 넘기기
         response.addHeader(HttpHeaders.AUTHORIZATION, createdAccessToken);
-        cookieUtil.addCookie(response, "RefreshToken", createdRefreshToken, REFRESH_TOKEN_EXPIRED_TIME);
+        cookieUtil.addCookie(response, REFRESH_TOKEN_COOKIE_NAME, createdRefreshToken, REFRESH_TOKEN_EXPIRED_TIME);
     }
 
     private String getAccessToken(HttpServletRequest request) {
@@ -103,7 +105,7 @@ public class RefreshTokenService {
     private RefreshToken getRefreshToken(HttpServletRequest request) {
 
         // 쿠키에서 리프레시 토큰 찾기
-        String refreshTokenValue = cookieUtil.getCookie(request, "RefreshToken")
+        String refreshTokenValue = cookieUtil.getCookie(request, REFRESH_TOKEN_COOKIE_NAME)
                 .orElseThrow(() -> new BusinessException(TOKEN_NOT_FOUND))
                 .getValue();
 
