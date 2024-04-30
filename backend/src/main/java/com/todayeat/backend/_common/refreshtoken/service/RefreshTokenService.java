@@ -38,8 +38,7 @@ public class RefreshTokenService {
     @Transactional
     public void create(String refreshToken, Date expiration, Long memberId, String role) {
 
-        RefreshToken saveRefreshToken = RefreshToken.of(refreshToken, expiration, memberId, role);
-        refreshTokenRepository.save(saveRefreshToken);
+        save(refreshToken, expiration, memberId, role);
     }
 
 //    @Transactional
@@ -74,7 +73,7 @@ public class RefreshTokenService {
         String createdRefreshToken = jwtUtil.createRefreshToken();
 
         // 토큰 저장
-        create(createdRefreshToken,
+        save(createdRefreshToken,
                 jwtUtil.getExpiration(createdAccessToken),
                 memberId,
                 jwtUtil.getRole(createdAccessToken));
@@ -100,6 +99,12 @@ public class RefreshTokenService {
 
         // 만료일 반환
         return accessToken;
+    }
+
+    private void save(String refreshToken, Date expiration, Long memberId, String role) {
+
+        RefreshToken saveRefreshToken = RefreshToken.of(refreshToken, expiration, memberId, role);
+        refreshTokenRepository.save(saveRefreshToken);
     }
 
     private RefreshToken getRefreshToken(HttpServletRequest request) {
