@@ -1,12 +1,12 @@
 package com.todayeat.backend.store.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Setter;
+import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
-@Setter
+@Getter
 @Schema(name = "판매자 가게 조회 응답")
 public class GetSellerStoreResponse {
 
