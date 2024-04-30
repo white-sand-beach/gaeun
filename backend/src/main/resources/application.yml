@@ -85,6 +85,7 @@ redis:
 
 secret:
   jwt-secret-key: ${JWT_SECRET_KEY}
+  refresh-token-expired-time: ${REFRESH_TOKEN_EXPIRED_TIME}
 
 oauth2:
   login-callback-uri: ${LOGIN_CALLBACK_URI}

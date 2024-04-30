@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final CookieUtil cookieUtil;
     private final JwtUtil jwtUtil;
+
+    @Value("${secret.refresh-token-expired-time}")
+    private int REFRESH_TOKEN_EXPIRED_TIME;
 
     @Transactional
     public void create(String refreshToken, Date expiration, Long memberId, String role) {
@@ -75,7 +79,7 @@ public class RefreshTokenService {
 
         // 토큰 넘기기
         response.addHeader(HttpHeaders.AUTHORIZATION, createdAccessToken);
-        cookieUtil.addCookie(response, "RefreshToken", createdRefreshToken, 60 * 60 * 24 * 14);
+        cookieUtil.addCookie(response, "RefreshToken", createdRefreshToken, REFRESH_TOKEN_EXPIRED_TIME);
     }
 
     private String getAccessToken(HttpServletRequest request) {

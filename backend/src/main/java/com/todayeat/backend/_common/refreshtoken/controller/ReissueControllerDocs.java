@@ -1,7 +1,10 @@
 package com.todayeat.backend._common.refreshtoken.controller;
 
+import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +22,9 @@ public interface ReissueControllerDocs {
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공")
+    @ApiResponse(responseCode = "401",
+            description = "유효하지 않은 토큰",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping
     SuccessResponse<Void> reissueToken(HttpServletRequest request, HttpServletResponse response);
 }
