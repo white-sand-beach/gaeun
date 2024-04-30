@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 import static com.todayeat.backend._common.entity.DirectoryType.SELLER_STORE_IMAGE;
 import static com.todayeat.backend._common.response.error.ErrorType.STORE_NOT_FOUND;
 
@@ -45,7 +47,7 @@ public class StoreService {
 
         Store store = securityUtil.getSeller().getStore();
 
-        if (store == null || store.getId() != storeId) {
+        if (store == null || !Objects.equals(store.getId(), storeId)) {
 
             throw new BusinessException(STORE_NOT_FOUND);
         }
@@ -76,7 +78,7 @@ public class StoreService {
 
         Store store = securityUtil.getSeller().getStore();
 
-        if (store == null || store.getId() != storeId) {
+        if (store == null || !Objects.equals(store.getId(), storeId)) {
 
             throw new BusinessException(STORE_NOT_FOUND);
         }
@@ -100,7 +102,7 @@ public class StoreService {
 
         Store store = securityUtil.getSeller().getStore();
 
-        if (store == null || store.getId() != storeId) {
+        if (store == null || !Objects.equals(store.getId(), storeId)) {
 
             throw new BusinessException(STORE_NOT_FOUND);
         }

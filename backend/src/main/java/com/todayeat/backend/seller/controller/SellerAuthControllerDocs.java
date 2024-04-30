@@ -26,10 +26,7 @@ public interface SellerAuthControllerDocs {
             description = "성공",
             content = @Content(schema = @Schema()))
     @ApiResponse(responseCode = "409",
-            description = "이미 존재하는 이메일입니다.",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @ApiResponse(responseCode = "409",
-            description = "이미 존재하는 사업자 등록번호입니다.",
+            description = "이미 존재하는 이메일입니다. / 이미 존재하는 사업자 등록번호입니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping()
     SuccessResponse<Void> signup(@RequestBody @Valid SignupSellerRequest signupSellerRequest);

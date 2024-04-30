@@ -31,6 +31,7 @@ public class SellerAuthController implements SellerAuthControllerDocs {
 
         return SuccessResponse.of(sellerService.checkEmail(checkEmailSellerRequest), CHECK_EMAIL_SUCCESS);
     }
+
     @Override
     public SuccessResponse<CheckRegisteredNoSellerResponse> checkRegisteredNo(CheckRegisteredNoSellerRequest checkRegisteredNoSellerRequest) {
 
