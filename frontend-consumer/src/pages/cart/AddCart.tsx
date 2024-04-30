@@ -24,7 +24,7 @@ const AddCart = () => {
       </div>
       <hr className="border-4 border-gray-100 " />
       <div className="center">
-      <AddCartButton />
+        <AddCartButton />
       </div>
     </div>
   );

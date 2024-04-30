@@ -1,4 +1,4 @@
-const SiignUpButton = () => {
+const SignUpButton = () => {
   return(
     <div className="footer-button text-center">
       회원가입
@@ -6,4 +6,4 @@ const SiignUpButton = () => {
   )
 }
 
-export default SiignUpButton;
+export default SignUpButton;

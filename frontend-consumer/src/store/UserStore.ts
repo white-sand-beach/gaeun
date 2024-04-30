@@ -14,7 +14,7 @@ const useUserStore = create<UserState>()(
       email: "",
       nickName: "",
       profileImg: "",
-      phoneNumber: undefined,
+      phoneNumber: "",
       updateUserState: (key, value) => set((state) => ({ ...state, [key]: value })),
     }),
     {

@@ -15,19 +15,25 @@ const OrderState = () => {
         <div className="w-[300px] border-2 rounded-lg text-xxs text-gray-400 font-bold p-4">
           <div>
             <p className="text-lg text-black">스진남 진평점</p>
-            <p className="mt-1">마감 시간에는 전화를 받지 못할 때도 있어요.</p>
-            <CallButton />
+            <div className="flex items-center mt-1">
+              <CallButton />
+              <p className="ml-2 font-normal">
+                마감 시간에는 전화를 받지 못할 때도 있어요.
+              </p>
+            </div>
           </div>
 
           <div className="mt-4">
-            <p>가게가 마감하기 전에 반드시 픽업해주세요!</p>
             <div className="between mt-1">
-              <div className="flex text-sm text-black space-x-2">
+              <div className="flex text-xs text-black space-x-2">
                 <p>마감 시간</p>
                 <p>21:00</p>
               </div>
               <OrderDetailButton />
             </div>
+            <p className="mt-1 font-normal">
+              가게가 마감하기 전에 반드시 픽업해주세요!
+            </p>
           </div>
           <div className="center justify-end"></div>
         </div>
