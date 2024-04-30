@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 const Header: React.FC = () => {
     const location = useLocation();
 
+    // 주소에 따른 Header의 title변경
     let title = "";
     switch (location.pathname) {
         case "/":
@@ -20,6 +21,9 @@ const Header: React.FC = () => {
             break;
         case "/notification":
             title = "알림"
+            break;
+        case "/register/shop":
+            title = "가게등록"
             break;
     }
     return (
