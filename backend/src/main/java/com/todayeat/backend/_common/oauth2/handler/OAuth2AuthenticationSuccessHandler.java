@@ -80,7 +80,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     oAuth2UserPrincipal.getUserInfo().getEmail());
 
             // 로그인
-            if (consumer != null) {
+            if (consumer != null && consumer.isJoined()) {
                 sendRedirectToLoginUrl(request, response,
                                     authentication, consumer.getId(),
                                     redirectUri, "login");
