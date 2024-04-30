@@ -3,9 +3,9 @@ package com.todayeat.backend.store.controller;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
-import com.todayeat.backend.store.dto.response.GetDetailStoreConsumerResponse;
-import com.todayeat.backend.store.dto.response.GetDetailStoreSellerResponse;
-import com.todayeat.backend.store.dto.response.GetInfoStoreResponse;
+import com.todayeat.backend.store.dto.response.GetConsumerInfoStoreResponse;
+import com.todayeat.backend.store.dto.response.GetConsumerDetailStoreResponse;
+import com.todayeat.backend.store.dto.response.GetSellerStoreResponse;
 import com.todayeat.backend.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,21 +26,21 @@ public class StoreController implements StoreControllerDocs {
     }
 
     @Override
-    public SuccessResponse<GetDetailStoreConsumerResponse> getDetailConsumer(Long storeId) {
+    public SuccessResponse<GetSellerStoreResponse> getSellerStore(Long storeId) {
 
-        return SuccessResponse.of(storeService.getDetailConsumer(storeId), GET_STORE_DETAIL_SUCCESS);
+        return SuccessResponse.of(storeService.getSellerStore(storeId), GET_STORE_DETAIL_SUCCESS);
     }
 
     @Override
-    public SuccessResponse<GetDetailStoreSellerResponse> getDetailSeller(Long storeId) {
+    public SuccessResponse<GetConsumerInfoStoreResponse> getConsumerInfoStore(Long storeId) {
 
-        return SuccessResponse.of(storeService.getDetailSeller(storeId), GET_STORE_DETAIL_SUCCESS);
+        return SuccessResponse.of(storeService.getConsumerInfoStore(storeId), GET_STORE_DETAIL_SUCCESS);
     }
 
     @Override
-    public SuccessResponse<GetInfoStoreResponse> getInfo(Long storeId) {
+    public SuccessResponse<GetConsumerDetailStoreResponse> getConsumerDetailStore(Long storeId) {
 
-        return SuccessResponse.of(storeService.getInfo(storeId), GET_STORE_DETAIL_SUCCESS);
+        return SuccessResponse.of(storeService.getConsumerDetailStore(storeId), GET_STORE_DETAIL_SUCCESS);
     }
 
     @Override

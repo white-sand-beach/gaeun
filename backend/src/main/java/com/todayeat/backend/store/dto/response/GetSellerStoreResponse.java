@@ -2,12 +2,13 @@ package com.todayeat.backend.store.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
 @Setter
-@Schema(name = "가게 정보, 원산지 조회")
-public class GetInfoStoreResponse {
+@Schema(name = "판매자 가게 조회 응답")
+public class GetSellerStoreResponse {
 
     @Schema(description = "상호명", example = "상호")
     private String registeredName;
@@ -33,7 +34,10 @@ public class GetInfoStoreResponse {
     @Schema(description = "가게명", example = "가게")
     private String name;
 
-    @Schema(description = "영업 시간", example = "24시")
+    @Schema(description = "대표 이미지", example = "img.jpg")
+    private MultipartFile image;
+
+    @Schema(description = "영업 시간", example = "00시 ~ 24시")
     private String operatingTime;
 
     @Schema(description = "휴무일", example = "연중무휴")
