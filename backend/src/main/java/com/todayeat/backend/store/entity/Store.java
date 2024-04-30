@@ -109,4 +109,8 @@ public class Store extends BaseTime {
         this.originCountry = originCountry;
         this.introduction = introduction;
     }
+
+    public void updateIsOpened() {
+        this.isOpened = !this.isOpened;
+    }
 }

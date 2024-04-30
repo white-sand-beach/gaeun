@@ -12,10 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "가게 Controller")
 @RequestMapping("/api/stores")
@@ -39,10 +36,24 @@ public interface StoreControllerDocs {
     @ApiResponse(responseCode = "404",
             description = "존재하지 않는 가게입니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @ApiResponse(responseCode = "401",
-            description = "유효하지 않은 가게입니다.",
+    @ApiResponse(responseCode = "403",
+            description = "금지된 가게 요청입니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PostMapping(value = "/{store-id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/{store-id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('SELLER')")
     SuccessResponse<Void> update(@PathVariable("store-id") Long storeId, @ModelAttribute @Valid UpdateStoreRequest updateStoreRequest);
+
+    @Operation(summary = "가게 영업 여부 수정")
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema()))
+    @ApiResponse(responseCode = "404",
+            description = "존재하지 않는 가게입니다.",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "금지된 가게 요청입니다.",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PutMapping(value = "/{store-id}/is-opened")
+    @PreAuthorize("hasRole('SELLER')")
+    SuccessResponse<Void> updateIsOpened(@PathVariable("store-id") Long storeId);
 }
