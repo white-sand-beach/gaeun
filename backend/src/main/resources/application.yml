@@ -22,6 +22,9 @@ spring:
         use_sql_comments: true
     open-in-view: false
 
+  profiles:
+    include: secret
+
   security:
     oauth2:
       client:
@@ -34,7 +37,7 @@ spring:
             scope:
               - account_email
               - profile_image
-            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            redirect-uri: "${BASE_URL}/{action}/oauth2/code/{registrationId}"
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -82,6 +85,7 @@ redis:
 
 secret:
   jwt-secret-key: ${JWT_SECRET_KEY}
+  refresh-token-expired-time: ${REFRESH_TOKEN_EXPIRED_TIME}
 
 oauth2:
   login-callback-uri: ${LOGIN_CALLBACK_URI}

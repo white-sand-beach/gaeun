@@ -30,7 +30,7 @@ public interface ConsumerControllerDocs {
                 description = "닉네임 중복",
                 content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PutMapping
-    SuccessResponse update(@RequestBody @Valid UpdateConsumerRequest request);
+    SuccessResponse<Void> update(@RequestBody @Valid UpdateConsumerRequest request);
 
     @Operation(summary = "닉네임 중복 확인",
             description = """

@@ -16,10 +16,10 @@ public class Coordinate {
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
+    @Column(precision = 9, scale = 6, nullable = false)
     private BigDecimal latitude;
 
-    @Column(nullable = false)
+    @Column(precision = 9, scale = 6, nullable = false)
     private BigDecimal longitude;
 
     @Builder

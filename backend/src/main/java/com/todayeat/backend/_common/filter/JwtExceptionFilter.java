@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.todayeat.backend._common.response.error.ErrorType.INVALID_TOKEN;
+import static com.todayeat.backend._common.response.error.ErrorType.TOKEN_INVALID;
 
 @Slf4j
 @Component
@@ -39,7 +39,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response); // 다음 필터로 넘기기
         } catch (JwtException e) {
             log.error("JwtExceptionFilter doFilterInternal : ", e);
-            setErrorResponse(response, INVALID_TOKEN);
+            setErrorResponse(response, TOKEN_INVALID);
         }
     }
 

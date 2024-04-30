@@ -28,6 +28,8 @@ public enum ErrorType {
     // review
 
     // location
+    LOCATION_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 주소입니다."),
+    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 위치입니다."),
 
     // cart
 
@@ -59,13 +61,12 @@ public enum ErrorType {
     MAIL_INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "메일 전송에 실패했습니다."),
 
     // token
-    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
-    TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "Http Header에 토큰이 없습니다."),
-    ROLE_MISMATCH(HttpStatus.FORBIDDEN, "해당 요청에 대한 권한이 없습니다."),
+    TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
+    TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "토큰을 찾을 수 없습니다."),
 
     // image
     IMAGE_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 형식의 파일이 아닙니다."),
-    IMAGE_URL_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 url형식이 잘못되었습니다."),
+    IMAGE_URL_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 url 형식이 잘못되었습니다."),
     ;
 
     private HttpStatus httpStatus;
