@@ -2,7 +2,6 @@ package com.todayeat.backend.store.entity;
 
 import com.todayeat.backend._common.entity.BaseTime;
 import com.todayeat.backend.location.entity.Coordinate;
-import com.todayeat.backend.seller.entity.Seller;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,9 +25,6 @@ public class Store extends BaseTime {
 
     @Column(nullable = false, length = 50)
     private String registeredName;
-
-    @Column(nullable = false, length = 10)
-    private String registeredNo;
 
     @Column(nullable = false, length = 10)
     private String bossName;
@@ -69,17 +65,12 @@ public class Store extends BaseTime {
     @ColumnDefault("0")
     private int favoriteCnt;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id", nullable = false)
-    private Seller seller;
-
     @Builder
-    private Store(Long id, String registeredName, String registeredNo, String bossName, Coordinate coordinate, String tel,
+    private Store(Long id, String registeredName, String bossName, Coordinate coordinate, String tel,
                   String name, String image, String operatingTime, String holiday, String originCountry,
-                  String introduction, boolean isOpened, int reviewCnt, int favoriteCnt, Seller seller) {
+                  String introduction, boolean isOpened, int reviewCnt, int favoriteCnt) {
         this.id = id;
         this.registeredName = registeredName;
-        this.registeredNo = registeredNo;
         this.bossName = bossName;
         this.coordinate = coordinate;
         this.tel = tel;
@@ -92,7 +83,6 @@ public class Store extends BaseTime {
         this.isOpened = isOpened;
         this.reviewCnt = reviewCnt;
         this.favoriteCnt = favoriteCnt;
-        this.seller = seller;
     }
 
     public void updateStore(String registeredName, String bossName, Coordinate coordinate, String tel,

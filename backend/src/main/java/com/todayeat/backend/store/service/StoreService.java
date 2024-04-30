@@ -18,8 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 import static com.todayeat.backend._common.entity.DirectoryType.SELLER_STORE_IMAGE;
-import static com.todayeat.backend._common.response.error.ErrorType.*;
+import static com.todayeat.backend._common.response.error.ErrorType.STORE_NOT_FOUND;
 
 @Slf4j
 @Service
@@ -35,21 +37,22 @@ public class StoreService {
     @Transactional
     public void create(CreateStoreRequest createStoreRequest) {
 
-        if (storeRepository.existsByRegisteredNo(createStoreRequest.getRegisteredNo())) {
-
-            throw new BusinessException(STORE_CONFLICT);
-        }
-
         Seller seller = securityUtil.getSeller();
-        storeRepository.save(StoreMapper.INSTANCE.createStoreRequestToStore(createStoreRequest, seller, seller.getId(), s3Util));
+        Store store = storeRepository.save(StoreMapper.INSTANCE.createStoreRequestToStore(createStoreRequest, seller.getId(), s3Util));
+
+        seller.updateStore(store);
     }
 
     public GetSellerStoreResponse getSellerStore(Long storeId) {
 
-        return StoreMapper.INSTANCE.storeToGetSellerStoreResponse(
-                storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                        .filter(s -> s.getSeller().getId().equals(securityUtil.getSeller().getId()))
-                        .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
+        Store store = securityUtil.getSeller().getStore();
+
+        if (store == null || !Objects.equals(store.getId(), storeId)) {
+
+            throw new BusinessException(STORE_NOT_FOUND);
+        }
+
+        return StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store);
     }
 
     public GetConsumerInfoStoreResponse getConsumerInfoStore(Long storeId) {
@@ -73,9 +76,12 @@ public class StoreService {
     @Transactional
     public void update(Long storeId, UpdateStoreRequest updateStoreRequest) {
 
-        Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                .filter(s -> s.getSeller().getId().equals(securityUtil.getSeller().getId()))
-                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
+        Store store = securityUtil.getSeller().getStore();
+
+        if (store == null || !Objects.equals(store.getId(), storeId)) {
+
+            throw new BusinessException(STORE_NOT_FOUND);
+        }
 
         store.updateStore(
                 updateStoreRequest.getRegisteredName(),
@@ -94,8 +100,13 @@ public class StoreService {
     @Transactional
     public void updateIsOpened(Long storeId) {
 
-        storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                .filter(s -> s.getSeller().getId().equals(securityUtil.getSeller().getId()))
-                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)).updateIsOpened();
+        Store store = securityUtil.getSeller().getStore();
+
+        if (store == null || !Objects.equals(store.getId(), storeId)) {
+
+            throw new BusinessException(STORE_NOT_FOUND);
+        }
+
+        store.updateIsOpened();
     }
 }

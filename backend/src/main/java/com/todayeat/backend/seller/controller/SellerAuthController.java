@@ -3,6 +3,7 @@ package com.todayeat.backend.seller.controller;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.seller.dto.request.*;
 import com.todayeat.backend.seller.dto.response.CheckEmailSellerResponse;
+import com.todayeat.backend.seller.dto.response.CheckRegisteredNoSellerResponse;
 import com.todayeat.backend.seller.dto.response.CheckTempPasswordSellerResponse;
 import com.todayeat.backend.seller.dto.response.FindEmailSellerResponse;
 import com.todayeat.backend.seller.service.SellerService;
@@ -29,6 +30,12 @@ public class SellerAuthController implements SellerAuthControllerDocs {
     public SuccessResponse<CheckEmailSellerResponse> checkEmail(CheckEmailSellerRequest checkEmailSellerRequest) {
 
         return SuccessResponse.of(sellerService.checkEmail(checkEmailSellerRequest), CHECK_EMAIL_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<CheckRegisteredNoSellerResponse> checkRegisteredNo(CheckRegisteredNoSellerRequest checkRegisteredNoSellerRequest) {
+
+        return SuccessResponse.of(sellerService.checkRegisteredNo(checkRegisteredNoSellerRequest), CHECK_REGISTERED_NO_SUCCESS);
     }
 
     @Override

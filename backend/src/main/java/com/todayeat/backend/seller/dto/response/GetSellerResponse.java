@@ -1,8 +1,10 @@
 package com.todayeat.backend.seller.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
 import lombok.Setter;
 
+@Getter
 @Setter
 @Schema(name = "판매자 정보 조회 응답")
 public class GetSellerResponse {
@@ -12,4 +14,7 @@ public class GetSellerResponse {
 
     @Schema(description = "전화번호", example = "01012345678")
     private String phoneNumber;
+
+    @Schema(description = "사업자 등록번호", example = "0123456789")
+    private String registeredNo;
 }

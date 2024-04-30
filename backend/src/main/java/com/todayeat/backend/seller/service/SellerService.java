@@ -6,10 +6,7 @@ import com.todayeat.backend._common.util.RedisUtil;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.seller.dto.SellerCustomUserDetails;
 import com.todayeat.backend.seller.dto.request.*;
-import com.todayeat.backend.seller.dto.response.CheckEmailSellerResponse;
-import com.todayeat.backend.seller.dto.response.CheckTempPasswordSellerResponse;
-import com.todayeat.backend.seller.dto.response.FindEmailSellerResponse;
-import com.todayeat.backend.seller.dto.response.GetSellerResponse;
+import com.todayeat.backend.seller.dto.response.*;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.mapper.SellerMapper;
 import com.todayeat.backend.seller.repository.SellerRepository;
@@ -57,6 +54,11 @@ public class SellerService implements UserDetailsService {
             throw new BusinessException(EMAIL_CONFLICT);
         }
 
+        if (sellerRepository.existsByRegisteredNo(signupSellerRequest.getRegisteredNo())) {
+
+            throw new BusinessException(STORE_CONFLICT);
+        }
+
         sellerRepository.save(SellerMapper.INSTANCE.signupSellerRequestToSeller(signupSellerRequest, passwordEncoder));
     }
 
@@ -66,6 +68,14 @@ public class SellerService implements UserDetailsService {
 
         return SellerMapper.INSTANCE.toCheckEmailSellerResponse(
                 sellerRepository.existsByEmail(checkEmailSellerRequest.getEmail()));
+    }
+
+    public CheckRegisteredNoSellerResponse checkRegisteredNo(CheckRegisteredNoSellerRequest checkRegisteredNoSellerRequest) {
+
+        log.info("checkRegisteredNoSellerRequest.getRegisteredNo() : {}", checkRegisteredNoSellerRequest.getRegisteredNo());
+
+        return SellerMapper.INSTANCE.toCheckRegisteredNoSellerResponse(
+                sellerRepository.existsByRegisteredNo(checkRegisteredNoSellerRequest.getRegisteredNo()));
     }
 
     public FindEmailSellerResponse findEmail(FindEmailSellerRequest findEmailSellerRequest) {
@@ -143,12 +153,12 @@ public class SellerService implements UserDetailsService {
     @Transactional
     public void updatePassword(UpdatePasswordSellerRequest updatePasswordSellerRequest) {
 
-        if(!updatePasswordSellerRequest.getNewPassword().equals(updatePasswordSellerRequest.getCheckPassword())) {
+        if (!updatePasswordSellerRequest.getNewPassword().equals(updatePasswordSellerRequest.getCheckPassword())) {
 
             throw new BusinessException(NEW_CHECK_PASSWORD_BAD_REQUEST);
         }
 
-        if(updatePasswordSellerRequest.getOldPassword().equals(updatePasswordSellerRequest.getNewPassword())) {
+        if (updatePasswordSellerRequest.getOldPassword().equals(updatePasswordSellerRequest.getNewPassword())) {
 
             throw new BusinessException(NEW_PASSWORD_BAD_REQUEST);
         }
@@ -156,7 +166,7 @@ public class SellerService implements UserDetailsService {
         Seller seller = securityUtil.getSeller();
 
         String oldPassword = passwordEncoder.encode(updatePasswordSellerRequest.getOldPassword());
-        if(!seller.getPassword().equals(oldPassword)) {
+        if (!seller.getPassword().equals(oldPassword)) {
 
             throw new BusinessException(PASSWORD_UNAUTHORIZED);
         }

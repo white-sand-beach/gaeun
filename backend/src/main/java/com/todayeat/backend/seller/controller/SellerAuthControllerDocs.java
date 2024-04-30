@@ -4,6 +4,7 @@ import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.seller.dto.request.*;
 import com.todayeat.backend.seller.dto.response.CheckEmailSellerResponse;
+import com.todayeat.backend.seller.dto.response.CheckRegisteredNoSellerResponse;
 import com.todayeat.backend.seller.dto.response.CheckTempPasswordSellerResponse;
 import com.todayeat.backend.seller.dto.response.FindEmailSellerResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,19 +26,26 @@ public interface SellerAuthControllerDocs {
             description = "성공",
             content = @Content(schema = @Schema()))
     @ApiResponse(responseCode = "409",
-            description = "이미 존재하는 이메일입니다.",
+            description = "이미 존재하는 이메일입니다. / 이미 존재하는 사업자 등록번호입니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping()
     SuccessResponse<Void> signup(@RequestBody @Valid SignupSellerRequest signupSellerRequest);
 
-    @Operation(summary = "아이디(이메일) 사용 가능 여부 확인")
+    @Operation(summary = "판매자 아이디(이메일) 사용 가능 여부 확인")
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema(implementation = CheckEmailSellerResponse.class)))
     @PostMapping("/check-email")
     SuccessResponse<CheckEmailSellerResponse> checkEmail(@RequestBody @Valid CheckEmailSellerRequest checkEmailSellerRequest);
 
-    @Operation(summary = "전화번호로 아이디(이메일) 확인")
+    @Operation(summary = "판매자 사업자 등록번호 사용 가능 여부 확인")
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = CheckRegisteredNoSellerResponse.class)))
+    @PostMapping("/check-registered-no")
+    SuccessResponse<CheckRegisteredNoSellerResponse> checkRegisteredNo(@RequestBody @Valid CheckRegisteredNoSellerRequest checkRegisteredNoSellerRequest);
+
+    @Operation(summary = "판매자 전화번호로 아이디(이메일) 확인")
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema(implementation = FindEmailSellerResponse.class)))
@@ -47,7 +55,7 @@ public interface SellerAuthControllerDocs {
     @PostMapping("/find-email")
     SuccessResponse<FindEmailSellerResponse> fineEmail(@RequestBody @Valid FindEmailSellerRequest findEmailSellerRequest);
 
-    @Operation(summary = "임시 비밀번호 생성")
+    @Operation(summary = "판매자 임시 비밀번호 생성")
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema()))
@@ -60,7 +68,7 @@ public interface SellerAuthControllerDocs {
     @PostMapping("/get-temp-password")
     SuccessResponse<Void> createTempPassword(@RequestBody @Valid CreateTempPasswordSellerRequest createTempPasswordSellerRequest);
 
-    @Operation(summary = "임시 비밀번호 확인")
+    @Operation(summary = "판매자 임시 비밀번호 확인")
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema(implementation = CheckTempPasswordSellerResponse.class)))

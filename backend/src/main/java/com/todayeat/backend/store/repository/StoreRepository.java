@@ -8,7 +8,5 @@ import java.util.Optional;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
-    Boolean existsByRegisteredNo(String registeredNo);
-
     Optional<Store> findByIdAndDeletedAtIsNull(Long storeId);
 }

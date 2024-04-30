@@ -6,8 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Schema(name = "판매자 아이디(이메일) 사용 가능 여부 확인 응답")
-public class CheckEmailSellerResponse {
+@Schema(name = "판매자 사업자 등록번호 사용 가능 여부 확인 응답")
+public class CheckRegisteredNoSellerResponse {
 
     @Schema(description = "사용 가능 여부", example = "true")
     private Boolean isValid;

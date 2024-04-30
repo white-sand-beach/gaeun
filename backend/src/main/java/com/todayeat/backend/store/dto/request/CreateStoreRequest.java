@@ -18,11 +18,6 @@ public class CreateStoreRequest {
     @Schema(description = "상호명", example = "상호")
     private String registeredName;
 
-    @NotBlank(message = "registeredNo: 빈 값이 아니어야 합니다.")
-    @Size(max = 10, message = "registeredNo: 최대 길이는 10자입니다.")
-    @Schema(description = "사업자 등록번호", example = "0123456789")
-    private String registeredNo;
-
     @NotBlank(message = "bossName: 빈 값이 아니어야 합니다.")
     @Size(max = 10, message = "bossName: 최대 길이는 10자입니다.")
     @Schema(description = "대표자명", example = "대표자")
