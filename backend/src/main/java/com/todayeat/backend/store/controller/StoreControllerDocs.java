@@ -50,7 +50,7 @@ public interface StoreControllerDocs {
     @ApiResponse(responseCode = "404",
             description = "존재하지 않는 가게입니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @GetMapping("/{store-id}")
+    @GetMapping("/{store-id}/info")
     @PreAuthorize("hasRole('CONSUMER')")
     SuccessResponse<GetConsumerInfoStoreResponse> getConsumerInfoStore(@PathVariable("store-id") Long storeId);
 
