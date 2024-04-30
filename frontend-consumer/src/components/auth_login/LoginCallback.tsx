@@ -22,7 +22,7 @@ const LoginCallback = () => {
         if (nextPage === "login") {
           navigate("/"); // 로그인 페이지로 이동
         } else if (nextPage === "sign-up") {
-          navigate("/signup"); // 회원가입 페이지로 이동
+          navigate("/sign-up"); // 회원가입 페이지로 이동
         }
       } catch (error) {
         console.error("로그인 콜백 처리 중 에러 발생:", error);

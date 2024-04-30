@@ -15,6 +15,7 @@ import OrderState from "./pages/order/OrderState";
 import SearchPage from "./pages/search/SearchPage";
 import ProfileSetting from "./pages/mypage/ProfileSetting";
 import Login from "./pages/accounts/Login";
+import SignUp from "./pages/accounts/SignUp";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<SignUp />} />
           <Route path="/alarm" element={<Alarm />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/add-cart" element={<AddCart />} />
