@@ -11,7 +11,7 @@ const RegisterShop = () => {
 
             <div className="flex flex-col items-center justify-center gap-3 mt-2">
                 {/* 가게(상호)명 입력하기 */}
-                <label htmlFor="">가게(상호명)</label>
+                <p className="mt-10">가게(상호명)</p>
                 <input type="text" placeholder="가게(상호)명을 입력해주세요." className="w-[240px] border-b-2" />
 
                 {/* 대표자명 입력하기 */}
