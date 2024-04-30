@@ -57,4 +57,8 @@ public class Consumer extends BaseTime {
         this.nickname = request.getNickname();
         this.phoneNumber = request.getPhoneNumber();
     }
+
+    public boolean isJoined() {
+        return this.nickname != null && this.phoneNumber != null;
+    }
 }

@@ -9,6 +9,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,6 +30,9 @@ public class SellerLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final CookieUtil cookieUtil;
 
     private final RefreshTokenService refreshTokenService;
+
+    @Value("${secret.refresh-token-expired-time}")
+    private int REFRESH_TOKEN_EXPIRED_TIME;
 
     public SellerLoginFilter(AuthenticationManager authenticationManager, CookieUtil cookieUtil, JwtUtil jwtUtil, RefreshTokenService refreshTokenService) {
 
@@ -71,7 +75,7 @@ public class SellerLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         response.setHeader(HttpHeaders.AUTHORIZATION, accessToken); // 액세스 토큰 담기
 
-        cookieUtil.addCookie(response, "RefreshToken", refreshToken, 100); // 리프레시 토큰 담기
+        cookieUtil.addCookie(response, "RefreshToken", refreshToken, REFRESH_TOKEN_EXPIRED_TIME); // 리프레시 토큰 담기
     }
 
     @Override

@@ -32,7 +32,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final RefreshTokenService refreshTokenService;
 
     @Value("${oauth2.login-callback-uri}")
-    private String loginCallbackUri;
+    private String LOGIN_CALLBACK_URI;
+
+    @Value("${secret.refresh-token-expired-time}")
+    private int REFRESH_TOKEN_EXPIRED_TIME;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -77,7 +80,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     oAuth2UserPrincipal.getUserInfo().getEmail());
 
             // 로그인
-            if (consumer != null) {
+            if (consumer != null && consumer.isJoined()) {
                 sendRedirectToLoginUrl(request, response,
                                     authentication, consumer.getId(),
                                     redirectUri, "login");
@@ -87,7 +90,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             // 회원가입
             sendRedirectToLoginUrl(request, response,
                     authentication, consumerService.create(oAuth2UserPrincipal),
-                    redirectUri, "login");
+                    redirectUri, "sign-up");
             return;
         }
 
@@ -99,7 +102,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         return cookieUtil.getCookie(request, OAuth2AuthorizationRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
-                .orElse(loginCallbackUri);
+                .orElse(LOGIN_CALLBACK_URI);
     }
 
     private String getModeFromRequest(HttpServletRequest request) {
@@ -152,7 +155,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 //        response.setHeader(HttpHeaders.AUTHORIZATION, accessToken); // 액세스 토큰 담기
 
         clearAuthenticationAttributes(request, response); // 쿠키 삭제
-        cookieUtil.addCookie(response, "RefreshToken", refreshToken, 100); // 리프레시 토큰 담기
+        cookieUtil.addCookie(response, "RefreshToken", refreshToken, REFRESH_TOKEN_EXPIRED_TIME); // 리프레시 토큰 담기
 
         response.sendRedirect(targetUrl);
     }
