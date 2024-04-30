@@ -49,10 +49,14 @@ public class StoreService {
 
     public GetSellerStoreResponse getSellerStore(Long storeId) {
 
-        return StoreMapper.INSTANCE.storeToGetSellerStoreResponse(
-                storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                        .filter(store -> securityUtil.getSeller().getStore().getId() == storeId)
-                        .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
+        Store store = securityUtil.getSeller().getStore();
+
+        if (store == null || store.getId() != storeId) {
+
+            throw new BusinessException(STORE_NOT_FOUND);
+        }
+
+        return StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store);
     }
 
     public GetConsumerInfoStoreResponse getConsumerInfoStore(Long storeId) {
@@ -76,9 +80,12 @@ public class StoreService {
     @Transactional
     public void update(Long storeId, UpdateStoreRequest updateStoreRequest) {
 
-        Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                .filter(s -> securityUtil.getSeller().getStore().getId() == storeId)
-                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
+        Store store = securityUtil.getSeller().getStore();
+
+        if (store == null || store.getId() != storeId) {
+
+            throw new BusinessException(STORE_NOT_FOUND);
+        }
 
         store.updateStore(
                 updateStoreRequest.getRegisteredName(),
@@ -97,8 +104,13 @@ public class StoreService {
     @Transactional
     public void updateIsOpened(Long storeId) {
 
-        storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                .filter(store -> securityUtil.getSeller().getStore().getId() == storeId)
-                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)).updateIsOpened();
+        Store store = securityUtil.getSeller().getStore();
+
+        if (store == null || store.getId() != storeId) {
+
+            throw new BusinessException(STORE_NOT_FOUND);
+        }
+
+        store.updateIsOpened();
     }
 }
