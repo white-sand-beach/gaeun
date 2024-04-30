@@ -1,3 +1,4 @@
+// 컴포넌트 import
 import NotificationList from "../../components/notification/NotificationList";
 
 const NotificationPage = () => {

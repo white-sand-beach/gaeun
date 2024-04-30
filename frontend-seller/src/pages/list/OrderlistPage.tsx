@@ -1,3 +1,4 @@
+// 컴포넌트 import
 import OrderList from "../../components/list/OrderList.tsx"
 
 const OrderListPage = () => {

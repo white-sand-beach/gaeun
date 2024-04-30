@@ -3,9 +3,11 @@
 @tailwind utilities;
 
 @layer base {
-  html, body, #root {
-    @apply flex flex-col justify-center items-center
-    w-screen h-screen
+
+  html,
+  body,
+  #root {
+    @apply w-screen h-screen
   }
 
   h1 {
@@ -13,21 +15,15 @@
   }
 
   header {
-    @apply absolute top-0 flex flex-row justify-center items-center 
-    w-full max-h-[60px] h-full bg-mainColor
+    @apply absolute top-0 flex flex-row justify-center items-center w-full max-h-[60px] h-full bg-mainColor
   }
 
   footer {
-    @apply absolute bottom-0 flex flex-row justify-center items-center gap-3
-    w-full max-h-[60px] h-full bg-mainColor
+    @apply absolute bottom-0 flex flex-row justify-center items-center gap-3 w-full max-h-[60px] h-full bg-mainColor
   }
 }
 
 @layer components {
-  .main-layout {
-    @apply flex flex-col justify-center items-center w-full h-full
-  }
-  
   .common-btn {
     @apply min-w-[300px] min-h-[40px] bg-mainColor text-white font-bold rounded-[5px]
   }
