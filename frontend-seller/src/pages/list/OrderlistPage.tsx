@@ -1,3 +1,4 @@
+// 컴포넌트 import
 import OrderList from "../../components/list/OrderList.tsx"
 
 const OrderListPage = () => {
@@ -53,7 +54,7 @@ const OrderListPage = () => {
     ];
 
     return (
-        <>
+        <div className="flex-col items-center justify-center lex ">
             <div className="overflow-y-scroll normal-list-view lg:lg-list-view">
                 {orderLists.map((orderlist, index) => (
                     <div key={index}>
@@ -65,7 +66,7 @@ const OrderListPage = () => {
                     </div>
                 ))}
             </div>
-        </>
+        </div>
     );
 };
 

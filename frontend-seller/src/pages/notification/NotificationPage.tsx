@@ -1,3 +1,4 @@
+// 컴포넌트 import
 import NotificationList from "../../components/notification/NotificationList";
 
 const NotificationPage = () => {
@@ -41,7 +42,7 @@ const NotificationPage = () => {
     ]
 
     return (
-        <div className="fixed flex flex-col items-center w-full max-h-[calc(100vh-60px)] h-full overflow-y-scroll top-[60px]">
+        <div className="absolute flex flex-col items-center w-full max-h-[calc(100vh-60px)] h-full overflow-y-scroll top-[60px]">
             {alarmlists.map((alarmlist, index) => (
                 <div key={index}>
                     <NotificationList

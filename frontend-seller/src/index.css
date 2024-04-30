@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 @layer base {
-  html, body, #root {
-    @apply flex flex-col justify-center items-center
-    w-screen h-screen
+  html,
+  body,
+  #root {
+    @apply w-screen h-screen
   }
 
   h1 {
@@ -13,27 +14,21 @@
   }
 
   header {
-    @apply absolute top-0 flex flex-row justify-center items-center 
-    w-full max-h-[60px] h-full bg-mainColor
+    @apply fixed top-0 flex flex-row justify-center items-center w-full max-h-[60px] h-full bg-mainColor
   }
 
   footer {
-    @apply absolute bottom-0 flex flex-row justify-center items-center gap-3
-    w-full max-h-[60px] h-full bg-mainColor
+    @apply fixed bottom-0 flex flex-row justify-center items-center gap-3 w-full max-h-[60px] h-full bg-white border-t-2
   }
 }
 
 @layer components {
-  .main-layout {
-    @apply flex flex-col justify-center items-center w-full h-full
-  }
-  
   .common-btn {
-    @apply min-w-[300px] min-h-[40px] bg-mainColor text-white font-bold rounded-[5px]
+    @apply w-[300px] h-[40px] bg-mainColor text-white font-bold rounded-[5px]
   }
 
   .detail-btn {
-    @apply max-h-[30px] h-full border border-mainColor text-mainColor text-xs rounded-[5px]
+    @apply h-[30px] border border-mainColor text-mainColor text-xs rounded-[5px]
   }
 
   /* 화면 작게 볼 때 리스트 1열로 출력 */
