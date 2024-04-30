@@ -7,6 +7,9 @@ import com.todayeat.backend.location.entity.Coordinate;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
+import com.todayeat.backend.store.dto.response.GetConsumerDetailStoreResponse;
+import com.todayeat.backend.store.dto.response.GetConsumerInfoStoreResponse;
+import com.todayeat.backend.store.dto.response.GetSellerStoreResponse;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.mapper.StoreMapper;
 import com.todayeat.backend.store.repository.StoreRepository;
@@ -41,16 +44,38 @@ public class StoreService {
         storeRepository.save(StoreMapper.INSTANCE.createStoreRequestToStore(createStoreRequest, seller, seller.getId(), s3Util));
     }
 
+    public GetSellerStoreResponse getSellerStore(Long storeId) {
+
+        return StoreMapper.INSTANCE.storeToGetSellerStoreResponse(
+                storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                        .filter(s -> s.getSeller().getId().equals(securityUtil.getSeller().getId()))
+                        .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
+    }
+
+    public GetConsumerInfoStoreResponse getConsumerInfoStore(Long storeId) {
+
+        GetConsumerInfoStoreResponse getStoreConsumerResponse = StoreMapper.INSTANCE.storeToGetConsumerStoreResponse(
+                storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                        .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
+
+        //todo getDetailStoreConsumerResponse에 찜 여부 넣어야 함
+
+        return getStoreConsumerResponse;
+    }
+
+    public GetConsumerDetailStoreResponse getConsumerDetailStore(Long storeId) {
+
+        return StoreMapper.INSTANCE.storeToGetConsumerDetailStoreResponse(
+                storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                        .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
+    }
+
     @Transactional
     public void update(Long storeId, UpdateStoreRequest updateStoreRequest) {
 
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                .filter(s -> s.getSeller().getId().equals(securityUtil.getSeller().getId()))
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
-
-        if (store.getSeller().getId() != securityUtil.getSeller().getId()) {
-
-            throw new BusinessException(STORE_FORBIDDEN);
-        }
 
         store.updateStore(
                 updateStoreRequest.getRegisteredName(),
@@ -69,14 +94,8 @@ public class StoreService {
     @Transactional
     public void updateIsOpened(Long storeId) {
 
-        Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
-
-        if (store.getSeller().getId() != securityUtil.getSeller().getId()) {
-
-            throw new BusinessException(STORE_FORBIDDEN);
-        }
-
-        store.updateIsOpened();
+        storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                .filter(s -> s.getSeller().getId().equals(securityUtil.getSeller().getId()))
+                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)).updateIsOpened();
     }
 }

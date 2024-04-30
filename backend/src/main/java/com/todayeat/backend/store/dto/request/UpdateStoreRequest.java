@@ -53,7 +53,7 @@ public class UpdateStoreRequest {
     @Schema(description = "대표 이미지", example = "img.jpg")
     private MultipartFile image;
 
-    @Schema(description = "영업 시간", example = "24시")
+    @Schema(description = "영업 시간", example = "00시 ~ 24시")
     private String operatingTime;
 
     @Schema(description = "휴무일", example = "연중무휴")
