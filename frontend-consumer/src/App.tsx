@@ -16,6 +16,7 @@ import SearchPage from "./pages/search/SearchPage";
 import ProfileSetting from "./pages/mypage/ProfileSetting";
 import Login from "./pages/accounts/Login";
 import Shop from "./pages/shop/Shop";
+import SignUp from "./pages/accounts/SignUp";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<SignUp />} />
           <Route path="/alarm" element={<Alarm />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/add-cart" element={<AddCart />} />

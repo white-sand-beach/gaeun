@@ -8,7 +8,7 @@ const CartInfo = () => {
           음식명(음식이름)
         </h1>
         <div className="center mt-4">
-          <div className="w-[330px] border-2 rounded-3xl px-4 py-2 space-y-2">
+          <div className="w-[330px] border-2 rounded-3xl px-4 py-2 space-y-2 shadow-xl">
             <div className="flex items-center space-x-1">
               <img className="w-4" src={sale} alt="세일" />
               <p className="text-red-500 text-xs font-bold">지금 36% 할인 중</p>
