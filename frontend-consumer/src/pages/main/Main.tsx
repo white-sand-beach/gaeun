@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import list from "../../assets/map/list.png";
 import gps from "../../assets/map/gps.png";
 import KakaoMap from "./Kakaomap";
+import Shops from "./Shops";
+import ServiceBanner from "../../components/navbar/ServiceBanner";
 
 interface LocationState {
   lat: number | undefined;
@@ -137,7 +139,7 @@ const Main: React.FC = () => {
   return (
     <div>
       <div className="pt-14">
-        <div className="flex justify-between px-1 pt-3 pb-3 bg-gray-100 border border-black">
+        <div className="flex justify-between px-1 pt-3 pb-3 font-bold bg-gray-100">
           <div className="p-1 px-3 bg-white border-2 border-white shadow-xl rounded-xl">
             가까운 순
           </div>
@@ -189,10 +191,10 @@ const Main: React.FC = () => {
         >
           <div className="w-8 h-1 m-auto bg-gray-500 rounded-full"></div>
           {/* 슬라이드 업되는 패널 내용 */}
-          <div className="p-4 bg-white rounded-t-lg shadow h-svh">
+          <div className="pt-2 bg-white rounded-t-lg shadow h-svh">
             {/* 여기에 지도 아래 정보를 렌더링합니다. */}
-            <div className="flex items-center justify-center w-64 h-14 m-auto my-2 border border-darkgray rounded-xl bg-[skyblue]">
-              <h2>음식을 지키자!(이미지)</h2>
+            <div className="flex items-center justify-center w-64 m-auto mt-1 -mb-1 border border-orange-400 h-14 rounded-xl">
+              <ServiceBanner />
             </div>
 
             {/* 패널 내부 스크롤 부분 */}
@@ -200,67 +202,10 @@ const Main: React.FC = () => {
               className="flex flex-col gap-2 p-2 overflow-y-auto "
               style={{ maxHeight: isExpanded ? "467px" : "212px" }}
             >
-              {/* 음식점 하나하나 넣는 장소  */}
-              <div>
-                <div className="w-full pt-3 pl-3 border border-black h-60 rounded-xl">
-                  <div>
-                    <h2 className="text-lg font-bold">음식점 이름</h2>
-                    <p className="text-sm text-gray-500">20:00까지 예약</p>
-                    <p className="text-sm">리뷰 121 · 가게 진행 86</p>
-                    <p className="text-xs text-gray-400">118m 거리 미만</p>
-                  </div>
-                  {/* 이미지 슬라이더 부분 */}
-                  <div className="flex gap-2 mt-2 overflow-x-scroll scrollbar-hide">
-                    {/* 각 이미지 컨테이너 */}
-                    <div className="min-w-[140px] h-28 bg-red-200">
-                      이미지 1
-                    </div>
-                    <div className="min-w-[140px] h-28 bg-blue-200">
-                      이미지 2
-                    </div>
-                    <div className="min-w-[140px] h-28 bg-yellow-500">
-                      이미지 3
-                    </div>
-                    <div className="min-w-[140px] h-28 bg-green-600">
-                      이미지 4
-                    </div>
-                    <div className="min-w-[140px] h-28 bg-fuchsia-600">
-                      이미지 5
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* 음식점 하나하나 넣는 장소  */}
-              <div>
-                <div className="w-full pt-3 pl-3 border border-black h-60 rounded-xl">
-                  <div>
-                    <h2 className="text-lg font-bold">음식점 이름</h2>
-                    <p className="text-sm text-gray-500">20:00까지 예약</p>
-                    <p className="text-sm">리뷰 121 · 가게 진행 86</p>
-                    <p className="text-xs text-gray-400">118m 거리 미만</p>
-                  </div>
-                  {/* 이미지 슬라이더 부분 */}
-                  <div className="flex gap-2 mt-2 overflow-x-scroll scrollbar-hide">
-                    {/* 각 이미지 컨테이너 */}
-                    <div className="min-w-[140px] h-28 bg-red-200">
-                      이미지 1
-                    </div>
-                    <div className="min-w-[140px] h-28 bg-blue-200">
-                      이미지 2
-                    </div>
-                    <div className="min-w-[140px] h-28 bg-yellow-500">
-                      이미지 3
-                    </div>
-                    <div className="min-w-[140px] h-28 bg-green-600">
-                      이미지 4
-                    </div>
-                    <div className="min-w-[140px] h-28 bg-fuchsia-600">
-                      이미지 5
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Shops />
+              <Shops />
+              <Shops />
+              <Shops />
             </div>
           </div>
         </div>
