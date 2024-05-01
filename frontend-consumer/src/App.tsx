@@ -37,7 +37,7 @@ const App = () => {
           <Route path="/order-detail" element={<OrderDetail />} />
           <Route path="/order-list" element={<OrderList />} />
           <Route path="/profile" element={<Profile />} />.
-          <Route path="/ProfileSetting" element={<ProfileSetting />} />
+          <Route path="/profileSetting" element={<ProfileSetting />} />
           <Route path="/shop" element={<Shop />} />
         </Routes>
       </QueryClientProvider>
