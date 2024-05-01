@@ -199,7 +199,7 @@ const Main: React.FC = () => {
 
             {/* 패널 내부 스크롤 부분 */}
             <div
-              className="flex flex-col gap-2 p-2 overflow-y-auto "
+              className="flex flex-col gap-2 py-2 pl-2 mt-3 overflow-y-auto "
               style={{ maxHeight: isExpanded ? "467px" : "212px" }}
             >
               <Shops />

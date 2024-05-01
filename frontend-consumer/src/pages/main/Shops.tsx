@@ -17,7 +17,7 @@ const Shops = () => {
                 <p className="mt-auto ml-1 text-sm text-gray-500">일식</p>
               </div>
               <div>
-                <p className="mt-1 text-sm text-black">118m</p>
+                <p className="mt-1 mr-3 text-sm text-black">118m</p>
               </div>
             </div>
             <p className="text-sm text-gray-500">20:00 마감</p>
