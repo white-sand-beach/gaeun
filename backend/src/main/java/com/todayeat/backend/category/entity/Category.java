@@ -25,11 +25,11 @@ public class Category extends BaseTime {
     private String name;
 
     @Column(nullable = false)
-    private String image;
+    private String imageURL;
 
     @Builder
-    private Category(String name, String image) {
+    private Category(String name, String imageURL) {
         this.name = name;
-        this.image = image;
+        this.imageURL = imageURL;
     }
 }
