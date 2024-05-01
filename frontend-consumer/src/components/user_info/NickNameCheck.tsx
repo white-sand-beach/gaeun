@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 interface NickNameCheckProps {
-  nickName: string;
+  nickName?: string;
 }
 
 const NickNameCheck: React.FC<NickNameCheckProps> = ({ nickName }) => {

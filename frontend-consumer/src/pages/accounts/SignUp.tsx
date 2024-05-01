@@ -4,6 +4,8 @@ import NickNameCheck from "../../components/user_info/NickNameCheck";
 import PhoneCheck from "../../components/user_info/PhoneCheck";
 import ProfileImageModal from "../../components/user_info/ProfileImageModal";
 
+import ProfileUpdateService from "../../services/ProfileUpdateService";
+
 import useUserStore from "../../store/UserStore";
 import UserState from "../../types/UserState";
 
@@ -12,8 +14,8 @@ import edit from "../../assets/profile/edit.png";
 const SignUp = () => {
   const { profileImg, nickName, phoneNumber } = useUserStore(
     (state: UserState) => ({
-      profileImg: state.profileImg,
       nickName: state.nickName,
+      profileImg: state.profileImg,
       phoneNumber: state.phoneNumber,
     })
   );
@@ -49,6 +51,11 @@ const SignUp = () => {
       <div className="flex justify-center mt-8">
         <PhoneCheck phoneNumber={phoneNumber} />
       </div>
+      <ProfileUpdateService
+        nickName={nickName}
+        profileImg={profileImg}
+        phoneNumber={phoneNumber}
+      />
       <div className="center my-8">
         <SignUpButton />
       </div>
