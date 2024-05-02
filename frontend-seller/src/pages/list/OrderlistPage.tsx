@@ -54,18 +54,16 @@ const OrderListPage = () => {
     ];
 
     return (
-        <div className="flex-col items-center justify-center lex ">
-            <div className="overflow-y-scroll normal-list-view lg:lg-list-view">
-                {orderLists.map((orderlist, index) => (
-                    <div key={index}>
-                        <OrderList
-                            orderNum={orderlist.orderNum}
-                            orderDate={orderlist.orderDate}
-                            foodName={orderlist.foodName}
-                            price={orderlist.price} />
-                    </div>
-                ))}
-            </div>
+        <div className="fixed overflow-y-scroll max-h-[calc(100vh-120px)] top-[60px]">
+            {orderLists.map((orderlist, index) => (
+                <div key={index}>
+                    <OrderList
+                        orderNum={orderlist.orderNum}
+                        orderDate={orderlist.orderDate}
+                        foodName={orderlist.foodName}
+                        price={orderlist.price} />
+                </div>
+            ))}
         </div>
     );
 };

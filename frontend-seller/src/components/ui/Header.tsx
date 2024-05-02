@@ -1,8 +1,14 @@
+// 내부 import
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+// 이미지 import
+import GotoBack from "../../assets/back.png"
 
 const Header: React.FC = () => {
     const location = useLocation();
+    const navigate = useNavigate();
 
     // 주소에 따른 Header의 title변경
     let title = "";
@@ -28,7 +34,9 @@ const Header: React.FC = () => {
     }
     return (
         <header>
+            <img src={GotoBack} alt="뒤로가기" className="w-[40px] h-[40px]" onClick={() => navigate(-1)}/>
             <h1>{title}</h1>
+            <h1>알림</h1>
         </header>
     );
 };

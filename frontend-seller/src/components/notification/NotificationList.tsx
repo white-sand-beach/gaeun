@@ -1,12 +1,12 @@
 // 내부 import
 import React from "react";
 
-// 컴포넌트 import
+// 타입 import
 import { Order } from "../../types/Order.ts";
 
 const NotificationList: React.FC<Order> = (props) => {
     return (
-        <div className="flex flex-col justify-between w-[400px] h-[140px] border-b-2 p-3">
+        <div className="flex flex-col justify-between min-w-[360px] w-full h-[140px] border-b-2 p-3">
             {/* 주문번호 및 주문날짜 */}
             <div className="flex flex-row justify-between w-full">
                 <p className="text-gray-500 ">{props.orderNum}</p>
@@ -19,7 +19,7 @@ const NotificationList: React.FC<Order> = (props) => {
                     <p className="mt-1 font-bold text-[20px]">{props.foodName}</p>
 
                     {/* 결제 금액 */}
-                    <div className="flex flex-row justify-between w-[150px] font-bold text-[14px]">
+                    <div className="flex flex-row justify-between w-[140px] font-bold text-[14px]">
                         <p>결제 금액</p>
                         <p className="text-red-500">{props.price}원</p>
                     </div>

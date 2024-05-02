@@ -6,15 +6,15 @@
   html,
   body,
   #root {
-    @apply w-screen h-screen
+    @apply w-full h-screen
   }
 
   h1 {
-    @apply text-3xl text-orange-500 font-bold
+    @apply text-3xl text-black font-bold
   }
 
   header {
-    @apply fixed top-0 flex flex-row justify-center items-center w-full max-h-[60px] h-full bg-mainColor
+    @apply fixed top-0 flex flex-row justify-between items-center w-full max-h-[60px] h-full bg-mainColor p-4
   }
 
   footer {
@@ -25,20 +25,10 @@
 @layer components {
   .common-btn {
     @apply w-[300px] h-[40px] bg-mainColor text-white font-bold rounded-[5px]
-  }
+  };
 
   .detail-btn {
     @apply h-[30px] border border-mainColor text-mainColor text-xs rounded-[5px]
-  }
-
-  /* 화면 작게 볼 때 리스트 1열로 출력 */
-  .normal-list-view {
-    @apply flex flex-col justify-center items-center gap-3
-  }
-
-  /* 화면 넓게 볼 때 리스트 2열로 출력 */
-  .lg-list-view {
-    @apply grid grid-cols-2 gap-3
   }
 }
 
