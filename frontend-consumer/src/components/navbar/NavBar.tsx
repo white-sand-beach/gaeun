@@ -11,9 +11,9 @@ const NavBar = () => {
     navigate(-1);
   };
   return (
-    <div className="fixed z-20 flex items-center justify-between w-full p-4 bg-myColor">
-      <div className="w-20">
-        <img src={back} alt="뒤로가기" />
+    <div className="fixed w-full p-4 rounded-b-lg between bg-myColor">
+      <div className="w-[33%]">
+        <img src={back} alt="뒤로가기" onClick={handleBackClick} />
       </div>
       <div className="w-[34%] text-center font-extrabold">현재위치</div>
       <div className="flex w-[33%] justify-end">
