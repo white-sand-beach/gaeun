@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -64,4 +65,7 @@ public class CreateStoreRequest {
 
     @Schema(description = "소개", example = "방씀다")
     private String introduction;
+
+    @Schema(description = "카테고리 아이디 목록", example = "[1, 2, 3]")
+    private List<Long> categoryIdList;
 }

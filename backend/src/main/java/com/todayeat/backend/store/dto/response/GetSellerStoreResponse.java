@@ -1,10 +1,12 @@
 package com.todayeat.backend.store.dto.response;
 
+import com.todayeat.backend.category.dto.CategoryInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -49,4 +51,7 @@ public class GetSellerStoreResponse {
 
     @Schema(description = "소개", example = "방씀다")
     private String introduction;
+
+    @Schema(description = "카테고리 목록", example = "{name: 카테고리1, image: https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/store-image/img1.png, name: 카테고리2, image: https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/store-image/img2.png}")
+    private List<CategoryInfo> categoryList;
 }

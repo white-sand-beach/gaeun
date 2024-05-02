@@ -1,8 +1,8 @@
 package com.todayeat.backend.category.mapper;
 
 import com.todayeat.backend._common.util.S3Util;
+import com.todayeat.backend.category.dto.CategoryInfo;
 import com.todayeat.backend.category.dto.request.CreateCategoryRequest;
-import com.todayeat.backend.category.dto.response.GetCategoryListResponse;
 import com.todayeat.backend.category.entity.Category;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -21,7 +21,7 @@ public interface CategoryMapper {
     @Mapping(target = "image", source = "image", qualifiedByName = "imageToURL")
     Category createCategoryRequestToCategory(CreateCategoryRequest createCategoryRequest, @Context Long id, @Context S3Util s3Util);
 
-    GetCategoryListResponse.CategoryInfo categoryToCategoryInfo(Category category);
+    CategoryInfo categoryToCategoryInfo(Category category);
 
     @Named("imageToURL")
     default String imageToURL(MultipartFile image, @Context Long id, @Context S3Util s3Util) {

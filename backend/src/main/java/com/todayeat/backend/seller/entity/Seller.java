@@ -32,7 +32,7 @@ public class Seller extends BaseTime {
     @Column(nullable = false, length = 10)
     private String registeredNo;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "store_id", nullable = true)
     private Store store;
 

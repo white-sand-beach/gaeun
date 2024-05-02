@@ -25,10 +25,10 @@ public interface StoreControllerDocs {
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema()))
-    @ApiResponse(responseCode = "409",
-            description = "이미 존재하는 사업자 등록번호입니다.",
+    @ApiResponse(responseCode = "404",
+            description = "존재하지 않는 카테고리입니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PostMapping(MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('SELLER')")
     SuccessResponse<Void> create(@ModelAttribute @Valid CreateStoreRequest createStoreRequest);
 
