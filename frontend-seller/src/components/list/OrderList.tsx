@@ -4,7 +4,7 @@ import { Order } from "../../types/Order.ts";
 const OrderList: React.FC<Order> = (props) => {
     return (
         <div className="list-component normal-size-list sm:sm-size-list md:md-size-list lg:lg-size-list">
-            <div className="flex justify-between text-xl text-gray-500 lg:text-2xl">
+            <div className="flex justify-between text-xl text-gray-500 md:text-2xl lg:text-3xl">
                 {/* 주문번호 */}
                 <p>주문번호 : {props.orderNum}</p>
                 {/* 주문일자 */}
