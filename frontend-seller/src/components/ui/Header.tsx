@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import GotoBack from "../../assets/back.png"
+import NotiIcon from "../../assets/notification.png"
 
 const Header: React.FC = () => {
     const location = useLocation();
@@ -35,7 +36,9 @@ const Header: React.FC = () => {
                 <img src={GotoBack} alt="뒤로가기" className="w-[40px] h-[40px]"/>
             </button>
             <h1>{title}</h1>
-            <h1>알림</h1>
+            <button>
+                <img src={NotiIcon} alt="알림" className="w-[40px] h-[40px]"/>
+            </button>
         </header>
     );
 };
