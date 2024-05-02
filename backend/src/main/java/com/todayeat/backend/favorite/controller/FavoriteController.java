@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.todayeat.backend._common.response.success.SuccessType.CREATE_FAVORITE_SUCCESS;
+import static com.todayeat.backend._common.response.success.SuccessType.DELETE_FAVORITE_SUCCESS;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,5 +22,12 @@ public class FavoriteController implements FavoriteControllerDocs {
 
         favoriteService.create(request);
         return SuccessResponse.of(CREATE_FAVORITE_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<Void> delete(Long favoriteId) {
+
+        favoriteService.delete(favoriteId);
+        return SuccessResponse.of(DELETE_FAVORITE_SUCCESS);
     }
 }

@@ -4,6 +4,7 @@ import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.favorite.dto.request.CreateFavoriteRequest;
+import com.todayeat.backend.favorite.entity.Favorite;
 import com.todayeat.backend.favorite.mapper.FavoriteMapper;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
 import com.todayeat.backend.store.entity.Store;
@@ -13,8 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.todayeat.backend._common.response.error.ErrorType.FAVORITE_CONFLICT;
-import static com.todayeat.backend._common.response.error.ErrorType.STORE_NOT_FOUND;
+import static com.todayeat.backend._common.response.error.ErrorType.*;
 
 @Slf4j
 @Service
@@ -46,5 +46,23 @@ public class FavoriteService {
 
         // 가게 찜 수 증가
         store.updateFavoriteCnt(1);
+    }
+
+    @Transactional
+    public void delete(Long favoriteId) {
+
+        // 소비자
+        Consumer consumer = securityUtil.getConsumer();
+
+        // 찜
+        Favorite favorite = favoriteRepository.findByIdAndDeletedAtIsNull(favoriteId)
+                .filter(f -> f.getConsumer().getId().equals(consumer.getId()))
+                .orElseThrow(() -> new BusinessException(FAVORITE_NOT_FOUND));
+
+        // 가게 찜 수 감소
+        favorite.getStore().updateFavoriteCnt(-1);
+
+        // 삭제
+        favoriteRepository.delete(favorite);
     }
 }

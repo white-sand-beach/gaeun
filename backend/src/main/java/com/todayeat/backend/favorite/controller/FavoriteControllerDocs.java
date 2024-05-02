@@ -9,9 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "favorites", description = "찜")
 @RequestMapping("/api/favorites")
@@ -32,4 +30,17 @@ public interface FavoriteControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping
     SuccessResponse<Void> create(@RequestBody @Valid CreateFavoriteRequest request);
+
+    @Operation(summary = "찜 삭제",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          path variable로 favorite-id 넣어주세요.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @ApiResponse(responseCode = "404",
+            description = "찜을 찾을 수 없음",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @DeleteMapping("/{favorite-id}")
+    SuccessResponse<Void> delete(@PathVariable("favorite-id") Long favoriteId);
 }

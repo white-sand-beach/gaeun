@@ -11,6 +11,7 @@ public enum SuccessType {
 
     // favorite
     CREATE_FAVORITE_SUCCESS("찜 등록에 성공하였습니다."),
+    DELETE_FAVORITE_SUCCESS("찜 삭제에 성공하였습니다."),
 
     // review
 
