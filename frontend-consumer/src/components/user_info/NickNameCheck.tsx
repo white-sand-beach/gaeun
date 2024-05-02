@@ -1,10 +1,7 @@
 import React, { useState } from "react";
+import UserState from "../../types/UserState";
 
-interface NickNameCheckProps {
-  nickName?: string;
-}
-
-const NickNameCheck: React.FC<NickNameCheckProps> = ({ nickName }) => {
+const NickNameCheck: React.FC<UserState> = ({ nickName }) => {
   const [inputNickName, setInputNickName] = useState("");
   const [isNickNameValid, setIsNickNameValid] = useState(false);
   const [isNickNameChecked, setIsNickNameChecked] = useState(false);

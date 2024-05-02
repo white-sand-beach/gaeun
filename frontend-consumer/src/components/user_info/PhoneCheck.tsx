@@ -1,8 +1,6 @@
-interface PhoneCheckProps {
-  phoneNumber?: string;
-}
+import UserState from "../../types/UserState";
 
-const PhoneCheck: React.FC<PhoneCheckProps> = ({ phoneNumber }) => {
+const PhoneCheck: React.FC<UserState> = ({ phoneNumber }) => {
   return (
     <div className="w-[330px]">
       <h1 className="text-lg font-bold ml-2 mb-2">전화번호 인증</h1>

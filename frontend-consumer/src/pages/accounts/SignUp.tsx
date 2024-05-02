@@ -3,8 +3,9 @@ import SignUpButton from "../../components/button/SignUpButton";
 import NickNameCheck from "../../components/user_info/NickNameCheck";
 import PhoneCheck from "../../components/user_info/PhoneCheck";
 import ProfileImageModal from "../../components/user_info/ProfileImageModal";
+import "../../components/modal/Modal.css";
 
-import ProfileUpdateService from "../../services/ProfileUpdateService";
+// import ProfileUpdateService from "../../services/ProfileUpdateService";
 
 import useUserStore from "../../store/UserStore";
 import UserState from "../../types/UserState";
@@ -43,7 +44,13 @@ const SignUp = () => {
           </button>
         </div>
       </div>
-      {showModal && <ProfileImageModal profileImg={profileImg} onClose={closeModal} />}
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <ProfileImageModal profileImg={profileImg} onClose={closeModal} />
+          </div>
+        </div>
+      )}
       <div className="flex justify-center mt-8">
         <NickNameCheck nickName={nickName} />
       </div>
@@ -51,13 +58,17 @@ const SignUp = () => {
       <div className="flex justify-center mt-8">
         <PhoneCheck phoneNumber={phoneNumber} />
       </div>
-      <ProfileUpdateService
+      {/* <ProfileUpdateService
         nickName={nickName}
         profileImg={profileImg}
         phoneNumber={phoneNumber}
-      />
+      /> */}
       <div className="center my-8">
-        <SignUpButton />
+        <SignUpButton
+          nickName={nickName}
+          profileImg={profileImg}
+          phoneNumber={phoneNumber}
+        />
       </div>
     </div>
   );

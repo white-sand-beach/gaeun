@@ -1,48 +1,55 @@
-
-import axios from "axios"
+import axios from "axios";
 import { useCookies } from "react-cookie";
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import UserState from "../types/UserState";
+// import { useMutation, UseMutationResult } from "@tanstack/react-query";
 
-interface ProfileInfoProps {
-  nickName?: string,
-  profileImg?: string,
-  phoneNumber?: string;
-}
+// interface ProfileInfoProps {
+//   nickName?: string;
+//   profileImg?: string;
+//   phoneNumber?: string;
+// }
 
-interface ApiResponse {
-  message: string;
-}
+// interface ApiResponse {
+//   message: string;
+// }
 
-const updateProfile = async (profileInfo: ProfileInfoProps, accessToken: string) => {
+const UpdateProfileForm = async ({
+  nickName,
+  profileImg,
+  phoneNumber,
+}: UserState): Promise<any> => {
+  const [cookies] = useCookies(["accessToken"]);
   const API_BASE_URL = import.meta.env.VITE_API_URL;
   const response = await axios.put(
     `${API_BASE_URL}/consumers`,
-    profileInfo,
+    { nickName, profileImg, phoneNumber },
     {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${cookies.accessToken}`,
       },
     }
   );
   return response.data;
 };
 
-const ProfileUpdateService = (): UseMutationResult<ApiResponse, Error, ProfileInfoProps> => {
-  const [cookies] = useCookies(["accessToken"]); // 컴포넌트 최상위에서 훅 호출
+export default UpdateProfileForm;
 
-  const mutation = useMutation<ApiResponse, Error, ProfileInfoProps>({
-    mutationFn: (profileInfo) => updateProfile(profileInfo, cookies.accessToken),
-    onSuccess: (data) => {
-      console.log(data);
-    },
-    onError: (error: Error) => {
-      console.error(error.message);
-    },
-  });
+// const ProfileUpdateService = (): UseMutationResult<ApiResponse, Error, ProfileInfoProps> => {
+//   const [cookies] = useCookies(["accessToken"]); // 컴포넌트 최상위에서 훅 호출
 
-  return mutation;
-};
+//   const mutation = useMutation<ApiResponse, Error, ProfileInfoProps>({
+//     mutationFn: (profileInfo) => UpdateProfileForm(profileInfo, cookies.accessToken),
+//     onSuccess: (data) => {
+//       console.log(data);
+//     },
+//     onError: (error: Error) => {
+//       console.error(error.message);
+//     },
+//   });
 
-export default ProfileUpdateService;
+//   return mutation;
+// };
+
+// export default ProfileUpdateService;
