@@ -42,6 +42,8 @@ public enum SuccessType {
     UPDATE_STORE_SUCCESS("가게 수정에 성공하였습니다."),
 
     // category
+    CREATE_CATEGORY_SUCCESS("카테고리 등록에 성공하였습니다."),
+    GET_CATEGORY_LIST_SUCCESS("카테고리 리스트 조회에 성공하였습니다."),
 
     // menu
 
