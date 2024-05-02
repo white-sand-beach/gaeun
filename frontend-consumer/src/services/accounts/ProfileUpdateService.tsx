@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import UserState from "../types/UserState";
+import UserState from "../../types/UserState";
 // import { useMutation, UseMutationResult } from "@tanstack/react-query";
 
 // interface ProfileInfoProps {
@@ -21,7 +21,7 @@ const UpdateProfileForm = async ({
   const [cookies] = useCookies(["accessToken"]);
   const API_BASE_URL = import.meta.env.VITE_API_URL;
   const response = await axios.put(
-    `${API_BASE_URL}/consumers`,
+    `${API_BASE_URL}/api/consumers`,
     { nickName, profileImg, phoneNumber },
     {
       withCredentials: true,
