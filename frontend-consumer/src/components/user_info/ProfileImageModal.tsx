@@ -1,12 +1,13 @@
 // ProfileImageModal.tsx
 import React, { useState, useEffect } from "react";
+import UserState from "../../types/UserState";
+import "../modal/Modal.css"
 
 interface ProfileImageModalProps {
-  profileImg?: string;
   onClose: () => void;
 }
 
-const ProfileImageModal: React.FC<ProfileImageModalProps> = ({
+const ProfileImageModal: React.FC<UserState & ProfileImageModalProps> = ({
   profileImg,
   onClose,
 }) => {
@@ -45,7 +46,7 @@ const ProfileImageModal: React.FC<ProfileImageModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+      className="fixed inset-0 flex items-center justify-center z-50"
       onClick={handleOutsideClick}
     >
       <div className="bg-white w-[300px] rounded-lg shadow-lg p-6">

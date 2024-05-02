@@ -1,10 +1,8 @@
 import React, { useState } from "react";
+import UserState from "../../types/UserState";
+import UpdateProfileForm from "../../services/accounts/ProfileUpdateService";
 
-interface NickNameCheckProps {
-  nickName: string;
-}
-
-const NickNameCheck: React.FC<NickNameCheckProps> = ({ nickName }) => {
+const NickNameCheck: React.FC<UserState> = ({ nickName }) => {
   const [inputNickName, setInputNickName] = useState("");
   const [isNickNameValid, setIsNickNameValid] = useState(false);
   const [isNickNameChecked, setIsNickNameChecked] = useState(false);
@@ -18,11 +16,26 @@ const NickNameCheck: React.FC<NickNameCheckProps> = ({ nickName }) => {
     setIsNickNameAvailable(false);
   };
 
-  const handleNickNameCheck = () => {
+  const handleNickNameCheck = async (
+    event: React.FormEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    console.log(1)
+    // 만약 닉네임이 2~10 글자라면
+    setIsNickNameChecked(true);
     if (isNickNameValid) {
-      // 닉네임 중복 확인 로직 구현
-      setIsNickNameChecked(true);
-      setIsNickNameAvailable(true); // 가정: 닉네임이 사용 가능한 경우
+      console.log(2)
+      try {
+        const response = await UpdateProfileForm({ nickName : inputNickName });
+        console.log(3)
+        console.log(response.data);
+
+        if (response.data === true) {
+          setIsNickNameAvailable(true); // 가정: 닉네임이 사용 가능한 경우
+        }
+      } catch (error) {
+        console.log("실패");
+      }
     }
   };
 
@@ -57,7 +70,7 @@ const NickNameCheck: React.FC<NickNameCheckProps> = ({ nickName }) => {
           사용 가능한 닉네임 입니다!
         </p>
       )}
-      {isNickNameChecked && !isNickNameAvailable && (
+      {isNickNameValid && isNickNameChecked && !isNickNameAvailable && (
         <p className="ml-2 text-xxs text-red-400">
           이미 사용중인 닉네임 입니다.
         </p>
