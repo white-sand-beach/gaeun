@@ -3,17 +3,17 @@ import { Order } from "../../types/Order.ts";
 
 const OrderList: React.FC<Order> = (props) => {
     return (
-        <div className="list-component sm-size-list">
-            <div className="flex justify-between text-xl text-gray-500">
+        <div className="list-component normal-size-list sm:sm-size-list md:md-size-list lg:lg-size-list">
+            <div className="flex justify-between text-xl text-gray-500 lg:text-2xl">
                 {/* 주문번호 */}
-                <p>{props.orderNum}</p>
+                <p>주문번호 : {props.orderNum}</p>
                 {/* 주문일자 */}
                 <p>{props.orderNum}</p>
             </div>
             {/* 음식명 */}
-            <p className="mt-1 text-2xl font-bold">{props.foodName}</p>
+            <p className="mt-1 text-2xl font-bold lg:text-3xl">{props.foodName}</p>
             <div className="flex flex-row items-center justify-between mt-9">
-                <div className="flex flex-col items-center text-xl font-bold">
+                <div className="text-2xl font-bold md:text-3xl sm-size-flex">
                     <p className="text-gray-500 ">결제 금액</p>
                     <p className="text-red-500 ">{props.price} 원</p>
                 </div>

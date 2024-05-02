@@ -33,12 +33,39 @@
   }
   
   .list-component {
-    @apply flex flex-col justify-center border-2 p-4 rounded-[5px] shadow-lg gap-3 
+    @apply flex flex-col justify-around border-2 p-4 rounded-[5px] shadow-lg
   }
 
-  /* 핸드폰으로 볼 때 list 사이즈 */
-  .sm-size-list {
+  /* 화면 크기에 따른 내역관련 CSS */
+  /* 기본 적용 */
+  /* 0px ~ 499px */
+  .normal-size-list {
     @apply w-[320px] h-[240px]
+  }
+
+  /* 500px ~ 839px */
+  .sm-size-list {
+    @apply w-[400px] h-[280px]
+  }
+
+  /* 840px ~ 1023px */
+  .md-size-list {
+    @apply w-[800px] h-[400px]
+  }
+
+  /* 1024px ~  */
+  /* 리스트 2줄로 출력할 예정 */
+  .lg-size-list {
+    @apply w-[600px] h-[280px]
+  }
+
+  /* 주문내역 페이지 크기별 flex */
+  .normal-order-flex {
+    @apply flex flex-col items-center 
+  }
+
+  .lg-order-flex {
+    @apply grid grid-cols-2 justify-items-center
   }
 }
 

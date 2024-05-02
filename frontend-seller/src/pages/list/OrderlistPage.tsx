@@ -53,7 +53,7 @@ const OrderListPage = () => {
     ];
 
     return (
-        <div className="fixed top-[70px] flex flex-col items-center overflow-y-scroll w-full max-h-[calc(100vh-140px)] gap-3">
+        <div className="fixed top-[70px] overflow-y-scroll w-full max-h-[calc(100vh-140px)] gap-3 normal-order-flex lg:lg-order-flex">
             {orderLists.map((orderlist, index) => (
                 <div key={index}>
                     <OrderList
