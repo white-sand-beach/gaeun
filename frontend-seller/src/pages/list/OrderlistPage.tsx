@@ -53,7 +53,7 @@ const OrderListPage = () => {
     ];
 
     return (
-        <div className="fixed overflow-y-scroll max-h-[calc(100vh-120px)] w-full top-[60px]">
+        <div className="fixed overflow-y-scroll max-h-[calc(100vh-120px)] w-full top-[60px] flex flex-col gap-4">
             {orderLists.map((orderlist, index) => (
                 <div key={index}>
                     <OrderList

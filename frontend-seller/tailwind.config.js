@@ -5,6 +5,11 @@ export default {
     "./src/**/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
+    screens: {
+      sm: "500px",
+      md: "840px",
+      lg: "1024px",
+    },
     extend: {
       colors: {
         "mainColor": "#FFAF38", // 메인 컬러 주황색
