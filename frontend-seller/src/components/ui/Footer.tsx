@@ -1,4 +1,3 @@
-// 이미지 import
 import ChartIcon from "../../assets/chart.png"
 import SellListIcon from "../../assets/sell-list.png"
 import OrderListIcon from "../../assets/order-list.png"

@@ -1,7 +1,4 @@
-// 내부 import
 import React from "react";
-
-// 타입 import
 import { Order } from "../../types/Order.ts";
 
 const NotificationList: React.FC<Order> = (props) => {

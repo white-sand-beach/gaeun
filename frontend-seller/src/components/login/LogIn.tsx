@@ -1,7 +1,4 @@
-// 내부 import
 import { Link } from "react-router-dom";
-
-// 이미지 import
 import Logo from "/icons/size-192.png"
 
 const LogIn = () => {

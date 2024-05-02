@@ -1,4 +1,3 @@
-// 컴포넌트 import
 // import RegisterOnestep from "../../components/shop/RegisterOnestep.tsx"
 // import RegisterTwostep from "../../components/shop/RegisterTwostep.tsx";
 import RegisterThreestep from "../../components/shop/RegisterThreestep.tsx";

@@ -1,6 +1,4 @@
-// 이미지 import
 import FinishLogo from "../../assets/signup-finish.gif"
-
 import { useNavigate } from "react-router-dom";
 
 const SignupFinish = () => {

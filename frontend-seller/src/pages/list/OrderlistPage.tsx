@@ -1,4 +1,3 @@
-// 컴포넌트 import
 import OrderList from "../../components/list/OrderList.tsx"
 
 const OrderListPage = () => {
@@ -54,7 +53,7 @@ const OrderListPage = () => {
     ];
 
     return (
-        <div className="fixed overflow-y-scroll max-h-[calc(100vh-120px)] top-[60px]">
+        <div className="fixed overflow-y-scroll max-h-[calc(100vh-120px)] w-full top-[60px]">
             {orderLists.map((orderlist, index) => (
                 <div key={index}>
                     <OrderList

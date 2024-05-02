@@ -1,7 +1,4 @@
-// 내부 import
 import { Outlet, useLocation } from "react-router-dom";
-
-// 컴포넌트 import
 import Header from "./Header.tsx";
 import Footer from "./Footer.tsx";
 

@@ -1,7 +1,4 @@
-// 내부 import
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-
-// 컴포넌트 import
 import Main from "./components/ui/Main.tsx";
 import LogIn from "./components/login/LogIn.tsx"
 import SignUp from "./components/login/SignUp.tsx";
