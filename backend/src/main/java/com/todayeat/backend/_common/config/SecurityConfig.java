@@ -49,10 +49,10 @@ public class SecurityConfig {
     @Value("${BASE_URL}")
     private String baseURL;
 
-    @Value("${SELLER_URL}")
+    @Value("${LOCAL_SELLER_URL}")
     private String sellerURL;
 
-    @Value("${CONSUMER_URL}")
+    @Value("${LOCAL_CONSUMER_URL}")
     private String consumerURL;
 
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
