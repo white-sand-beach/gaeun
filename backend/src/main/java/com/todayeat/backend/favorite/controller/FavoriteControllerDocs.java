@@ -3,6 +3,7 @@ package com.todayeat.backend.favorite.controller;
 import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.favorite.dto.request.CreateFavoriteRequest;
+import com.todayeat.backend.favorite.dto.response.GetFavoriteListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,4 +44,16 @@ public interface FavoriteControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @DeleteMapping("/{favorite-id}")
     SuccessResponse<Void> delete(@PathVariable("favorite-id") Long favoriteId);
+
+    @Operation(summary = "찜 목록 조회",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          query string으로 page, size 넣어주세요. \n
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetFavoriteListResponse.class)))
+    @GetMapping
+    SuccessResponse<GetFavoriteListResponse> getList(@Schema(description = "0부터 시작") @RequestParam Integer page,
+                                                     @RequestParam Integer size);
 }

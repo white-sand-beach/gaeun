@@ -4,6 +4,8 @@ import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.favorite.dto.request.CreateFavoriteRequest;
+import com.todayeat.backend.favorite.dto.response.FavoriteInfo;
+import com.todayeat.backend.favorite.dto.response.GetFavoriteListResponse;
 import com.todayeat.backend.favorite.entity.Favorite;
 import com.todayeat.backend.favorite.mapper.FavoriteMapper;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
@@ -11,8 +13,13 @@ import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.todayeat.backend._common.response.error.ErrorType.*;
 
@@ -64,5 +71,24 @@ public class FavoriteService {
 
         // 삭제
         favoriteRepository.delete(favorite);
+    }
+
+    public GetFavoriteListResponse getList(Integer page, Integer size) {
+
+        Consumer consumer = securityUtil.getConsumer();
+        Pageable pageable = PageRequest.of(page, size);
+
+        // 찜 가져오기
+        Page<Favorite> favorites = favoriteRepository.findAllByConsumerAndDeletedAtIsNull(consumer, pageable);
+
+        // dto 변환
+        List<FavoriteInfo> favoriteInfos = favorites.stream().map(FavoriteMapper.INSTANCE::toFavoriteInfo).toList();
+
+        return FavoriteMapper.INSTANCE.toGetFavoriteListResponse(
+                favoriteInfos,
+                favorites.getTotalElements(),
+                favorites.getNumber(),
+                favorites.hasNext()
+        );
     }
 }
