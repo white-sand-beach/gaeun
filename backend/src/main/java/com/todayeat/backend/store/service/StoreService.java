@@ -8,7 +8,6 @@ import com.todayeat.backend.category.mapper.CategoryMapper;
 import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
-import com.todayeat.backend.location.entity.Coordinate;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
@@ -23,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -51,7 +51,13 @@ public class StoreService {
     public void create(CreateStoreRequest createStoreRequest) {
 
         Seller seller = securityUtil.getSeller();
-        Store store = storeRepository.save(StoreMapper.INSTANCE.createStoreRequestToStore(createStoreRequest, seller.getId(), s3Util));
+
+        String imageURL = imageToURL(createStoreRequest.getImage());
+
+        Store store = storeRepository.save(
+                StoreMapper.INSTANCE.createStoreRequestToStore(
+                        createStoreRequest,
+                        imageURL));
 
         seller.updateStore(store);
         sellerRepository.save(seller);
@@ -108,18 +114,10 @@ public class StoreService {
             throw new BusinessException(STORE_NOT_FOUND);
         }
 
-        store.updateStore(
-                updateStoreRequest.getRegisteredName(),
-                updateStoreRequest.getBossName(),
-                Coordinate.of(updateStoreRequest.getAddress(), updateStoreRequest.getLatitude(), updateStoreRequest.getLongitude()),
-                updateStoreRequest.getTel(),
-                updateStoreRequest.getName(),
-                s3Util.uploadImage(updateStoreRequest.getImage(), SELLER_STORE_IMAGE, store.getId()),
-                updateStoreRequest.getOperatingTime(),
-                updateStoreRequest.getHoliday(),
-                updateStoreRequest.getOriginCountry(),
-                updateStoreRequest.getIntroduction()
-        );
+        StoreMapper.INSTANCE.updateStoreRequestToStore(
+                updateStoreRequest,
+                imageToURL(updateStoreRequest.getImage()),
+                store);
         storeRepository.save(store);
 
         List<StoreCategory> existingCategories = storeCategoryRepository.findByStoreIdAndDeletedAtIsNull(storeId);
@@ -148,6 +146,11 @@ public class StoreService {
         }
 
         store.updateIsOpened();
+    }
+
+    private String imageToURL(MultipartFile image) {
+
+        return s3Util.uploadImage(image, SELLER_STORE_IMAGE, securityUtil.getSeller().getId());
     }
 
     private Store validateAndGetStore(Long storeId) {

@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 public class CategoryInfo {
     private String name;
-    private String image;
+    private String imageURL;
 }
