@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from 'react-cookie';
+import { useCookies } from "react-cookie";
 
 const LoginCallback = () => {
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(['accessToken']);
+  const [cookies, setCookie] = useCookies(["accessToken"]);
 
   useEffect(() => {
     const handleLoginCallback = async () => {
@@ -12,13 +12,13 @@ const LoginCallback = () => {
         const params = new URL(window.location.href);
         const nextPage = params.searchParams.get("next-page");
         const accessToken = params.searchParams.get("access-token");
-        
+
         if (accessToken) {
-          setCookie('accessToken', accessToken, { path: '/' });
+          setCookie("accessToken", accessToken, { path: "/" });
         }
 
-        console.log(cookies)
-        
+        console.log(cookies, nextPage, accessToken);
+
         if (nextPage === "login") {
           navigate("/"); // 로그인 페이지로 이동
         } else if (nextPage === "sign-up") {
