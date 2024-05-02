@@ -10,6 +10,7 @@ public enum SuccessType {
     GET_CONSUMER_SUCCESS("소비자 회원 정보 조회에 성공하였습니다."),
 
     // favorite
+    CREATE_FAVORITE_SUCCESS("찜 등록에 성공하였습니다."),
 
     // review
 
