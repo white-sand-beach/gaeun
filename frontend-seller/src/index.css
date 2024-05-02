@@ -70,6 +70,7 @@
     @apply flex flex-col items-center 
   }
 
+  /* width 1280px 이상일 경우, 주문현황 목록 2열로 출력 */
   .lg-order-flex {
     @apply grid grid-cols-2 justify-items-center
   }

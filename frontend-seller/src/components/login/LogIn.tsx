@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Logo from "/icons/size-192.png"
+import TotalButton from "../ui/TotalButton.tsx";
 
 const LogIn = () => {
     return (
@@ -11,7 +12,7 @@ const LogIn = () => {
                 <input type="checkbox" className="w-[24px]" />
                 <p>아이디 저장하기</p>
             </div>
-            <button className="common-btn">로그인</button>
+            <TotalButton title="로그인"/>
             <Link to={"/signup"}>
                 <p className="text-[#7F7F7F] font-semibold underline">아직 아이디가 없으신가요?</p>
             </Link>

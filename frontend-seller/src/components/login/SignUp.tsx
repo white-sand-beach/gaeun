@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import TotalButton from "../ui/TotalButton.tsx";
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -44,7 +45,9 @@ const SignUp = () => {
             </div>
 
             {/* 가입하기 */}
-            <button className="common-btn" onClick={() => navigate("/signupFin")}>가입하기</button>
+            <TotalButton 
+            title="가입하기"
+            onClick={()=>navigate("/signupFin")}/>
         </div>
     );
 };
