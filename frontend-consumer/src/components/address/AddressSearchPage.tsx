@@ -3,23 +3,23 @@ import DaumPostcodeEmbed from "react-daum-postcode";
 import left from "../../assets/left.png";
 import { useNavigate } from "react-router-dom";
 
-const AdressSearchPage = () => {
+const AddressSearchPage = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [address, setAdress] = useState(""); // 주소를 저장할 상태
+  const [address, setAddress] = useState(""); // 주소를 저장할 상태
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [roadAddress, setJibunAddress] = useState("");
 
-  const goAdressRegistration = () => {
-    navigate("/adress-search-registration", {
+  const goAddressRegistration = () => {
+    navigate("/address-search-registration", {
       state: { address, latitude, longitude, roadAddress },
     });
   };
 
   // 우편번호와 주소를 store에 저장
-  const handleAdress = (data: any) => {
-    setAdress(data.address); // 선택된 주소를 상태에 저장
+  const handleAddress = (data: any) => {
+    setAddress(data.address); // 선택된 주소를 상태에 저장
     setJibunAddress(data.roadAddress);
     console.log("도로명주소:", data.roadAddress);
     console.log("지번주소:", data.jibunAddress);
@@ -38,7 +38,7 @@ const AdressSearchPage = () => {
     });
   };
 
-  const openAdress = () => {
+  const openAddress = () => {
     setIsOpen(true);
   };
 
@@ -56,12 +56,12 @@ const AdressSearchPage = () => {
           className="p-3 border rounded-lg w-[270px]"
           type="text"
           placeholder="지역, 도로명, 건물명으로 검색"
-          onClick={openAdress}
+          onClick={openAddress}
           value={address} // 입력 필드에 주소 표시
           readOnly
         />
         <button
-          onClick={goAdressRegistration}
+          onClick={goAddressRegistration}
           className="ml-3 border border-gray-200 rounded-lg w-[50px]"
         >
           등록
@@ -72,9 +72,9 @@ const AdressSearchPage = () => {
         <div className="top-0 left-0 flex flex-col items-center justify-center max-w-[400px] w-full h-full border-2 gap-4 bg-white z-30">
           <div className="flex items-center justify-between w-full p-4 bg-gray-100 ">
             <span>주소 선택</span>
-            <button onClick={handleAdress}>[닫기]</button>
+            <button onClick={handleAddress}>[닫기]</button>
           </div>
-          <DaumPostcodeEmbed onComplete={handleAdress} autoClose />
+          <DaumPostcodeEmbed onComplete={handleAddress} autoClose />
         </div>
       )}
 
@@ -93,4 +93,4 @@ const AdressSearchPage = () => {
   );
 };
 
-export default AdressSearchPage;
+export default AddressSearchPage;

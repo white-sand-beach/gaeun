@@ -4,7 +4,7 @@ import KakaoMap from "../../pages/main/Kakaomap";
 import left from "../../assets/left.png";
 import speech from "../../assets/search/speech.png";
 
-const AdressRegistration = () => {
+const AddressRegistration = () => {
   const location = useLocation();
   const mapHeight = "500px";
   const [showBalloon, setShowBalloon] = useState(false);
@@ -14,11 +14,11 @@ const AdressRegistration = () => {
     console.log(latitude);
     console.log(longitude);
     console.log(address);
-    // 말풍선을 보여주고 2초 후에 숨깁니다.
+    // 말풍선을 보여주고 5초 후에 숨깁니다.
     setShowBalloon(true);
     setTimeout(() => {
       setShowBalloon(false);
-    }, 3000);
+    }, 5000);
   }, []);
 
   return (
@@ -64,4 +64,4 @@ const AdressRegistration = () => {
   );
 };
 
-export default AdressRegistration;
+export default AddressRegistration;
