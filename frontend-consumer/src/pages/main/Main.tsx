@@ -151,7 +151,7 @@ const Main: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-screen borde">
+      <div className="w-full h-screen">
         <KakaoMap
           key={isOpen ? "large-map" : "small-map"}
           height={mapHeight}
@@ -193,13 +193,13 @@ const Main: React.FC = () => {
           {/* 슬라이드 업되는 패널 내용 */}
           <div className="pt-2 bg-white rounded-t-lg shadow h-svh">
             {/* 여기에 지도 아래 정보를 렌더링합니다. */}
-            <div className="flex items-center justify-center w-64 m-auto mt-1 -mb-1 border border-orange-400 h-14 rounded-xl">
+            <div className="flex items-center justify-center w-64 m-auto my-1 border border-orange-400 h-14 rounded-xl">
               <ServiceBanner />
             </div>
 
             {/* 패널 내부 스크롤 부분 */}
             <div
-              className="flex flex-col gap-2 py-2 pl-2 mt-3 overflow-y-auto "
+              className="flex flex-col gap-2 py-2 pl-2 overflow-y-auto "
               style={{ maxHeight: isExpanded ? "467px" : "212px" }}
             >
               <Shops />
