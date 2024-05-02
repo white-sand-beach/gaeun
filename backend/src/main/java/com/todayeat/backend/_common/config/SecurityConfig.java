@@ -46,6 +46,9 @@ public class SecurityConfig {
     @Value("${CONSUMER_LIST}")
     private String[] consumerList;
 
+    @Value("${BASE_URL}")
+    private String baseURL;
+
     @Value("${SELLER_URL}")
     private String sellerURL;
 
@@ -110,7 +113,7 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
 
             // FRONT 주소 허용
-            config.setAllowedOrigins(Arrays.asList(sellerURL, consumerURL));
+            config.setAllowedOrigins(Arrays.asList(baseURL, sellerURL, consumerURL));
             // 모든 REST Method 허용
             config.setAllowedMethods(Collections.singletonList("*"));
             // credential 값 허용
