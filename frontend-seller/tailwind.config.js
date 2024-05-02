@@ -9,6 +9,7 @@ export default {
       sm: "500px",
       md: "840px",
       lg: "1024px",
+      xl: "1280px",
     },
     extend: {
       colors: {

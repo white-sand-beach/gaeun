@@ -54,10 +54,15 @@
     @apply w-[800px] h-[400px]
   }
 
-  /* 1024px ~  */
+  /* 1024px ~  1279px*/
   /* 리스트 2줄로 출력할 예정 */
   .lg-size-list {
     @apply w-[500px] h-[280px]
+  }
+
+  /* 1280px ~ */
+  .xl-size-list {
+    @apply w-[600px] h-[300px]
   }
 
   /* 주문내역 페이지 크기별 flex */
