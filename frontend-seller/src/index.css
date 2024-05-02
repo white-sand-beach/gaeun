@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @layer base {
+
   html,
   body,
   #root {
@@ -25,12 +26,22 @@
 @layer components {
   .common-btn {
     @apply w-[300px] h-[40px] bg-mainColor text-white font-bold rounded-[5px]
-  };
+  }
 
   .detail-btn {
     @apply h-[30px] border border-mainColor text-mainColor text-xs rounded-[5px]
   }
+  
+  .list-component {
+    @apply flex flex-col justify-center border-2 p-4 rounded-[5px] shadow-lg gap-3 
+  }
+
+  /* 핸드폰으로 볼 때 list 사이즈 */
+  .sm-size-list {
+    @apply w-[320px] h-[240px]
+  }
 }
+
 
 /* 스크롤바 투명하게 설정 */
 ::-webkit-scrollbar {
