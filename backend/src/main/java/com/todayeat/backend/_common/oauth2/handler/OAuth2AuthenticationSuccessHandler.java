@@ -76,8 +76,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         if (mode.equals("login")) {
             // 회원 찾기
             Consumer consumer = consumerService.getConsumerOrNull(
-                    oAuth2UserPrincipal.getUserInfo().getSocialType(),
-                    oAuth2UserPrincipal.getUserInfo().getEmail());
+                    oAuth2UserPrincipal.getOAuth2UserResponse().getSocialType(),
+                    oAuth2UserPrincipal.getOAuth2UserResponse().getEmail());
 
             // DB에 회원 존재
             if (consumer != null) {

@@ -6,20 +6,20 @@ import lombok.ToString;
 import java.util.Map;
 
 @ToString
-public class KakaoOAuth2Response implements OAuth2Response {
+public class KakaoOAuth2UserResponse implements OAuth2UserResponse {
 
     private OAuth2Provider socialType;
     private String email;
     private String profileImage;
 
     @Builder
-    private KakaoOAuth2Response(OAuth2Provider socialType, String email, String profileImage) {
+    private KakaoOAuth2UserResponse(OAuth2Provider socialType, String email, String profileImage) {
         this.socialType = socialType;
         this.email = email;
         this.profileImage = profileImage;
     }
 
-    public static KakaoOAuth2Response of(Map<String, Object> attributes) {
+    public static KakaoOAuth2UserResponse of(Map<String, Object> attributes) {
 
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");

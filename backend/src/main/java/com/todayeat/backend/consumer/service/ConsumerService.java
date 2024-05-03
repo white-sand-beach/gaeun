@@ -30,7 +30,7 @@ public class ConsumerService {
     @Transactional
     public Long create(OAuth2UserPrincipal principal) {
 
-        Consumer consumer = ConsumerMapper.INSTANCE.oAuth2PrincipalToConsumer(principal.getUserInfo());
+        Consumer consumer = ConsumerMapper.INSTANCE.oAuth2UserResponseToConsumer(principal.getOAuth2UserResponse());
         consumerRepository.save(consumer);
 
         return consumer.getId();

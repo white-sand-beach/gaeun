@@ -6,7 +6,7 @@ import com.todayeat.backend._common.filter.SellerLoginFilter;
 import com.todayeat.backend._common.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import com.todayeat.backend._common.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import com.todayeat.backend._common.oauth2.repository.OAuth2AuthorizationRepository;
-import com.todayeat.backend._common.oauth2.service.OAuth2Service;
+import com.todayeat.backend._common.oauth2.service.OAuth2UserService;
 import com.todayeat.backend._common.refreshtoken.service.RefreshTokenService;
 import com.todayeat.backend._common.util.CookieUtil;
 import com.todayeat.backend._common.util.JwtUtil;
@@ -57,7 +57,7 @@ public class SecurityConfig {
 
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
-    private final OAuth2Service oAuth2Service;
+    private final OAuth2UserService oAuth2UserService;
     private final OAuth2AuthorizationRepository oAuth2AuthorizationRepository;
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -87,7 +87,7 @@ public class SecurityConfig {
                 // oauth2 설정
                 .oauth2Login(configure ->
                         configure.authorizationEndpoint(config -> config.authorizationRequestRepository(oAuth2AuthorizationRepository))
-                                .userInfoEndpoint(config -> config.userService(oAuth2Service))
+                                .userInfoEndpoint(config -> config.userService(oAuth2UserService))
                                 .successHandler(oAuth2AuthenticationSuccessHandler)
                                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 )
