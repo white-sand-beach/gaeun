@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import left from "../../assets/left.png";
+import left from "../../assets/navbar/back.png";
 import { useNavigate } from "react-router-dom";
 
 const AddressSearchPage = () => {
@@ -79,12 +79,18 @@ const AddressSearchPage = () => {
       )}
 
       <ul className="divide-y divide-gray-200">
-        <li className="flex items-center justify-between p-4">
-          <span>강남구 역삼동 진달래 317</span>
+        <li className="between p-4">
+          <div className="text-sm">
+            <p className="font-bold">우리집</p>
+            <p>강남구 역삼동 진달래 317</p>
+          </div>
           <button>선택</button>
         </li>
-        <li className="flex items-center justify-between p-4">
-          <span>강남구 역삼동 진달래 21 빌라 205호</span>
+        <li className="between p-4">
+          <div className="text-sm">
+            <p>우리집</p>
+            <p>강남구 역삼동 진달래 317</p>
+          </div>
           <button>선택</button>
         </li>
         {/* 더 많은 주소 항목을 추가하세요 */}
