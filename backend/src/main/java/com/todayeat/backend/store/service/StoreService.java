@@ -8,7 +8,6 @@ import com.todayeat.backend.category.mapper.CategoryMapper;
 import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
-import com.todayeat.backend.location.dto.response.GetSimpleLocationResponse;
 import com.todayeat.backend.location.service.LocationService;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
@@ -17,7 +16,6 @@ import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.GetConsumerDetailStoreResponse;
 import com.todayeat.backend.store.dto.response.GetConsumerInfoStoreResponse;
 import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse;
-import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse.StoreInfo;
 import com.todayeat.backend.store.dto.response.GetSellerStoreResponse;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.mapper.StoreMapper;
@@ -40,8 +38,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.todayeat.backend._common.entity.DirectoryType.SELLER_STORE_IMAGE;
-import static com.todayeat.backend._common.response.error.ErrorType.CATEGORY_NOT_FOUND;
-import static com.todayeat.backend._common.response.error.ErrorType.STORE_NOT_FOUND;
+import static com.todayeat.backend._common.response.error.ErrorType.*;
 
 @Slf4j
 @Service
@@ -117,15 +114,11 @@ public class StoreService {
                 validateAndGetStore(storeId));
     }
 
-    public GetConsumerListStoreResponse getConsumerListStore(String keyword, Long categoryId, Integer page, Integer size, String sort) {
-
-        GetSimpleLocationResponse getSimpleLocationResponse = locationService.getSimpleSelected();
+    public GetConsumerListStoreResponse getConsumerListStore(BigDecimal latitude, BigDecimal longitude, Integer radius, String keyword, Long categoryId, Integer page, Integer size, String sort) {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sort));
 
-        List<StoreInfo> storeList = storeRepository.findStoreList(createPoint(getSimpleLocationResponse.getLatitude(), getSimpleLocationResponse.getLongitude()), getSimpleLocationResponse.getRadius() * 1000, keyword, categoryId, pageRequest);
-
-        return GetConsumerListStoreResponse.of(storeList);
+        return storeRepository.findStoreList(createPoint(latitude, longitude), radius * 1000, keyword, categoryId, pageRequest);
     }
 
     @Transactional

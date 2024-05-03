@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.todayeat.backend.category.dto.CategoryInfo;
 import com.todayeat.backend.category.entity.QCategory;
 import com.todayeat.backend.category.entity.QStoreCategory;
+import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse;
 import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse.StoreInfo;
 import com.todayeat.backend.store.entity.QStore;
 import com.todayeat.backend.store.entity.Store;
@@ -28,7 +29,7 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<StoreInfo> findStoreList(Point location, Integer radius, String keyword, Long categoryId, Pageable pageable) {
+    public GetConsumerListStoreResponse findStoreList(Point location, Integer radius, String keyword, Long categoryId, Pageable pageable) {
 
         QStore store = QStore.store;
         QStoreCategory storeCategory = QStoreCategory.storeCategory;
@@ -109,6 +110,12 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
 
         // todo 메뉴 리스트 추가 해야 함
 
-        return storeInfos;
+        boolean hasNext = false;
+        if (storeInfos.size() > pageable.getPageSize()) {
+            storeInfos.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+
+        return GetConsumerListStoreResponse.of(storeInfos, pageable.getPageSize() , hasNext);
     }
 }

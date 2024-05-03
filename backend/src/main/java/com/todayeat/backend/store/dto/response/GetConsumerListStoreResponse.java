@@ -15,6 +15,12 @@ public class GetConsumerListStoreResponse {
 
     private List<StoreInfo> storeList;
 
+    @Schema(description = "현재 페이지", example = "0")
+    private Integer page;
+
+    @Schema(description = "다음 페이지 존재 여부", example = "true")
+    private Boolean hasNext;
+
     @Getter
     @Setter
     public static class StoreInfo {
@@ -47,13 +53,17 @@ public class GetConsumerListStoreResponse {
     }
 
     @Builder
-    public GetConsumerListStoreResponse(List<StoreInfo> storeList) {
+    public GetConsumerListStoreResponse(List<StoreInfo> storeList, Integer page, Boolean hasNext) {
         this.storeList = storeList;
+        this.page = page;
+        this.hasNext = hasNext;
     }
 
-    static public GetConsumerListStoreResponse of(List<StoreInfo> storeList) {
+    static public GetConsumerListStoreResponse of(List<StoreInfo> storeList, Integer page, Boolean hasNext) {
         return builder()
                 .storeList(storeList)
+                .page(page)
+                .hasNext(hasNext)
                 .build();
     }
 }

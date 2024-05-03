@@ -11,6 +11,8 @@ import com.todayeat.backend.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+
 import static com.todayeat.backend._common.response.success.SuccessType.*;
 
 @RestController
@@ -45,9 +47,9 @@ public class StoreController implements StoreControllerDocs {
     }
 
     @Override
-    public SuccessResponse<GetConsumerListStoreResponse> getConsumerListStore(String keyword, Long categoryId, Integer page, Integer size, String sort) {
+    public SuccessResponse<GetConsumerListStoreResponse> getConsumerListStore(BigDecimal latitude, BigDecimal longitude, Integer radius, String keyword, Long categoryId, Integer page, Integer size, String sort) {
 
-        return SuccessResponse.of(storeService.getConsumerListStore(keyword, categoryId, page, size, sort), GET_STORE_DETAIL_SUCCESS);
+        return SuccessResponse.of(storeService.getConsumerListStore(latitude, longitude, radius, keyword, categoryId, page, size, sort), GET_STORE_DETAIL_SUCCESS);
     }
 
     @Override

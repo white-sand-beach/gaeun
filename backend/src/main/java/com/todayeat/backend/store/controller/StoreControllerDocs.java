@@ -14,9 +14,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 @Tag(name = "가게 Controller")
 @RequestMapping("/api/stores")
@@ -70,18 +73,56 @@ public interface StoreControllerDocs {
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema(implementation = GetConsumerListStoreResponse.class)))
-    @GetMapping()
+   @GetMapping()
     @PreAuthorize("hasRole('CONSUMER')")
-    SuccessResponse<GetConsumerListStoreResponse> getConsumerListStore(@Schema(description = "검색어", example = "검색어") @RequestParam(required = false, name = "keyword") String keyword,
-                                                                       @Schema(description = "카테고리 아이디", example = "1") @RequestParam(required = false, name = "category-id") Long categoryId,
-                                                                       @Schema(description = "페이지 번호 (0부터 시작)", example = "0") @RequestParam(required = true, name = "page") Integer page,
-                                                                       @Schema(description = "한 페이지에 불러올 데이터의 개수", example = "10") @RequestParam(required = true, name = "size") Integer size,
+    SuccessResponse<GetConsumerListStoreResponse> getConsumerListStore(@NotNull(message = "latitude: 값이 null이 아니어야 합니다.")
+                                                                       @DecimalMin(value = "33", message = "latitude: 33 이상이어야 합니다.")
+                                                                       @DecimalMax(value = "38", message = "latitude: 38 이하이어야 합니다.")
+                                                                       @Schema(description = "위도", example = "36.108184")
+                                                                       @RequestParam (required = true, name = "latitude")
+                                                                       BigDecimal latitude,
+
+                                                                       @NotNull(message = "longitude: 값이 null이 아니어야 합니다.")
+                                                                       @DecimalMin(value = "124", message = "longitude: 124 이상이어야 합니다.")
+                                                                       @DecimalMax(value = "132", message = "longitude: 132 이하이어야 합니다.")
+                                                                       @Schema(description = "경도", example = "128.413967")
+                                                                       @RequestParam(required = true, name = "longitude")
+                                                                       BigDecimal longitude,
+
+                                                                       @Min(value = 1, message = "radius: 값이 1 이상이어야 합니다.")
+                                                                       @Max(value = 3, message = "radius: 값이 3 이하여야 합니다.")
+                                                                       @Schema(description = "반경(km)", defaultValue = "2")
+                                                                       @RequestParam(required = true, name = "radius")
+                                                                       Integer radius,
+
+                                                                       @Size(max = 20, message = "keyword: 길이가 20 이하여야 합니다.")
+                                                                       @Schema(description = "검색어", example = "검색어")
+                                                                       @RequestParam(required = false, name = "keyword")
+                                                                       String keyword,
+
+                                                                       @Schema(description = "카테고리 아이디", example = "1")
+                                                                       @RequestParam(required = false, name = "category-id")
+                                                                       Long categoryId,
+
+                                                                       @Min(value = 0, message = "page: 값이 0 이상이어야 합니다.")
+                                                                       @Schema(description = "페이지 번호 (0부터 시작)", example = "0")
+                                                                       @RequestParam(required = true, name = "page")
+                                                                       Integer page,
+
+                                                                       @Min(value = 1, message = "size: 값이 1 이상이어야 합니다.")
+                                                                       @Schema(description = "한 페이지에 불러올 데이터의 개수", example = "10")
+                                                                       @RequestParam(required = true, name = "size")
+                                                                       Integer size,
+
+                                                                       @NotBlank(message = "sort: 값이 비어 있지 않아야 합니다.")
                                                                        @Schema(description = """
                                                                                정렬 조건
                                                                                - distance: 가까운 순
                                                                                - reviewCnt: 리뷰 많은 순
                                                                                - favoriteCnt: 찜 많은 순
-                                                                               """, example = "near") @RequestParam(required = true, name = "sort") String sort);
+                                                                               """, example = "near")
+                                                                       @RequestParam(required = true, name = "sort")
+                                                                       String sort);
 
     @Operation(summary = "가게 수정")
     @ApiResponse(responseCode = "200",
