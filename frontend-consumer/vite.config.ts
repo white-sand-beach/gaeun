@@ -60,7 +60,4 @@ export default defineConfig({
       },
     }),
   ],
-  server: {
-    open: "/consumer",
-  },
 });
