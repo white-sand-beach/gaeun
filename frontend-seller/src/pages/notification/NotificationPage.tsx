@@ -53,7 +53,7 @@ const NotificationPage = () => {
     ]
 
     return (
-        <div className="fixed flex flex-col items-center w-full max-h-[calc(100vh-60px)] h-full overflow-y-scroll top-[60px]">
+        <div className="fixed flex flex-col items-center max-h-[calc(100vh-60px)] overflow-y-scroll top-[60px]">
             {alarmlists.map((alarmlist, index) => (
                 <div key={index}>
                     <NotificationList
