@@ -1,6 +1,4 @@
-import UserState from "./UserState";
-
-interface CookieState extends UserState {
+interface CookieState {
   accessToken: string;
   setAccessToken: (token: string) => void;
 }
