@@ -14,8 +14,8 @@ export default defineConfig({
         enabled: true
       },
       manifest: {
-        name: "오늘잡슈",
-        short_name: "오늘잡슈",
+        name: "빨리드셔-사장님",
+        short_name: "빨리드셔-사장님",
         start_url: "/seller",
         scope: "/seller",
         display: "standalone",
