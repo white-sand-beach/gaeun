@@ -17,7 +17,8 @@ import ProfileSetting from "./pages/mypage/ProfileSetting";
 import Login from "./pages/accounts/Login";
 import Shop from "./pages/shop/Shop";
 import SignUp from "./pages/accounts/SignUp";
-import AddressSearchPage from "./components/adress/AdressSearchPage";
+import AddressSearchPage from "./components/address/AddressSearchPage";
+import AddressRegistration from "./components/address/AddressRegistration";
 
 const queryClient = new QueryClient();
 
@@ -42,7 +43,11 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />.
           <Route path="/profileSetting" element={<ProfileSetting />} />
           <Route path="/shop" element={<Shop />} />
-          <Route path="/adress-search" element={<AddressSearchPage />} />
+          <Route path="/address-search" element={<AddressSearchPage />} />
+          <Route
+            path="/address-search-registration"
+            element={<AddressRegistration />}
+          />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>
