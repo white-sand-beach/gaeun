@@ -5,8 +5,8 @@ import RegisterThreestep from "../../components/shop/RegisterThreestep.tsx";
 const RegisterShopPage = () => {
     return (
         <div className="fixed flex flex-col items-center w-full h-full top-[60px] gap-2">
-            {/* <RegisterOnestep />
-            <RegisterTwostep /> */}
+            {/* <RegisterOnestep /> */}
+            {/* <RegisterTwostep /> */}
             <RegisterThreestep />
             
         </div>

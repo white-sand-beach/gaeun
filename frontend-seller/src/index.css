@@ -74,6 +74,16 @@
   .lg-order-flex {
     @apply grid grid-cols-2 justify-items-center
   }
+
+  /* Footer 없는 경우 최상위 div container */
+  .no-footer {
+    @apply flex flex-col items-center fixed top-[70px] w-full max-h-[calc(100vh-70px)]
+  }
+
+  /* Footer 있는 경우 */
+  .yes-footer {
+    @apply flex flex-col items-center fixed top-[70px] w-full max-h-[calc(100vh-140px)]
+  }
 }
 
 
@@ -81,4 +91,12 @@
 ::-webkit-scrollbar {
   width: 0px;
   display: none;
+}
+
+body {
+  /* 텍스트 드래그 방지 */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
