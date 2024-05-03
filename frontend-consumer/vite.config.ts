@@ -5,7 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/',
   plugins: [
     million.vite({ auto: true }),
     react(),
@@ -19,7 +19,7 @@ export default defineConfig({
         name: '오늘잡슈',
         short_name: '오늘잡슈',
         description: '음식 당일 소진 장려 플랫폼',
-        // start_url: "/consumer",
+        start_url: '/consumer',
         display: 'standalone',
         theme_color: '#ffaf38',
         icons: [
