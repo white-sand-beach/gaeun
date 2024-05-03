@@ -4,6 +4,7 @@ import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.location.dto.request.CreateLocationRequest;
 import com.todayeat.backend.location.dto.request.UpdateLocationRequest;
 import com.todayeat.backend.location.dto.response.GetLocationResponse;
+import com.todayeat.backend.location.dto.response.GetSimpleLocationResponse;
 import com.todayeat.backend.location.entity.Coordinate;
 import com.todayeat.backend.location.entity.Location;
 import lombok.Builder;
@@ -23,9 +24,13 @@ public interface LocationMapper {
 
     @Mapping(source = "location.coordinate.address", target = "address")
     @Mapping(source = "location.coordinate.latitude", target = "latitude")
-    @Mapping(source = "location.coordinate.latitude", target = "longitude")
+    @Mapping(source = "location.coordinate.longitude", target = "longitude")
     @Mapping(source = "location.id", target = "locationId")
     GetLocationResponse locationToGetLocationResponse(Location location);
+
+    @Mapping(source = "location.coordinate.latitude", target = "latitude")
+    @Mapping(source = "location.coordinate.longitude", target = "longitude")
+    GetSimpleLocationResponse locationToGetSimpleLocationResponse(Location location);
 
     Coordinate updateLocationRequestToCoordinate(UpdateLocationRequest request);
 }

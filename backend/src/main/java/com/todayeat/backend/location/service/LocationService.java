@@ -6,6 +6,7 @@ import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.location.dto.request.CreateLocationRequest;
 import com.todayeat.backend.location.dto.request.UpdateLocationRequest;
 import com.todayeat.backend.location.dto.response.GetLocationResponse;
+import com.todayeat.backend.location.dto.response.GetSimpleLocationResponse;
 import com.todayeat.backend.location.entity.Location;
 import com.todayeat.backend.location.mapper.LocationMapper;
 import com.todayeat.backend.location.repository.LocationRepository;
@@ -65,6 +66,15 @@ public class LocationService {
 
         return locationRepository.findByConsumerAndIsSelectedIsTrueAndDeletedAtNull(consumer)
                 .map(LocationMapper.INSTANCE::locationToGetLocationResponse)
+                .orElse(null);
+    }
+
+    public GetSimpleLocationResponse getSimpleSelected() {
+
+        Consumer consumer = securityUtil.getConsumer();
+
+        return locationRepository.findByConsumerAndIsSelectedIsTrueAndDeletedAtNull(consumer)
+                .map(LocationMapper.INSTANCE::locationToGetSimpleLocationResponse)
                 .orElse(null);
     }
 
