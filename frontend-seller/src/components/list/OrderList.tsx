@@ -3,8 +3,8 @@ import { OrderType } from "../../types/OrderType.ts";
 
 const OrderList: React.FC<OrderType> = (props) => {
     return (
-        <div className="w-screen mx-2 list-component xl:xl-size-list">
-            <div className="flex justify-between text-xl text-gray-500 md:text-2xl lg:text-3xl">
+        <div className="w-screen list-component xl:xl-size-list">
+            <div className="flex justify-between text-xl text-gray-500">
                 {/* 주문번호 */}
                 <p>주문번호 : {props.orderNum}</p>
                 {/* 주문일자 */}
@@ -13,7 +13,7 @@ const OrderList: React.FC<OrderType> = (props) => {
             {/* 음식명 */}
             <p className="mt-1 text-2xl font-bold">{props.foodName}</p>
             <div className="flex flex-row items-center justify-between mt-9">
-                <div className="text-2xl font-bold sm-size-flex">
+                <div className="text-2xl font-bold">
                     <p className="text-gray-500 ">결제 금액</p>
                     <p className="text-red-500 ">{props.price} 원</p>
                 </div>
