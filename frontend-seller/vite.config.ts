@@ -16,7 +16,7 @@ export default defineConfig({
       manifest: {
         name: "오늘잡슈",
         short_name: "오늘잡슈",
-        start_url: "/",
+        start_url: "/seller",
         display: "standalone",
         theme_color: "#FFAF38",
         icons: [
