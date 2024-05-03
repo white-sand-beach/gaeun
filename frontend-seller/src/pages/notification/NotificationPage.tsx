@@ -1,48 +1,59 @@
-// 컴포넌트 import
 import NotificationList from "../../components/notification/NotificationList";
 
 const NotificationPage = () => {
     const alarmlists = [
         {
-            orderNum: "test-1",
-            orderDate: "24-04-24",
+            orderNum: "1",
+            orderDate: "2024-04-26",
             foodName: "햄버거1",
-            price: 13900
+            price: "13,900",
         },
         {
-            orderNum: "test-2",
-            orderDate: "24-04-24",
+            orderNum: "2",
+            orderDate: "2024-04-26",
             foodName: "햄버거2",
-            price: 23900
+            price: "23,900",
         },
         {
-            orderNum: "test-3",
-            orderDate: "24-04-24",
+            orderNum: "3",
+            orderDate: "2024-04-26",
             foodName: "햄버거3",
-            price: 33900
+            price: "33,900",
         },
         {
-            orderNum: "test-4",
-            orderDate: "24-04-24",
+            orderNum: "4",
+            orderDate: "2024-04-26",
             foodName: "햄버거4",
-            price: 43900
+            price: "33,900",
         },
         {
-            orderNum: "test-5",
-            orderDate: "24-04-24",
+            orderNum: "5",
+            orderDate: "2024-04-26",
             foodName: "햄버거5",
-            price: 53900
+            price: "33,900",
         },
         {
-            orderNum: "test-6",
-            orderDate: "24-04-24",
+            orderNum: "6",
+            orderDate: "2024-04-26",
             foodName: "햄버거6",
-            price: 63900
+            price: "33,900",
+        },
+        {
+            orderNum: "5",
+            orderDate: "2024-04-26",
+            foodName: "햄버거5",
+            price: "33,900",
+        },
+        {
+            orderNum: "6",
+            orderDate: "2024-04-26",
+            foodName: "햄버거6",
+            price: "33,900",
         },
     ]
 
     return (
-        <div className="absolute flex flex-col items-center w-full max-h-[calc(100vh-60px)] h-full overflow-y-scroll top-[60px]">
+        <div className="fixed flex flex-col items-center w-full max-h-[calc(100vh-60px)] h-full overflow-y-scroll top-[60px]">
             {alarmlists.map((alarmlist, index) => (
                 <div key={index}>
                     <NotificationList

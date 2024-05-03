@@ -3,22 +3,24 @@
 @tailwind utilities;
 
 @layer base {
+
   html,
   body,
   #root {
-    @apply w-screen h-screen
+    @apply w-full h-screen
   }
 
   h1 {
-    @apply text-3xl text-orange-500 font-bold
+    @apply text-2xl text-black font-bold
   }
 
   header {
-    @apply fixed top-0 flex flex-row justify-center items-center w-full max-h-[60px] h-full bg-mainColor
+    @apply fixed top-0 flex flex-row justify-between items-center w-full h-[60px] bg-mainColor p-4
   }
 
   footer {
-    @apply fixed bottom-0 flex flex-row justify-center items-center gap-3 w-full max-h-[60px] h-full bg-white border-t-2
+    @apply fixed bottom-0 flex flex-row justify-evenly items-center gap-3 w-full h-[60px] bg-white border-t-2
+    text-[16px] text-gray-500
   }
 }
 
@@ -30,17 +32,50 @@
   .detail-btn {
     @apply h-[30px] border border-mainColor text-mainColor text-xs rounded-[5px]
   }
-
-  /* 화면 작게 볼 때 리스트 1열로 출력 */
-  .normal-list-view {
-    @apply flex flex-col justify-center items-center gap-3
+  
+  .list-component {
+    @apply flex flex-col justify-around border-2 p-4 rounded-[5px] shadow-lg
   }
 
-  /* 화면 넓게 볼 때 리스트 2열로 출력 */
-  .lg-list-view {
-    @apply grid grid-cols-2 gap-3
+  /* 화면 크기에 따른 내역관련 CSS */
+  /* 기본 적용 */
+  /* 0px ~ 499px */
+  .normal-size-list {
+    @apply w-[320px] h-[240px]
+  }
+
+  /* 500px ~ 839px */
+  .sm-size-list {
+    @apply w-[400px] h-[280px]
+  }
+
+  /* 840px ~ 1023px */
+  .md-size-list {
+    @apply w-[800px] h-[400px]
+  }
+
+  /* 1024px ~  1279px*/
+  /* 리스트 2줄로 출력할 예정 */
+  .lg-size-list {
+    @apply w-[500px] h-[280px]
+  }
+
+  /* 1280px ~ */
+  .xl-size-list {
+    @apply w-[600px] h-[300px]
+  }
+
+  /* 주문내역 페이지 크기별 flex */
+  .normal-order-flex {
+    @apply flex flex-col items-center 
+  }
+
+  /* width 1280px 이상일 경우, 주문현황 목록 2열로 출력 */
+  .lg-order-flex {
+    @apply grid grid-cols-2 justify-items-center
   }
 }
+
 
 /* 스크롤바 투명하게 설정 */
 ::-webkit-scrollbar {

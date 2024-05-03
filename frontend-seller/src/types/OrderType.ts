@@ -1,6 +1,6 @@
-export type Order = {
+export type OrderType = {
     orderNum: string;
     orderDate: string;
     foodName: string;
-    price: number;
+    price: string;
 }

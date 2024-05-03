@@ -1,14 +1,14 @@
 import React from "react";
-import { OrderType } from "../../types/OrderType.ts";
+import { SalesType } from "../../types/SalesType";
 
-const OrderList: React.FC<OrderType> = (props) => {
-    return (
-        <div className="list-component normal-size-list sm:sm-size-list md:md-size-list lg:lg-size-list xl:xl-size-list">
-            <div className="flex justify-between text-xl text-gray-500 md:text-2xl lg:text-3xl">
-                {/* 주문번호 */}
-                <p>주문번호 : {props.orderNum}</p>
+const SalesList: React.FC<SalesType> = (props) => {
+  return (
+    <div className="list-component normal-size-list sm:sm-size-list md:md-size-list lg:lg-size-list xl:xl-size-list">
+            <div className="flex justify-between text-xl text-gray-500 md:text-2xl lg:text-3xl font-bold">
                 {/* 주문일자 */}
-                <p>{props.orderNum}</p>
+                <p>{props.orderDate}</p>
+                {/* 주문상태 */}
+                <p>{props.orderState}</p>
             </div>
             {/* 음식명 */}
             <p className="mt-1 text-2xl font-bold lg:text-3xl xl:text-4xl">{props.foodName}</p>
@@ -20,7 +20,7 @@ const OrderList: React.FC<OrderType> = (props) => {
                 <button className="text-xl font-bold w-[100px] h-[100px] border-2 border-black rounded-[10px]">상세내역 보러가기</button>
             </div>
         </div>
-    );
+  );
 };
 
-export default OrderList;
+export default SalesList;
