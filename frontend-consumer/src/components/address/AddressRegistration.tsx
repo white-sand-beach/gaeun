@@ -18,7 +18,7 @@ const AddressRegistration = () => {
     setShowBalloon(true);
     setTimeout(() => {
       setShowBalloon(false);
-    }, 5000);
+    }, 3000);
   }, []);
 
   return (
