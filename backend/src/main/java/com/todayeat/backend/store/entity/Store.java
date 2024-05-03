@@ -71,4 +71,8 @@ public class Store extends BaseTime {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id", nullable = false)
     private Seller seller;
+
+    public void updateFavoriteCnt(int value) {
+        this.favoriteCnt += value;
+    }
 }

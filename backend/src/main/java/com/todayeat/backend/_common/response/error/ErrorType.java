@@ -24,6 +24,8 @@ public enum ErrorType {
     NICKNAME_CONFLICT(HttpStatus.CONFLICT, "이미 사용중인 닉네임입니다."),
 
     // favorite
+    FAVORITE_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 찜입니다."),
+    FAVORITE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 찜을 찾을 수 없습니다."),
 
     // review
 
@@ -47,6 +49,7 @@ public enum ErrorType {
     SELLER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "판매자 인증에 실패했습니다."),
 
     // store
+    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 가게입니다."),
 
     // category
 
