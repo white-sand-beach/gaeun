@@ -19,6 +19,6 @@ public class CreateCategoryRequest {
     private String name;
 
     @NotNull(message = "image: 값이 null이 아니어야 합니다.")
-    @Schema(description = "카테고리 이미지", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/store-image/img.png")
+    @Schema(description = "카테고리 이미지", example = "img.jpg")
     private MultipartFile image;
 }

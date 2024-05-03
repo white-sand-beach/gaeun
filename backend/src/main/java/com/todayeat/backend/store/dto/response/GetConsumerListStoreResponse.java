@@ -53,7 +53,7 @@ public class GetConsumerListStoreResponse {
     }
 
     @Builder
-    public GetConsumerListStoreResponse(List<StoreInfo> storeList, Integer page, Boolean hasNext) {
+    private GetConsumerListStoreResponse(List<StoreInfo> storeList, Integer page, Boolean hasNext) {
         this.storeList = storeList;
         this.page = page;
         this.hasNext = hasNext;
