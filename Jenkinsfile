@@ -44,6 +44,16 @@ pipeline {
                 }
             }
         }
+
+        stage("front_env download") {
+            steps {
+                withCredentials([file(credentialsId: 'front_env', variable: 'configFile')]) {
+                    script {
+                        sh 'cp -rf $configFile ./frontend-consumer/.env'
+                    }
+                }
+            }
+        }
     
         
         stage('fe_consumer_build'){
