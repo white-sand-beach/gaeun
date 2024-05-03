@@ -5,6 +5,8 @@ WORKDIR /app
 COPY build.gradle settings.gradle /app/
 COPY src /app/src
 
+ENV TZ Asia/Seoul
+
 # 빌드 수행
 RUN gradle build -x test --parallel --continue
 

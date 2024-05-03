@@ -48,10 +48,13 @@ public class SecurityConfig {
     @Value("${CONSUMER_LIST}")
     private String[] consumerList;
 
-    @Value("${SELLER_URL}")
+    @Value("${BASE_URL}")
+    private String baseURL;
+
+    @Value("${LOCAL_SELLER_URL}")
     private String sellerURL;
 
-    @Value("${CONSUMER_URL}")
+    @Value("${LOCAL_CONSUMER_URL}")
     private String consumerURL;
 
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
@@ -112,7 +115,7 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
 
             // FRONT 주소 허용
-            config.setAllowedOrigins(Arrays.asList(sellerURL, consumerURL));
+            config.setAllowedOrigins(Arrays.asList(baseURL, sellerURL, consumerURL));
             // 모든 REST Method 허용
             config.setAllowedMethods(Collections.singletonList("*"));
             // credential 값 허용

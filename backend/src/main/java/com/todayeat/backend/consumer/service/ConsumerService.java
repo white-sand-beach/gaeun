@@ -42,11 +42,12 @@ public class ConsumerService {
         Consumer consumer = securityUtil.getConsumer();
 
         // 닉네임 중복 검사
-        if (existsByNickname(request.getNickname())) {
+        if (existsByNickname(request.getNickname()) && !consumer.getNickname().equals(request.getNickname())) {
             throw new BusinessException(NICKNAME_CONFLICT);
         }
 
-        consumer.update(request);
+        consumerRepository.findByIdAndDeletedAtIsNull(consumer.getId())
+                .get().update(request);
     }
 
     public Consumer getConsumerOrNull(OAuth2Provider socialType, String email) {
