@@ -11,7 +11,7 @@ const NavBar = () => {
     navigate(-1);
   };
   return (
-    <div className="fixed w-full p-4 rounded-b-lg between bg-myColor">
+    <div className="fixed z-20 w-full p-4 rounded-b-lg between bg-myColor">
       <div className="w-[33%]">
         <img src={back} alt="뒤로가기" onClick={handleBackClick} />
       </div>
