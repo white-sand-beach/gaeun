@@ -12,6 +12,7 @@ const LoginCallback = () => {
         const params = new URL(window.location.href);
         const nextPage = params.searchParams.get("next-page");
         const accessToken = params.searchParams.get("access-token");
+        console.log(nextPage)
 
         if (accessToken) {
           setCookie("accessToken", accessToken, { path: "/" });

@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import UserState from "../../types/UserState";
 
-const UpdateProfileForm = async ({ nickName }: UserState): Promise<any> => {
+const NickNameCheckForm = async ({ nickName }: UserState): Promise<any> => {
   const cookies = new Cookies();
   const accessToken = cookies.get("accessToken")
   const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -21,4 +21,4 @@ const UpdateProfileForm = async ({ nickName }: UserState): Promise<any> => {
   return response.data;
 };
 
-export default UpdateProfileForm;
+export default NickNameCheckForm;
