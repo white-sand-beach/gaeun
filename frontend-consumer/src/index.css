@@ -46,6 +46,10 @@
   .text-xxs {
     @apply text-[10px];
   }
+
+  .menu-name {
+    @apply w-auto px-2 py-1 text-xs font-bold bg-white border border-gray-300 rounded-full shadow-xl max-w-max
+  }
 }
 
 @layer components {

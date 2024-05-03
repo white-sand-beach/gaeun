@@ -10,7 +10,7 @@ const ShopInformation = () => {
       <div className="p-4">
         <div className="flex">
           <img src={shopImage} alt="ShopImage" className="w-4 h-4 mt-1" />
-          <p className="ml-1 text-base">가게정보</p>
+          <p className="ml-1 text-base font-bold">가게정보</p>
         </div>
         <hr className="w-full my-1" />
         <div className="mb-8 text-sm">
@@ -33,7 +33,7 @@ const ShopInformation = () => {
         {/* Divider */}
         <div className="flex">
           <img src={notification} alt="notification" className="w-4 h-4 mt-1" />
-          <p className="ml-1 text-base">사장님 공지</p>
+          <p className="ml-1 text-base font-bold">사장님 공지</p>
         </div>
         <hr className="w-full my-1" />
 
@@ -51,7 +51,7 @@ const ShopInformation = () => {
         {/* Divider */}
         <div className="flex">
           <img src={shoplist} alt="shoplist" className="w-4 h-4 mt-1" />
-          <p className="ml-1 text-base">사업자정보</p>
+          <p className="ml-1 text-base font-bold">사업자정보</p>
         </div>
         <hr className="w-full my-1" />
 
@@ -70,7 +70,7 @@ const ShopInformation = () => {
         {/* Divider */}
         <div className="flex">
           <img src={origin} alt="origin" className="w-4 h-4 mt-1" />
-          <p className="ml-1 text-base">원산지정보</p>
+          <p className="ml-1 text-base font-bold">원산지정보</p>
         </div>
         <hr className="w-full my-1" />
 

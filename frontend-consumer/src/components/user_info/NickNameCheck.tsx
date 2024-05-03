@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import UserState from "../../types/UserState";
-import UpdateProfileForm from "../../services/accounts/ProfileUpdateService";
+import NickNameCheckForm from "../../services/accounts/ProfileUpdateService";
 
 const NickNameCheck: React.FC<UserState> = ({ nickName }) => {
   const [inputNickName, setInputNickName] = useState("");
@@ -20,14 +20,13 @@ const NickNameCheck: React.FC<UserState> = ({ nickName }) => {
     event: React.FormEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
-    console.log(1)
+    console.log(inputNickName)
     // 만약 닉네임이 2~10 글자라면
     setIsNickNameChecked(true);
     if (isNickNameValid) {
-      console.log(2)
+      console.log(inputNickName)
       try {
-        const response = await UpdateProfileForm({ nickName : inputNickName });
-        console.log(3)
+        const response = await NickNameCheckForm({ nickName : inputNickName });
         console.log(response.data);
 
         if (response.data === true) {

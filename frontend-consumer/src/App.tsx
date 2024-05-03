@@ -19,6 +19,8 @@ import Shop from "./pages/shop/Shop";
 import SignUp from "./pages/accounts/SignUp";
 import AddressSearchPage from "./components/address/AddressSearchPage";
 import AddressRegistration from "./components/address/AddressRegistration";
+import MyReview from "./pages/shop/MyReview";
+import LoginCallbaak from "./components/auth_login/LoginCallback"
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/login-callback" element={<LoginCallbaak />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/alarm" element={<Alarm />} />
           <Route path="/cart" element={<Cart />} />
@@ -48,6 +51,7 @@ const App = () => {
             path="/address-search-registration"
             element={<AddressRegistration />}
           />
+          <Route path="/my-review" element={<MyReview />} />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>
