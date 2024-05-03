@@ -10,6 +10,5 @@ public interface ConsumerRepository extends JpaRepository<Consumer, Long> {
 
     Optional<Consumer> findBySocialTypeAndEmail(OAuth2Provider socialType, String email);
     Optional<Consumer> findByIdAndDeletedAtIsNull(Long consumerId);
-    boolean existsByIdAndDeletedAtIsNull(Long consumerId);
     boolean existsByNicknameAndDeletedAtIsNull(String nickname);
 }

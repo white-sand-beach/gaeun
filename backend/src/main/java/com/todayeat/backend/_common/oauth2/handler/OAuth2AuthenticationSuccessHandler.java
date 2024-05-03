@@ -79,15 +79,25 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     oAuth2UserPrincipal.getUserInfo().getSocialType(),
                     oAuth2UserPrincipal.getUserInfo().getEmail());
 
-            // 로그인
-            if (consumer != null && consumer.isJoined()) {
+            // DB에 회원 존재
+            if (consumer != null) {
+
+                // 회원 정보 O -> 로그인 페이지로 리다이렉트
+                if (consumer.isJoined()) {
+                    sendRedirectToLoginUrl(request, response,
+                            authentication, consumer.getId(),
+                            redirectUri, "login");
+                    return;
+                }
+
+                // 회원 정보 X -> 회원 가입 페이지로 리다이렉트
                 sendRedirectToLoginUrl(request, response,
-                                    authentication, consumer.getId(),
-                                    redirectUri, "login");
+                        authentication, consumer.getId(),
+                        redirectUri, "sign-up");
                 return;
             }
 
-            // 회원가입
+            // 회원 가입
             sendRedirectToLoginUrl(request, response,
                     authentication, consumerService.create(oAuth2UserPrincipal),
                     redirectUri, "sign-up");
