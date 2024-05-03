@@ -5,7 +5,6 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/consumer",
   plugins: [
     million.vite({ auto: true }),
     react(),
@@ -61,7 +60,7 @@ export default defineConfig({
       },
     }),
   ],
-  // server: {
-  //   open: "/consumer",
-  // },
+  server: {
+    open: "/consumer",
+  },
 });
