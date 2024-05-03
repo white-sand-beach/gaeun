@@ -18,7 +18,7 @@ export default defineConfig({
         name: "오늘잡슈",
         short_name: "오늘잡슈",
         description: "음식 당일 소진 장려 플랫폼",
-        start_url: "/consumer",
+        start_url: "/",
         display: "standalone",
         theme_color: "#ffaf38",
         icons: [
@@ -60,4 +60,7 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    open: "/consumer",
+  },
 });
