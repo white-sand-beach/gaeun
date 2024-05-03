@@ -1,5 +1,6 @@
 package com.todayeat.backend.consumer.service;
 
+import com.todayeat.backend._common.refreshtoken.repository.RefreshTokenRepository;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.dto.request.CheckNicknameRequest;
@@ -25,6 +26,7 @@ import static com.todayeat.backend._common.response.error.ErrorType.NICKNAME_CON
 public class ConsumerService {
 
     private final ConsumerRepository consumerRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final SecurityUtil securityUtil;
 
     @Transactional
@@ -52,8 +54,7 @@ public class ConsumerService {
 
     public Consumer getConsumerOrNull(OAuth2Provider socialType, String email) {
 
-        return consumerRepository.findBySocialTypeAndEmail(socialType, email)
-                .orElse(null);
+        return findBySocialTypeAndEmail(socialType, email);
     }
 
     public CheckNicknameResponse checkNickname(CheckNicknameRequest request) {
@@ -69,8 +70,27 @@ public class ConsumerService {
         return ConsumerMapper.INSTANCE.consumerToGetConsumerResponse(consumer);
     }
 
+    @Transactional
+    public void delete(OAuth2Provider socialType, String email) {
+
+        Consumer consumer = findBySocialTypeAndEmail(socialType, email);
+
+        // 리프레시 토큰 삭제
+        refreshTokenRepository.findByMemberIdAndRole(consumer.getId(), "CONSUMER")
+                        .forEach(r -> refreshTokenRepository.delete(r));
+
+        // DB 삭제
+        consumerRepository.delete(consumer);
+    }
+
     private boolean existsByNickname(String nickname) {
 
         return consumerRepository.existsByNicknameAndDeletedAtIsNull(nickname);
+    }
+
+    private Consumer findBySocialTypeAndEmail(OAuth2Provider socialType, String email) {
+
+        return consumerRepository.findBySocialTypeAndEmailAndDeletedAtIsNull(socialType, email)
+                .orElse(null);
     }
 }

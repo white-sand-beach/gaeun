@@ -1,6 +1,7 @@
 package com.todayeat.backend._common.oauth2.handler;
 
 import com.todayeat.backend._common.oauth2.repository.OAuth2AuthorizationRepository;
+import com.todayeat.backend._common.oauth2.service.OAuth2UnlinkService;
 import com.todayeat.backend._common.util.CookieUtil;
 import com.todayeat.backend._common.util.JwtUtil;
 import com.todayeat.backend.consumer.entity.Consumer;
@@ -30,9 +31,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final JwtUtil jwtUtil;
     private final ConsumerService consumerService;
     private final RefreshTokenService refreshTokenService;
+    private final OAuth2UnlinkService oAuth2UnlinkService;
 
-    @Value("${oauth2.login-callback-uri}")
-    private String LOGIN_CALLBACK_URI;
+    @Value("${oauth2.callback-uri}")
+    private String OAUTH2_CALLBACK_URI;
 
     @Value("${secret.refresh-token-expired-time}")
     private int REFRESH_TOKEN_EXPIRED_TIME;
@@ -104,7 +106,23 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
 
-        // TODO: 회원탈퇴, 로그아웃 로직 구현
+        // 회원 탈퇴
+        if (mode.equals("unlink")) {
+
+            // 소셜 끊기
+            oAuth2UnlinkService.unlink(oAuth2UserPrincipal.getOAuth2UserResponse());
+
+            // DB 삭제, 리프레시 토큰 삭제
+            consumerService.delete(oAuth2UserPrincipal.getOAuth2UserResponse().getSocialType(),
+                                    oAuth2UserPrincipal.getOAuth2UserResponse().getEmail());
+
+            // 리다이렉트
+            sendRedirectToUnlinkUrl(request, response, redirectUri);
+
+            return;
+        }
+
+        // TODO: 로그아웃 로직 구현
         sendRedirectToFailUrl(request, response, redirectUri);
     }
 
@@ -112,7 +130,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         return cookieUtil.getCookie(request, OAuth2AuthorizationRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
-                .orElse(LOGIN_CALLBACK_URI);
+                .orElse(OAUTH2_CALLBACK_URI);
     }
 
     private String getModeFromRequest(HttpServletRequest request) {
@@ -140,15 +158,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .build().toUriString();
 
         clearAuthenticationAttributes(request, response); // 쿠키 삭제
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        response.sendRedirect(targetUrl);
     }
 
     private void sendRedirectToLoginUrl(HttpServletRequest request, HttpServletResponse response,
                                           Authentication authentication, Long memberId,
                                           String redirectUri, String nextPage) throws IOException {
-
-        // 기존에 토큰이 존재하면 삭제
-//        refreshTokenService.deleteIfPresent(memberId, "CONSUMER");
 
         // 토큰 생성
         String accessToken = jwtUtil.createAccessToken(authentication, memberId);
@@ -162,11 +177,19 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     .queryParam("next-page", nextPage)
                     .queryParam("access-token", accessToken)
                     .build().toUriString(); // 주소
-//        response.setHeader(HttpHeaders.AUTHORIZATION, accessToken); // 액세스 토큰 담기
 
         clearAuthenticationAttributes(request, response); // 쿠키 삭제
         cookieUtil.addCookie(response, "RefreshToken", refreshToken, REFRESH_TOKEN_EXPIRED_TIME); // 리프레시 토큰 담기
 
+        response.sendRedirect(targetUrl);
+    }
+
+    private void sendRedirectToUnlinkUrl(HttpServletRequest request, HttpServletResponse response, String redirectUri) throws IOException {
+
+        String targetUrl = UriComponentsBuilder.fromUriString(redirectUri)
+                .build().toUriString();
+
+        clearAuthenticationAttributes(request, response); // 쿠키 삭제
         response.sendRedirect(targetUrl);
     }
 

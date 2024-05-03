@@ -33,8 +33,13 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
                 .getClientRegistration()
                 .getRegistrationId();
 
+        // 액세스 토큰
+        String accessToken = oAuth2UserRequest
+                .getAccessToken()
+                .getTokenValue();
+
         // 유저 정보
-        OAuth2UserResponse oAuth2UserResponse = getOAuth2Response(registrationId, oAuth2User.getAttributes());
+        OAuth2UserResponse oAuth2UserResponse = getOAuth2Response(registrationId, oAuth2User.getAttributes(), accessToken);
 
         log.info("userInfo: {}", oAuth2UserResponse.toString());
 
@@ -43,10 +48,11 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private OAuth2UserResponse getOAuth2Response(String registrationId,
-                                                 Map<String, Object> attributes) {
+                                                 Map<String, Object> attributes,
+                                                 String accessToken) {
 
         if (OAuth2Provider.KAKAO.getRegistrationId().equals(registrationId)) {
-            return KakaoOAuth2UserResponse.of(attributes);
+            return KakaoOAuth2UserResponse.of(attributes, accessToken);
         }
 
         return null;
