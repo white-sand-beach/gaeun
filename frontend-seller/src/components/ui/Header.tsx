@@ -20,7 +20,7 @@ const Header: React.FC = () => {
         case "/signup":
             title = "회원가입";
             break;
-        case "/test/main":
+        case "/order":
             title = "주문현황";
             break;
         case "/notification":
@@ -28,6 +28,9 @@ const Header: React.FC = () => {
             break;
         case "/register/shop":
             title = "가게등록"
+            break;
+        case "/sales":
+            title = "판매내역"
             break;
     }
     return (

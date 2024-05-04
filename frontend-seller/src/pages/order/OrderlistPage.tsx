@@ -55,7 +55,7 @@ const OrderListPage = () => {
 
   return (
     <>
-      <div className="fixed top-[70px] overflow-y-scroll w-full max-h-[calc(100vh-140px)] gap-3 normal-order-flex lg:lg-order-flex">
+      <div className="fixed top-[70px] overflow-y-scroll max-h-[calc(100vh-140px)] w-full gap-3 normal-order-flex xl:xl-order-flex">
         {orderLists.map((orderlist, index) => (
           <div key={index}>
             <OrderList
@@ -67,7 +67,7 @@ const OrderListPage = () => {
           </div>
         ))}
       </div>
-      <div className="fixed bottom-[100px] flex justify-center w-full">
+      <div className="fixed bottom-[70px] flex justify-center w-full">
         <TotalButton title="마감 시작" />
       </div>
     </>

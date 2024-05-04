@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import Logo from "/icons/size-192.png"
-import TotalButton from "../ui/TotalButton.tsx";
+import TotalButton from "../../components/ui/TotalButton.tsx";
 
 const LogIn = () => {
     return (
-        <>
+        <div className="gap-3 no-footer top-[100px]">
             <img src={Logo} alt="메인로고" width="200px" className="mb-[20px]" />
             <input type="text" placeholder="이메일" className="min-w-[300px] min-h-[50px] border border-[#7F7F7F] font-bold p-3 rounded-[5px]" />
             <input type="password" placeholder="비밀번호" className="min-w-[300px] min-h-[50px] border border-[#7F7F7F] font-bold p-3 rounded-[5px]" />
@@ -17,7 +17,7 @@ const LogIn = () => {
                 <p className="text-[#7F7F7F] font-semibold underline">아직 아이디가 없으신가요?</p>
             </Link>
             <p className="text-[#7F7F7F] font-semibold underline">계정을 잃어버리셨나요?</p>
-        </>
+        </div>
     );
 };
 
