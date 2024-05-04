@@ -9,9 +9,17 @@ const ReviewList: React.FC<ReviewType> = (props) => {
 
       {/* 리뷰 관련 내용 */}
       <div className="flex flex-col w-full bg-gray-200 rounded-[10px] p-3 mx-2">
-        <div className="flex gap-2 w-full">
-          <p className="text-xl font-bold">{props.consumerName}</p>
-          <p className="font-bold">{props.shopName}</p>
+        <div className="flex w-full justify-between">
+          <div className="flex flex-row gap-2">
+            <p className="text-xl font-bold">{props.consumerName}</p>
+            <p className="font-bold">{props.shopName}</p>
+          </div>
+          <div className="flex flex-row gap-2">
+            <button className="bg-gray-300 w-[80px] rounded-[10px] text-red-500 font-bold">
+              신고
+            </button>
+            <p>{props.orderDate}</p>
+          </div>
         </div>
         <p>{props.reviewContent}</p>
         <div className="flex flex-col items-center">
