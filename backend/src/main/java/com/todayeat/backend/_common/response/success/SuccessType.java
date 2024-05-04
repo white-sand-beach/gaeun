@@ -41,6 +41,8 @@ public enum SuccessType {
 
     // store
     CREATE_STORE_SUCCESS("가게 등록에 성공하였습니다."),
+    GET_STORE_SUCCESS("가게 조회에 성공하였습니다."),
+    GET_STORE_DETAIL_SUCCESS("가게 상세 조회에 성공하였습니다."),
     GET_STORE_LIST_SUCCESS("가게 목록 조회에 성공하였습니다."),
     UPDATE_STORE_SUCCESS("가게 수정에 성공하였습니다."),
 

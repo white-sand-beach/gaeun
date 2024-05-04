@@ -31,19 +31,19 @@ public class StoreController implements StoreControllerDocs {
     @Override
     public SuccessResponse<GetSellerStoreResponse> getSellerStore(Long storeId) {
 
-        return SuccessResponse.of(storeService.getSellerStore(storeId), GET_STORE_LIST_SUCCESS);
+        return SuccessResponse.of(storeService.getSellerStore(storeId), GET_STORE_SUCCESS);
     }
 
     @Override
     public SuccessResponse<GetConsumerInfoStoreResponse> getConsumerInfoStore(Long storeId) {
 
-        return SuccessResponse.of(storeService.getConsumerInfoStore(storeId), GET_STORE_LIST_SUCCESS);
+        return SuccessResponse.of(storeService.getConsumerInfoStore(storeId), GET_STORE_SUCCESS);
     }
 
     @Override
     public SuccessResponse<GetConsumerDetailStoreResponse> getConsumerDetailStore(Long storeId) {
 
-        return SuccessResponse.of(storeService.getConsumerDetailStore(storeId), GET_STORE_LIST_SUCCESS);
+        return SuccessResponse.of(storeService.getConsumerDetailStore(storeId), GET_STORE_DETAIL_SUCCESS);
     }
 
     @Override
