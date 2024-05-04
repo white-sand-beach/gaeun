@@ -7,6 +7,8 @@ import RegisterFood from "./components/foods/RegisterFood.tsx";
 import MainLayout from "./components/ui/MainLayout.tsx";
 
 import OrderListPage from "./pages/order/OrderlistPage.tsx";
+// import OrderdetailPage from "./pages/order/OrderdetailPage.tsx";
+import OrderDetail from "./components/order/OrderDetail.tsx";
 import NotificationPage from "./pages/notification/NotificationPage.tsx";
 import RegisterShopPage from "./pages/shop/RegisterShopPage.tsx";
 import SaleslistPage from "./pages/sales/SaleslistPage.tsx";
@@ -24,6 +26,7 @@ const App = () => {
           <Route path="/register/shop" element={<RegisterShopPage />} />
           <Route path="/register/food" element={<RegisterFood />} />
           <Route path="/order" element={<OrderListPage />} />
+          <Route path="/order/:orderNum" element={<OrderDetail />} />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/sales" element={<SaleslistPage />} />
         </Route>
