@@ -1,20 +1,24 @@
 package com.todayeat.backend.store.entity;
 
 import com.todayeat.backend._common.entity.BaseTime;
-import com.todayeat.backend.location.entity.Coordinate;
-import com.todayeat.backend.seller.entity.Seller;
+import com.todayeat.backend.category.entity.StoreCategory;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
+import org.locationtech.jts.geom.Point;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
+@Setter
 @Entity
 @DynamicInsert
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor()
 @SQLDelete(sql = "UPDATE store SET deleted_at = CONVERT_TZ(NOW(), '+00:00', '+09:00') WHERE store_id = ?")
 public class Store extends BaseTime {
 
@@ -23,17 +27,17 @@ public class Store extends BaseTime {
     @Column(name = "store_id")
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 50)
     private String registeredName;
-
-    @Column(nullable = false, length = 10)
-    private String registeredNo;
 
     @Column(nullable = false, length = 10)
     private String bossName;
 
-    @Embedded
-    private Coordinate coordinate;
+    @Column(nullable = false)
+    private String address;
+
+    @Column(columnDefinition = "Point")
+    private Point location;
 
     @Column(nullable = false, length = 20)
     private String tel;
@@ -42,7 +46,7 @@ public class Store extends BaseTime {
     private String name;
 
     @Column(nullable = true)
-    private String image;
+    private String imageURL;
 
     @Column(nullable = true)
     private String operatingTime;
@@ -68,9 +72,11 @@ public class Store extends BaseTime {
     @ColumnDefault("0")
     private int favoriteCnt;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id", nullable = false)
-    private Seller seller;
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<StoreCategory> storeCategoryList = new ArrayList<>();
+
+    public void updateIsOpened() {
+        this.isOpened = !this.isOpened;
 
     public void updateFavoriteCnt(int value) {
         this.favoriteCnt += value;
