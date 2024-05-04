@@ -1,8 +1,6 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
 
-
-
 const FavoritePostForm = async ({ page, size }: {page: number, size: number}): Promise<any> => {
   const cookies = new Cookies();
   const accessToken = cookies.get("accessToken")
