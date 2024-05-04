@@ -14,8 +14,7 @@ const FavoriteGetForm = async ({ storeId }: { storeId: number }): Promise<any> =
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-  }
-  );
+  });
   return response.data;
 };
 
