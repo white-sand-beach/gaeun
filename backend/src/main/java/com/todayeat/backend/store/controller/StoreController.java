@@ -31,25 +31,25 @@ public class StoreController implements StoreControllerDocs {
     @Override
     public SuccessResponse<GetSellerStoreResponse> getSellerStore(Long storeId) {
 
-        return SuccessResponse.of(storeService.getSellerStore(storeId), GET_STORE_DETAIL_SUCCESS);
+        return SuccessResponse.of(storeService.getSellerStore(storeId), GET_STORE_LIST_SUCCESS);
     }
 
     @Override
     public SuccessResponse<GetConsumerInfoStoreResponse> getConsumerInfoStore(Long storeId) {
 
-        return SuccessResponse.of(storeService.getConsumerInfoStore(storeId), GET_STORE_DETAIL_SUCCESS);
+        return SuccessResponse.of(storeService.getConsumerInfoStore(storeId), GET_STORE_LIST_SUCCESS);
     }
 
     @Override
     public SuccessResponse<GetConsumerDetailStoreResponse> getConsumerDetailStore(Long storeId) {
 
-        return SuccessResponse.of(storeService.getConsumerDetailStore(storeId), GET_STORE_DETAIL_SUCCESS);
+        return SuccessResponse.of(storeService.getConsumerDetailStore(storeId), GET_STORE_LIST_SUCCESS);
     }
 
     @Override
     public SuccessResponse<GetConsumerListStoreResponse> getConsumerListStore(BigDecimal latitude, BigDecimal longitude, Integer radius, String keyword, Long categoryId, Integer page, Integer size, String sort) {
 
-        return SuccessResponse.of(storeService.getConsumerListStore(latitude, longitude, radius, keyword, categoryId, page, size, sort), GET_STORE_DETAIL_SUCCESS);
+        return SuccessResponse.of(storeService.getConsumerListStore(latitude, longitude, radius, keyword, categoryId, page, size, sort), GET_STORE_LIST_SUCCESS);
     }
 
     @Override
