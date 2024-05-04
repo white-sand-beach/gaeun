@@ -8,30 +8,37 @@ import com.todayeat.backend.category.mapper.CategoryMapper;
 import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
+import com.todayeat.backend.location.service.LocationService;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.GetConsumerDetailStoreResponse;
 import com.todayeat.backend.store.dto.response.GetConsumerInfoStoreResponse;
+import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse;
 import com.todayeat.backend.store.dto.response.GetSellerStoreResponse;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.mapper.StoreMapper;
 import com.todayeat.backend.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.todayeat.backend._common.entity.DirectoryType.SELLER_STORE_IMAGE;
-import static com.todayeat.backend._common.response.error.ErrorType.CATEGORY_NOT_FOUND;
-import static com.todayeat.backend._common.response.error.ErrorType.STORE_NOT_FOUND;
+import static com.todayeat.backend._common.response.error.ErrorType.*;
 
 @Slf4j
 @Service
@@ -43,6 +50,8 @@ public class StoreService {
     private final CategoryRepository categoryRepository;
     private final SellerRepository sellerRepository;
     private final StoreRepository storeRepository;
+
+    private final LocationService locationService;
 
     private final SecurityUtil securityUtil;
     private final S3Util s3Util;
@@ -57,6 +66,7 @@ public class StoreService {
         Store store = storeRepository.save(
                 StoreMapper.INSTANCE.createStoreRequestToStore(
                         createStoreRequest,
+                        createPoint(createStoreRequest.getLatitude(), createStoreRequest.getLongitude()),
                         imageURL));
 
         seller.updateStore(store);
@@ -104,6 +114,13 @@ public class StoreService {
                 validateAndGetStore(storeId));
     }
 
+    public GetConsumerListStoreResponse getConsumerListStore(BigDecimal latitude, BigDecimal longitude, Integer radius, String keyword, Long categoryId, Integer page, Integer size, String sort) {
+
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sort));
+
+        return storeRepository.findStoreList(createPoint(latitude, longitude), radius * 1000, keyword, categoryId, pageRequest);
+    }
+
     @Transactional
     public void update(Long storeId, UpdateStoreRequest updateStoreRequest) {
 
@@ -117,6 +134,7 @@ public class StoreService {
         StoreMapper.INSTANCE.updateStoreRequestToStore(
                 updateStoreRequest,
                 imageToURL(updateStoreRequest.getImage()),
+                createPoint(updateStoreRequest.getLatitude(), updateStoreRequest.getLongitude()),
                 store);
         storeRepository.save(store);
 
@@ -156,5 +174,11 @@ public class StoreService {
     private Store validateAndGetStore(Long storeId) {
         return storeRepository.findByIdAndDeletedAtIsNull(storeId)
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
+    }
+
+    private Point createPoint(BigDecimal latitude, BigDecimal longitude) {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Coordinate coordinate = new Coordinate(latitude.doubleValue(), longitude.doubleValue());
+        return geometryFactory.createPoint(coordinate);
     }
 }

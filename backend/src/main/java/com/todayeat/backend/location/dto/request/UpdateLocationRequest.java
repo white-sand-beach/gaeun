@@ -16,14 +16,14 @@ public class UpdateLocationRequest {
     private String address;
 
     @NotNull(message = "latitude: 값이 null이 아니어야 합니다.")
-    @Min(value = 33, message = "latitude: 값이 33 이상이어야 합니다.")
-    @Max(value = 43, message = "latitude: 값이 43 이하여야 합니다.")
+    @DecimalMin(value = "33", message = "latitude: 33 이상이어야 합니다.")
+    @DecimalMax(value = "38", message = "latitude: 38 이하이어야 합니다.")
     @Schema(description = "위도", example = "36.108184")
     private BigDecimal latitude;
 
-    @NotNull(message = "latitude: 값이 null이 아니어야 합니다.")
-    @Min(value = 124, message = "longitude: 값이 33 이상이어야 합니다.")
-    @Max(value = 132, message = "longitude: 값이 43 이하여야 합니다.")
+    @NotNull(message = "longitude: 값이 null이 아니어야 합니다.")
+    @DecimalMin(value = "124", message = "longitude: 124 이상이어야 합니다.")
+    @DecimalMax(value = "132", message = "longitude: 132 이하이어야 합니다.")
     @Schema(description = "경도", example = "128.413967")
     private BigDecimal longitude;
 

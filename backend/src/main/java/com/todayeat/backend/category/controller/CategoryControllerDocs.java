@@ -32,7 +32,7 @@ public interface CategoryControllerDocs {
     @PreAuthorize("hasRole('ADMIN')")
     SuccessResponse<Void> create(@ModelAttribute @Valid CreateCategoryRequest createCategoryRequest);
 
-    @Operation(summary = "카테고리 리스트 조회")
+    @Operation(summary = "카테고리 목록 조회")
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema(implementation = GetCategoryListResponse.class)))

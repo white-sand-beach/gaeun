@@ -18,7 +18,7 @@ public interface CategoryMapper {
 
     CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
 
-    @Mapping(target = "image", source = "image", qualifiedByName = "imageToURL")
+    @Mapping(target = "imageURL", source = "image", qualifiedByName = "imageToURL")
     Category createCategoryRequestToCategory(CreateCategoryRequest createCategoryRequest, @Context Long id, @Context S3Util s3Util);
 
     CategoryInfo categoryToCategoryInfo(Category category);
