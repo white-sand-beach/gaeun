@@ -10,6 +10,7 @@ import OrderListPage from "./pages/order/OrderlistPage.tsx";
 import NotificationPage from "./pages/notification/NotificationPage.tsx";
 import RegisterShopPage from "./pages/shop/RegisterShopPage.tsx";
 import SaleslistPage from "./pages/sales/SaleslistPage.tsx";
+import ReviewPage from "./pages/review/ReviewPage.tsx";
 
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/order" element={<OrderListPage />} />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/sales" element={<SaleslistPage />} />
+          <Route path="/review" element={<ReviewPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
