@@ -106,7 +106,7 @@ const AddressSearchPage = () => {
       </div>
 
       {isOpen && (
-        <div className="top-0 left-0 flex flex-col items-center justify-center max-w-[400px] w-full h-full border-2 gap-4 bg-white z-30">
+        <div className="top-0 left-0 flex flex-col items-center justify-center max-w-[400px] w-full h-full border-2 gap-4 bg-white">
           <div className="flex items-center justify-between w-full p-4 bg-gray-100 ">
             <span>주소 선택</span>
             <button onClick={handleAddress}>[닫기]</button>
@@ -120,6 +120,7 @@ const AddressSearchPage = () => {
           <AddressList
             key={addressData.locationId}
             address={addressData.address}
+            addressId={addressData.locationId}
           />
         ))}
       </ul>

@@ -1,14 +1,25 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import KakaoMap from "../../pages/main/Kakaomap";
 import left from "../../assets/navbar/back.png";
 import speech from "../../assets/search/speech.png";
+import { useNavigate } from "react-router-dom";
 
 const AddressRegistration = () => {
   const location = useLocation();
   const mapHeight = "500px";
   const [showBalloon, setShowBalloon] = useState(false);
   const { address, latitude, longitude, roadAddress } = location.state;
+
+  const token =
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMyIsInJvbGUiOiJST0xFX0NPTlNVTUVSIiwiaWF0IjoxNzE0NzI1MzUzLCJleHAiOjE3MTUwNzA5NTN9.pkGYbeXouRp304ff14eFGgofRQGM7dYUN6A65v9RfGw";
+
+  const navigate = useNavigate();
+
+  const goAddressSearchPage = () => {
+    navigate("/address-search");
+  };
 
   useEffect(() => {
     console.log(latitude);
@@ -20,6 +31,27 @@ const AddressRegistration = () => {
       setShowBalloon(false);
     }, 3000);
   }, []);
+
+  const locationsComplete = () => {
+    const locationsData = {
+      latitude: latitude,
+      longitude: longitude,
+      address: address,
+    };
+    axios
+      .post(`${import.meta.env.VITE_API_URL}/api/locations`, locationsData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => {
+        alert("위치 등록이 완료되었습니다.");
+        goAddressSearchPage();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div>
@@ -55,7 +87,10 @@ const AddressRegistration = () => {
           {address}
         </div>
         <div className="w-[330px] mx-auto bg-myColor py-3 mt-6 rounded-md text-center">
-          <div className="text-base font-semibold text-white">
+          <div
+            onClick={locationsComplete}
+            className="text-base font-semibold text-white"
+          >
             이 위치로 주소 등록
           </div>
         </div>
