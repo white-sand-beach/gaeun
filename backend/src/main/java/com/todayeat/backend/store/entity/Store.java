@@ -77,6 +77,7 @@ public class Store extends BaseTime {
 
     public void updateIsOpened() {
         this.isOpened = !this.isOpened;
+    }
 
     public void updateFavoriteCnt(int value) {
         this.favoriteCnt += value;
