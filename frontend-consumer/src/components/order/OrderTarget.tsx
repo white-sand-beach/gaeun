@@ -3,8 +3,8 @@ import CallButton from "../button/CallButton";
 
 const Ordertarget = () => {
   return (
-    <div>
-      <div className="w-[300px] border-2 rounded-xl mb-2">
+    <div className="w-screen mx-2">
+      <div className="border-2 rounded-xl mb-2">
         <div className="between px-4 pt-2 text-xs font-bold text-gray-400">
           <p>4.18(목)</p>
           <p className="text-xxs">구매 상태</p>

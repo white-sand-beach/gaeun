@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import KakaoMap from "../../pages/main/Kakaomap";
-import left from "../../assets/left.png";
+import left from "../../assets/navbar/back.png";
 import speech from "../../assets/search/speech.png";
 
 const AddressRegistration = () => {

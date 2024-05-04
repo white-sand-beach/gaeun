@@ -1,3 +1,7 @@
+import { Link } from "react-router-dom";
+
+import setting from "../../assets/profile/setting.png"
+
 const ProfileCard = () => {
   return (
     <div className="w-full h-screen bg-white border border-black">
@@ -5,9 +9,9 @@ const ProfileCard = () => {
         <div className="relative w-full h-56 p-6 m-auto bg-white border border-gray-500 rounded-lg shadow-lg">
           {/* 설정 아이콘 */}
           <div className="absolute right-4 top-4">
-            <button className="flex items-center justify-center w-6 h-6 text-gray-600 bg-gray-200 rounded-full">
-              ⚙️
-            </button>
+            <Link to="/profile-setting">
+              <img src={setting} alt="설정" />
+            </Link>
           </div>
           {/* 프로필 이미지, 이름, 이메일 */}
           <div className="flex items-center ml-4 space-x-4 mb-9 mt-9">

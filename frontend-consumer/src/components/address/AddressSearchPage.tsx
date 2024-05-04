@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import left from "../../assets/left.png";
+import left from "../../assets/navbar/back.png";
 import { useNavigate } from "react-router-dom";
 import AddressList from "./AddressList";
 import axios from "axios";

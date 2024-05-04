@@ -2,17 +2,14 @@ import { useState } from "react";
 import NickNameCheck from "../../components/user_info/NickNameCheck";
 import PhoneCheck from "../../components/user_info/PhoneCheck";
 import ProfileImageModal from "../../components/user_info/ProfileImageModal";
-import SignUpButton from "../../components/button/SignUpButton";
-import "../../components/modal/Modal.css";
-
-// import ProfileUpdateService from "../../services/ProfileUpdateService";
+import ProfileUpdateButton from "../../components/button/ProfileUpdateButton"
 
 import useUserStore from "../../store/UserStore";
 import UserState from "../../types/UserState";
 
 import edit from "../../assets/profile/edit.png";
 
-const SignUp = () => {
+const ProfileSetting = () => {
   const { profileImg, nickName, phoneNumber } = useUserStore(
     (state: UserState) => ({
       nickName: state.nickName,
@@ -64,7 +61,7 @@ const SignUp = () => {
         phoneNumber={phoneNumber}
       /> */}
       <div className="center my-14">
-        <SignUpButton
+        <ProfileUpdateButton
           nickName={nickName}
           profileImg={profileImg}
           phoneNumber={phoneNumber}
@@ -74,4 +71,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default ProfileSetting;

@@ -13,6 +13,27 @@ const OrderList = () => {
       <div className="center">
         <Ordertarget />
       </div>
+      <div className="center">
+        <Ordertarget />
+      </div>
+      <div className="center">
+        <Ordertarget />
+      </div>
+      <div className="center">
+        <Ordertarget />
+      </div>
+      <div className="center">
+        <Ordertarget />
+      </div>
+      <div className="center">
+        <Ordertarget />
+      </div>
+      <div className="center">
+        <Ordertarget />
+      </div>
+      <div className="center">
+        <Ordertarget />
+      </div>
     </div>
   );
 };
