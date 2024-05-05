@@ -7,7 +7,7 @@
   html,
   body,
   #root {
-    @apply w-full h-screen m-0 p-0
+    @apply w-screen h-screen m-0 p-0
   }
 
   h1 {
@@ -55,12 +55,22 @@
 
   /* Footer 없는 경우 최상위 div container */
   .no-footer {
-    @apply flex flex-col items-center fixed top-[70px] w-full max-h-[calc(100vh-70px)]
+    @apply flex flex-col items-center fixed w-full max-h-[calc(100vh-70px)]
   }
 
   /* Footer 있는 경우 */
   .yes-footer {
-    @apply flex flex-col items-center fixed top-[70px] w-full max-h-[calc(100vh-140px)]
+    @apply flex flex-col items-center fixed w-full max-h-[calc(100vh-140px)]
+  }
+
+  /* 버튼 선택됐을 경우 */
+  .selected-btn {
+    @apply bg-mainColor text-white w-full h-[60px] shadow-lg rounded-[5px] border font-bold text-xl
+  }
+
+  /* 버튼 선택 안 했을 경우 */
+  .no-selected-btn {
+    @apply bg-white text-mainColor w-full h-[60px] shadow-lg rounded-[5px] border font-bold text-xl
   }
 }
 
