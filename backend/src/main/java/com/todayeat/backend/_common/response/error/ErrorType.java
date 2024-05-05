@@ -24,6 +24,8 @@ public enum ErrorType {
     NICKNAME_CONFLICT(HttpStatus.CONFLICT, "이미 사용중인 닉네임입니다."),
 
     // favorite
+    FAVORITE_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 찜입니다."),
+    FAVORITE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 찜을 찾을 수 없습니다."),
 
     // review
 
@@ -37,6 +39,7 @@ public enum ErrorType {
 
     // seller
     EMAIL_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
+    STORE_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 사업자 등록번호입니다."),
     EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 이메일입니다."),
     PHONE_NUMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 전화번호입니다."),
     EMAIL_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "이메일이 일치하지 않습니다."),
@@ -47,9 +50,12 @@ public enum ErrorType {
     SELLER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "판매자 인증에 실패했습니다."),
 
     // store
-    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 가게를 찾을 수 없습니다."),
+    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 가게입니다."),
+    STORE_FORBIDDEN(HttpStatus.FORBIDDEN, "금지된 가게 요청입니다."),
 
     // category
+    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 카테고리입니다."),
+    CATEGORY_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 카테고리입니다."),
 
     // menu
 
@@ -60,10 +66,11 @@ public enum ErrorType {
 
     // token
     TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
+    TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "토큰을 찾을 수 없습니다."),
 
     // image
     IMAGE_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 형식의 파일이 아닙니다."),
-    IMAGE_URL_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 url형식이 잘못되었습니다."),
+    IMAGE_URL_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 url 형식이 잘못되었습니다."),
     ;
 
     private HttpStatus httpStatus;

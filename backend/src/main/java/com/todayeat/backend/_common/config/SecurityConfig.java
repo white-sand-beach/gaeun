@@ -6,7 +6,7 @@ import com.todayeat.backend._common.filter.SellerLoginFilter;
 import com.todayeat.backend._common.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import com.todayeat.backend._common.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import com.todayeat.backend._common.oauth2.repository.OAuth2AuthorizationRepository;
-import com.todayeat.backend._common.oauth2.service.OAuth2Service;
+import com.todayeat.backend._common.oauth2.service.OAuth2UserService;
 import com.todayeat.backend._common.refreshtoken.service.RefreshTokenService;
 import com.todayeat.backend._common.util.CookieUtil;
 import com.todayeat.backend._common.util.JwtUtil;
@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -35,6 +36,7 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Value("${WHITE_LIST}")
@@ -46,15 +48,18 @@ public class SecurityConfig {
     @Value("${CONSUMER_LIST}")
     private String[] consumerList;
 
-    @Value("${SELLER_URL}")
+    @Value("${BASE_URL}")
+    private String baseURL;
+
+    @Value("${LOCAL_SELLER_URL}")
     private String sellerURL;
 
-    @Value("${CONSUMER_URL}")
+    @Value("${LOCAL_CONSUMER_URL}")
     private String consumerURL;
 
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
-    private final OAuth2Service oAuth2Service;
+    private final OAuth2UserService oAuth2UserService;
     private final OAuth2AuthorizationRepository oAuth2AuthorizationRepository;
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -84,7 +89,7 @@ public class SecurityConfig {
                 // oauth2 설정
                 .oauth2Login(configure ->
                         configure.authorizationEndpoint(config -> config.authorizationRequestRepository(oAuth2AuthorizationRepository))
-                                .userInfoEndpoint(config -> config.userService(oAuth2Service))
+                                .userInfoEndpoint(config -> config.userService(oAuth2UserService))
                                 .successHandler(oAuth2AuthenticationSuccessHandler)
                                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 )
@@ -110,7 +115,7 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
 
             // FRONT 주소 허용
-            config.setAllowedOrigins(Arrays.asList(sellerURL, consumerURL));
+            config.setAllowedOrigins(Arrays.asList(baseURL, sellerURL, consumerURL));
             // 모든 REST Method 허용
             config.setAllowedMethods(Collections.singletonList("*"));
             // credential 값 허용

@@ -1,5 +1,6 @@
 package com.todayeat.backend.consumer.service;
 
+import com.todayeat.backend._common.refreshtoken.repository.RefreshTokenRepository;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.dto.request.CheckNicknameRequest;
@@ -16,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 import static com.todayeat.backend._common.response.error.ErrorType.NICKNAME_CONFLICT;
 
 @Slf4j
@@ -25,12 +28,13 @@ import static com.todayeat.backend._common.response.error.ErrorType.NICKNAME_CON
 public class ConsumerService {
 
     private final ConsumerRepository consumerRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final SecurityUtil securityUtil;
 
     @Transactional
     public Long create(OAuth2UserPrincipal principal) {
 
-        Consumer consumer = ConsumerMapper.INSTANCE.oAuth2PrincipalToConsumer(principal.getUserInfo());
+        Consumer consumer = ConsumerMapper.INSTANCE.oAuth2UserResponseToConsumer(principal.getOAuth2UserResponse());
         consumerRepository.save(consumer);
 
         return consumer.getId();
@@ -42,17 +46,17 @@ public class ConsumerService {
         Consumer consumer = securityUtil.getConsumer();
 
         // 닉네임 중복 검사
-        if (existsByNickname(request.getNickname())) {
+        if (existsByNickname(request.getNickname()) && !consumer.getNickname().equals(request.getNickname())) {
             throw new BusinessException(NICKNAME_CONFLICT);
         }
 
-        consumer.update(request);
+        consumerRepository.findByIdAndDeletedAtIsNull(consumer.getId())
+                .get().update(request);
     }
 
     public Consumer getConsumerOrNull(OAuth2Provider socialType, String email) {
 
-        return consumerRepository.findBySocialTypeAndEmail(socialType, email)
-                .orElse(null);
+        return findBySocialTypeAndEmail(socialType, email);
     }
 
     public CheckNicknameResponse checkNickname(CheckNicknameRequest request) {
@@ -68,8 +72,31 @@ public class ConsumerService {
         return ConsumerMapper.INSTANCE.consumerToGetConsumerResponse(consumer);
     }
 
+    @Transactional
+    public void delete(Consumer consumer) {
+
+        // 리프레시 토큰 삭제
+        refreshTokenRepository.findByMemberIdAndRole(consumer.getId(), "CONSUMER")
+                        .forEach(r -> refreshTokenRepository.delete(r));
+
+        // DB 삭제
+        consumerRepository.delete(consumer);
+    }
+
+    @Transactional
+    public void updateDeletedAt(Consumer consumer, LocalDateTime deletedAt) {
+
+        consumer.updateDeletedAt(deletedAt);
+    }
+
     private boolean existsByNickname(String nickname) {
 
         return consumerRepository.existsByNicknameAndDeletedAtIsNull(nickname);
+    }
+
+    private Consumer findBySocialTypeAndEmail(OAuth2Provider socialType, String email) {
+
+        return consumerRepository.findBySocialTypeAndEmailAndDeletedAtIsNull(socialType, email)
+                .orElse(null);
     }
 }

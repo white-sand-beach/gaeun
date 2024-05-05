@@ -3,6 +3,7 @@ package com.todayeat.backend.category.entity;
 import com.todayeat.backend._common.entity.BaseTime;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -24,5 +25,11 @@ public class Category extends BaseTime {
     private String name;
 
     @Column(nullable = false)
-    private String image;
+    private String imageURL;
+
+    @Builder
+    private Category(String name, String imageURL) {
+        this.name = name;
+        this.imageURL = imageURL;
+    }
 }

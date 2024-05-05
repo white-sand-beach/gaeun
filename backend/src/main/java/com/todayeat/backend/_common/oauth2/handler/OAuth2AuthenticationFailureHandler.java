@@ -23,8 +23,8 @@ public class OAuth2AuthenticationFailureHandler implements AuthenticationFailure
     private final OAuth2AuthorizationRepository oAuth2AuthorizationRepository;
     private final CookieUtil cookieUtil;
 
-    @Value("${oauth2.login-callback-uri}")
-    private String loginCallbackUri;
+    @Value("${oauth2.callback-uri}")
+    private String OAUTH2_CALLBACK_URI;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -49,6 +49,6 @@ public class OAuth2AuthenticationFailureHandler implements AuthenticationFailure
 
         return cookieUtil.getCookie(request, OAuth2AuthorizationRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
-                .orElse(loginCallbackUri);
+                .orElse(OAUTH2_CALLBACK_URI);
     }
 }

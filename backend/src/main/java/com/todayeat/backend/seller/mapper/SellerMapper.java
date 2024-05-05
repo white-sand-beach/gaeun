@@ -1,10 +1,7 @@
 package com.todayeat.backend.seller.mapper;
 
 import com.todayeat.backend.seller.dto.request.SignupSellerRequest;
-import com.todayeat.backend.seller.dto.response.CheckEmailSellerResponse;
-import com.todayeat.backend.seller.dto.response.CheckTempPasswordSellerResponse;
-import com.todayeat.backend.seller.dto.response.FindEmailSellerResponse;
-import com.todayeat.backend.seller.dto.response.GetSellerResponse;
+import com.todayeat.backend.seller.dto.response.*;
 import com.todayeat.backend.seller.entity.Seller;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -26,6 +23,9 @@ public interface SellerMapper {
 
     @Mapping(source = "isValid", target = "isValid")
     CheckEmailSellerResponse toCheckEmailSellerResponse(Boolean isValid);
+
+    @Mapping(source = "isValid", target = "isValid")
+    CheckRegisteredNoSellerResponse toCheckRegisteredNoSellerResponse(Boolean isValid);
 
     default FindEmailSellerResponse sellerListToFindEmailSellerResponse(List<Seller> sellerList) {
         List<String> emails = sellerList.stream()

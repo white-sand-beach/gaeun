@@ -25,4 +25,8 @@ public abstract class BaseTime {
 
     @Column(nullable = true)
     private LocalDateTime deletedAt;
+
+    public void updateDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
 }
