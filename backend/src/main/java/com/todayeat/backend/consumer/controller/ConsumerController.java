@@ -6,6 +6,8 @@ import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
 import com.todayeat.backend.consumer.dto.response.CheckNicknameResponse;
 import com.todayeat.backend.consumer.dto.response.GetConsumerResponse;
 import com.todayeat.backend.consumer.service.ConsumerService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,5 +38,12 @@ public class ConsumerController implements ConsumerControllerDocs {
     public SuccessResponse<GetConsumerResponse> get() {
 
         return SuccessResponse.of(consumerService.get(), GET_CONSUMER_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+
+        consumerService.logout(request, response);
+        return SuccessResponse.of(CONSUMER_LOGOUT_SUCCESS);
     }
 }

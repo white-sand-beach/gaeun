@@ -2,6 +2,7 @@ package com.todayeat.backend.consumer.service;
 
 import com.todayeat.backend._common.refreshtoken.repository.RefreshTokenRepository;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
+import com.todayeat.backend._common.util.CookieUtil;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.dto.request.CheckNicknameRequest;
 import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
@@ -12,6 +13,8 @@ import com.todayeat.backend.consumer.mapper.ConsumerMapper;
 import com.todayeat.backend.consumer.repository.ConsumerRepository;
 import com.todayeat.backend._common.oauth2.dto.auth.OAuth2UserPrincipal;
 import com.todayeat.backend._common.oauth2.dto.response.OAuth2Provider;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 import static com.todayeat.backend._common.response.error.ErrorType.NICKNAME_CONFLICT;
+import static com.todayeat.backend._common.response.error.ErrorType.TOKEN_NOT_FOUND;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +34,10 @@ public class ConsumerService {
     private final ConsumerRepository consumerRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final SecurityUtil securityUtil;
+    private final CookieUtil cookieUtil;
+
+    private static String REFRESH_TOKEN_COOKIE_NAME = "RefreshToken";
+    private static String ACCESS_TOKEN_COOKIE_NAME = "accessToken";
 
     @Transactional
     public Long create(OAuth2UserPrincipal principal) {
@@ -87,6 +95,19 @@ public class ConsumerService {
     public void updateDeletedAt(Consumer consumer, LocalDateTime deletedAt) {
 
         consumer.updateDeletedAt(deletedAt);
+    }
+
+    @Transactional
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+
+        cookieUtil.getCookie(request, REFRESH_TOKEN_COOKIE_NAME) // 쿠키에서 리프레시 토큰 찾기
+                .ifPresent(c -> refreshTokenRepository.findByRefreshToken(c.getValue())
+                        .ifPresent(refreshTokenRepository::delete)); // Redis 삭제
+
+        // 쿠키 삭제
+        cookieUtil.deleteCookie(request, response, ACCESS_TOKEN_COOKIE_NAME);
+        cookieUtil.deleteCookie(request, response, REFRESH_TOKEN_COOKIE_NAME);
+
     }
 
     private boolean existsByNickname(String nickname) {
