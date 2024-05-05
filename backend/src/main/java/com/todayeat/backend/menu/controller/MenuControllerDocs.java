@@ -22,7 +22,13 @@ public interface MenuControllerDocs {
     @ApiResponse(responseCode = "200",
             description = "성공")
     @ApiResponse(responseCode = "404",
-            description = "판매자의 가게가 맞는지 확인",
+            description = """
+                            '판매자의 가게가 맞는지 확인' \n
+                            '가게 존재 여부 확인'
+                            """,
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "400",
+            description = "원가가 0인 경우",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     SuccessResponse<Void> create(@RequestBody @Valid CreateMenuRequest request);
 }

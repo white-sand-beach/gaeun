@@ -32,11 +32,12 @@ public class MenuService {
 
         Seller seller = securityUtil.getSeller();
 
-        //판매자의 가게가 맞는지 확인
-        if (seller.getStore() == null || !Objects.equals(seller.getStore().getId(), request.getStoreId()))
+        // 판매자의 가게가 맞는지 확인
+        if (seller.getStore() == null || !Objects.equals(seller.getStore().getId(), request.getStoreId())) {
             throw new BusinessException(ErrorType.STORE_NOT_FOUND);
+        }
 
-        //가게 존재 여부 확인
+        // 가게 존재 여부 확인
         Store store = storeRepository
                 .findByIdAndDeletedAtIsNull(request.getStoreId())
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
@@ -47,11 +48,12 @@ public class MenuService {
         menuRepository.save(menu);
     }
 
-    //할인률 계산
+    // 할인률 계산
     private Integer getDiscountRate(Integer originalPrice, Integer sellPrice) {
 
-        if(originalPrice == 0)
-            throw new BusinessException(ErrorType.MENU_ORIGINAL_PRICE_BAD_REQUEST);
+        if (originalPrice == 0) {
+            throw new BusinessException(ErrorType.MENU_GET_DISCOUNT_RATE_FAIL);
+        }
 
         return 100 * (originalPrice - sellPrice) / originalPrice;
     }
