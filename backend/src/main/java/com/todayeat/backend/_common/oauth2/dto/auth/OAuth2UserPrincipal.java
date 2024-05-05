@@ -1,6 +1,6 @@
 package com.todayeat.backend._common.oauth2.dto.auth;
 
-import com.todayeat.backend._common.oauth2.dto.response.OAuth2Response;
+import com.todayeat.backend._common.oauth2.dto.response.OAuth2UserResponse;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,17 +13,17 @@ import java.util.Map;
 @Getter
 public class OAuth2UserPrincipal implements OAuth2User {
 
-    private final OAuth2Response userInfo;
+    private final OAuth2UserResponse oAuth2UserResponse;
 
     @Builder
-    private OAuth2UserPrincipal(OAuth2Response userInfo) {
-        this.userInfo = userInfo;
+    private OAuth2UserPrincipal(OAuth2UserResponse oAuth2UserResponse) {
+        this.oAuth2UserResponse = oAuth2UserResponse;
     }
 
-    public static OAuth2UserPrincipal of(OAuth2Response userInfo) {
+    public static OAuth2UserPrincipal of(OAuth2UserResponse oAuth2UserResponse) {
 
         return builder()
-                .userInfo(userInfo)
+                .oAuth2UserResponse(oAuth2UserResponse)
                 .build();
     }
 
@@ -44,6 +44,6 @@ public class OAuth2UserPrincipal implements OAuth2User {
     @Override
     public String getName() {
 
-        return userInfo.getEmail();
+        return oAuth2UserResponse.getEmail();
     }
 }
