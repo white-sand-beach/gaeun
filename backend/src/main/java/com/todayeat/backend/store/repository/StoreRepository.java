@@ -9,6 +9,4 @@ import java.util.Optional;
 public interface StoreRepository extends JpaRepository<Store, Long>, StoreRepositoryQueryDSL {
 
     Optional<Store> findByIdAndDeletedAtIsNull(Long storeId);
-
-    Optional<Store> findByIdAndSellerAndDeletedAtIsNull(Long MenuId, Seller seller);
 }

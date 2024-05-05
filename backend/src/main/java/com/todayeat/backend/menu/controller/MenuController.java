@@ -6,6 +6,7 @@ import com.todayeat.backend.menu.dto.CreateMenuRequest;
 import com.todayeat.backend.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -16,6 +17,7 @@ public class MenuController implements MenuControllerDocs{
     private final MenuService menuService;
 
     @Override
+    @PreAuthorize("hasRole('SELLER')")
     public SuccessResponse<Void> create(CreateMenuRequest request) {
 
         menuService.create(request);

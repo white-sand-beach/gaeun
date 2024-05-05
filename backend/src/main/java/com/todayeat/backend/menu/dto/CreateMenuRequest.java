@@ -9,7 +9,7 @@ import lombok.Getter;
 public class CreateMenuRequest {
 
 
-    @Pattern(regexp = "https://todayeat-bucket\\.s3\\.ap-northeast-2\\.amazonaws\\.com/seller/[1-9]\\d*/menu-image/[\\w-]+", message = "imageUrl: 이미지 url 형식이 맞지 않습니다.")
+    @Pattern(regexp = "https://todayeat-bucket\\.s3\\.ap-northeast-2\\.amazonaws\\.com/seller/[1-9]\\d*/menu-image/[\\w-]+(\\.[\\w-]+)?", message = "imageUrl: 이미지 url 형식이 맞지 않습니다.")
     @Schema(description = "가게 메뉴 이미지 url", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/uuid.png")
     private String imageUrl;
 
@@ -20,12 +20,12 @@ public class CreateMenuRequest {
 
     @NotNull(message = "originalPrice: 값이 null이 아니어야 합니다.")
     @Min(value = 1, message = "originalPrice: 값이 1 이상이어야 합니다.")
-    @Schema(description = "가게 메뉴 판매가", example = "20000")
+    @Schema(description = "가게 메뉴 원가", example = "20000")
     private Integer originalPrice;
 
     @NotNull(message = "sellPrice: 값이 null이 아니어야 합니다.")
     @Min(value = 1, message = "sellPrice: 값이 1 이상이어야 합니다.")
-    @Schema(description = "가게 메뉴 할인가", example = "16000")
+    @Schema(description = "가게 메뉴 판매가", example = "16000")
     private Integer sellPrice;
 
     @NotNull(message = "sequence: 값이 null이 아니어야 합니다.")

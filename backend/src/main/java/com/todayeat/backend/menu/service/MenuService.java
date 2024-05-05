@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -31,12 +33,26 @@ public class MenuService {
         Seller seller = securityUtil.getSeller();
 
         //판매자의 가게가 맞는지 확인
+        if (seller.getStore() == null || !Objects.equals(seller.getStore().getId(), request.getStoreId()))
+            throw new BusinessException(ErrorType.STORE_NOT_FOUND);
+
+        //가게 존재 여부 확인
         Store store = storeRepository
-                .findByIdAndSellerAndDeletedAtIsNull(request.getStoreId(), seller)
+                .findByIdAndDeletedAtIsNull(request.getStoreId())
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
 
-        Menu menu = MenuMapper.INSTANCE.createMenuRequestToMenu(request, store);
+        Menu menu = MenuMapper.INSTANCE
+                .createMenuRequestToMenu(request, getDiscountRate(request.getOriginalPrice(), request.getSellPrice()), store);
 
         menuRepository.save(menu);
+    }
+
+    //할인률 계산
+    private Integer getDiscountRate(Integer originalPrice, Integer sellPrice) {
+
+        if(originalPrice == 0)
+            throw new BusinessException(ErrorType.MENU_ORIGINAL_PRICE_BAD_REQUEST);
+
+        return 100 * (originalPrice - sellPrice) / originalPrice;
     }
 }

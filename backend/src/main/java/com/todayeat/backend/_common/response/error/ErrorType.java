@@ -58,6 +58,7 @@ public enum ErrorType {
     CATEGORY_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 카테고리입니다."),
 
     // menu
+    MENU_ORIGINAL_PRICE_BAD_REQUEST(HttpStatus.BAD_REQUEST, "메뉴 원가를 다시 입력해야 합니다."),
 
     // store
 

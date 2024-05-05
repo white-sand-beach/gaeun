@@ -13,5 +13,5 @@ public interface MenuMapper {
     MenuMapper INSTANCE = Mappers.getMapper(MenuMapper.class);
 
     @Mapping(source = "createMenuRequest.name", target = "name")
-    Menu createMenuRequestToMenu(CreateMenuRequest createMenuRequest, Store store);
+    Menu createMenuRequestToMenu(CreateMenuRequest createMenuRequest, Integer discountRate, Store store);
 }
