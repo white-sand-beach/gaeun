@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 import static com.todayeat.backend._common.response.error.ErrorType.NICKNAME_CONFLICT;
 
 @Slf4j
@@ -71,9 +73,7 @@ public class ConsumerService {
     }
 
     @Transactional
-    public void delete(OAuth2Provider socialType, String email) {
-
-        Consumer consumer = findBySocialTypeAndEmail(socialType, email);
+    public void delete(Consumer consumer) {
 
         // 리프레시 토큰 삭제
         refreshTokenRepository.findByMemberIdAndRole(consumer.getId(), "CONSUMER")
@@ -81,6 +81,12 @@ public class ConsumerService {
 
         // DB 삭제
         consumerRepository.delete(consumer);
+    }
+
+    @Transactional
+    public void updateDeletedAt(Consumer consumer, LocalDateTime deletedAt) {
+
+        consumer.updateDeletedAt(deletedAt);
     }
 
     private boolean existsByNickname(String nickname) {

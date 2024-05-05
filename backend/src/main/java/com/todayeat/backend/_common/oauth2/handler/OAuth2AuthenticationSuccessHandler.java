@@ -74,12 +74,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
 
+        // 회원 찾기
+        Consumer consumer = consumerService.getConsumerOrNull(
+                oAuth2UserPrincipal.getOAuth2UserResponse().getSocialType(),
+                oAuth2UserPrincipal.getOAuth2UserResponse().getEmail());
+
         // 로그인
         if (mode.equals("login")) {
-            // 회원 찾기
-            Consumer consumer = consumerService.getConsumerOrNull(
-                    oAuth2UserPrincipal.getOAuth2UserResponse().getSocialType(),
-                    oAuth2UserPrincipal.getOAuth2UserResponse().getEmail());
 
             // DB에 회원 존재
             if (consumer != null) {
@@ -107,14 +108,19 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         // 회원 탈퇴
-        if (mode.equals("unlink")) {
-
-            // 소셜 끊기
-            oAuth2UnlinkService.unlink(oAuth2UserPrincipal.getOAuth2UserResponse());
+        if (mode.equals("unlink") && consumer != null) {
 
             // DB 삭제, 리프레시 토큰 삭제
-            consumerService.delete(oAuth2UserPrincipal.getOAuth2UserResponse().getSocialType(),
-                                    oAuth2UserPrincipal.getOAuth2UserResponse().getEmail());
+            consumerService.delete(consumer);
+
+            try {
+                // 소셜 끊기
+                oAuth2UnlinkService.unlink(oAuth2UserPrincipal.getOAuth2UserResponse());
+            } catch (Exception e) {
+                // 실패
+                consumerService.updateDeletedAt(consumer, null);
+                sendRedirectToFailUrl(request, response, redirectUri);
+            }
 
             // 리다이렉트
             sendRedirectToUnlinkUrl(request, response, redirectUri);
@@ -154,7 +160,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private void sendRedirectToFailUrl(HttpServletRequest request, HttpServletResponse response, String redirectUri) throws IOException {
 
         String targetUrl = UriComponentsBuilder.fromUriString(redirectUri)
-                .queryParam("error", "login-fail")
+                .queryParam("error", "oauth2-fail")
                 .build().toUriString();
 
         clearAuthenticationAttributes(request, response); // 쿠키 삭제
