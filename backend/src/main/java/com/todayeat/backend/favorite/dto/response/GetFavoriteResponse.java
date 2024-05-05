@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Schema(name = "FavoriteInfo", description = "찜 정보")
-public class FavoriteInfo {
+@Schema(name = "GetFavoriteResponse", description = "찜 조회 응답")
+public class GetFavoriteResponse {
 
     @Schema(description = "찜 고유번호", example = "1")
     private Long favoriteId;
@@ -27,7 +27,7 @@ public class FavoriteInfo {
     private Integer storeReviewCnt;
 
     @Builder
-    private FavoriteInfo(Long favoriteId, Long storeId, String storeName, String storeImageUrl, Integer storeFavoriteCnt, Integer storeReviewCnt) {
+    private GetFavoriteResponse(Long favoriteId, Long storeId, String storeName, String storeImageUrl, Integer storeFavoriteCnt, Integer storeReviewCnt) {
         this.favoriteId = favoriteId;
         this.storeId = storeId;
         this.storeName = storeName;

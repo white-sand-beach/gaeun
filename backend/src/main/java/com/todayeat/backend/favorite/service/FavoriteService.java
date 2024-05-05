@@ -4,7 +4,7 @@ import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.favorite.dto.request.CreateFavoriteRequest;
-import com.todayeat.backend.favorite.dto.response.FavoriteInfo;
+import com.todayeat.backend.favorite.dto.response.GetFavoriteResponse;
 import com.todayeat.backend.favorite.dto.response.GetFavoriteListResponse;
 import com.todayeat.backend.favorite.entity.Favorite;
 import com.todayeat.backend.favorite.mapper.FavoriteMapper;
@@ -82,10 +82,10 @@ public class FavoriteService {
         Page<Favorite> favorites = favoriteRepository.findAllByConsumerAndDeletedAtIsNull(consumer, pageable);
 
         // dto 변환
-        List<FavoriteInfo> favoriteInfos = favorites.stream().map(FavoriteMapper.INSTANCE::toFavoriteInfo).toList();
+        List<GetFavoriteResponse> getFavoriteResponses = favorites.stream().map(FavoriteMapper.INSTANCE::toFavoriteInfo).toList();
 
         return FavoriteMapper.INSTANCE.toGetFavoriteListResponse(
-                favoriteInfos,
+                getFavoriteResponses,
                 favorites.getTotalElements(),
                 favorites.getNumber(),
                 favorites.hasNext()

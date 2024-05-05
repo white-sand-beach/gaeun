@@ -14,7 +14,7 @@ public class GetFavoriteListResponse {
     private Long totalCnt;
 
     @Schema(description = "찜 정보")
-    private List<FavoriteInfo> favoriteInfos;
+    private List<GetFavoriteResponse> favorites;
 
     @Schema(description = "현재 페이지", example = "0")
     private Integer page;
@@ -22,9 +22,10 @@ public class GetFavoriteListResponse {
     @Schema(description = "다음 페이지 존재 여부", example = "true")
     private Boolean hasNext;
 
-    public GetFavoriteListResponse(Long totalCnt, List<FavoriteInfo> favoriteInfos, Integer page, Boolean hasNext) {
+    @Builder
+    private GetFavoriteListResponse(Long totalCnt, List<GetFavoriteResponse> favorites, Integer page, Boolean hasNext) {
         this.totalCnt = totalCnt;
-        this.favoriteInfos = favoriteInfos;
+        this.favorites = favorites;
         this.page = page;
         this.hasNext = hasNext;
     }
