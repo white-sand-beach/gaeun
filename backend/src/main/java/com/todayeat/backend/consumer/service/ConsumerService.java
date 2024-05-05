@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 import static com.todayeat.backend._common.response.error.ErrorType.NICKNAME_CONFLICT;
-import static com.todayeat.backend._common.response.error.ErrorType.TOKEN_NOT_FOUND;
 
 @Slf4j
 @RequiredArgsConstructor
