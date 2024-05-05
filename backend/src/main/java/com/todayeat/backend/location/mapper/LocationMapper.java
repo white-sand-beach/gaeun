@@ -2,9 +2,7 @@ package com.todayeat.backend.location.mapper;
 
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.location.dto.request.CreateLocationRequest;
-import com.todayeat.backend.location.dto.request.UpdateLocationRequest;
 import com.todayeat.backend.location.dto.response.GetLocationResponse;
-import com.todayeat.backend.location.entity.Coordinate;
 import com.todayeat.backend.location.entity.Location;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

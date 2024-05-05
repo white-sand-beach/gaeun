@@ -5,7 +5,7 @@ import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.location.dto.request.CreateLocationRequest;
 import com.todayeat.backend.location.dto.request.UpdateLocationRequest;
-import com.todayeat.backend.location.dto.response.GetLocationResponse;
+import com.todayeat.backend.location.dto.response.GetLocationListResponse;
 import com.todayeat.backend.location.entity.Location;
 import com.todayeat.backend.location.mapper.LocationMapper;
 import com.todayeat.backend.location.repository.LocationRepository;
@@ -47,13 +47,14 @@ public class LocationService {
         locationRepository.save(location);
     }
 
-    public List<GetLocationResponse> getList() {
+    public GetLocationListResponse getList() {
 
         Consumer consumer = securityUtil.getConsumer();
 
-        return locationRepository.findAllByConsumerAndDeletedAtIsNull(consumer)
-                .stream().map(LocationMapper.INSTANCE::locationToGetLocationResponse)
-                .toList();
+        return GetLocationListResponse.of(
+                locationRepository.findAllByConsumerAndDeletedAtIsNull(consumer)
+                        .stream().map(LocationMapper.INSTANCE::locationToGetLocationResponse)
+                        .toList());
     }
 
     @Transactional
