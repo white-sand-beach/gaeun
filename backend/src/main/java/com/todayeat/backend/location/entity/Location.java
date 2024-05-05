@@ -40,7 +40,6 @@ public class Location extends BaseTime {
     }
 
     public void updateLocation(UpdateLocationRequest request) {
-        this.coordinate = LocationMapper.INSTANCE.updateLocationRequestToCoordinate(request);
         this.alias = request.getAlias();
     }
 }

@@ -47,6 +47,7 @@ public interface LocationControllerDocs {
             description = """
                           `ROLE_CONSUMER` \n
                           path variable로 location-id 넣어주세요. \n
+                          해당 위치의 별명을 수정합니다. \n
                           request body 넣어주세요.
                           """)
     @ApiResponse(responseCode = "200",
