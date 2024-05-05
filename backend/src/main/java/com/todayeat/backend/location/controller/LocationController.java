@@ -34,23 +34,10 @@ public class LocationController implements LocationControllerDocs {
     }
 
     @Override
-    public SuccessResponse<GetLocationResponse> getSelected() {
-
-        return SuccessResponse.of(locationService.getSelected(), GET_SELECTED_LOCATION_SUCCESS);
-    }
-
-    @Override
     public SuccessResponse<Void> update(Long locationId, UpdateLocationRequest request) {
 
         locationService.update(locationId, request);
         return SuccessResponse.of(UPDATE_LOCATION_SUCCESS);
-    }
-
-    @Override
-    public SuccessResponse<Void> updateSelected(Long locationId) {
-
-        locationService.updateSelected(locationId);
-        return SuccessResponse.of(UPDATE_SELECTED_LOCATION_SUCCESS);
     }
 
     @Override

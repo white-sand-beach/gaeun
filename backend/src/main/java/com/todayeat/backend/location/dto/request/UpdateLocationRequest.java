@@ -30,10 +30,4 @@ public class UpdateLocationRequest {
     @Size(max = 10, message = "alias: 길이가 10 이하여야 합니다.")
     @Schema(description = "별명(옵션)", example = "우리집")
     private String alias;
-
-    @NotNull(message = "radius: 값이 null이 아니어야 합니다.")
-    @Min(value = 1, message = "radius: 값이 1 이상이어야 합니다.")
-    @Max(value = 3, message = "radius: 값이 3 이하여야 합니다.")
-    @Schema(description = "반경(km)", example = "2")
-    private Integer radius;
 }

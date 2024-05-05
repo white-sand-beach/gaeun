@@ -28,34 +28,19 @@ public class Location extends BaseTime {
     @Column(length = 10, nullable = true)
     private String alias;
 
-    @Column(nullable = false)
-    @ColumnDefault("true")
-    private Boolean isSelected;
-
-    @Column(nullable = false)
-    @ColumnDefault("2")
-    private Integer radius;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consumer_id", referencedColumnName = "consumer_id")
     private Consumer consumer;
 
     @Builder
-    private Location(Coordinate coordinate, String alias, Boolean isSelected, Integer radius, Consumer consumer) {
+    private Location(Coordinate coordinate, String alias, Consumer consumer) {
         this.coordinate = coordinate;
         this.alias = alias;
-        this.isSelected = isSelected;
-        this.radius = radius;
         this.consumer = consumer;
-    }
-
-    public void updateIsSelected() {
-        this.isSelected = !this.isSelected;
     }
 
     public void updateLocation(UpdateLocationRequest request) {
         this.coordinate = LocationMapper.INSTANCE.updateLocationRequestToCoordinate(request);
         this.alias = request.getAlias();
-        this.radius = request.getRadius();
     }
 }
