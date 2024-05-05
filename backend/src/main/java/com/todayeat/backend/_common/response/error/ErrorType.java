@@ -47,6 +47,7 @@ public enum ErrorType {
     SELLER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "판매자 인증에 실패했습니다."),
 
     // store
+    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 가게를 찾을 수 없습니다."),
 
     // category
 

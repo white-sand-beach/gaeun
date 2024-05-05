@@ -40,6 +40,7 @@ public enum SuccessType {
     // category
 
     // menu
+    CREATE_MENU_SUCCESS("가게 메뉴 등록에 성공하였습니다."),
 
     // store
 

@@ -4,6 +4,7 @@ import com.todayeat.backend._common.entity.BaseTime;
 import com.todayeat.backend.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -40,4 +41,15 @@ public class Menu extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", referencedColumnName = "store_id")
     private Store store;
+
+    @Builder
+    private Menu(String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, Integer sequence, Store store) {
+        this.imageUrl = imageUrl;
+        this.name = name;
+        this.originalPrice = originalPrice;
+        this.sellPrice = sellPrice;
+        this.discountRate = discountRate;
+        this.sequence = sequence;
+        this.store = store;
+    }
 }
