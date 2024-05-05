@@ -4,6 +4,7 @@ import com.todayeat.backend._common.entity.BaseTime;
 import com.todayeat.backend.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -13,7 +14,7 @@ import org.hibernate.annotations.SQLDelete;
 @Entity
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE store SET deleted_at = CONVERT_TZ(NOW(), '+00:00', '+09:00') WHERE store_category_id = ?")
+@SQLDelete(sql = "UPDATE store_category SET deleted_at = CONVERT_TZ(NOW(), '+00:00', '+09:00') WHERE store_category_id = ?")
 public class StoreCategory extends BaseTime {
 
     @Id
@@ -28,4 +29,10 @@ public class StoreCategory extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    @Builder
+    private StoreCategory(Store store, Category category) {
+        this.store = store;
+        this.category = category;
+    }
 }

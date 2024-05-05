@@ -30,7 +30,7 @@ public class S3Util {
     // S3 버킷에 이미지 파일 업로
     public String uploadImage(MultipartFile multipartFile, DirectoryType directoryType, Long dirNamePrincipalId) {
         // 이미지 형식의 파일인지 확인
-        if(!Objects.requireNonNull(multipartFile.getContentType()).contains("image")) {
+        if (!Objects.requireNonNull(multipartFile.getContentType()).contains("image")) {
             throw new BusinessException(ErrorType.IMAGE_FORMAT_INVALID);
         }
 
@@ -61,7 +61,7 @@ public class S3Util {
     }
 
     // 저장할 파일의 메타 데이터 생성
-    private ObjectMetadata createMetadata (MultipartFile multipartFile) {
+    private ObjectMetadata createMetadata(MultipartFile multipartFile) {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
@@ -84,7 +84,7 @@ public class S3Util {
     private String getS3ObjetKey(String fileUrl) {
         int startIndex = fileUrl.indexOf('/', fileUrl.indexOf("//") + 2);
 
-        if(startIndex < 0)
+        if (startIndex < 0)
             throw new BusinessException(ErrorType.IMAGE_URL_FORMAT_INVALID);
 
         return fileUrl.substring(startIndex + 1);

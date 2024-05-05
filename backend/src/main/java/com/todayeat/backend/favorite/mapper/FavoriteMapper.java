@@ -21,7 +21,7 @@ public interface FavoriteMapper {
     @Mapping(source = "id", target = "favoriteId")
     @Mapping(source = "store.id", target = "storeId")
     @Mapping(source = "store.name", target = "storeName")
-    @Mapping(source = "store.image", target = "storeImageUrl")
+    @Mapping(source = "store.imageURL", target = "storeImageUrl")
     @Mapping(source = "store.favoriteCnt", target = "storeFavoriteCnt")
     @Mapping(source = "store.reviewCnt", target = "storeReviewCnt")
     FavoriteInfo toFavoriteInfo(Favorite favorite);
