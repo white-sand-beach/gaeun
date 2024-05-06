@@ -8,7 +8,7 @@ public enum SuccessType {
     UPDATE_CONSUMER_SUCCESS("소비자 정보 수정에 성공하였습니다."),
     CHECK_NICKNAME_SUCCESS("닉네임 중복 확인에 성공하였습니다."),
     GET_CONSUMER_SUCCESS("소비자 회원 정보 조회에 성공하였습니다."),
-    CONSUMER_LOGOUT_SUCCESS("소비자 로그아웃에 성공하였습니다."),
+    LOGOUT_CONSUMER_SUCCESS("소비자 로그아웃에 성공하였습니다."),
 
     // favorite
     CREATE_FAVORITE_SUCCESS("찜 등록에 성공하였습니다."),

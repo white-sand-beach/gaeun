@@ -44,6 +44,6 @@ public class ConsumerController implements ConsumerControllerDocs {
     public SuccessResponse<Void> logout(HttpServletRequest request, HttpServletResponse response) {
 
         consumerService.logout(request, response);
-        return SuccessResponse.of(CONSUMER_LOGOUT_SUCCESS);
+        return SuccessResponse.of(LOGOUT_CONSUMER_SUCCESS);
     }
 }
