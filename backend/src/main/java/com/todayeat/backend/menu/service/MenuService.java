@@ -77,6 +77,10 @@ public class MenuService {
     // 할인률 계산
     private Integer getDiscountRate(Integer originalPrice, Integer sellPrice) {
 
+        if(originalPrice < sellPrice) {
+            throw new BusinessException(ErrorType.MENU_CREATE_FAIL);
+        }
+
         if (originalPrice == 0) {
             throw new BusinessException(ErrorType.MENU_GET_DISCOUNT_RATE_FAIL);
         }
