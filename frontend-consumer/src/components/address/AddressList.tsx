@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import point_white from "../../assets/search/point_white.png";
+import useUserLocation from "../../store/UserLocation";
 
 interface AddressListProps {
   address?: string; // 'address' prop은 string이거나 undefined일 수 있습니다.
@@ -53,12 +54,41 @@ const AddressList: React.FC<AddressListProps> = ({
     });
   };
 
+  const goMain = () => {
+    if (confirm("선택하신 위치로 재설정 됩니다. 진행하시겠습니까?")) {
+      const update = useUserLocation.getState().updateUserState; // 스토어의 상태 업데이트 함수를 가져옵니다.
+      if (update) {
+        update("latitude", latitude);
+        update("longitude", longitude);
+        update("address", address);
+        update("roadAddress", roadAddress);
+        update("alias", alias);
+        update("addressId", addressId);
+      }
+
+      navigate("/", {
+        state: {
+          lat: latitude,
+          lng: longitude,
+          address: address,
+          roadAddress: roadAddress,
+          alias: alias,
+        },
+      });
+    } else {
+      console.log("위치 재설정이 취소되었습니다.");
+    }
+  };
+
   if (!address) {
     return <div>주소 정보가 없습니다.</div>; // 주소가 없는 경우 처리
   }
   return (
     <div>
-      <div className="flex items-center justify-between p-4 pb-0">
+      <div
+        onClick={goMain}
+        className="flex items-center justify-between p-4 pb-0"
+      >
         <img className="w-6 ml-2 h-7" src={point_white} alt="point_white" />
         <div className="flex-col w-full pl-4">
           <div className="font-bold">{roadAddress}</div>

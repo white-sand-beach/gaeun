@@ -185,7 +185,7 @@ const AddressCorrection = () => {
           className="w-[330px] mx-auto bg-myColor py-3 mt-4 rounded-md text-center"
         >
           <div className="text-base font-semibold text-white">
-            이 위치로 주소 등록
+            이 위치로 주소 수정
           </div>
         </div>
       </div>
