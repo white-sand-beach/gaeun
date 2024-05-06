@@ -37,9 +37,9 @@ public class MenuController implements MenuControllerDocs {
     }
 
     @Override
-    @PutMapping("/{menu-id}")
+    @PutMapping(value = "/{menu-id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public SuccessResponse<Void> update(@PathVariable(name = "menu-id") Long menuId,
-                                        @RequestBody UpdateMenuRequest request) {
+                                        @ModelAttribute UpdateMenuRequest request) {
 
         menuService.update(menuId, request);
 

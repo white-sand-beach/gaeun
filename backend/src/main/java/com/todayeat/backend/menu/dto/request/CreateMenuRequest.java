@@ -1,6 +1,7 @@
 package com.todayeat.backend.menu.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Schema(name = "CreateMenuRequest", description = "메뉴 등록 요청")
 public class CreateMenuRequest {
 
+    @Nullable
     @Schema(description = "메뉴 이미지", example = "img.jpg")
     private MultipartFile image;
 

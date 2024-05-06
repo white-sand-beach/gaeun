@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 @Slf4j
@@ -43,8 +42,11 @@ public class MenuService {
         // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
         Store store = validateStoreAndSeller(seller, request.getStoreId());
 
-        // S3에 이미지 저현
-        String imageUrl = s3Util.uploadImage(request.getImage(), DirectoryType.SELLER_MENU_IMAGE, seller.getId());
+        // S3에 이미지 저장
+        String imageUrl = null;
+        if(request.getImage() != null) {
+            imageUrl = s3Util.uploadImage(request.getImage(), DirectoryType.SELLER_MENU_IMAGE, seller.getId());
+        }
 
         Menu menu = MenuMapper.INSTANCE
                 .createMenuRequestToMenu(request, imageUrl, getDiscountRate(request.getOriginalPrice(), request.getSellPrice()), store);
@@ -52,7 +54,8 @@ public class MenuService {
         try {
             menuRepository.save(menu);
         } catch (RuntimeException e) {
-            s3Util.deleteImage(imageUrl);
+            if(imageUrl != null)
+                s3Util.deleteImage(imageUrl);
             throw new RuntimeException(e);
         }
     }
@@ -83,8 +86,28 @@ public class MenuService {
         Menu menu = menuRepository.findByIdAndDeletedAtIsNull(menuId)
                 .orElseThrow(() -> new BusinessException(ErrorType.MENU_NOT_FOUND));
 
-        menu.update(request.getImageUrl(), request.getName(), request.getOriginalPrice(), request.getSellPrice(),
-                getDiscountRate(request.getOriginalPrice(), request.getSellPrice()), request.getSequence());
+        String imageUrl = menu.getImageUrl();
+        // 수정 메뉴 이미지 s3에 저장
+        if(request.getImage() != null) {
+            log.info("수정 메뉴 이미지 s3에 저장: {}", request.getImage().getName());
+            imageUrl = s3Util.uploadImage(request.getImage(), DirectoryType.SELLER_MENU_IMAGE, seller.getId());
+        }
+
+        try {
+            menuRepository.updateMenu(menuId, imageUrl, request.getName(),
+                    request.getOriginalPrice(), request.getSellPrice(),
+                    getDiscountRate(request.getOriginalPrice(), request.getSellPrice()), request.getSequence());
+        } catch (RuntimeException e) {
+            if(request.getImage() != null) {
+                s3Util.deleteImage(imageUrl);
+            }
+            throw new RuntimeException(e);
+        }
+
+        // 기존 메뉴 이미지 삭제
+        if(request.getImage() != null) {
+            s3Util.deleteImage(request.getImageUrl());
+        }
     }
 
     @Transactional

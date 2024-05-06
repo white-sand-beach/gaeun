@@ -2,16 +2,24 @@ package com.todayeat.backend.menu.dto.request;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
+@Setter
 @Getter
 @Schema(name = "UpdateMenuRequest", description = "메뉴 수정 요청")
 public class UpdateMenuRequest {
 
+    @Nullable
+    @Schema(description = "바꿀 메뉴 이미지", example = "img.jpg")
+    private MultipartFile image;
+
     @NotBlank(message = "imageUrl: 값이 비어 있지 않아야 합니다.")
     @Pattern(regexp = "https://todayeat-bucket\\.s3\\.ap-northeast-2\\.amazonaws\\.com/seller/[1-9]\\d*/menu-image/[\\w-]+(\\.[\\w-]+)?", message = "imageUrl: 이미지 url 형식이 맞지 않습니다.")
-    @Schema(description = "메뉴 이미지 url", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/uuid.png")
+    @Schema(description = "바꾸기 전 메뉴 이미지 url", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/uuid.png")
     private String imageUrl;
 
     @NotBlank(message = "name: 값이 비어 있지 않아야 합니다.")
