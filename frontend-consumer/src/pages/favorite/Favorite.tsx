@@ -10,7 +10,32 @@ const Favorite = () => {
     page: 0,
     loading: false,
     hasNext: false,
+    scrollPosition: 0,
   });
+
+  // 아래 부분은 스크롤 위치를 기억하여 
+  // 해당 페이지로 돌아왔을 때 다시 원래 위치를 찾아가는 기능인데
+  // 저희 서비스에서는 아직 테스트를 해볼 수 없어서 
+  // 우선 주석 처리해두었습니다.
+  // 추후에 좀 더 테스트 후 정상적으로 작동 시 말씀드리겠습니다.
+
+  // useEffect(() => {
+  //   // 컴포넌트가 마운트될 때 이전에 저장된 스크롤 위치로 이동
+  //   window.scrollTo(0, favoriteState.scrollPosition);
+  // }, []);
+  
+  // useEffect(() => {
+  //   // 스크롤 위치 변경 시 상태 업데이트
+  //   const handleScroll = () => {
+  //     setFavoriteState((prevState) => ({
+  //       ...prevState,
+  //       scrollPosition: window.pageYOffset,
+  //     }));
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
 
   useEffect(() => {
     const fetchFavorites = async () => {

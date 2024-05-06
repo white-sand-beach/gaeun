@@ -25,4 +25,5 @@ export interface FavoriteState {
   page: number;
   loading: boolean;
   hasNext: boolean;
+  scrollPosition: number;
 }
