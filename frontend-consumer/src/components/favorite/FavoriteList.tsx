@@ -1,59 +1,59 @@
-import love from "../../assets/favorite/love.png";
-import nolove from "../../assets/favorite/nolove.png";
+import FavoriteButton from "../button/FavoriteButton";
+import FavoritePostForm from "../../services/favorites/FavoritePostService";
+import FavoriteDeleteForm from "../../services/favorites/FavoriteDeleteService";
 
-const FavoriteList = () => {
+import { FavoriteItem } from "../../types/FavoriteType";
+
+interface FavoriteListProps {
+  favorites: FavoriteItem[];
+}
+
+const FavoriteList = ({ favorites }: FavoriteListProps) => {
   return (
     <div>
-      <div>
-        <div className="between p-4">
-          <div className="flex items-center">
-            <img
-              className="w-20 h-2w-20 rounded-lg"
-              src="https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/09/18/1e586277-48ba-4e8a-9b98-d8cdbe075d86.jpg"
-              alt=""
-            />
-            <div>
-              <h1 className="font-bold ml-2">카리나에 빠지다 인동직영점</h1>
-              <div className="ml-2 text-gray-500 text-xs font-bold">
-                <span>찜수 1</span>
-                <span className="mx-1">·</span>
-                <span>리뷰수 50000</span>
-              </div>
-            </div>
-          </div>
-          {/* 토글 버튼 */}
-          <div>
-            <img className="w-6" src={love} alt="토글하트" />
-          </div>
-        </div>
-        <hr className="mx-4" />
-      </div>
+      {favorites.map((favorite) => (
+        <FavoriteListItem key={favorite.favoriteId} favorite={favorite} />
+      ))}
+    </div>
+  );
+};
 
-      {/* 안현성은 이것을 반드시 지워라 아니면 인생 망한다 */}
-      <div>
-        <div className="between p-4">
-          <div className="flex items-center">
-            <img
-              className="w-20 h-2w-20 rounded-lg"
-              src="https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/09/18/1e586277-48ba-4e8a-9b98-d8cdbe075d86.jpg"
-              alt=""
-            />
-            <div>
-              <h1 className="font-bold ml-2">카리나에 빠지다 인동직영점</h1>
-              <div className="ml-2 text-gray-500 text-xs font-bold">
-                <span>찜수 1</span>
-                <span className="mx-1">·</span>
-                <span>리뷰수 50000</span>
-              </div>
+const FavoriteListItem = ({ favorite }: { favorite: FavoriteItem }) => {
+  const handleToggle = (isFavorite: boolean) => {
+    if (isFavorite) {
+      // 찜 등록 API 호출
+      FavoritePostForm({ storeId: favorite.storeId });
+    } else {
+      // 찜 삭제 API 호출
+      FavoriteDeleteForm({ favoriteId: favorite.favoriteId });
+    }
+  };
+
+  return (
+    <div>
+      <div className="between p-4">
+        <div className="flex items-center">
+          <img
+            className="w-20 h-2w-20 rounded-lg"
+            src={favorite.storeImageUrl}
+            alt={favorite.storeName}
+          />
+          <div>
+            <h1 className="font-bold ml-2">{favorite.storeName}</h1>
+            <div className="ml-2 text-gray-500 text-xs font-bold">
+              <span>찜수 {favorite.storeFavoriteCnt}</span>
+              <span className="mx-1">·</span>
+              <span>리뷰수 {favorite.storeReviewCnt}</span>
             </div>
           </div>
-          {/* 토글 버튼 */}
-          <div>
-            <img className="w-6" src={nolove} alt="토글하트" />
-          </div>
         </div>
-        <hr className="mx-4" />
+        {/* 토글 버튼 */}
+        <FavoriteButton
+          isFavorite={favorite.isFavorite}
+          onToggle={handleToggle}
+        />
       </div>
+      <hr className="mx-4" />
     </div>
   );
 };
