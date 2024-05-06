@@ -1,6 +1,7 @@
 package com.todayeat.backend.menu.mapper;
 
-import com.todayeat.backend.menu.dto.CreateMenuRequest;
+import com.todayeat.backend.menu.dto.request.CreateMenuRequest;
+import com.todayeat.backend.menu.dto.response.GetMenuResponse;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.store.entity.Store;
 import org.mapstruct.Mapper;
@@ -14,4 +15,6 @@ public interface MenuMapper {
 
     @Mapping(source = "createMenuRequest.name", target = "name")
     Menu createMenuRequestToMenu(CreateMenuRequest createMenuRequest, Integer discountRate, Store store);
+
+    GetMenuResponse getMenuResponse(Menu menu);
 }
