@@ -82,7 +82,7 @@ public class FavoriteService {
         Page<Favorite> favorites = favoriteRepository.findAllByConsumerAndDeletedAtIsNull(consumer, pageable);
 
         // dto 변환
-        List<GetFavoriteResponse> getFavoriteResponses = favorites.stream().map(FavoriteMapper.INSTANCE::toFavoriteInfo).toList();
+        List<GetFavoriteResponse> getFavoriteResponses = favorites.stream().map(FavoriteMapper.INSTANCE::toGetFavoriteResponse).toList();
 
         return FavoriteMapper.INSTANCE.toGetFavoriteListResponse(
                 getFavoriteResponses,
