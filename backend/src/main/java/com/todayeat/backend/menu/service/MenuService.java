@@ -43,7 +43,7 @@ public class MenuService {
         // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
         Store store = validateStoreAndSeller(seller, request.getStoreId());
 
-        // S3에 이미지 저장
+        // S3에 이미지 저현
         String imageUrl = s3Util.uploadImage(request.getImage(), DirectoryType.SELLER_MENU_IMAGE, seller.getId());
 
         Menu menu = MenuMapper.INSTANCE
@@ -99,7 +99,12 @@ public class MenuService {
         Menu menu = menuRepository.findByIdAndDeletedAtIsNull(menuId)
                 .orElseThrow(() -> new BusinessException(ErrorType.MENU_NOT_FOUND));
 
+        // 메뉴 이미지 url
+        String imageUrl = menu.getImageUrl();
+
         menuRepository.delete(menu);
+
+        s3Util.deleteImage(imageUrl);
     }
 
     // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
