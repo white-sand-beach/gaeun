@@ -5,7 +5,7 @@ import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.location.dto.request.CreateLocationRequest;
 import com.todayeat.backend.location.dto.request.UpdateLocationRequest;
-import com.todayeat.backend.location.dto.response.GetLocationResponse;
+import com.todayeat.backend.location.dto.response.GetLocationListResponse;
 import com.todayeat.backend.location.entity.Location;
 import com.todayeat.backend.location.mapper.LocationMapper;
 import com.todayeat.backend.location.repository.LocationRepository;
@@ -43,29 +43,18 @@ public class LocationService {
         // dto -> entity
         Location location = LocationMapper.INSTANCE.createLocationRequestToLocation(consumer, request);
 
-        // 현재 기본 주소 -> isSelected = false
-        updateIsSelectedFalse(consumer);
-
-        // 저장 (요청 주소 -> isSelected = true)
+        // 저장
         locationRepository.save(location);
     }
 
-    public List<GetLocationResponse> getList() {
+    public GetLocationListResponse getList() {
 
         Consumer consumer = securityUtil.getConsumer();
 
-        return locationRepository.findAllByConsumerAndDeletedAtIsNull(consumer)
-                .stream().map(LocationMapper.INSTANCE::locationToGetLocationResponse)
-                .toList();
-    }
-
-    public GetLocationResponse getSelected() {
-
-        Consumer consumer = securityUtil.getConsumer();
-
-        return locationRepository.findByConsumerAndIsSelectedIsTrueAndDeletedAtNull(consumer)
-                .map(LocationMapper.INSTANCE::locationToGetLocationResponse)
-                .orElse(null);
+        return GetLocationListResponse.of(
+                locationRepository.findAllByConsumerAndDeletedAtIsNull(consumer)
+                        .stream().map(LocationMapper.INSTANCE::locationToGetLocationResponse)
+                        .toList());
     }
 
     @Transactional
@@ -81,18 +70,6 @@ public class LocationService {
     }
 
     @Transactional
-    public void updateSelected(Long locationId) {
-
-        Consumer consumer = securityUtil.getConsumer();
-
-        // 현재 기본 주소 -> isSelected = false
-        updateIsSelectedFalse(consumer);
-
-        // 요청 주소 -> isSelected = true
-        getLocationByIdAndConsumer(locationId, consumer).updateIsSelected();
-    }
-
-    @Transactional
     public void delete(Long locationId) {
 
         Consumer consumer = securityUtil.getConsumer();
@@ -102,11 +79,6 @@ public class LocationService {
 
         // 삭제
         locationRepository.delete(location);
-    }
-
-    private void updateIsSelectedFalse(Consumer consumer) {
-        locationRepository.findByConsumerAndIsSelectedIsTrueAndDeletedAtIsNull(consumer)
-                .ifPresent(Location::updateIsSelected);
     }
 
     private Location getLocationByIdAndConsumer(Long locationId, Consumer consumer) {

@@ -3,13 +3,11 @@ package com.todayeat.backend.location.controller;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.location.dto.request.CreateLocationRequest;
 import com.todayeat.backend.location.dto.request.UpdateLocationRequest;
-import com.todayeat.backend.location.dto.response.GetLocationResponse;
+import com.todayeat.backend.location.dto.response.GetLocationListResponse;
 import com.todayeat.backend.location.service.LocationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 import static com.todayeat.backend._common.response.success.SuccessType.*;
 
@@ -28,15 +26,9 @@ public class LocationController implements LocationControllerDocs {
     }
 
     @Override
-    public SuccessResponse<List<GetLocationResponse>> getList() {
+    public SuccessResponse<GetLocationListResponse> getList() {
 
         return SuccessResponse.of(locationService.getList(), GET_LOCATIONS_SUCCESS);
-    }
-
-    @Override
-    public SuccessResponse<GetLocationResponse> getSelected() {
-
-        return SuccessResponse.of(locationService.getSelected(), GET_SELECTED_LOCATION_SUCCESS);
     }
 
     @Override
@@ -44,13 +36,6 @@ public class LocationController implements LocationControllerDocs {
 
         locationService.update(locationId, request);
         return SuccessResponse.of(UPDATE_LOCATION_SUCCESS);
-    }
-
-    @Override
-    public SuccessResponse<Void> updateSelected(Long locationId) {
-
-        locationService.updateSelected(locationId);
-        return SuccessResponse.of(UPDATE_SELECTED_LOCATION_SUCCESS);
     }
 
     @Override

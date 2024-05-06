@@ -10,13 +10,9 @@ import java.util.Optional;
 
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
-    Optional<Location> findByConsumerAndIsSelectedIsTrueAndDeletedAtIsNull(Consumer consumer);
-
     boolean existsByConsumerAndCoordinate_LatitudeAndCoordinate_LongitudeAndDeletedAtIsNull(Consumer consumer, BigDecimal latitude, BigDecimal longitude);
 
     List<Location> findAllByConsumerAndDeletedAtIsNull(Consumer consumer);
 
     Optional<Location> findByIdAndConsumerAndDeletedAtIsNull(Long locationId, Consumer consumer);
-
-    Optional<Location> findByConsumerAndIsSelectedIsTrueAndDeletedAtNull(Consumer consumer);
 }
