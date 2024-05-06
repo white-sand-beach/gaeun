@@ -39,6 +39,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Value("${secret.refresh-token-expired-time}")
     private int REFRESH_TOKEN_EXPIRED_TIME;
 
+    private static String REFRESH_TOKEN_COOKIE_NAME = "RefreshToken";
+    private static String ACCESS_TOKEN_COOKIE_NAME = "accessToken";
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
@@ -195,7 +198,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = UriComponentsBuilder.fromUriString(redirectUri)
                 .build().toUriString();
 
-        clearAuthenticationAttributes(request, response); // 쿠키 삭제
+        // 쿠키 삭제
+        clearAuthenticationAttributes(request, response);
+        cookieUtil.deleteCookie(request, response, ACCESS_TOKEN_COOKIE_NAME);
+        cookieUtil.deleteCookie(request, response, REFRESH_TOKEN_COOKIE_NAME);
+
+        // 리다이렉트
         response.sendRedirect(targetUrl);
     }
 
