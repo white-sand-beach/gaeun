@@ -51,7 +51,8 @@ public enum SuccessType {
     GET_CATEGORY_LIST_SUCCESS("카테고리 리스트 조회에 성공하였습니다."),
 
     // menu
-    CREATE_MENU_SUCCESS("가게 메뉴 등록에 성공하였습니다."),
+    CREATE_MENU_SUCCESS("메뉴 등록에 성공하였습니다."),
+    GET_MENU_LIST_SUCCESS("메뉴 목록 조회에 성공하였습니다."),
 
     // store
 

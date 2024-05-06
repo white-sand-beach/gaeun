@@ -2,14 +2,13 @@ package com.todayeat.backend.menu.controller;
 
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend._common.response.success.SuccessType;
-import com.todayeat.backend.menu.dto.CreateMenuRequest;
+import com.todayeat.backend.menu.dto.request.CreateMenuRequest;
+import com.todayeat.backend.menu.dto.response.GetMenusResponse;
 import com.todayeat.backend.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -22,10 +21,20 @@ public class MenuController implements MenuControllerDocs{
     @Override
     @PreAuthorize("hasRole('SELLER')")
     @PostMapping
-    public SuccessResponse<Void> create(CreateMenuRequest request) {
+    public SuccessResponse<Void> create(@RequestBody CreateMenuRequest request) {
 
         menuService.create(request);
 
         return SuccessResponse.of(SuccessType.CREATE_MENU_SUCCESS);
     }
+
+    @Override
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping
+    public SuccessResponse<GetMenusResponse> getMenusResponse(@RequestParam(required = true, name = "store-id")
+                                                              Long storeId) {
+        return SuccessResponse.of(menuService.getMenusResponse(storeId), SuccessType.GET_MENU_LIST_SUCCESS);
+    }
+
+
 }
