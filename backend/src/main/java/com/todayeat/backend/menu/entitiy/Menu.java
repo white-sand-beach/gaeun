@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 
+import java.util.Objects;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -51,5 +53,20 @@ public class Menu extends BaseTime {
         this.discountRate = discountRate;
         this.sequence = sequence;
         this.store = store;
+    }
+
+    public void update(String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, Integer sequence) {
+
+        if(!Objects.equals(this.imageUrl, imageUrl))    this.imageUrl = imageUrl;
+
+        if(!Objects.equals(this.name, name))    this.name = name;
+
+        if(!Objects.equals(this.originalPrice, originalPrice))  this.originalPrice = originalPrice;
+
+        if(!Objects.equals(this.sellPrice, sellPrice))  this.sellPrice = sellPrice;
+
+        if(!Objects.equals(this.discountRate, discountRate)) this.discountRate = discountRate;
+
+        if(!Objects.equals(this.sequence, sequence))   this.sequence = sequence;
     }
 }
