@@ -13,8 +13,11 @@ public class GetLocationResponse {
     @Schema(description = "위치 고유번호", example = "1")
     private Long locationId;
 
-    @Schema(description = "주소값", example = "경상북도 구미시 3공단3로 302")
+    @Schema(description = "지번 주소", example = "경상북도 구미시 임수동 94-1")
     private String address;
+
+    @Schema(description = "도로명 주소", example = "경상북도 구미시 3공단3로 302")
+    private String roadAddress;
 
     @Schema(description = "위도", example = "36.108184")
     private BigDecimal latitude;
@@ -26,9 +29,10 @@ public class GetLocationResponse {
     private String alias;
 
     @Builder
-    private GetLocationResponse(Long locationId, String address, BigDecimal latitude, BigDecimal longitude, String alias) {
+    private GetLocationResponse(Long locationId, String address, String roadAddress, BigDecimal latitude, BigDecimal longitude, String alias) {
         this.locationId = locationId;
         this.address = address;
+        this.roadAddress = roadAddress;
         this.latitude = latitude;
         this.longitude = longitude;
         this.alias = alias;
