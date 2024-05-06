@@ -5,6 +5,7 @@ import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.menu.dto.request.CreateMenuRequest;
 import com.todayeat.backend.menu.dto.request.DeleteMenuRequest;
+import com.todayeat.backend.menu.dto.request.UpdateMenuRequest;
 import com.todayeat.backend.menu.dto.response.GetMenuResponse;
 import com.todayeat.backend.menu.dto.response.GetMenusResponse;
 import com.todayeat.backend.menu.entitiy.Menu;
@@ -52,6 +53,20 @@ public class MenuService {
                 .toList();
 
         return GetMenusResponse.of(store.getId(), menus, menus.size());
+    }
+
+    @Transactional
+    public void update(Long menuId, UpdateMenuRequest request) {
+
+        // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
+        Store store = validateStoreAndSeller(request.getStoreId());
+
+        // 메뉴 존재 여부 확인
+        Menu menu = menuRepository.findByIdAndDeletedAtIsNull(menuId)
+                .orElseThrow(() -> new BusinessException(ErrorType.MENU_NOT_FOUND));
+
+        menu.update(request.getImageUrl(), request.getName(), request.getOriginalPrice(), request.getSellPrice(),
+                getDiscountRate(request.getOriginalPrice(), request.getSellPrice()), request.getSequence());
     }
 
     @Transactional
