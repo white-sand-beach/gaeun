@@ -6,6 +6,7 @@ import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.menu.dto.request.CreateMenuRequest;
 import com.todayeat.backend.menu.dto.request.DeleteMenuRequest;
 import com.todayeat.backend.menu.dto.request.UpdateMenuRequest;
+import com.todayeat.backend.menu.dto.response.CreateMenuResponse;
 import com.todayeat.backend.menu.dto.response.GetMenuResponse;
 import com.todayeat.backend.menu.dto.response.GetMenusResponse;
 import com.todayeat.backend.menu.entitiy.Menu;
@@ -32,7 +33,7 @@ public class MenuService {
     private final SellerRepository sellerRepository;
 
     @Transactional
-    public void create(CreateMenuRequest request) {
+    public CreateMenuResponse create(CreateMenuRequest request) {
 
         // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
         Store store = validateStoreAndSeller(request.getStoreId());
@@ -41,6 +42,8 @@ public class MenuService {
                 .createMenuRequestToMenu(request, getDiscountRate(request.getOriginalPrice(), request.getSellPrice()), store);
 
         menuRepository.save(menu);
+
+        return CreateMenuResponse.of(menu.getId());
     }
 
     public GetMenusResponse getMenusResponse(Long storeId) {

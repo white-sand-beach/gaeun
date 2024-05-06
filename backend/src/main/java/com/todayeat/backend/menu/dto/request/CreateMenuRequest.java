@@ -3,15 +3,11 @@ package com.todayeat.backend.menu.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Schema(name = "CreateMenuRequest", description = "메뉴 등록 요청")
 public class CreateMenuRequest {
-
-
-    @Pattern(regexp = "https://todayeat-bucket\\.s3\\.ap-northeast-2\\.amazonaws\\.com/seller/[1-9]\\d*/menu-image/[\\w-]+(\\.[\\w-]+)?", message = "imageUrl: 이미지 url 형식이 맞지 않습니다.")
-    @Schema(description = "메뉴 이미지 url", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/uuid.png")
-    private String imageUrl;
 
     @NotBlank(message = "name: 값이 비어 있지 않아야 합니다.")
     @Size(max = 20, message = "address: 길이가 20 이하여야 합니다.")
