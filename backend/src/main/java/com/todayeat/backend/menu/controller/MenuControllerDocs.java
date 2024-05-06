@@ -5,7 +5,6 @@ import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.menu.dto.request.CreateMenuRequest;
 import com.todayeat.backend.menu.dto.request.DeleteMenuRequest;
 import com.todayeat.backend.menu.dto.request.UpdateMenuRequest;
-import com.todayeat.backend.menu.dto.response.CreateMenuResponse;
 import com.todayeat.backend.menu.dto.response.GetMenusResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,8 +24,7 @@ public interface MenuControllerDocs {
                           request body 넣어주세요.
                           """)
     @ApiResponse(responseCode = "200",
-            description = "성공",
-            content = @Content(schema = @Schema(implementation = CreateMenuResponse.class)))
+            description = "성공")
     @ApiResponse(responseCode = "404",
             description = "판매자의 가게가 맞는지 확인, 가게 존재 여부 확인",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
@@ -36,7 +34,7 @@ public interface MenuControllerDocs {
                           판매가가 원가보다 큰 경우
                           """,
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    SuccessResponse<CreateMenuResponse> create(@Valid CreateMenuRequest request);
+    SuccessResponse<Void> create(@Valid CreateMenuRequest request);
 
     @Operation(summary = "메뉴 조회",
             description = """

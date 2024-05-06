@@ -3,11 +3,16 @@ package com.todayeat.backend.menu.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
 @Schema(name = "CreateMenuRequest", description = "메뉴 등록 요청")
 public class CreateMenuRequest {
+
+    @Schema(description = "메뉴 이미지", example = "img.jpg")
+    private MultipartFile image;
 
     @NotBlank(message = "name: 값이 비어 있지 않아야 합니다.")
     @Size(max = 20, message = "address: 길이가 20 이하여야 합니다.")

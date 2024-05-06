@@ -5,11 +5,11 @@ import com.todayeat.backend._common.response.success.SuccessType;
 import com.todayeat.backend.menu.dto.request.CreateMenuRequest;
 import com.todayeat.backend.menu.dto.request.DeleteMenuRequest;
 import com.todayeat.backend.menu.dto.request.UpdateMenuRequest;
-import com.todayeat.backend.menu.dto.response.CreateMenuResponse;
 import com.todayeat.backend.menu.dto.response.GetMenusResponse;
 import com.todayeat.backend.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -21,10 +21,12 @@ public class MenuController implements MenuControllerDocs {
     private final MenuService menuService;
 
     @Override
-    @PostMapping
-    public SuccessResponse<CreateMenuResponse> create(@RequestBody CreateMenuRequest request) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public SuccessResponse<Void> create(@ModelAttribute CreateMenuRequest request) {
 
-        return SuccessResponse.of(menuService.create(request), SuccessType.CREATE_MENU_SUCCESS);
+        menuService.create(request);
+
+        return SuccessResponse.of(SuccessType.CREATE_MENU_SUCCESS);
     }
 
     @Override
