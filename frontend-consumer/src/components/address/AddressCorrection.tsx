@@ -9,13 +9,14 @@ import company from "../../assets/search/company.png";
 import home from "../../assets/search/home.png";
 import point_white from "../../assets/search/point_white.png";
 
-const AddressRegistration = () => {
+const AddressCorrection = () => {
   const location = useLocation();
   const mapHeight = "500px";
   const [showBalloon, setShowBalloon] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [alias, setAlias] = useState("");
-  const { address, latitude, longitude, roadAddress } = location.state;
+  const { address, latitude, longitude, roadAddress, addressId } =
+    location.state;
   const [activeAlias, setActiveAlias] = useState(alias);
 
   const token =
@@ -60,6 +61,7 @@ const AddressRegistration = () => {
     console.log(latitude);
     console.log(longitude);
     console.log(address);
+    console.log(addressId);
     // 말풍선을 보여주고 5초 후에 숨깁니다.
     setShowBalloon(true);
     setTimeout(() => {
@@ -67,24 +69,25 @@ const AddressRegistration = () => {
     }, 3000);
   }, []);
 
-  const locationsComplete = () => {
-    const locationsData = {
-      latitude: latitude,
-      longitude: longitude,
-      address: address,
+  const aliasComplete = () => {
+    const aliasData = {
       alias: alias,
-      roadAddress: roadAddress,
     };
     axios
-      .post(`${import.meta.env.VITE_API_URL}/api/locations`, locationsData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .put(
+        `${import.meta.env.VITE_API_URL}/api/locations/${addressId}`,
+        aliasData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then(() => {
-        alert("위치 등록이 완료되었습니다.");
-        console.log(locationsData.alias);
-        console.log(locationsData.roadAddress);
+        alert("주소 수정완료.");
+        console.log(
+          `메인에서 쓰일 바뀐 주소는 ${address}이고, 별칭은 ${alias} 입니다.`
+        );
         goAddressSearchPage();
       })
       .catch((error) => {
@@ -177,11 +180,11 @@ const AddressRegistration = () => {
             ></input>
           </div>
         )}
-        <div className="w-[330px] mx-auto bg-myColor py-3 mt-4 rounded-md text-center">
-          <div
-            onClick={locationsComplete}
-            className="text-base font-semibold text-white"
-          >
+        <div
+          onClick={aliasComplete}
+          className="w-[330px] mx-auto bg-myColor py-3 mt-4 rounded-md text-center"
+        >
+          <div className="text-base font-semibold text-white">
             이 위치로 주소 등록
           </div>
         </div>
@@ -190,4 +193,4 @@ const AddressRegistration = () => {
   );
 };
 
-export default AddressRegistration;
+export default AddressCorrection;

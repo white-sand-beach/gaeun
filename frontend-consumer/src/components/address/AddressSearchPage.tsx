@@ -9,6 +9,10 @@ const AddressSearchPage = () => {
   interface AddressData {
     locationId: number;
     address: string;
+    alias: string;
+    roadAddress: string;
+    longitude: number;
+    latitude: number;
   }
 
   const navigate = useNavigate();
@@ -33,8 +37,8 @@ const AddressSearchPage = () => {
         })
         .then((response) => {
           // 응답 데이터를 콘솔에 출력
-          console.log(response.data.data);
-          setAddresses(response.data.data);
+          console.log(response.data.data.locations);
+          setAddresses(response.data.data.locations);
         })
         .catch((error) => {
           // 에러 발생시 콘솔에 에러 메시지 출력
@@ -47,6 +51,10 @@ const AddressSearchPage = () => {
 
     fetchData(); // 이 부분을 추가하여 fetchData 함수를 호출합니다.
   }, [token]); // token을 의존성 배열에 추가합니다.
+
+  const goBack = () => {
+    navigate(-1);
+  };
 
   const goAddressRegistration = () => {
     navigate("/address-search-registration", {
@@ -82,7 +90,7 @@ const AddressSearchPage = () => {
   return (
     <div className="container max-w-md mx-auto">
       <header className="flex items-center justify-between p-4 border-b border-gray-200">
-        <button className="w-6 h-6">
+        <button onClick={goBack} className="w-6 h-6">
           <img src={left} alt="left" />
         </button>
         <h1 className="text-lg">주소 선택</h1>
@@ -115,12 +123,17 @@ const AddressSearchPage = () => {
         </div>
       )}
 
+      <hr className="w-full my-2" />
       <ul className="divide-y divide-gray-200">
         {addresses.map((addressData) => (
           <AddressList
             key={addressData.locationId}
             address={addressData.address}
             addressId={addressData.locationId}
+            alias={addressData.alias}
+            roadAddress={addressData.roadAddress}
+            latitude={addressData.latitude}
+            longitude={addressData.longitude}
           />
         ))}
       </ul>

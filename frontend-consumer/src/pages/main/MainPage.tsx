@@ -193,7 +193,7 @@ const Main: React.FC = () => {
           {/* 슬라이드 업되는 패널 내용 */}
           <div className="pt-2 bg-white rounded-t-lg shadow h-svh">
             {/* 여기에 지도 아래 정보를 렌더링합니다. */}
-            <div className="flex items-center justify-center w-64 m-auto my-1 border border-orange-400 h-14 rounded-xl">
+            <div className="flex items-center justify-center w-full m-auto my-1 border border-orange-400 h-14 rounded-xl">
               <ServiceBanner />
             </div>
 
