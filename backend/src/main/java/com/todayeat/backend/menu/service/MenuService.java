@@ -4,6 +4,7 @@ import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.menu.dto.request.CreateMenuRequest;
+import com.todayeat.backend.menu.dto.request.DeleteMenuRequest;
 import com.todayeat.backend.menu.dto.response.GetMenuResponse;
 import com.todayeat.backend.menu.dto.response.GetMenusResponse;
 import com.todayeat.backend.menu.entitiy.Menu;
@@ -18,9 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
-
-import static com.todayeat.backend._common.response.error.ErrorType.STORE_NOT_FOUND;
 
 @Slf4j
 @Service
@@ -35,7 +33,7 @@ public class MenuService {
     @Transactional
     public void create(CreateMenuRequest request) {
 
-        // 판매자의 가게가 맞는지 확인
+        // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
         Store store = validateStoreAndSeller(request.getStoreId());
 
         Menu menu = MenuMapper.INSTANCE
@@ -46,7 +44,7 @@ public class MenuService {
 
     public GetMenusResponse getMenusResponse(Long storeId) {
 
-        // 판매자의 가게가 맞는지 확인
+        // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
         Store store = validateStoreAndSeller(storeId);
 
         List<GetMenuResponse> menus = menuRepository.findAllByStoreAndDeletedAtIsNullOrderBySequenceAscUpdatedAtDesc(store)
@@ -56,22 +54,26 @@ public class MenuService {
         return GetMenusResponse.of(store.getId(), menus, menus.size());
     }
 
-    // 판매자의 가게가 맞는지 확인
+    @Transactional
+    public void delete(Long menuId, DeleteMenuRequest request) {
+
+        // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
+        Store store = validateStoreAndSeller(request.getStoreId());
+
+        // 메뉴 존재 여부 확인
+        Menu menu = menuRepository.findByIdAndDeletedAtIsNull(menuId)
+                .orElseThrow(() -> new BusinessException(ErrorType.MENU_NOT_FOUND));
+
+        menuRepository.delete(menu);
+    }
+
+    // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
     private Store validateStoreAndSeller(Long storeId) {
 
-//        Seller seller = securityUtil.getSeller();
-//
-//        return sellerRepository.findByIdAndStoreIdAndDeletedAtIsNullAndStoreDeletedAtIsNull(seller.getId(), storeId)
-//                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND)).getStore();
+        Seller seller = securityUtil.getSeller();
 
-        Store store = securityUtil.getSeller().getStore();
-
-        if (store == null || !Objects.equals(store.getId(), storeId)) {
-
-            throw new BusinessException(STORE_NOT_FOUND);
-        }
-
-        return store;
+        return sellerRepository.findByIdAndStoreIdAndDeletedAtIsNullAndStoreDeletedAtIsNull(seller.getId(), storeId)
+                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND)).getStore();
     }
 
     // 할인률 계산

@@ -3,6 +3,7 @@ package com.todayeat.backend.menu.controller;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend._common.response.success.SuccessType;
 import com.todayeat.backend.menu.dto.request.CreateMenuRequest;
+import com.todayeat.backend.menu.dto.request.DeleteMenuRequest;
 import com.todayeat.backend.menu.dto.response.GetMenusResponse;
 import com.todayeat.backend.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,14 @@ public class MenuController implements MenuControllerDocs{
         return SuccessResponse.of(menuService.getMenusResponse(storeId), SuccessType.GET_MENU_LIST_SUCCESS);
     }
 
+    @Override
+    @PreAuthorize("hasRole('SELLER')")
+    @DeleteMapping("/{menu-id}")
+    public SuccessResponse<Void> delete(@PathVariable(name = "menu-id") Long menuId,
+                                        @RequestBody DeleteMenuRequest request) {
 
+        menuService.delete(menuId, request);
+
+        return SuccessResponse.of(SuccessType.DELETE_MENU_SUCCESS);
+    }
 }

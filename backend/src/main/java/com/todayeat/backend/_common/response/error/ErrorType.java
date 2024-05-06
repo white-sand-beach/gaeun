@@ -60,6 +60,7 @@ public enum ErrorType {
     // menu
     MENU_CREATE_FAIL(HttpStatus.BAD_REQUEST, "판매가가 원가보다 커 메뉴 등록에 실패했습니다."),
     MENU_GET_DISCOUNT_RATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "메뉴의 할인가 계산에 실패했습니다."),
+    MENU_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 메뉴입니다."),
 
     // store
 
