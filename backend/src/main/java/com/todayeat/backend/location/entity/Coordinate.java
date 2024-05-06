@@ -13,8 +13,11 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class Coordinate {
 
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
     private String address;
+
+    @Column(length = 50, nullable = false)
+    private String roadAddress;
 
     @Column(precision = 9, scale = 6, nullable = false)
     private BigDecimal latitude;
@@ -23,15 +26,17 @@ public class Coordinate {
     private BigDecimal longitude;
 
     @Builder
-    private Coordinate(String address, BigDecimal latitude, BigDecimal longitude) {
+    private Coordinate(String address, String roadAddress, BigDecimal latitude, BigDecimal longitude) {
         this.address = address;
+        this.roadAddress = roadAddress;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    static public Coordinate of(String address, BigDecimal latitude, BigDecimal longitude) {
+    static public Coordinate of(String address, String roadAddress, BigDecimal latitude, BigDecimal longitude) {
         return builder()
                 .address(address)
+                .roadAddress(roadAddress)
                 .latitude(latitude)
                 .longitude(longitude)
                 .build();

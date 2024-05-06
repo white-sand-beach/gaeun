@@ -12,8 +12,13 @@ public class CreateLocationRequest {
 
     @NotBlank(message = "address: 값이 비어 있지 않아야 합니다.")
     @Size(max = 50, message = "address: 길이가 50 이하여야 합니다.")
-    @Schema(description = "주소값", example = "경상북도 구미시 3공단3로 302")
+    @Schema(description = "지번 주소", example = "경상북도 구미시 임수동 94-1")
     private String address;
+
+    @NotBlank(message = "roadAddress: 값이 비어 있지 않아야 합니다.")
+    @Size(max = 50, message = "roadAddress: 길이가 50 이하여야 합니다.")
+    @Schema(description = "도로명 주소", example = "경상북도 구미시 3공단3로 302")
+    private String roadAddress;
 
     @NotNull(message = "latitude: 값이 null이 아니어야 합니다.")
     @DecimalMin(value = "33", message = "latitude: 33 이상이어야 합니다.")
