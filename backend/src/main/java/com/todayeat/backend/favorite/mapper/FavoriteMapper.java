@@ -1,7 +1,7 @@
 package com.todayeat.backend.favorite.mapper;
 
 import com.todayeat.backend.consumer.entity.Consumer;
-import com.todayeat.backend.favorite.dto.response.FavoriteInfo;
+import com.todayeat.backend.favorite.dto.response.GetFavoriteResponse;
 import com.todayeat.backend.favorite.dto.response.GetFavoriteListResponse;
 import com.todayeat.backend.favorite.entity.Favorite;
 import com.todayeat.backend.store.entity.Store;
@@ -24,7 +24,7 @@ public interface FavoriteMapper {
     @Mapping(source = "store.imageURL", target = "storeImageUrl")
     @Mapping(source = "store.favoriteCnt", target = "storeFavoriteCnt")
     @Mapping(source = "store.reviewCnt", target = "storeReviewCnt")
-    FavoriteInfo toFavoriteInfo(Favorite favorite);
+    GetFavoriteResponse toFavoriteInfo(Favorite favorite);
 
-    GetFavoriteListResponse toGetFavoriteListResponse(List<FavoriteInfo> favoriteInfos, Long totalCnt, Integer page, Boolean hasNext);
+    GetFavoriteListResponse toGetFavoriteListResponse(List<GetFavoriteResponse> getFavoriteResponses, Long totalCnt, Integer page, Boolean hasNext);
 }

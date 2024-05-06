@@ -25,20 +25,12 @@ public class GetLocationResponse {
     @Schema(description = "별명(옵션)", example = "우리집")
     private String alias;
 
-    @Schema(description = "선택 여부", example = "true")
-    private Boolean isSelected;
-
-    @Schema(description = "반경(km)", example = "2")
-    private Integer radius;
-
     @Builder
-    private GetLocationResponse(Long locationId, String address, BigDecimal latitude, BigDecimal longitude, String alias, Boolean isSelected, Integer radius) {
+    private GetLocationResponse(Long locationId, String address, BigDecimal latitude, BigDecimal longitude, String alias) {
         this.locationId = locationId;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
         this.alias = alias;
-        this.isSelected = isSelected;
-        this.radius = radius;
     }
 }
