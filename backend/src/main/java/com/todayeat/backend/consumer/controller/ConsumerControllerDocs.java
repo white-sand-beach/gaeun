@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,4 +56,13 @@ public interface ConsumerControllerDocs {
             content = @Content(schema = @Schema(implementation = GetConsumerResponse.class)))
     @GetMapping
     SuccessResponse<GetConsumerResponse> get();
+
+    @Operation(summary = "로그아웃",
+            description = """
+                          `ROLE_CONSUMER`
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @GetMapping("/logout")
+    SuccessResponse<Void> logout(HttpServletRequest request, HttpServletResponse response);
 }
