@@ -24,7 +24,7 @@ public interface FavoriteMapper {
     @Mapping(source = "store.imageURL", target = "storeImageUrl")
     @Mapping(source = "store.favoriteCnt", target = "storeFavoriteCnt")
     @Mapping(source = "store.reviewCnt", target = "storeReviewCnt")
-    GetFavoriteResponse toFavoriteInfo(Favorite favorite);
+    GetFavoriteResponse toGetFavoriteResponse(Favorite favorite);
 
-    GetFavoriteListResponse toGetFavoriteListResponse(List<GetFavoriteResponse> getFavoriteResponses, Long totalCnt, Integer page, Boolean hasNext);
+    GetFavoriteListResponse toGetFavoriteListResponse(List<GetFavoriteResponse> favorites, Long totalCnt, Integer page, Boolean hasNext);
 }
