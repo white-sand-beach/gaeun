@@ -55,7 +55,7 @@ const OrderListPage = () => {
 
   return (
     <>
-      <div className="yes-footer gap-3 normal-order-flex top-[70px] xl:xl-order-flex">
+      <div className="yes-footer gap-3 normal-order-flex top-[70px] xl:xl-order-flex overflow-y-scroll">
         {orderLists.map((orderlist, index) => (
           <div key={index}>
             <OrderList
