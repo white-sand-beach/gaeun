@@ -1,5 +1,5 @@
-import ReviewList from "../../components/review/ReviewList";
-import TestProfile from "../../assets/test-img.png"
+import ReviewList from "@/components/review/ReviewList";
+import TestProfile from "@/assets/test-img.png"
 
 const ReviewPage = () => {
   const reviewlists = [

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Logo from "/icons/size-192.png"
-import TotalButton from "../../components/ui/TotalButton.tsx";
+import TotalButton from "@/components/ui/TotalButton.tsx";
 
 const LogIn = () => {
     return (

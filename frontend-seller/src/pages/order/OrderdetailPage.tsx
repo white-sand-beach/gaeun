@@ -1,4 +1,4 @@
-// import OrderDetail from "../../components/order/OrderDetail";
+// import OrderDetail from "@/components/order/OrderDetail";
 
 
 // const OrderdetailPage = () => {

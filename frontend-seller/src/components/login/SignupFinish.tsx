@@ -1,6 +1,6 @@
-import FinishLogo from "../../assets/signup-finish.gif"
+import FinishLogo from "@/assets/signup-finish.gif"
 import { useNavigate } from "react-router-dom";
-import TotalButton from "../ui/TotalButton.tsx";
+import TotalButton from "@/components/ui/TotalButton.tsx";
 
 const SignupFinish = () => {
     const navigate = useNavigate()

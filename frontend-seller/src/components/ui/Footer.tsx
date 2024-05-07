@@ -1,8 +1,8 @@
-import ChartIcon from "../../assets/chart.png"
-import SellListIcon from "../../assets/sell-list.png"
-import OrderListIcon from "../../assets/order-list.png"
-import AddProductIcon from "../../assets/add-product.png"
-import ProfileIcon from "../../assets/profile.png"
+import ChartIcon from "@/assets/chart.png"
+import SellListIcon from "@/assets/sell-list.png"
+import OrderListIcon from "@/assets/order-list.png"
+import AddProductIcon from "@/assets/add-product.png"
+import ProfileIcon from "@/assets/profile.png"
 
 const Footer = () => {
     return (

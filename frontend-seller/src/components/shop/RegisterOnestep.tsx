@@ -1,4 +1,4 @@
-import camera from "../../assets/addphoto.png"
+import camera from "@/assets/addphoto.png"
 
 const RegisterShop = () => {
     return (

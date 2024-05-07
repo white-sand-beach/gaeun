@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
-import Header from "./Header.tsx";
-import Footer from "./Footer.tsx";
+import Header from "@/components/ui/Header.tsx";
+import Footer from "@/components/ui/Footer.tsx";
 
 const MainLayout = () => {
     // 상단바 숨길 페이지 path

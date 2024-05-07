@@ -1,5 +1,5 @@
 import React from "react";
-import { OrderType } from "../../types/OrderType.ts";
+import { OrderType } from "@/types/OrderType.ts";
 
 const NotificationList: React.FC<OrderType> = (props) => {
     return (

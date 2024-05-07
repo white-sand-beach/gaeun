@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import TotalButton from "../../components/ui/TotalButton.tsx";
+import TotalButton from "@/components/ui/TotalButton.tsx";
 
 const SignUp = () => {
     const navigate = useNavigate()

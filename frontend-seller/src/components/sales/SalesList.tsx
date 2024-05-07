@@ -1,5 +1,5 @@
 import React from "react";
-import { SalesType } from "../../types/SalesType";
+import { SalesType } from "@/types/SalesType";
 
 const SalesList: React.FC<SalesType> = (props) => {
     return (

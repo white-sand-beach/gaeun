@@ -1,5 +1,5 @@
 import logo from "/icons/size-192.png"
-import camera from "../../assets/addphoto.png"
+import camera from "@/assets/addphoto.png"
 
 const RegisterFood = () => {
     return (

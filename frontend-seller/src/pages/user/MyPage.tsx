@@ -1,7 +1,7 @@
-import testImg from "../../assets/store-test-img.png"
-import reviewIcon from "../../assets/mypage-review.png"
-import infoIcon from "../../assets/mypage-change-info.png"
-import menuIcon from "../../assets/mypage-change-menu.png"
+import testImg from "@/assets/store-test-img.png"
+import reviewIcon from "@/assets/mypage-review.png"
+import infoIcon from "@/assets/mypage-change-info.png"
+import menuIcon from "@/assets/mypage-change-menu.png"
 
 const MyPage = () => {
   return (
