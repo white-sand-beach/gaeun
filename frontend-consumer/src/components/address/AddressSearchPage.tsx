@@ -3,7 +3,7 @@ import DaumPostcodeEmbed from "react-daum-postcode";
 import left from "../../assets/navbar/back.png";
 import { useNavigate } from "react-router-dom";
 import AddressList from "./AddressList";
-import axios from "axios";
+import AddressListForm from "../../services/searchs/AddressListService.ts";
 
 const AddressSearchPage = () => {
   interface AddressData {
@@ -23,34 +23,9 @@ const AddressSearchPage = () => {
   const [roadAddress, setJibunAddress] = useState("");
   const [addresses, setAddresses] = useState<AddressData[]>([]);
 
-  const token =
-    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMyIsInJvbGUiOiJST0xFX0NPTlNVTUVSIiwiaWF0IjoxNzE0NzI1MzUzLCJleHAiOjE3MTUwNzA5NTN9.pkGYbeXouRp304ff14eFGgofRQGM7dYUN6A65v9RfGw";
-
   useEffect(() => {
-    const fetchData = () => {
-      axios
-        .get(`${import.meta.env.VITE_API_URL}/api/locations`, {
-          headers: {
-            // Authorization 헤더에 "Bearer" 토큰 포맷으로 토큰을 추가합니다.
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          // 응답 데이터를 콘솔에 출력
-          console.log(response.data.data.locations);
-          setAddresses(response.data.data.locations);
-        })
-        .catch((error) => {
-          // 에러 발생시 콘솔에 에러 메시지 출력
-          console.error(
-            "Error fetching data:",
-            error.response ? error.response.data : error.message
-          );
-        });
-    };
-
-    fetchData(); // 이 부분을 추가하여 fetchData 함수를 호출합니다.
-  }, [token]); // token을 의존성 배열에 추가합니다.
+    AddressListForm(setAddresses).catch(console.error);
+  }, []); // token을 의존성 배열에 추가합니다.
 
   const goBack = () => {
     navigate(-1);
