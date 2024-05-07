@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 
-import setting from "../../assets/profile/setting.png"
+import setting from "../../assets/profile/setting.png";
+import heart from "../../assets/profile/heart.png";
+import order from "../../assets/profile/order.png";
+import review from "../../assets/profile/review.png";
 
 const ProfileCard = () => {
   return (
@@ -31,14 +34,14 @@ const ProfileCard = () => {
           </div>
           {/* 아이콘들 */}
           <div className="flex justify-around">
-            <button className="flex items-center justify-center w-8 h-8 text-blue-600 bg-blue-100 rounded-lg">
-              🔍
+            <button className="flex items-center justify-center w-10 h-10 rounded-lg">
+              <img src={order} alt="" />
             </button>
-            <button className="flex items-center justify-center w-8 h-8 text-red-600 bg-red-100 rounded-lg">
-              ❤️
+            <button className="flex items-center justify-center w-10 h-10 rounded-lg">
+              <img src={heart} alt="" />
             </button>
-            <button className="flex items-center justify-center w-8 h-8 text-yellow-600 bg-yellow-100 rounded-lg">
-              📅
+            <button className="flex items-center justify-center w-10 h-10 rounded-lg">
+              <img src={review} alt="" />
             </button>
           </div>
         </div>

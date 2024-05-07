@@ -5,8 +5,9 @@ import ring from "../../assets/navbar/ring.png";
 import back from "../../assets/navbar/back.png";
 
 const NavBar = () => {
-  const { alias } = useUserLocation((state) => ({
+  const { alias, roadAddress } = useUserLocation((state) => ({
     alias: state.alias,
+    roadAddress: state.roadAddress,
   })); // 스토어에서 별명 가져오기
 
   const navigate = useNavigate();
@@ -91,8 +92,15 @@ const NavBar = () => {
     <div className="fixed z-20 w-full p-4 rounded-b-lg between bg-myColor">
       <div className="w-[33%]">
         {showHomeAddress ? (
-          <p className="font-bold" onClick={handleUpdateAddress}>
-            {alias ? `${alias} ▼` : "현재위치 ▼"}
+          <p
+            className="font-bold whitespace-nowrap"
+            onClick={handleUpdateAddress}
+          >
+            {alias
+              ? `${alias} ▼`
+              : roadAddress
+                ? `${roadAddress} ▼`
+                : "현재위치 ▼"}
             {/* alias가 빈 값이면 '현재위치 ▼' 표시 */}
           </p>
         ) : (

@@ -18,6 +18,7 @@ const AddressDeleteForm = async (addressId: number): Promise<void> => {
 
     // 삭제 성공 알림
     alert("주소 삭제 완료.");
+    localStorage.removeItem("user-location");
     // 페이지 새로고침
     window.location.reload();
   } catch (error: any) {
