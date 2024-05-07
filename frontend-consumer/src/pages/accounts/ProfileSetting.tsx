@@ -4,6 +4,7 @@ import PhoneCheck from "../../components/user_info/PhoneCheck";
 import ProfileImageModal from "../../components/user_info/ProfileImageModal";
 import ProfileUpdateButton from "../../components/button/ProfileUpdateButton";
 import LogoutButton from "../../components/button/LogoutButton";
+import KakaoUnlinkButton from "../../components/auth_login/KakaoUnlinkButton";
 
 import useUserStore from "../../store/UserStore";
 import UserState from "../../types/UserState";
@@ -69,7 +70,9 @@ const ProfileSetting = () => {
         />
       </div>
       <div className="center text-xs text-gray-400">
-        <LogoutButton /> 
+        <LogoutButton />
+        <span className="mx-2">|</span>
+        <KakaoUnlinkButton />
       </div>
     </div>
   );
