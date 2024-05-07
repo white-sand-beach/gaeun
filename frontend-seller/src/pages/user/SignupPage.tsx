@@ -10,6 +10,7 @@ const SignUp = () => {
     const [isValidRegisterNo, setIsValidRegisterNo] = useState(true) // 사업자 등록번호 사용 가능 여부 ( 불가면  false )
     const [validRegisterNo, setValidRegisterNo] = useState("") // 사업자 등록번호 사용 가능 여부에 따른 문구 출력
 
+    const [isValidSignup, setIsValidSignup] = useState(true) // 회원가입 성공 여부 ( 실패시 false )
     const [validSignup, setValidSignup] = useState("") // 회원가입 실패 시 문구 출력
 
     // 회원가입 관련 정보
@@ -87,7 +88,7 @@ const SignUp = () => {
                 <TotalButton
                     title="가입하기"
                     onClick={() => navigate("/signupFin")} />
-                {validSignup}
+                {isValidSignup ? <p className="font-bold text-green-500">{validSignup}</p> : <p className="font-bold text-red-500">{validSignup}</p>}
             </div>
         </div>
     );
