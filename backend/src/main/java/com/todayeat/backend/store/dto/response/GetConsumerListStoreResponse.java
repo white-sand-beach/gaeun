@@ -29,10 +29,10 @@ public class GetConsumerListStoreResponse {
         private Long id;
 
         @Schema(description = "지번 주소", example = "OO시 OO구 OO동 OOO-OO")
-        private String lotNumberAddress;
+        private String address;
 
         @Schema(description = "도로명 주소", example = "OO OO시 O로 OOO")
-        private String roadNameAddress;
+        private String roadAddress;
 
         @Schema(description = "가게 명", example = "가게")
         private String name;

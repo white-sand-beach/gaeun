@@ -25,15 +25,15 @@ public class CreateStoreRequest {
     @Schema(description = "대표자명", example = "대표자")
     private String bossName;
 
-    @NotBlank(message = "lotNumberAddress: 빈 값이 아니어야 합니다.")
-    @Size(max = 50, message = "lotNumberAddress: 길이가 1에서 50 사이여야 합니다.")
+    @NotBlank(message = "address: 빈 값이 아니어야 합니다.")
+    @Size(max = 50, message = "address: 길이가 1에서 50 사이여야 합니다.")
     @Schema(description = "지번 주소", example = "OO시 OO구 OO동 OOO-OO")
-    private String lotNumberAddress;
+    private String address;
 
-    @NotBlank(message = "roadNameAddress: 빈 값이 아니어야 합니다.")
-    @Size(max = 50, message = "roadNameAddress: 길이가 1에서 50 사이여야 합니다.")
+    @NotBlank(message = "roadAddress: 빈 값이 아니어야 합니다.")
+    @Size(max = 50, message = "roadAddress: 길이가 1에서 50 사이여야 합니다.")
     @Schema(description = "도로명 주소", example = "OO OO시 O로 OOO")
-    private String roadNameAddress;
+    private String roadAddress;
 
     @NotNull(message = "latitude: 값이 null이 아니어야 합니다.")
     @DecimalMin(value = "33", message = "latitude: 33 이상이어야 합니다.")
