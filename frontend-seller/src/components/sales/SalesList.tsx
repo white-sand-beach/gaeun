@@ -2,9 +2,9 @@ import React from "react";
 import { SalesType } from "../../types/SalesType";
 
 const SalesList: React.FC<SalesType> = (props) => {
-  return (
-    <div className="list-component normal-size-list sm:sm-size-list md:md-size-list lg:lg-size-list xl:xl-size-list">
-            <div className="flex justify-between text-xl text-gray-500 md:text-2xl lg:text-3xl font-bold">
+    return (
+        <div className="w-screen list-component normal-size-list">
+            <div className="flex justify-between text-xl font-bold text-gray-500 md:text-2xl lg:text-3xl">
                 {/* 주문일자 */}
                 <p>{props.orderDate}</p>
                 {/* 주문상태 */}
@@ -20,7 +20,7 @@ const SalesList: React.FC<SalesType> = (props) => {
                 <button className="text-xl font-bold w-[100px] h-[100px] border-2 border-black rounded-[10px]">상세내역 보러가기</button>
             </div>
         </div>
-  );
+    );
 };
 
 export default SalesList;
