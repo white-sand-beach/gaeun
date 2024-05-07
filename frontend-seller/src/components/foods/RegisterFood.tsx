@@ -3,7 +3,7 @@ import camera from "../../assets/addphoto.png"
 
 const RegisterFood = () => {
     return (
-        <div className="gap-3 main-layout">
+        <div className="no-footer top-[100px] gap-3">
             {/* 음식 이미지 추가 */}
             <div>
                 <img src={logo} alt="음식사진" className="w-[120px]" />
@@ -28,7 +28,7 @@ const RegisterFood = () => {
                 <p className="text-[12px] text-gray-500 mt-2 font-bold">최초 등록 이후에도 판매가는 수정할 수 있습니다.</p>
             </div>
 
-            <button className="mt-20 common-btn">등록하기</button>
+            <button className="mt-14 common-btn">등록하기</button>
         </div>
     );
 };
