@@ -66,19 +66,26 @@ public class StoreService {
 
         String imageURL = imageToURL(createStoreRequest.getImage());
 
-        Store store = storeRepository.save(
-                StoreMapper.INSTANCE.createStoreRequestToStore(
-                        createStoreRequest,
-                        createPoint(createStoreRequest.getLatitude(), createStoreRequest.getLongitude()),
-                        imageURL));
+        try {
 
-        seller.updateStore(store);
+            Store store = storeRepository.save(
+                    StoreMapper.INSTANCE.createStoreRequestToStore(
+                            createStoreRequest,
+                            createPoint(createStoreRequest.getLatitude(), createStoreRequest.getLongitude()),
+                            imageURL));
 
-        createStoreRequest.getCategoryIdList().stream()
-                .map(categoryId -> categoryRepository.findById(categoryId)
-                        .orElseThrow(() -> new BusinessException(CATEGORY_NOT_FOUND)))
-                .map(category -> StoreCategoryMapper.INSTANCE.toStoreCategory(store, category))
-                .forEach(storeCategoryRepository::save);
+            seller.updateStore(store);
+
+            createStoreRequest.getCategoryIdList().stream()
+                    .map(categoryId -> categoryRepository.findById(categoryId)
+                            .orElseThrow(() -> new BusinessException(CATEGORY_NOT_FOUND)))
+                    .map(category -> StoreCategoryMapper.INSTANCE.toStoreCategory(store, category))
+                    .forEach(storeCategoryRepository::save);
+        } catch (RuntimeException e) {
+
+            s3Util.deleteImage(imageURL);
+            throw new RuntimeException(e);
+        }
     }
 
     public GetSellerStoreResponse getSellerStore(Long storeId) {
@@ -131,25 +138,34 @@ public class StoreService {
                 .filter(s -> s != null && Objects.equals(s.getId(), storeId))
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
 
-        StoreMapper.INSTANCE.updateStoreRequestToStore(
-                updateStoreRequest,
-                imageToURL(updateStoreRequest.getImage()),
-                createPoint(updateStoreRequest.getLatitude(), updateStoreRequest.getLongitude()),
-                store);
+        String imageURL = imageToURL(updateStoreRequest.getImage());
 
-        List<StoreCategory> existingCategories = storeCategoryRepository.findByStoreIdAndDeletedAtIsNull(storeId);
-        Set<Long> existingCategoryIds = existingCategories.stream()
-                .map(sc -> sc.getCategory().getId())
-                .collect(Collectors.toSet());
+        try {
 
-        existingCategories.stream()
-                .filter(sc -> !updateStoreRequest.getCategoryIdList().contains(sc.getCategory().getId()))
-                .forEach(storeCategoryRepository::delete);
+            StoreMapper.INSTANCE.updateStoreRequestToStore(
+                    updateStoreRequest,
+                    imageURL,
+                    createPoint(updateStoreRequest.getLatitude(), updateStoreRequest.getLongitude()),
+                    store);
 
-        updateStoreRequest.getCategoryIdList().stream()
-                .filter(id -> !existingCategoryIds.contains(id))
-                .forEach(id -> storeCategoryRepository.save(
-                        StoreCategoryMapper.INSTANCE.toStoreCategory(store, categoryRepository.findById(id).get())));
+            List<StoreCategory> existingCategories = storeCategoryRepository.findByStoreIdAndDeletedAtIsNull(storeId);
+            Set<Long> existingCategoryIds = existingCategories.stream()
+                    .map(sc -> sc.getCategory().getId())
+                    .collect(Collectors.toSet());
+
+            existingCategories.stream()
+                    .filter(sc -> !updateStoreRequest.getCategoryIdList().contains(sc.getCategory().getId()))
+                    .forEach(storeCategoryRepository::delete);
+
+            updateStoreRequest.getCategoryIdList().stream()
+                    .filter(id -> !existingCategoryIds.contains(id))
+                    .forEach(id -> storeCategoryRepository.save(
+                            StoreCategoryMapper.INSTANCE.toStoreCategory(store, categoryRepository.findById(id).get())));
+        } catch (RuntimeException e) {
+
+            s3Util.deleteImage(imageURL);
+            throw new RuntimeException(e);
+        }
     }
 
     @Transactional
