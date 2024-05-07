@@ -18,4 +18,6 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
     Boolean existsByEmail(String email);
 
     Boolean existsByRegisteredNo(String RegisteredNo);
+
+    Optional<Seller> findByIdAndStoreIdAndDeletedAtIsNullAndStoreDeletedAtIsNull(Long id, Long storeId);
 }
