@@ -40,7 +40,7 @@ public enum ErrorType {
     // seller
     SELLER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 판매자를 찾을 수 없습니다."),
     EMAIL_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
-    STORE_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 사업자 등록번호입니다."),
+    REGISTEREDNO_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 사업자 등록번호입니다."),
     EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 이메일입니다."),
     PHONE_NUMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 전화번호입니다."),
     EMAIL_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "이메일이 일치하지 않습니다."),
@@ -53,6 +53,7 @@ public enum ErrorType {
     // store
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 가게입니다."),
     STORE_FORBIDDEN(HttpStatus.FORBIDDEN, "금지된 가게 요청입니다."),
+    STORE_CONFLICT(HttpStatus.CONFLICT, "이미 가게가 존재합니다."),
 
     // category
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 카테고리입니다."),

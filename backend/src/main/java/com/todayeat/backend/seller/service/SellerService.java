@@ -56,7 +56,7 @@ public class SellerService implements UserDetailsService {
 
         if (sellerRepository.existsByRegisteredNo(signupSellerRequest.getRegisteredNo())) {
 
-            throw new BusinessException(STORE_CONFLICT);
+            throw new BusinessException(REGISTEREDNO_CONFLICT);
         }
 
         sellerRepository.save(SellerMapper.INSTANCE.signupSellerRequestToSeller(signupSellerRequest, passwordEncoder));
