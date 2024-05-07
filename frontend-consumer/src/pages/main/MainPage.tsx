@@ -51,6 +51,7 @@ const Main: React.FC = () => {
           if (update) {
             update("latitude", position.coords.latitude);
             update("longitude", position.coords.longitude);
+            update("alias", "현재위치");
           }
           setLocation((prev) => ({
             lat: position.coords.latitude,
