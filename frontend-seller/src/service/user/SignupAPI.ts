@@ -1,12 +1,10 @@
 import axios from "axios";
+import { SignupType } from "../../types/SignupType";
 // import { useNavigate } from "react-router-dom";
 
 // 이메일 중복 확인
-const postEmailCheck = (
-    email: string, 
-    setValid: (value: boolean) => void, 
-    setComment: (value: string) => void) => {
-    axios.post(import.meta.env.BASE_URL + "/api/auth/check-email", {
+const postEmailCheck = ({email, setValid, setComment}: SignupType) => {
+    axios.post(import.meta.env.VITE_BASE_URL + "/api/auth/check-email", {
         "email": email,
     })
         .then(() => {
@@ -21,12 +19,9 @@ const postEmailCheck = (
 };
 
 // 사업자 등록번호 사용 여부 확인
-const postCheckRegisterNo = (
-    registerNo: string, 
-    setValid: (value: boolean) => void, 
-    setComment: (value: string) => void) => {
-    axios.post(import.meta.env.BASE_URL + "/api/auth/check-registerd-no", {
-        "registeredNo": registerNo
+const postCheckRegisterNo = ({registeredNo, setValid, setComment}: SignupType) => {
+    axios.post(import.meta.env.VITE_BASE_URL + "/api/auth/check-registered-no", {
+        "registeredNo": registeredNo
     })
         .then(() => {
             setValid(true)
@@ -40,14 +35,8 @@ const postCheckRegisterNo = (
 };
 
 // 회원가입 요청
-const postSignUp = (
-    email: string, 
-    password: string, 
-    phoneNumber: string, 
-    registeredNo: string, 
-    setValid: (value: boolean) => void, 
-    setComment: (value: string) => void) => {
-    axios.post(import.meta.env.BASE_URL + "/api/auth", {
+const postSignUp = ({email, password, phoneNumber, registeredNo, setValid, setComment}: SignupType) => {
+    axios.post(import.meta.env.VITE_BASE_URL + "/api/auth", {
         "email": email,
         "password": password,
         "phoneNumber": phoneNumber,

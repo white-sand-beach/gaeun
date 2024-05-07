@@ -4,5 +4,5 @@ export type SignupType = {
     phoneNumber?: string;
     registeredNo?: string;
     setValid: (value: boolean) => void;
-    setcomment: (value: string) => void;
+    setComment: (value: string) => void;
 }

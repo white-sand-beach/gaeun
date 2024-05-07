@@ -1,6 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import TotalButton from "../../components/ui/TotalButton.tsx";
 import React, { useState } from "react";
+import TotalButton from "../../components/ui/TotalButton.tsx";
+import { useNavigate } from "react-router-dom";
+import { postEmailCheck, postCheckRegisterNo, postSignUp } from "../../service/user/SignupAPI.ts";
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -19,7 +20,7 @@ const SignUp = () => {
         password: "",
         passwordCheck: "",
         phoneNumber: "",
-        registerNo: "",
+        registeredNo: "",
     });
 
     // useState를 이용, 여러개의 input 상태관리
@@ -30,9 +31,39 @@ const SignUp = () => {
         setSellerInfo({
             ...sellerInfo,
             [name]: value,
-        })
-        console.log(`${[name]}: ${value}`)
+        });
+        console.log(`${[name]}: ${value}`);
     };
+
+    // 이메일 유효 확인 api 요청
+    const onCheckEmail = () => {
+        postEmailCheck({
+            email: sellerInfo.email, 
+            setValid: setIsValidEmail, 
+            setComment: setValidEmail
+        });
+    };
+
+    // 사업자 등록번호 확인 api 요청
+    const onCheckRegisterNo = () => {
+        postCheckRegisterNo({
+            registeredNo: sellerInfo.registeredNo,
+            setValid: setIsValidEmail,
+            setComment: setValidRegisterNo
+        });
+    };
+
+    // 회원가입 api 요청
+    const onSignup = () => {
+        postSignUp({
+            email: sellerInfo.email,
+            password: sellerInfo.password,
+            phoneNumber: sellerInfo.phoneNumber,
+            registeredNo: sellerInfo.registeredNo,
+            setValid: setIsValidSignup,
+            setComment: setValidSignup
+        })
+    }
 
     return (
         <div className="no-footer top-[75px]">
@@ -41,9 +72,9 @@ const SignUp = () => {
                 <p className="m-2 text-2xl font-bold">이메일</p>
                 <div className="flex flex-row gap-3">
                     <input name="email" type="text" placeholder="이메일을 입력하세요." className="w-[240px] border-b-2" value={sellerInfo.email} onChange={onChangeInfo}/>
-                    <button className="detail-btn w-[72px]">중복확인</button>
+                    <button className="detail-btn w-[72px]" onClick={onCheckEmail}>중복확인</button>
                 </div>
-                {isValidEmail ? <p className="font-bold text-red-500">{validEmail}</p> : <p className="font-bold text-green-500">{validEmail}</p>}
+                {isValidEmail ? <p className="font-bold text-green-500">{validEmail}</p> : <p className="font-bold text-red-500">{validEmail}</p>}
 
                 {/* 비밀번호 입력 */}
                 <p className="m-2 text-2xl font-bold">비밀번호</p>
@@ -78,16 +109,16 @@ const SignUp = () => {
                 {/* 사업자 등록번호 인증 */}
                 <p className="m-2 text-2xl font-bold">사업자 등록번호</p>
                 <div className="flex flex-row gap-3">
-                    <input name="registerNo" type="text" placeholder="사업자등록번호를 입력하세요." className="w-[240px] border-b-2" value={sellerInfo.registerNo} onChange={onChangeInfo} />
-                    <button className="detail-btn w-[72px]">인증</button>
+                    <input name="registeredNo" type="text" placeholder="사업자등록번호를 입력하세요." className="w-[240px] border-b-2" value={sellerInfo.registeredNo} onChange={onChangeInfo} />
+                    <button className="detail-btn w-[72px]" onClick={onCheckRegisterNo}>인증</button>
                 </div>
-                {sellerInfo.registerNo.length > 10 && <p className="font-bold text-red-500">등록번호는 최대 10자리 수 입니다!</p>}
+                {sellerInfo.registeredNo.length > 10 && <p className="font-bold text-red-500">등록번호는 최대 10자리 수 입니다!</p>}
                 {isValidRegisterNo ? <p className="font-bold text-green-500">{validRegisterNo}</p> : <p className="font-bold text-red-500">{validRegisterNo}</p>}
 
                 {/* 가입하기 */}
                 <TotalButton
                     title="가입하기"
-                    onClick={() => navigate("/signupFin")} />
+                    onClick={onSignup} />
                 {isValidSignup ? <p className="font-bold text-green-500">{validSignup}</p> : <p className="font-bold text-red-500">{validSignup}</p>}
             </div>
         </div>
