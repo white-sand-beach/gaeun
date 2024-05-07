@@ -5,7 +5,6 @@ export interface FavoriteItem {
   storeName: string;
   storeFavoriteCnt: number;
   storeReviewCnt: number;
-  isFavorite: boolean;
 }
 
 export interface FavoriteResponse {
