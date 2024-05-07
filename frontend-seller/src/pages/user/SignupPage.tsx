@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import TotalButton from "../../components/ui/TotalButton.tsx";
+import { useState } from "react";
 
 const SignUp = () => {
     const navigate = useNavigate()
+    const [isValidEmail, setIsValidEmail] = useState("") // 이메일 중복에 따른 문구 출력
+    
     return (
-        <div className="no-footer">
+        <div className="no-footer top-[90px]">
             <div className="flex flex-col gap-3">
                 {/* 이메일 입력 */}
                 <p className="m-2 text-2xl font-bold">이메일</p>
