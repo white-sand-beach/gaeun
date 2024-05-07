@@ -27,7 +27,7 @@ public class CreateStoreRequest {
 
     @NotBlank(message = "lotNumberAddress: 빈 값이 아니어야 합니다.")
     @Size(max = 50, message = "lotNumberAddress: 길이가 1에서 50 사이여야 합니다.")
-    @Schema(description = "지번 주소", example = "OO OO시 O로 OOO")
+    @Schema(description = "지번 주소", example = "OO시 OO구 OO동 OOO-OO")
     private String lotNumberAddress;
 
     @NotBlank(message = "roadNameAddress: 빈 값이 아니어야 합니다.")

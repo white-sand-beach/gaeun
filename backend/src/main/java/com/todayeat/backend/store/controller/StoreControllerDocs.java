@@ -30,7 +30,7 @@ public interface StoreControllerDocs {
             description = "성공",
             content = @Content(schema = @Schema()))
     @ApiResponse(responseCode = "404",
-            description = "존재하지 않는 카테고리입니다.",
+            description = "해당하는 판매자를 찾을 수 없습니다. / 존재하지 않는 카테고리입니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('SELLER')")

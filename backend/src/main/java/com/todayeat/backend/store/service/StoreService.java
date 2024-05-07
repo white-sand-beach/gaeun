@@ -8,7 +8,6 @@ import com.todayeat.backend.category.mapper.CategoryMapper;
 import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
-import com.todayeat.backend.location.service.LocationService;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
@@ -38,8 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.todayeat.backend._common.entity.DirectoryType.SELLER_STORE_IMAGE;
-import static com.todayeat.backend._common.response.error.ErrorType.CATEGORY_NOT_FOUND;
-import static com.todayeat.backend._common.response.error.ErrorType.STORE_NOT_FOUND;
+import static com.todayeat.backend._common.response.error.ErrorType.*;
 
 @Slf4j
 @Service
@@ -52,15 +50,14 @@ public class StoreService {
     private final SellerRepository sellerRepository;
     private final StoreRepository storeRepository;
 
-    private final LocationService locationService;
-
     private final SecurityUtil securityUtil;
     private final S3Util s3Util;
 
     @Transactional
     public void create(CreateStoreRequest createStoreRequest) {
 
-        Seller seller = securityUtil.getSeller();
+        Seller seller = sellerRepository.findById(securityUtil.getSeller().getId())
+                .orElseThrow(() -> new BusinessException(SELLER_NOT_FOUND));
 
         String imageURL = imageToURL(createStoreRequest.getImage());
 
@@ -71,7 +68,6 @@ public class StoreService {
                         imageURL));
 
         seller.updateStore(store);
-        sellerRepository.save(seller);
 
         createStoreRequest.getCategoryIdList().stream()
                 .map(categoryId -> categoryRepository.findById(categoryId)
@@ -125,19 +121,16 @@ public class StoreService {
     @Transactional
     public void update(Long storeId, UpdateStoreRequest updateStoreRequest) {
 
-        Store store = securityUtil.getSeller().getStore();
-
-        if (store == null || !Objects.equals(store.getId(), storeId)) {
-
-            throw new BusinessException(STORE_NOT_FOUND);
-        }
+        Store store = sellerRepository.findById(securityUtil.getSeller().getId())
+                .map(Seller::getStore)
+                .filter(s -> s != null && Objects.equals(s.getId(), storeId))
+                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
 
         StoreMapper.INSTANCE.updateStoreRequestToStore(
                 updateStoreRequest,
                 imageToURL(updateStoreRequest.getImage()),
                 createPoint(updateStoreRequest.getLatitude(), updateStoreRequest.getLongitude()),
                 store);
-        storeRepository.save(store);
 
         List<StoreCategory> existingCategories = storeCategoryRepository.findByStoreIdAndDeletedAtIsNull(storeId);
         Set<Long> existingCategoryIds = existingCategories.stream()

@@ -28,7 +28,7 @@ public class GetConsumerListStoreResponse {
         @Schema(description = "가게 아이디", example = "1")
         private Long id;
 
-        @Schema(description = "지번 주소", example = "OO OO시 O로 OOO")
+        @Schema(description = "지번 주소", example = "OO시 OO구 OO동 OOO-OO")
         private String lotNumberAddress;
 
         @Schema(description = "도로명 주소", example = "OO OO시 O로 OOO")

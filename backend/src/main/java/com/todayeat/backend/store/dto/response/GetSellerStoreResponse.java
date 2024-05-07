@@ -22,7 +22,7 @@ public class GetSellerStoreResponse {
     @Schema(description = "대표자명", example = "대표자")
     private String bossName;
 
-    @Schema(description = "지번 주소", example = "OO OO시 O로 OOO")
+    @Schema(description = "지번 주소", example = "OO시 OO구 OO동 OOO-OO")
     private String lotNumberAddress;
 
     @Schema(description = "도로명 주소", example = "OO OO시 O로 OOO")
