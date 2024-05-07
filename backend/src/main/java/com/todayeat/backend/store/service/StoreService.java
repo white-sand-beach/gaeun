@@ -167,6 +167,11 @@ public class StoreService {
 
     private String imageToURL(MultipartFile image) {
 
+        if (image == null) {
+
+            return null;
+        }
+
         return s3Util.uploadImage(image, SELLER_STORE_IMAGE, securityUtil.getSeller().getId());
     }
 
