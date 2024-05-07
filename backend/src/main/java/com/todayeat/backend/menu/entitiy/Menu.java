@@ -38,7 +38,7 @@ public class Menu extends BaseTime {
     private Integer discountRate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", referencedColumnName = "store_id")
+    @JoinColumn(name = "store_id")
     private Store store;
 
     @Builder
@@ -54,14 +54,14 @@ public class Menu extends BaseTime {
     // 현재 더티체킹 방법을 사용하지 않아서 미사용
     public void update(String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, Integer sequence) {
 
-        if(!Objects.equals(this.imageUrl, imageUrl))    this.imageUrl = imageUrl;
+        this.imageUrl = imageUrl;
 
-        if(!Objects.equals(this.name, name))    this.name = name;
+        this.name = name;
 
-        if(!Objects.equals(this.originalPrice, originalPrice))  this.originalPrice = originalPrice;
+        this.originalPrice = originalPrice;
 
-        if(!Objects.equals(this.sellPrice, sellPrice))  this.sellPrice = sellPrice;
+        this.sellPrice = sellPrice;
 
-        if(!Objects.equals(this.discountRate, discountRate)) this.discountRate = discountRate;
+        this.discountRate = discountRate;
     }
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class GetMenusResponse {
+public class GetMenuListResponse {
 
     private Long storeId;
 
@@ -15,13 +15,13 @@ public class GetMenusResponse {
     private Integer size;
 
     @Builder
-    private GetMenusResponse(Long storeId, List<GetMenuResponse> menus, Integer size) {
+    private GetMenuListResponse(Long storeId, List<GetMenuResponse> menus, Integer size) {
         this.storeId = storeId;
         this.menus = menus;
         this.size = size;
     }
 
-    public static GetMenusResponse of(Long storeId, List<GetMenuResponse> menus, Integer size) {
+    public static GetMenuListResponse of(Long storeId, List<GetMenuResponse> menus, Integer size) {
         return builder()
                 .storeId(storeId)
                 .menus(menus)

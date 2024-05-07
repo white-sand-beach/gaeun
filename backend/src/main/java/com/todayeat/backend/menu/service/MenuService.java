@@ -9,7 +9,7 @@ import com.todayeat.backend.menu.dto.request.CreateMenuRequest;
 import com.todayeat.backend.menu.dto.request.DeleteMenuRequest;
 import com.todayeat.backend.menu.dto.request.UpdateMenuRequest;
 import com.todayeat.backend.menu.dto.response.GetMenuResponse;
-import com.todayeat.backend.menu.dto.response.GetMenusResponse;
+import com.todayeat.backend.menu.dto.response.GetMenuListResponse;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.mapper.MenuMapper;
 import com.todayeat.backend.menu.repository.MenuRepository;
@@ -39,7 +39,7 @@ public class MenuService {
 
         Seller seller = securityUtil.getSeller();
 
-        // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
+        // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
         Store store = validateStoreAndSeller(seller, request.getStoreId());
 
         // S3에 이미지 저장
@@ -48,10 +48,11 @@ public class MenuService {
             imageUrl = s3Util.uploadImage(request.getImage(), DirectoryType.SELLER_MENU_IMAGE, seller.getId());
         }
 
-        Menu menu = MenuMapper.INSTANCE
-                .createMenuRequestToMenu(request, imageUrl, getDiscountRate(request.getOriginalPrice(), request.getSellPrice()), store);
-
         try {
+            Menu menu = MenuMapper.INSTANCE
+                    .createMenuRequestToMenu(request, imageUrl,
+                            getDiscountRate(request.getOriginalPrice(), request.getSellPrice()), store);
+
             menuRepository.save(menu);
         } catch (RuntimeException e) {
             if(imageUrl != null)
@@ -60,18 +61,18 @@ public class MenuService {
         }
     }
 
-    public GetMenusResponse getMenusResponse(Long storeId) {
+    public GetMenuListResponse getMenusResponse(Long storeId) {
 
         Seller seller = securityUtil.getSeller();
 
-        // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
+        // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
         Store store = validateStoreAndSeller(seller, storeId);
 
         List<GetMenuResponse> menus = menuRepository.findAllByStoreAndDeletedAtIsNullOrderByUpdatedAtDesc(store)
                 .stream().map(MenuMapper.INSTANCE::getMenuResponse)
                 .toList();
 
-        return GetMenusResponse.of(store.getId(), menus, menus.size());
+        return GetMenuListResponse.of(store.getId(), menus, menus.size());
     }
 
     @Transactional
@@ -79,8 +80,8 @@ public class MenuService {
 
         Seller seller = securityUtil.getSeller();
 
-        // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
-        Store store = validateStoreAndSeller(seller, request.getStoreId());
+        // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
+        validateStoreAndSeller(seller, request.getStoreId());
 
         // 메뉴 존재 여부 확인
         Menu menu = menuRepository.findByIdAndDeletedAtIsNull(menuId)
@@ -106,7 +107,7 @@ public class MenuService {
 
         // 기존 메뉴 이미지 삭제
         if(request.getImage() != null) {
-            s3Util.deleteImage(request.getImageUrl());
+            s3Util.deleteImage(menu.getImageUrl());
         }
     }
 
@@ -115,7 +116,7 @@ public class MenuService {
 
         Seller seller = securityUtil.getSeller();
 
-        // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
+        // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
         Store store = validateStoreAndSeller(seller, request.getStoreId());
 
         // 메뉴 존재 여부 확인
@@ -130,7 +131,7 @@ public class MenuService {
         s3Util.deleteImage(imageUrl);
     }
 
-    // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
+    // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
     private Store validateStoreAndSeller(Seller seller, Long storeId) {
 
         return sellerRepository.findByIdAndStoreIdAndDeletedAtIsNullAndStoreDeletedAtIsNull(seller.getId(), storeId)

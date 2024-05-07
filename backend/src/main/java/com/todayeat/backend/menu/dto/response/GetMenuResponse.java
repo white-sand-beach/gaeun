@@ -9,7 +9,7 @@ import lombok.Getter;
 public class GetMenuResponse {
 
     @Schema(description = "메뉴 ID", example = "1")
-    private Long id;
+    private Long menuId;
 
     @Schema(description = "메뉴 이미지 url", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/uuid.png")
     private String imageUrl;
@@ -23,12 +23,12 @@ public class GetMenuResponse {
     @Schema(description = "메뉴 판매가", example = "16000")
     private Integer sellPrice;
 
-    @Schema(description = "메뉴 할인률", example = "20")
+    @Schema(description = "메뉴 할인율", example = "20")
     private Integer discountRate;
 
     @Builder
-    private GetMenuResponse(Long id, String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate) {
-        this.id = id;
+    private GetMenuResponse(Long menuId, String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate) {
+        this.menuId = menuId;
         this.imageUrl = imageUrl;
         this.name = name;
         this.originalPrice = originalPrice;

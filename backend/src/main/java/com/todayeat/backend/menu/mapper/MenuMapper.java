@@ -16,5 +16,6 @@ public interface MenuMapper {
     @Mapping(source = "createMenuRequest.name", target = "name")
     Menu createMenuRequestToMenu(CreateMenuRequest createMenuRequest, String imageUrl, Integer discountRate, Store store);
 
+    @Mapping(source = "menu.id", target = "menuId")
     GetMenuResponse getMenuResponse(Menu menu);
 }

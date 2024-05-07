@@ -25,12 +25,11 @@ public class CreateMenuRequest {
     private Integer originalPrice;
 
     @NotNull(message = "sellPrice: 값이 null이 아니어야 합니다.")
-    @Min(value = 1, message = "sellPrice: 값이 1 이상이어야 합니다.")
+    @Min(value = 0, message = "sellPrice: 값이 0 이상이어야 합니다.")
     @Schema(description = "메뉴 판매가", example = "16000")
     private Integer sellPrice;
 
     @NotNull(message = "storeId: 값이 null이 아니어야 합니다.")
-    @Positive(message = "storeId: 값이 양수여야 합니다.")
     @Schema(description = "가게 ID", example = "1")
     private Long storeId;
 }
