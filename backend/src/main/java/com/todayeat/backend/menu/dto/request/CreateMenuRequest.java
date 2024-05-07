@@ -1,7 +1,6 @@
 package com.todayeat.backend.menu.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,11 +28,6 @@ public class CreateMenuRequest {
     @Min(value = 1, message = "sellPrice: 값이 1 이상이어야 합니다.")
     @Schema(description = "메뉴 판매가", example = "16000")
     private Integer sellPrice;
-
-    @NotNull(message = "sequence: 값이 null이 아니어야 합니다.")
-    @Positive(message = "sequence: 값이 양수여야 합니다.")
-    @Schema(description = "화면에 보이는 메뉴 목차 순서", example = "1")
-    private Integer sequence;
 
     @NotNull(message = "storeId: 값이 null이 아니어야 합니다.")
     @Positive(message = "storeId: 값이 양수여야 합니다.")

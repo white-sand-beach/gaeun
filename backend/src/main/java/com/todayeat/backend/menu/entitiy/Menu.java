@@ -37,24 +37,21 @@ public class Menu extends BaseTime {
     @Column(nullable = false)
     private Integer discountRate;
 
-    @Column(nullable = false)
-    private Integer sequence; // 화면에 보이는 메뉴 목차 순서
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", referencedColumnName = "store_id")
     private Store store;
 
     @Builder
-    private Menu(String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, Integer sequence, Store store) {
+    private Menu(String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, Store store) {
         this.imageUrl = imageUrl;
         this.name = name;
         this.originalPrice = originalPrice;
         this.sellPrice = sellPrice;
         this.discountRate = discountRate;
-        this.sequence = sequence;
         this.store = store;
     }
 
+    // 현재 더티체킹 방법을 사용하지 않아서 미사용
     public void update(String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, Integer sequence) {
 
         if(!Objects.equals(this.imageUrl, imageUrl))    this.imageUrl = imageUrl;
@@ -66,7 +63,5 @@ public class Menu extends BaseTime {
         if(!Objects.equals(this.sellPrice, sellPrice))  this.sellPrice = sellPrice;
 
         if(!Objects.equals(this.discountRate, discountRate)) this.discountRate = discountRate;
-
-        if(!Objects.equals(this.sequence, sequence))   this.sequence = sequence;
     }
 }

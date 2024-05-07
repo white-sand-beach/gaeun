@@ -11,11 +11,11 @@ import java.util.Optional;
 
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
-    List<Menu> findAllByStoreAndDeletedAtIsNullOrderBySequenceAscUpdatedAtDesc(Store store);
+    List<Menu> findAllByStoreAndDeletedAtIsNullOrderByUpdatedAtDesc(Store store);
 
     Optional<Menu> findByIdAndDeletedAtIsNull(Long menuId);
 
     @Modifying
-    @Query("UPDATE Menu m SET m.imageUrl = :imageUrl, m.name = :name, m.originalPrice = :originalPrice, m.sellPrice = :sellPrice, m.discountRate = :discountRate, m.sequence = :sequence WHERE m.id = :id")
-    void updateMenu(Long id, String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, Integer sequence);
+    @Query("UPDATE Menu m SET m.imageUrl = :imageUrl, m.name = :name, m.originalPrice = :originalPrice, m.sellPrice = :sellPrice, m.discountRate = :discountRate WHERE m.id = :id")
+    void updateMenu(Long id, String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate);
 }

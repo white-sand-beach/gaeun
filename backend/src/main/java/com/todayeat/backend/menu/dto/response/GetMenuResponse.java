@@ -26,17 +26,13 @@ public class GetMenuResponse {
     @Schema(description = "메뉴 할인률", example = "20")
     private Integer discountRate;
 
-    @Schema(description = "화면에 보이는 메뉴 목차 순서", example = "1")
-    private Integer sequence;
-
     @Builder
-    private GetMenuResponse(Long id, String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, Integer sequence) {
+    private GetMenuResponse(Long id, String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.name = name;
         this.originalPrice = originalPrice;
         this.sellPrice = sellPrice;
         this.discountRate = discountRate;
-        this.sequence = sequence;
     }
 }

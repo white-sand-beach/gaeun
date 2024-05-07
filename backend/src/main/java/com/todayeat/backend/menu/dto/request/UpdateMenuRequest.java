@@ -37,11 +37,6 @@ public class UpdateMenuRequest {
     @Schema(description = "메뉴 판매가", example = "16000")
     private Integer sellPrice;
 
-    @NotNull(message = "sequence: 값이 null이 아니어야 합니다.")
-    @Positive(message = "sequence: 값이 양수여야 합니다.")
-    @Schema(description = "화면에 보이는 메뉴 목차 순서", example = "1")
-    private Integer sequence;
-
     @NotNull(message = "storeId: 값이 null이 아니어야 합니다.")
     @Positive(message = "storeId: 값이 양수여야 합니다.")
     @Schema(description = "가게 ID", example = "1")

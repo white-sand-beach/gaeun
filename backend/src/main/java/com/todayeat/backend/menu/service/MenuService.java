@@ -67,7 +67,7 @@ public class MenuService {
         // 판매자의 가게가 맞는지 확인, 가계 존재 여부 확인
         Store store = validateStoreAndSeller(seller, storeId);
 
-        List<GetMenuResponse> menus = menuRepository.findAllByStoreAndDeletedAtIsNullOrderBySequenceAscUpdatedAtDesc(store)
+        List<GetMenuResponse> menus = menuRepository.findAllByStoreAndDeletedAtIsNullOrderByUpdatedAtDesc(store)
                 .stream().map(MenuMapper.INSTANCE::getMenuResponse)
                 .toList();
 
@@ -96,7 +96,7 @@ public class MenuService {
         try {
             menuRepository.updateMenu(menuId, imageUrl, request.getName(),
                     request.getOriginalPrice(), request.getSellPrice(),
-                    getDiscountRate(request.getOriginalPrice(), request.getSellPrice()), request.getSequence());
+                    getDiscountRate(request.getOriginalPrice(), request.getSellPrice()));
         } catch (RuntimeException e) {
             if(request.getImage() != null) {
                 s3Util.deleteImage(imageUrl);
