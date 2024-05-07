@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  html,
+  body,
+  #root {
+    @apply w-screen h-screen m-0 p-0
+  }
+
+  h1 {
+    @apply text-2xl text-black font-bold
+  }
+
+  header {
+    @apply fixed top-0 flex flex-row justify-between items-center w-full h-[60px] bg-mainColor p-4
+  }
+
+  footer {
+    @apply fixed bottom-0 flex flex-row justify-evenly items-center gap-3 w-full h-[60px] bg-white border-t-2
+    text-[16px] text-gray-500
+  }
+}
+
+@layer components {
+  .common-btn {
+    @apply w-[300px] h-[40px] bg-mainColor text-white font-bold rounded-[5px]
+  }
+
+  .detail-btn {
+    @apply h-[30px] border border-mainColor text-mainColor text-xs rounded-[5px]
+  }
+  
+  .list-component {
+    @apply flex flex-col justify-around border-2 p-4 rounded-[5px] shadow-lg
+  }
+
+  /* 큰 화면에서는 리스트 2개로 출력 */
+  /* 1280px ~ */
+  .xl-size-list {
+    @apply w-[600px] h-[300px]
+  }
+
+  /* 주문내역 페이지 크기별 flex */
+  .normal-order-flex {
+    @apply flex flex-col items-center 
+  }
+
+  /* width 1280px 이상일 경우, 주문현황 목록 2열로 출력 */
+  .xl-order-flex {
+    @apply grid grid-cols-2 justify-items-center
+  }
+
+  /* Footer 없는 경우 최상위 div container */
+  .no-footer {
+    @apply flex flex-col items-center fixed w-full max-h-[calc(100vh-70px)]
+  }
+
+  /* Footer 있는 경우 */
+  .yes-footer {
+    @apply flex flex-col items-center fixed w-full max-h-[calc(100vh-140px)]
+  }
+
+  /* 버튼 선택됐을 경우 */
+  .selected-btn {
+    @apply bg-mainColor text-white w-full h-[60px] shadow-lg rounded-[5px] border font-bold text-xl
+  }
+
+  /* 버튼 선택 안 했을 경우 */
+  .no-selected-btn {
+    @apply bg-white text-mainColor w-full h-[60px] shadow-lg rounded-[5px] border font-bold text-xl
+  }
+}
+
+
+/* 스크롤바 투명하게 설정 */
+::-webkit-scrollbar {
+  width: 0px;
+  display: none;
+}
+
+body {
+  /* 텍스트 드래그 방지 */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
