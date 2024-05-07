@@ -92,7 +92,8 @@ const NavBar = () => {
       <div className="w-[33%]">
         {showHomeAddress ? (
           <p className="font-bold" onClick={handleUpdateAddress}>
-            {alias} ▼
+            {alias ? `${alias} ▼` : "현재위치 ▼"}
+            {/* alias가 빈 값이면 '현재위치 ▼' 표시 */}
           </p>
         ) : (
           <img src={back} alt="뒤로가기" onClick={handleBackClick} />
