@@ -20,7 +20,8 @@ import SignUp from "./pages/accounts/SignUp";
 import AddressSearchPage from "./components/address/AddressSearchPage";
 import AddressRegistration from "./components/address/AddressRegistration";
 import MyReview from "./pages/shop/MyReview";
-import LoginCallbaak from "./components/auth_login/LoginCallback"
+import LoginCallbaak from "./components/auth_login/LoginCallback";
+import AddressCorrection from "./components/address/AddressCorrection";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => {
             element={<AddressRegistration />}
           />
           <Route path="/my-review" element={<MyReview />} />
+          <Route path="/address-correction" element={<AddressCorrection />} />
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>

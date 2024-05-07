@@ -4,6 +4,7 @@ import gps from "../../assets/map/gps.png";
 import KakaoMap from "./Kakaomap";
 import Shops from "./Shops";
 import ServiceBanner from "../../components/navbar/ServiceBanner";
+import useUserLocation from "../../store/UserLocation";
 
 interface LocationState {
   lat: number | undefined;
@@ -28,18 +29,29 @@ const Main: React.FC = () => {
   const listButtonClass = isOpen
     ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-80 z-10"
     : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-7 z-10";
-  const [location, setLocation] = useState<LocationState>({
+
+  const [findlocation, setLocation] = useState<LocationState>({
     lat: undefined,
     lng: undefined,
     updateCounter: 0,
   });
 
+  const { lat, lng } = useUserLocation((state) => ({
+    lat: state.latitude,
+    lng: state.longitude,
+  })); // 스토어에서 위치 데이터 가져오기
+
   const handleGPSButtonClick = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log(location);
+          console.log(findlocation);
           // 강제 업데이트를 트리거하려면 상태를 갱신할 때마다 updateCounter를 증가시키기
+          const update = useUserLocation.getState().updateUserState; // 스토어의 상태 업데이트 함수를 가져옵니다.
+          if (update) {
+            update("latitude", position.coords.latitude);
+            update("longitude", position.coords.longitude);
+          }
           setLocation((prev) => ({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
@@ -155,9 +167,9 @@ const Main: React.FC = () => {
         <KakaoMap
           key={isOpen ? "large-map" : "small-map"}
           height={mapHeight}
-          lat={location.lat}
-          lng={location.lng}
-          updateCounter={location.updateCounter}
+          lat={lat}
+          lng={lng}
+          updateCounter={findlocation.updateCounter}
         />
         {/* 왼쪽 버튼 */}
         <button className={gpsButtonClass} onClick={handleGPSButtonClick}>
@@ -193,7 +205,7 @@ const Main: React.FC = () => {
           {/* 슬라이드 업되는 패널 내용 */}
           <div className="pt-2 bg-white rounded-t-lg shadow h-svh">
             {/* 여기에 지도 아래 정보를 렌더링합니다. */}
-            <div className="flex items-center justify-center w-64 m-auto my-1 border border-orange-400 h-14 rounded-xl">
+            <div className="flex items-center justify-center w-full m-auto my-1 border border-orange-400 h-14 rounded-xl">
               <ServiceBanner />
             </div>
 

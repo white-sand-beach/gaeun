@@ -1,10 +1,14 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-
+import useUserLocation from "../../store/UserLocation";
 import cart from "../../assets/navbar/cart.png";
 import ring from "../../assets/navbar/ring.png";
 import back from "../../assets/navbar/back.png";
 
 const NavBar = () => {
+  const { alias } = useUserLocation((state) => ({
+    alias: state.alias,
+  })); // 스토어에서 별명 가져오기
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -88,7 +92,7 @@ const NavBar = () => {
       <div className="w-[33%]">
         {showHomeAddress ? (
           <p className="font-bold" onClick={handleUpdateAddress}>
-            우리집 ▼
+            {alias} ▼
           </p>
         ) : (
           <img src={back} alt="뒤로가기" onClick={handleBackClick} />
