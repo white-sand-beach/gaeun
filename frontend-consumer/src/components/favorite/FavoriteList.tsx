@@ -1,8 +1,8 @@
-import FavoriteButton from "../button/FavoriteButton";
-import FavoritePostForm from "../../services/favorites/FavoritePostService";
-import FavoriteDeleteForm from "../../services/favorites/FavoriteDeleteService";
+import FavoriteButton from "@/components/button/FavoriteButton";
+import FavoritePostForm from "@/services/favorites/FavoritePostService";
+import FavoriteDeleteForm from "@/services/favorites/FavoriteDeleteService";
 
-import { FavoriteItem } from "../../types/FavoriteType";
+import { FavoriteItem } from "@/types/FavoriteType";
 
 interface FavoriteListProps {
   favorites: FavoriteItem[];

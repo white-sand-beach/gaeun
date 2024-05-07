@@ -1,8 +1,8 @@
-import OrderDetailInfo from "../../components/order/OrderDetailInfo";
-import PaymentHistory from "../../components/order/PaymentHistory";
-import ReorderButton from "../../components/button/ReorderButton";
-import ReviewButton from "../../components/button/ReviewButton";
-import OrderDeleteButton from "../../components/button/OrderDeleteButton";
+import OrderDetailInfo from "@/components/order/OrderDetailInfo";
+import PaymentHistory from "@/components/order/PaymentHistory";
+import ReorderButton from "@/components/button/ReorderButton";
+import ReviewButton from "@/components/button/ReviewButton";
+import OrderDeleteButton from "@/components/button/OrderDeleteButton";
 
 const OrderDetail = () => {
   return (

@@ -1,7 +1,7 @@
-import shopImage from "../../assets/shop/shop.png";
-import notification from "../../assets/shop/notification.png";
-import origin from "../../assets/shop/origin.png";
-import shoplist from "../../assets/shop/shoplist.png";
+import shopImage from "@/assets/shop/shop.png";
+import notification from "@/assets/shop/notification.png";
+import origin from "@/assets/shop/origin.png";
+import shoplist from "@/assets/shop/shoplist.png";
 
 const ShopInformation = () => {
   return (

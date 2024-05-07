@@ -1,16 +1,16 @@
 import { useState } from "react";
-import NickNameCheck from "../../components/user_info/NickNameCheck";
-import PhoneCheck from "../../components/user_info/PhoneCheck";
-import ProfileImageModal from "../../components/user_info/ProfileImageModal";
-import SignUpButton from "../../components/button/SignUpButton";
-import "../../components/modal/Modal.css";
+import NickNameCheck from "@/components/user_info/NickNameCheck";
+import PhoneCheck from "@/components/user_info/PhoneCheck";
+import ProfileImageModal from "@/components/user_info/ProfileImageModal";
+import SignUpButton from "@/components/button/SignUpButton";
+import "@/components/modal/Modal.css";
 
-// import ProfileUpdateService from "../../services/ProfileUpdateService";
+// import ProfileUpdateService from "@/services/ProfileUpdateService";
 
-import useUserStore from "../../store/UserStore";
-import UserState from "../../types/UserState";
+import useUserStore from "@/store/UserStore";
+import UserState from "@/types/UserState";
 
-import edit from "../../assets/profile/edit.png";
+import edit from "@/assets/profile/edit.png";
 
 const SignUp = () => {
   const { profileImg, nickName, phoneNumber } = useUserStore(

@@ -1,4 +1,4 @@
-import OrderDetailButton from "../../components/button/OrderDetailButton";
+import OrderDetailButton from "@/components/button/OrderDetailButton";
 
 const Alarm = () => {
   return (

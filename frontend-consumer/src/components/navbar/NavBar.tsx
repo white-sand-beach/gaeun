@@ -1,8 +1,8 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
-import cart from "../../assets/navbar/cart.png";
-import ring from "../../assets/navbar/ring.png";
-import back from "../../assets/navbar/back.png";
+import cart from "@/assets/navbar/cart.png";
+import ring from "@/assets/navbar/ring.png";
+import back from "@/assets/navbar/back.png";
 
 const NavBar = () => {
   const navigate = useNavigate();

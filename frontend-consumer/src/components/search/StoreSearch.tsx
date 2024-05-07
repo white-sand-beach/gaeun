@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import searchIcon from "../../assets/search/searchIcon.png";
-import './StoreSearch.css';
+import searchIcon from "@/assets/search/searchIcon.png";
+import '@/components/search/StoreSearch.css';
 
 const rankList = [
   "1 메가커피",

@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
-import UserState from "../../types/UserState";
+import UserState from "@/types/UserState";
 // import { useMutation, UseMutationResult } from "@tanstack/react-query";
 
 // interface ProfileInfoProps {

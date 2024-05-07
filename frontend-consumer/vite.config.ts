@@ -2,10 +2,11 @@ import million from 'million/compiler';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import { VitePWA } from 'vite-plugin-pwa';
+import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/consumer',
+  base: './',
   plugins: [
     million.vite({ auto: true }),
     react(),
@@ -19,7 +20,6 @@ export default defineConfig({
         name: '오늘잡슈',
         short_name: '오늘잡슈',
         description: '음식 당일 소진 장려 플랫폼',
-        start_url: '/consumer',
         display: 'standalone',
         theme_color: '#ffaf38',
         icons: [
@@ -61,7 +61,16 @@ export default defineConfig({
       },
     }),
   ],
-  // server: {
-  //   open: "/consumer",
-  // },
+  server: {
+    port: 5173,
+    host: "0.0.0.0",
+  },
+  build: {
+    minify: false,
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
 });

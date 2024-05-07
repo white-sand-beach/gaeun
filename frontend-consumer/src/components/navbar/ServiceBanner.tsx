@@ -1,4 +1,4 @@
-import logo from "../../../public/icons/size-512.png";
+import logo from "/public/icons/size-512.png";
 
 const ServiceBanner = () => {
   return (

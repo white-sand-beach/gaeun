@@ -1,7 +1,7 @@
 // ProfileImageModal.tsx
 import React, { useState, useEffect } from "react";
-import UserState from "../../types/UserState";
-import "../modal/Modal.css"
+import UserState from "@/types/UserState";
+import "@/components/modal/Modal.css"
 
 interface ProfileImageModalProps {
   onClose: () => void;

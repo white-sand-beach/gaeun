@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
-import UserState from "../../types/UserState";
+import UserState from "@/types/UserState";
 
 const NickNameCheckForm = async ({ nickName }: UserState): Promise<any> => {
   const cookies = new Cookies();

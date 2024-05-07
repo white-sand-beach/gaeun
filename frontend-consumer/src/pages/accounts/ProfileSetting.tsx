@@ -1,13 +1,13 @@
 import { useState } from "react";
-import NickNameCheck from "../../components/user_info/NickNameCheck";
-import PhoneCheck from "../../components/user_info/PhoneCheck";
-import ProfileImageModal from "../../components/user_info/ProfileImageModal";
-import ProfileUpdateButton from "../../components/button/ProfileUpdateButton"
+import NickNameCheck from "@/components/user_info/NickNameCheck";
+import PhoneCheck from "@/components/user_info/PhoneCheck";
+import ProfileImageModal from "@/components/user_info/ProfileImageModal";
+import ProfileUpdateButton from "@/components/button/ProfileUpdateButton"
 
-import useUserStore from "../../store/UserStore";
-import UserState from "../../types/UserState";
+import useUserStore from "@/store/UserStore";
+import UserState from "@/types/UserState";
 
-import edit from "../../assets/profile/edit.png";
+import edit from "@/assets/profile/edit.png";
 
 const ProfileSetting = () => {
   const { profileImg, nickName, phoneNumber } = useUserStore(

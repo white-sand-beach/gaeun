@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import FavoriteList from "../../components/favorite/FavoriteList";
-import FavoriteGetForm from "../../services/favorites/FavoriteGetService";
-import { FavoriteResponse, FavoriteState  } from "../../types/FavoriteType";
+import FavoriteList from "@/components/favorite/FavoriteList";
+import FavoriteGetForm from "@/services/favorites/FavoriteGetService";
+import { FavoriteResponse, FavoriteState  } from "@/types/FavoriteType";
 
 const Favorite = () => {
   const [favoriteState, setFavoriteState] = useState<FavoriteState>({

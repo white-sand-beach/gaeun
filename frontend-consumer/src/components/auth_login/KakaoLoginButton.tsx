@@ -1,4 +1,4 @@
-import kakao from "../../assets/kakao/kakao.png";
+import kakao from "@/assets/kakao/kakao.png";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 

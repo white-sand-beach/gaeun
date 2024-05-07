@@ -1,4 +1,4 @@
-import phone from "../../assets/search/phone.png";
+import phone from "@/assets/search/phone.png";
 
 const CallButton = () => {
   return (

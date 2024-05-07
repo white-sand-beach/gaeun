@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import UserState from "../../types/UserState";
-import NickNameCheckForm from "../../services/accounts/ProfileUpdateService";
+import UserState from "@/types/UserState";
+import NickNameCheckForm from "@/services/accounts/ProfileUpdateService";
 
 const NickNameCheck: React.FC<UserState> = ({ nickName }) => {
   const [inputNickName, setInputNickName] = useState("");

@@ -1,5 +1,5 @@
-import loginpage from "../../assets/kakao/ic.png";
-import KakaoLoginButton from "../../components/auth_login/KakaoLoginButton";
+import loginpage from "@/assets/kakao/ic.png";
+import KakaoLoginButton from "@/components/auth_login/KakaoLoginButton";
 
 const Login = () => {
   return (

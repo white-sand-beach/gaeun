@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import setting from "../../assets/profile/setting.png"
+import setting from "@/assets/profile/setting.png"
 
 const ProfileCard = () => {
   return (

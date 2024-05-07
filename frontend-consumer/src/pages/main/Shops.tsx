@@ -1,8 +1,8 @@
-import food1 from "../../assets/foods/food1.png";
-import food2 from "../../assets/foods/food2.png";
-import food3 from "../../assets/foods/food3.jpg";
-import food4 from "../../assets/foods/food4.jpg";
-import food5 from "../../assets/foods/food5.jpg";
+import food1 from "@/assets/foods/food1.png";
+import food2 from "@/assets/foods/food2.png";
+import food3 from "@/assets/foods/food3.jpg";
+import food4 from "@/assets/foods/food4.jpg";
+import food5 from "@/assets/foods/food5.jpg";
 
 const Shops = () => {
   return (

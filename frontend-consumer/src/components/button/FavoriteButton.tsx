@@ -1,6 +1,6 @@
 import { useState } from "react";
-import love from "../../assets/favorite/love.png";
-import nolove from "../../assets/favorite/nolove.png";
+import love from "@/assets/favorite/love.png";
+import nolove from "@/assets/favorite/nolove.png";
 
 interface FavoriteButtonProps {
   isFavorite: boolean;

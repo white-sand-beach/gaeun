@@ -1,6 +1,6 @@
-import StoreSearch from "../../components/search/StoreSearch";
-import ServiceBanner from "../../components/navbar/ServiceBanner";
-import RealTimeTrendingSearch from "../../components/search/RealTimeTrendingSearch";
+import StoreSearch from "@/components/search/StoreSearch";
+import ServiceBanner from "@/components/navbar/ServiceBanner";
+import RealTimeTrendingSearch from "@/components/search/RealTimeTrendingSearch";
 
 const SearchPage = () => {
   return (

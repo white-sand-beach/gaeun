@@ -1,10 +1,10 @@
-import heartIcon from "../../assets/shop/heart.png";
-import phoneIcon from "../../assets/shop/phone.png";
-import KakaoMap from "../main/Kakaomap";
+import heartIcon from "@/assets/shop/heart.png";
+import phoneIcon from "@/assets/shop/phone.png";
+import KakaoMap from "@/pages/main/Kakaomap";
 import { useState } from "react";
-import ShopInformation from "./ShopInformation";
-import ShopReview from "./ShopReview";
-import ShopMenu from "./ShopMenu";
+import ShopInformation from "@/pages/shop/ShopInformation";
+import ShopReview from "@/pages/shop/ShopReview";
+import ShopMenu from "@/pages/shop/ShopMenu";
 
 const mapHeight = "105px"; // 예시 높이값
 const lat = 36.093952;

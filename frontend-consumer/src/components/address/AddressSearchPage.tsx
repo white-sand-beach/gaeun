@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import left from "../../assets/navbar/back.png";
+import left from "@/assets/navbar/back.png";
 import { useNavigate } from "react-router-dom";
 
 const AddressSearchPage = () => {

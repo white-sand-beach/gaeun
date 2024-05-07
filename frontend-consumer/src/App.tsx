@@ -2,31 +2,31 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import PageLayout from "./components/navbar/PageLayout";
-import Main from "./pages/main/MainPage";
-import Profile from "./pages/accounts/Profile";
-import Cart from "./pages/cart/Cart";
-import AddCart from "./pages/cart/AddCart";
-import Alarm from "./pages/alarm/Alarm";
-import Favorite from "./pages/favorite/Favorite";
-import OrderDetail from "./pages/order/OrderDetail";
-import OrderList from "./pages/order/OrderList";
-import OrderState from "./pages/order/OrderState";
-import SearchPage from "./pages/search/SearchPage";
-import ProfileSetting from "./pages/accounts/ProfileSetting";
-import Login from "./pages/accounts/Login";
-import Shop from "./pages/shop/Shop";
-import SignUp from "./pages/accounts/SignUp";
-import AddressSearchPage from "./components/address/AddressSearchPage";
-import AddressRegistration from "./components/address/AddressRegistration";
-import MyReview from "./pages/shop/MyReview";
-import LoginCallbaak from "./components/auth_login/LoginCallback"
+import PageLayout from "@/components/navbar/PageLayout";
+import Main from "@/pages/main/MainPage";
+import Profile from "@/pages/accounts/Profile";
+import Cart from "@/pages/cart/Cart";
+import AddCart from "@/pages/cart/AddCart";
+import Alarm from "@/pages/alarm/Alarm";
+import Favorite from "@/pages/favorite/Favorite";
+import OrderDetail from "@/pages/order/OrderDetail";
+import OrderList from "@/pages/order/OrderList";
+import OrderState from "@/pages/order/OrderState";
+import SearchPage from "@/pages/search/SearchPage";
+import ProfileSetting from "@/pages/accounts/ProfileSetting";
+import Login from "@/pages/accounts/Login";
+import Shop from "@/pages/shop/Shop";
+import SignUp from "@/pages/accounts/SignUp";
+import AddressSearchPage from "@/components/address/AddressSearchPage";
+import AddressRegistration from "@/components/address/AddressRegistration";
+import MyReview from "@/pages/shop/MyReview";
+import LoginCallbaak from "@/components/auth_login/LoginCallback"
 
 const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <BrowserRouter basename="/consumer">
+    <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         <PageLayout />

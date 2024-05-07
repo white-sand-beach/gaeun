@@ -1,6 +1,6 @@
-import CheckOrder from "../../components/cart/CheckOrder";
-import CheckPayment from "../../components/cart/CheckPayment";
-import PaymentButton from "../../components/button/PaymentButton";
+import CheckOrder from "@/components/cart/CheckOrder";
+import CheckPayment from "@/components/cart/CheckPayment";
+import PaymentButton from "@/components/button/PaymentButton";
 
 const Cart = () => {
   return (

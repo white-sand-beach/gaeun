@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import list from "../../assets/map/list.png";
-import gps from "../../assets/map/gps.png";
+import list from "@/assets/map/list.png";
+import gps from "@/assets/map/gps.png";
 import KakaoMap from "./Kakaomap";
 import Shops from "./Shops";
-import ServiceBanner from "../../components/navbar/ServiceBanner";
+import ServiceBanner from "@/components/navbar/ServiceBanner";
 
 interface LocationState {
   lat: number | undefined;

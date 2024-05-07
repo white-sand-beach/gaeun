@@ -1,4 +1,4 @@
-import UserState from "../../types/UserState";
+import UserState from "@/types/UserState";
 
 const PhoneCheck: React.FC<UserState> = ({ phoneNumber }) => {
   return (
