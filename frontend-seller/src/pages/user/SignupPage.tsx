@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import TotalButton from "../../components/ui/TotalButton.tsx";
-import { useNavigate } from "react-router-dom";
 import { postEmailCheck, postCheckRegisterNo, postSignUp } from "../../service/user/SignupAPI.ts";
 
 const SignUp = () => {
-    const navigate = useNavigate()
     const [isValidEmail, setIsValidEmail] = useState(true); // 이메일 중복 확인 ( 중복이면 false )
     const [validEmail, setValidEmail] = useState(""); // 이메일 중복에 따른 문구 출력
 
@@ -32,7 +30,6 @@ const SignUp = () => {
             ...sellerInfo,
             [name]: value,
         });
-        console.log(`${[name]}: ${value}`);
     };
 
     // 이메일 유효 확인 api 요청
