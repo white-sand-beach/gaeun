@@ -1,4 +1,3 @@
-import { useState } from "react";
 import love from "../../assets/favorite/love.png";
 import nolove from "../../assets/favorite/nolove.png";
 
@@ -8,18 +7,14 @@ interface FavoriteButtonProps {
 }
 
 const FavoriteButton = ({ isFavorite, onToggle }: FavoriteButtonProps) => {
-  const [isLoved, setIsLoved] = useState(isFavorite);
-
   const toggleLove = () => {
-    const newLoved = !isFavorite;
-    setIsLoved(newLoved);
-    onToggle(newLoved);
+    onToggle(!isFavorite);
   };
 
   return (
     <img
       className="w-6 cursor-pointer"
-      src={isLoved ? love : nolove}
+      src={isFavorite ? love : nolove}
       alt="토글하트"
       onClick={toggleLove}
     />
