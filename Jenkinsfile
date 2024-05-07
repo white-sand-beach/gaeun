@@ -11,10 +11,10 @@ pipeline {
             }
         }
 
-        stage("checkout_fe_seller") {
+        stage("checkout_cicd") {
             steps {
                 script {
-                    git credentialsId: 'gitlab', url: 'https://lab.ssafy.com/s10-final/S10P31D104.git', branch: "feSeller"
+                    git credentialsId: 'gitlab', url: 'https://lab.ssafy.com/s10-final/S10P31D104.git', branch: "cicd"
                 }
             }
         }
@@ -34,14 +34,6 @@ pipeline {
                 
                 sh 'docker build -t fe-seller ./frontend-seller'
                 sh 'docker run -d --name fe-seller -p 5174:5174 fe-seller'   
-            }
-        }
-
-        stage("checkout_fe_consumer") {
-            steps {
-                script {
-                    git credentialsId: 'gitlab', url: 'https://lab.ssafy.com/s10-final/S10P31D104.git', branch: "feConsumer"
-                }
             }
         }
 
@@ -71,14 +63,6 @@ pipeline {
                 
                 sh 'docker build -t fe-consumer ./frontend-consumer'
                 sh 'docker run -d --name fe-consumer -p 5173:5173 fe-consumer'   
-            }
-        }
-
-        stage("checkout_be") {
-            steps {
-                script {
-                    git credentialsId: 'gitlab', url: 'https://lab.ssafy.com/s10-final/S10P31D104.git', branch: "be"
-                }
             }
         }
 
@@ -113,13 +97,13 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            mattermostSend color: '#32a852', message: "Deploy Success! (${env.JOB_NAME}) #(${env.BUILD_NUMBER}) (<${env.BUILD_URL}|Open>) \n See the (<${env.BUILD_URL}console|console>)"
-        }
-        failure {
-            mattermostSend color: '#ff0800', message: "Deploy Fail! (${env.JOB_NAME}) #(${env.BUILD_NUMBER}) (<${env.BUILD_URL}|Open>) \n See the (<${env.BUILD_URL}console|console>)"
-        }
-    }
+    // post {
+    //     success {
+    //         mattermostSend color: '#32a852', message: "Deploy Success! (${env.JOB_NAME}) #(${env.BUILD_NUMBER}) (<${env.BUILD_URL}|Open>) \n See the (<${env.BUILD_URL}console|console>)"
+    //     }
+    //     failure {
+    //         mattermostSend color: '#ff0800', message: "Deploy Fail! (${env.JOB_NAME}) #(${env.BUILD_NUMBER}) (<${env.BUILD_URL}|Open>) \n See the (<${env.BUILD_URL}console|console>)"
+    //     }
+    // }
 }
 
