@@ -1,6 +1,8 @@
 package com.todayeat.backend.store.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,8 +20,11 @@ public class GetConsumerDetailStoreResponse {
     @Schema(description = "대표자명", example = "대표자")
     private String bossName;
 
-    @Schema(description = "주소", example = "OO OO시 O로 OOO")
-    private String address;
+    @Schema(description = "지번 주소", example = "OO OO시 O로 OOO")
+    private String lotNumberAddress;
+
+    @Schema(description = "도로명 주소", example = "OO OO시 O로 OOO")
+    private String roadNameAddress;
 
     @Schema(description = "전화번호", example = "01012345678")
     private String tel;

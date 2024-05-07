@@ -38,7 +38,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.todayeat.backend._common.entity.DirectoryType.SELLER_STORE_IMAGE;
-import static com.todayeat.backend._common.response.error.ErrorType.*;
+import static com.todayeat.backend._common.response.error.ErrorType.CATEGORY_NOT_FOUND;
+import static com.todayeat.backend._common.response.error.ErrorType.STORE_NOT_FOUND;
 
 @Slf4j
 @Service

@@ -33,8 +33,11 @@ public class Store extends BaseTime {
     @Column(nullable = false, length = 10)
     private String bossName;
 
-    @Column(nullable = false)
-    private String address;
+    @Column(nullable = false, length = 50)
+    private String lotNumberAddress;
+
+    @Column(nullable = false, length = 50)
+    private String roadNameAddress;
 
     @Column(columnDefinition = "Point")
     private Point location;

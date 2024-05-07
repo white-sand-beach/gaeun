@@ -40,7 +40,8 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
                 .select(fields(
                         StoreInfo.class,
                         store.id,
-                        store.address,
+                        store.lotNumberAddress,
+                        store.roadNameAddress,
                         store.name,
                         store.operatingTime,
                         store.reviewCnt,
