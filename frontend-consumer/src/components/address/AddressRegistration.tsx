@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import KakaoMap from "../../pages/main/Kakaomap";
 import left from "../../assets/navbar/back.png";
 import speech from "../../assets/search/speech.png";
@@ -8,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import company from "../../assets/search/company.png";
 import home from "../../assets/search/home.png";
 import point_white from "../../assets/search/point_white.png";
+import AddressRegistrationForm from "../../services/searchs/AddressRegistrationService";
 
 const AddressRegistration = () => {
   const location = useLocation();
@@ -17,9 +17,6 @@ const AddressRegistration = () => {
   const [alias, setAlias] = useState("");
   const { address, latitude, longitude, roadAddress } = location.state;
   const [activeAlias, setActiveAlias] = useState(alias);
-
-  const token =
-    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMyIsInJvbGUiOiJST0xFX0NPTlNVTUVSIiwiaWF0IjoxNzE0NzI1MzUzLCJleHAiOjE3MTUwNzA5NTN9.pkGYbeXouRp304ff14eFGgofRQGM7dYUN6A65v9RfGw";
 
   const navigate = useNavigate();
 
@@ -75,21 +72,18 @@ const AddressRegistration = () => {
       alias: alias,
       roadAddress: roadAddress,
     };
-    axios
-      .post(`${import.meta.env.VITE_API_URL}/api/locations`, locationsData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(() => {
+
+    AddressRegistrationForm(
+      locationsData,
+      () => {
         alert("위치 등록이 완료되었습니다.");
-        console.log(locationsData.alias);
-        console.log(locationsData.roadAddress);
         goAddressSearchPage();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      },
+      (error) => {
+        console.error("위치 등록 중 오류 발생:", error);
+        alert("위치 등록 중 오류가 발생했습니다.");
+      }
+    );
   };
 
   return (
