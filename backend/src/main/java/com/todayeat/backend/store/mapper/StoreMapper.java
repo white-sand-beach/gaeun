@@ -20,12 +20,12 @@ public interface StoreMapper {
     @Mapping(target = "location", source = "location")
     Store createStoreRequestToStore(CreateStoreRequest createStoreRequest, Point location, String imageURL);
 
-    @Mapping(target = "longitude", source = "location.x")
-    @Mapping(target = "latitude", source = "location.y")
+    @Mapping(target = "longitude", source = "location.y")
+    @Mapping(target = "latitude", source = "location.x")
     GetSellerStoreResponse storeToGetSellerStoreResponse(Store store);
 
-    @Mapping(target = "longitude", source = "location.x")
-    @Mapping(target = "latitude", source = "location.y")
+    @Mapping(target = "longitude", source = "location.y")
+    @Mapping(target = "latitude", source = "location.x")
     GetConsumerInfoStoreResponse storeToGetConsumerStoreResponse(Store store);
 
     GetConsumerDetailStoreResponse storeToGetConsumerDetailStoreResponse(Store store);

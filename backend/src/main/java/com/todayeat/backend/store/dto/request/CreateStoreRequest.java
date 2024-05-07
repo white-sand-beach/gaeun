@@ -1,6 +1,7 @@
 package com.todayeat.backend.store.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,8 +27,13 @@ public class CreateStoreRequest {
 
     @NotBlank(message = "address: 빈 값이 아니어야 합니다.")
     @Size(max = 50, message = "address: 길이가 1에서 50 사이여야 합니다.")
-    @Schema(description = "주소", example = "OO OO시 O로 OOO")
+    @Schema(description = "지번 주소", example = "OO시 OO구 OO동 OOO-OO")
     private String address;
+
+    @NotBlank(message = "roadAddress: 빈 값이 아니어야 합니다.")
+    @Size(max = 50, message = "roadAddress: 길이가 1에서 50 사이여야 합니다.")
+    @Schema(description = "도로명 주소", example = "OO OO시 O로 OOO")
+    private String roadAddress;
 
     @NotNull(message = "latitude: 값이 null이 아니어야 합니다.")
     @DecimalMin(value = "33", message = "latitude: 33 이상이어야 합니다.")
