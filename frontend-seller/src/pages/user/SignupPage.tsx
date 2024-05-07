@@ -48,7 +48,7 @@ const SignUp = () => {
     const onCheckRegisterNo = () => {
         postCheckRegisterNo({
             registeredNo: sellerInfo.registeredNo,
-            setValid: setIsValidEmail,
+            setValid: setIsValidRegisterNo,
             setComment: setValidRegisterNo
         });
     };
