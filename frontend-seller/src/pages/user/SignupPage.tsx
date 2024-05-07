@@ -4,8 +4,13 @@ import React, { useState } from "react";
 
 const SignUp = () => {
     const navigate = useNavigate()
-    // const [isValidEmail, setIsValidEmail] = useState(false); // 이메일 중복 확인 ( 중복이면 true )
-    // const [validEmail, setValidEmail] = useState(""); // 이메일 중복에 따른 문구 출력
+    const [isValidEmail, setIsValidEmail] = useState(true); // 이메일 중복 확인 ( 중복이면 false )
+    const [validEmail, setValidEmail] = useState(""); // 이메일 중복에 따른 문구 출력
+
+    const [isValidRegisterNo, setIsValidRegisterNo] = useState(true) // 사업자 등록번호 사용 가능 여부 ( 불가면  false )
+    const [validRegisterNo, setValidRegisterNo] = useState("") // 사업자 등록번호 사용 가능 여부에 따른 문구 출력
+
+    const [validSignup, setValidSignup] = useState("") // 회원가입 실패 시 문구 출력
 
     // 회원가입 관련 정보
     const [sellerInfo, setSellerInfo] = useState({
@@ -37,7 +42,7 @@ const SignUp = () => {
                     <input name="email" type="text" placeholder="이메일을 입력하세요." className="w-[240px] border-b-2" value={sellerInfo.email} onChange={onChangeInfo}/>
                     <button className="detail-btn w-[72px]">중복확인</button>
                 </div>
-                {/* {isValidEmail && <p className="font-bold text-red-500">{validEmail}</p>} */}
+                {isValidEmail ? <p className="font-bold text-red-500">{validEmail}</p> : <p className="font-bold text-green-500">{validEmail}</p>}
 
                 {/* 비밀번호 입력 */}
                 <p className="m-2 text-2xl font-bold">비밀번호</p>
@@ -76,11 +81,13 @@ const SignUp = () => {
                     <button className="detail-btn w-[72px]">인증</button>
                 </div>
                 {sellerInfo.registerNo.length > 10 && <p className="font-bold text-red-500">등록번호는 최대 10자리 수 입니다!</p>}
+                {isValidRegisterNo ? <p className="font-bold text-green-500">{validRegisterNo}</p> : <p className="font-bold text-red-500">{validRegisterNo}</p>}
 
                 {/* 가입하기 */}
                 <TotalButton
                     title="가입하기"
                     onClick={() => navigate("/signupFin")} />
+                {validSignup}
             </div>
         </div>
     );
