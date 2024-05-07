@@ -12,7 +12,7 @@ const useUserStore = create<UserState>()(
   persist(
     (set) => ({
       email: '',
-      nickName: '',
+      nickname: '',
       profileImg: '',
       phoneNumber: '',
       updateUserState: (key, value) => set((state) => ({ ...state, [key]: value })),
@@ -22,7 +22,7 @@ const useUserStore = create<UserState>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         email: state.email,
-        nickName: state.nickName,
+        nickname: state.nickname,
         profileImg: state.profileImg,
         phoneNumber: state.phoneNumber,
       }),

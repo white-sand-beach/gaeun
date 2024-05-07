@@ -1,5 +1,5 @@
 import { useState } from "react";
-import NickNameCheck from "../../components/user_info/NickNameCheck";
+import NicknameCheck from "../../components/user_info/NicknameCheck";
 import PhoneCheck from "../../components/user_info/PhoneCheck";
 import ProfileImageModal from "../../components/user_info/ProfileImageModal";
 import SignUpButton from "../../components/button/SignUpButton";
@@ -13,14 +13,15 @@ import UserState from "../../types/UserState";
 import edit from "../../assets/profile/edit.png";
 
 const SignUp = () => {
-  const { profileImg, nickName, phoneNumber } = useUserStore(
+  const { profileImg, nickname, phoneNumber } = useUserStore(
     (state: UserState) => ({
-      nickName: state.nickName,
+      nickname: state.nickname,
       profileImg: state.profileImg,
       phoneNumber: state.phoneNumber,
     })
   );
   const [showModal, setShowModal] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -30,13 +31,17 @@ const SignUp = () => {
     setShowModal(false);
   };
 
+  const handleImageUpload = (file: File | null) => {
+    setUploadedImage(file);
+  };
+
   return (
     <div className="pt-14">
       <div className="mt-8 center">
         <div className="relative flex justify-center items-center w-36 h-36 rounded-full border-[1px] border-gray-200 shadow-md">
           <img
             className="w-32 h-32 rounded-full"
-            src={profileImg}
+            src={uploadedImage ? URL.createObjectURL(uploadedImage) : profileImg}
             alt="프로필 사진"
           />
           <button className="absolute bottom-2 right-3" onClick={toggleModal}>
@@ -47,26 +52,26 @@ const SignUp = () => {
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            <ProfileImageModal profileImg={profileImg} onClose={closeModal} />
+            <ProfileImageModal profileImg={profileImg} onClose={closeModal} onImageUpload={handleImageUpload} />
           </div>
         </div>
       )}
       <div className="flex justify-center mt-14">
-        <NickNameCheck nickName={nickName} />
+        <NicknameCheck nickname={nickname} />
       </div>
 
       <div className="flex justify-center mt-14">
         <PhoneCheck phoneNumber={phoneNumber} />
       </div>
       {/* <ProfileUpdateService
-        nickName={nickName}
+        nickname={nickname}
         profileImg={profileImg}
         phoneNumber={phoneNumber}
       /> */}
       <div className="center my-14">
         <SignUpButton
-          nickName={nickName}
-          profileImg={profileImg}
+          nickname={nickname}
+          profileImg={uploadedImage ? URL.createObjectURL(uploadedImage) : profileImg}
           phoneNumber={phoneNumber}
         />
       </div>

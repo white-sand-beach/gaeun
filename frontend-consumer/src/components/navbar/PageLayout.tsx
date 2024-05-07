@@ -14,7 +14,7 @@ const hideFooterLayoutPaths = [
   "/login",
   "/cart",
   "/add-cart",
-  "/alarm",
+  "/notification",
   "/order-list",
   "/order-detail",
   "/order-state",

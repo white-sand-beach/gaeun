@@ -34,7 +34,7 @@ const NavBar = () => {
     case "/sign-up":
       title = "회원가입";
       break;
-    case "/alarm":
+    case "/notification":
       title = "알림";
       break;
     case "/cart":
@@ -85,7 +85,7 @@ const NavBar = () => {
     location.pathname === "/search" ||
     location.pathname === "/search-result";
 
-  const showCartAndAlarm = location.pathname !== "/sign-up";
+  const showCartAndNotification = location.pathname !== "/sign-up";
 
   return (
     <div className="fixed z-20 w-full p-4 rounded-b-lg between bg-myColor">
@@ -99,9 +99,9 @@ const NavBar = () => {
         )}
       </div>
       <div className="w-[34%] text-center font-extrabold">{title}</div>
-      {showCartAndAlarm ? (
+      {showCartAndNotification ? (
         <div className="flex w-[33%] justify-end">
-          <Link to="/alarm">
+          <Link to="/notification">
             <img src={ring} alt="알림" />
           </Link>
           <Link to="/cart">
