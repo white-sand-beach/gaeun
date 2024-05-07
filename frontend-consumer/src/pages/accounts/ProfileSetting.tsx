@@ -2,7 +2,8 @@ import { useState } from "react";
 import NickNameCheck from "../../components/user_info/NickNameCheck";
 import PhoneCheck from "../../components/user_info/PhoneCheck";
 import ProfileImageModal from "../../components/user_info/ProfileImageModal";
-import ProfileUpdateButton from "../../components/button/ProfileUpdateButton"
+import ProfileUpdateButton from "../../components/button/ProfileUpdateButton";
+import LogoutButton from "../../components/button/LogoutButton";
 
 import useUserStore from "../../store/UserStore";
 import UserState from "../../types/UserState";
@@ -66,6 +67,9 @@ const ProfileSetting = () => {
           profileImg={profileImg}
           phoneNumber={phoneNumber}
         />
+      </div>
+      <div className="center text-xs text-gray-400">
+        <LogoutButton /> 
       </div>
     </div>
   );
