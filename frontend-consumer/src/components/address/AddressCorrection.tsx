@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import KakaoMap from "../../pages/main/Kakaomap";
 import left from "../../assets/navbar/back.png";
 import speech from "../../assets/search/speech.png";
@@ -8,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import company from "../../assets/search/company.png";
 import home from "../../assets/search/home.png";
 import point_white from "../../assets/search/point_white.png";
+import AddressCirrectionForm from "../../services/searchs/AddressCorrectionService";
 
 const AddressCorrection = () => {
   const location = useLocation();
@@ -18,9 +18,6 @@ const AddressCorrection = () => {
   const { address, latitude, longitude, roadAddress, addressId } =
     location.state;
   const [activeAlias, setActiveAlias] = useState(alias);
-
-  const token =
-    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMyIsInJvbGUiOiJST0xFX0NPTlNVTUVSIiwiaWF0IjoxNzE0NzI1MzUzLCJleHAiOjE3MTUwNzA5NTN9.pkGYbeXouRp304ff14eFGgofRQGM7dYUN6A65v9RfGw";
 
   const navigate = useNavigate();
 
@@ -70,29 +67,23 @@ const AddressCorrection = () => {
   }, []);
 
   const aliasComplete = () => {
-    const aliasData = {
-      alias: alias,
-    };
-    axios
-      .put(
-        `${import.meta.env.VITE_API_URL}/api/locations/${addressId}`,
-        aliasData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    if (addressId && alias) {
+      AddressCirrectionForm(
+        addressId,
+        alias,
+        () => {
+          alert("주소 수정완료.");
+          console.log(
+            `메인에서 쓰일 바뀐 주소는 ${address}이고, 별칭은 ${alias} 입니다.`
+          );
+          goAddressSearchPage();
+        },
+        (error) => {
+          console.error("주소 수정 중 오류 발생:", error);
+          alert("주소 수정 중 오류가 발생했습니다.");
         }
-      )
-      .then(() => {
-        alert("주소 수정완료.");
-        console.log(
-          `메인에서 쓰일 바뀐 주소는 ${address}이고, 별칭은 ${alias} 입니다.`
-        );
-        goAddressSearchPage();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      );
+    }
   };
 
   return (
