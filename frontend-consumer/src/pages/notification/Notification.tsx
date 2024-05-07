@@ -1,6 +1,6 @@
 import OrderDetailButton from "../../components/button/OrderDetailButton";
 
-const Alarm = () => {
+const Notification = () => {
   return (
     <div className="pt-14">
       {/* 컴포넌트로 만들 거에요 */}
@@ -55,4 +55,4 @@ const Alarm = () => {
   );
 };
 
-export default Alarm;
+export default Notification;

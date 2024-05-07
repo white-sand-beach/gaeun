@@ -7,7 +7,7 @@ import Main from "./pages/main/MainPage";
 import Profile from "./pages/accounts/Profile";
 import Cart from "./pages/cart/Cart";
 import AddCart from "./pages/cart/AddCart";
-import Alarm from "./pages/alarm/Alarm";
+import Notification from "./pages/notification/Notification";
 import Favorite from "./pages/favorite/Favorite";
 import OrderDetail from "./pages/order/OrderDetail";
 import OrderList from "./pages/order/OrderList";
@@ -36,7 +36,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/login-callback" element={<LoginCallbaak />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/alarm" element={<Alarm />} />
+          <Route path="/notification" element={<Notification />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/add-cart" element={<AddCart />} />
           <Route path="/search" element={<SearchPage />} />
