@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -26,13 +27,19 @@ public class GetConsumerListStoreResponse {
     public static class StoreInfo {
 
         @Schema(description = "가게 아이디", example = "1")
-        private Long id;
+        private Long storeId;
 
         @Schema(description = "지번 주소", example = "OO시 OO구 OO동 OOO-OO")
         private String address;
 
         @Schema(description = "도로명 주소", example = "OO OO시 O로 OOO")
         private String roadAddress;
+
+        @Schema(description = "위도", example = "36.936936")
+        private BigDecimal latitude;
+
+        @Schema(description = "경도", example = "124.816326")
+        private BigDecimal longitude;
 
         @Schema(description = "가게 명", example = "가게")
         private String name;

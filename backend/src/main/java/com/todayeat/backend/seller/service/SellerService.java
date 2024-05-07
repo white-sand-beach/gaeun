@@ -67,7 +67,7 @@ public class SellerService implements UserDetailsService {
         log.info("checkEmailRequest.getEmail() : {}", checkEmailSellerRequest.getEmail());
 
         return SellerMapper.INSTANCE.toCheckEmailSellerResponse(
-                sellerRepository.existsByEmail(checkEmailSellerRequest.getEmail()));
+                !sellerRepository.existsByEmail(checkEmailSellerRequest.getEmail()));
     }
 
     public CheckRegisteredNoSellerResponse checkRegisteredNo(CheckRegisteredNoSellerRequest checkRegisteredNoSellerRequest) {
@@ -75,7 +75,7 @@ public class SellerService implements UserDetailsService {
         log.info("checkRegisteredNoSellerRequest.getRegisteredNo() : {}", checkRegisteredNoSellerRequest.getRegisteredNo());
 
         return SellerMapper.INSTANCE.toCheckRegisteredNoSellerResponse(
-                sellerRepository.existsByRegisteredNo(checkRegisteredNoSellerRequest.getRegisteredNo()));
+                !sellerRepository.existsByRegisteredNo(checkRegisteredNoSellerRequest.getRegisteredNo()));
     }
 
     public FindEmailSellerResponse findEmail(FindEmailSellerRequest findEmailSellerRequest) {

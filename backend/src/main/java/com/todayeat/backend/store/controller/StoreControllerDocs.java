@@ -120,7 +120,7 @@ public interface StoreControllerDocs {
                                                                                - distance: 가까운 순
                                                                                - reviewCnt: 리뷰 많은 순
                                                                                - favoriteCnt: 찜 많은 순
-                                                                               """, example = "near")
+                                                                               """, example = "distance")
                                                                        @RequestParam(required = true, name = "sort")
                                                                        String sort);
 
