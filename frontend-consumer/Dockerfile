@@ -15,14 +15,17 @@ FROM node:20.11.0
 WORKDIR /app
 
 # 빌드된 애플리케이션 복사
-COPY --from=builder /app/dist /app/dist
+COPY --from=builder /app/dist /feConsumer/app/dist
 
-# serve 설치
-RUN npm install -g serve
+# nginx 의 default.conf 를 삭제
+RUN rm /etc/nginx/conf.d/default.conf
+
+# host pc 의 nginx.conf 를 아래 경로에 복사
+COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
 
 # 5173 포트 노출
 EXPOSE 5173
 
-# 애플리케이션 실행
-ENTRYPOINT ["serve", "-l", "5173", "-s", "dist"]
+# container 실행 시 자동으로 실행할 command. nginx 시작함
+CMD ["nginx", "-g", "daemon off;"]
 
