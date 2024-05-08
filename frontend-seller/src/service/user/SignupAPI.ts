@@ -3,6 +3,8 @@ import { SignupType } from "../../types/SignupType";
 // import { useNavigate } from "react-router-dom";
 
 // 이메일 중복 확인
+// 중복확인은 err가 없이 200 status code 준다
+// true, false로 중복여부 확인한다
 const postEmailCheck = ({ email, setValid, setComment }: SignupType) => {
     axios.post(import.meta.env.VITE_BASE_URL + "/api/auth/check-email", {
         "email": email,
