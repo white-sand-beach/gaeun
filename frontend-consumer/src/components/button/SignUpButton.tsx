@@ -2,7 +2,7 @@
 import UpdateProfileForm from "../../services/accounts/ProfileUpdateService";
 import UserState from "../../types/UserState";
 
-const SignUpButton = ({ nickname, phoneNumber, profileImg }: UserState) => {
+const SignUpButton = ({ nickname, phoneNumber, profileImage }: UserState) => {
   // const { mutate, isLoading } = ProfileUpdateService();
 
   const handleSignUp = async (event: React.FormEvent<HTMLButtonElement>) => {
@@ -12,7 +12,7 @@ const SignUpButton = ({ nickname, phoneNumber, profileImg }: UserState) => {
       const response = await UpdateProfileForm({
         nickname,
         phoneNumber,
-        profileImg,
+        profileImage,
       });
       console.log(response.data);
     } catch (error) {
