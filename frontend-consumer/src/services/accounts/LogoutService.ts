@@ -4,10 +4,9 @@ import Cookies from "universal-cookie";
 const LogoutService = async () => {
   const cookies = new Cookies();
   const accessToken = cookies.get("accessToken")
-  const API_BASE_URL = import.meta.env.VITE_API_URL;
   
   const response = await axios.get(
-    `${API_BASE_URL}/api/consumers/logout`,
+    `${import.meta.env.VITE_API_URL}/api/consumers/logout`,
     {
       withCredentials: true,
       headers: {
