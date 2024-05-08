@@ -63,7 +63,7 @@ const SignUp = () => {
     }
 
     return (
-        <div className="no-footer top-[75px]">
+        <div className="no-footer top-[60px]">
             <div className="flex flex-col gap-3">
                 {/* 이메일 입력 */}
                 <p className="m-2 text-2xl font-bold">이메일</p>
