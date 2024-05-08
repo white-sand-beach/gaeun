@@ -42,11 +42,11 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
         JPAQuery<StoreInfo> query = jpaQueryFactory
                 .select(fields(
                         StoreInfo.class,
-                        store.id,
+                        store.id.as("storeId"),
                         store.address,
                         store.roadAddress,
-                        Expressions.numberPath(BigDecimal.class, store.location, "y").as("longitude"),
-                        Expressions.numberPath(BigDecimal.class, store.location, "x").as("latitude"),
+                        Expressions.numberTemplate(BigDecimal.class, "ST_X(store.location)").as("latitude"),
+                        Expressions.numberTemplate(BigDecimal.class, "ST_Y(store.location)").as("longitude"),
                         store.name,
                         store.operatingTime,
                         store.reviewCnt,
@@ -56,7 +56,9 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
                                         store.location,
                                         Expressions.constant(location))
                                 .as("distance")))
-                .from(store);
+                .from(store)
+                .where(store.isOpened.isTrue())
+                ;
 
         if (categoryId != null) {
 
