@@ -94,7 +94,7 @@ const Favorite = () => {
           {favoriteState.totalCnt}개
         </p>
       </div>
-      <div className="bg-white">
+      <div className="bg-white mb-14">
         {/* 찜 리스트 */}
         {favoriteState.favorites && (
           <FavoriteList favorites={favoriteState?.favorites} />

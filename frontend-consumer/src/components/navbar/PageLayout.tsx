@@ -15,16 +15,13 @@ const hideFooterLayoutPaths = [
   "/cart",
   "/add-cart",
   "/notification",
-  "/order-list",
   "/order-detail",
   "/order-state",
-  "/search",
   "/sign-up",
   "/address-search-registration",
   "/my-review",
   "/address-correction",
   "/profile-setting",
-  "/profile",
 ];
 
 const PageLayout = () => {
