@@ -11,9 +11,8 @@ COPY . .
 RUN npm run build || exit 1
 
 # 정적 파일을 /app/fe-seller/dist 에 복사
-RUN mkdir ./fe-seller
-RUN mkdir ./fe-seller/dist
-RUN cp -r /app/dist ./fe-seller/dist
+RUN mkdir -p fe-seller/{dist}
+RUN cp -r /app/dist /app/fe-seller/dist
 
 # nginx 이미지를 사용. 뒤에 tag가 없으면 latest 를 사용.
 FROM nginx
