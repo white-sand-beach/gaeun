@@ -15,7 +15,7 @@ const ShopInformation = () => {
         <hr className="w-full my-1" />
         <div className="mb-8 text-sm">
           <div className="mb-2">
-            <span className="font-medium">영업시간 : </span>매일 - 오전 12:00 ~
+            <span className="font-medium">영업시간 : </span> 매일 - 오전 12:00 ~
             11:50
           </div>
           <div className="mb-2">
