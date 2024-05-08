@@ -171,7 +171,10 @@ public class StoreService {
     @Transactional
     public void updateIsOpened(Long storeId) {
 
-        Store store = securityUtil.getSeller().getStore();
+        Store store = sellerRepository.findById(securityUtil.getSeller().getId())
+                .map(Seller::getStore)
+                .filter(s -> s != null && Objects.equals(s.getId(), storeId))
+                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
 
         if (store == null || !Objects.equals(store.getId(), storeId)) {
 
