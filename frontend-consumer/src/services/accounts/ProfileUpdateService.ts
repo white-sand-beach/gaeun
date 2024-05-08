@@ -4,7 +4,7 @@ import UserState from "@/types/UserState";
 // import { useMutation, UseMutationResult } from "@tanstack/react-query";
 
 // interface ProfileInfoProps {
-//   nickName?: string;
+//   nickname?: string;
 //   profileImg?: string;
 //   phoneNumber?: string;
 // }
@@ -14,16 +14,16 @@ import UserState from "@/types/UserState";
 // }
 
 const UpdateProfileForm = async ({
-  nickName,
-  profileImg,
+  nickname,
+  profileImage,
   phoneNumber,
-}: UserState): Promise<any> => {
+}: UserState): Promise<UserState> => {
   const cookies = new Cookies();
   const accessToken = cookies.get("accessToken");
   const API_BASE_URL = import.meta.env.VITE_API_URL;
   const response = await axios.put(
     `${API_BASE_URL}/api/consumers`,
-    { nickName, profileImg, phoneNumber },
+    { nickname, profileImage, phoneNumber },
     {
       withCredentials: true,
       headers: {

@@ -12,8 +12,8 @@ const useUserStore = create<UserState>()(
   persist(
     (set) => ({
       email: '',
-      nickName: '',
-      profileImg: '',
+      nickname: '',
+      profileImage: '',
       phoneNumber: '',
       updateUserState: (key, value) => set((state) => ({ ...state, [key]: value })),
     }),
@@ -22,8 +22,8 @@ const useUserStore = create<UserState>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         email: state.email,
-        nickName: state.nickName,
-        profileImg: state.profileImg,
+        nickname: state.nickname,
+        profileImage: state.profileImage,
         phoneNumber: state.phoneNumber,
       }),
     } as PersistOptions<UserState>

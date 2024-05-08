@@ -3,7 +3,7 @@ import Ordertarget from "@/components/order/OrderTarget";
 
 const OrderList = () => {
   return (
-    <div className="pt-16">
+    <div className="py-14">
       {/* 가게 및 메뉴 검색 */}
       <div className="my-2 center">
         <OrderSearch />

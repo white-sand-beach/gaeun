@@ -7,15 +7,16 @@ import { useNavigate } from "react-router-dom";
 import company from "../../assets/search/company.png";
 import home from "../../assets/search/home.png";
 import point_white from "../../assets/search/point_white.png";
-import AddressRegistrationForm from "../../services/searchs/AddressRegistrationService";
+import AddressCirrectionForm from "../../services/searchs/AddressCorrectionService";
 
-const AddressRegistration = () => {
+const AddressCorrection = () => {
   const location = useLocation();
   const mapHeight = "500px";
   const [showBalloon, setShowBalloon] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [alias, setAlias] = useState("");
-  const { address, latitude, longitude, roadAddress } = location.state;
+  const { address, latitude, longitude, roadAddress, addressId } =
+    location.state;
   const [activeAlias, setActiveAlias] = useState(alias);
 
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ const AddressRegistration = () => {
     console.log(latitude);
     console.log(longitude);
     console.log(address);
+    console.log(addressId);
     // 말풍선을 보여주고 5초 후에 숨깁니다.
     setShowBalloon(true);
     setTimeout(() => {
@@ -64,26 +66,24 @@ const AddressRegistration = () => {
     }, 3000);
   }, []);
 
-  const locationsComplete = () => {
-    const locationsData = {
-      latitude: latitude,
-      longitude: longitude,
-      address: address,
-      alias: alias,
-      roadAddress: roadAddress,
-    };
-
-    AddressRegistrationForm(
-      locationsData,
-      () => {
-        alert("위치 등록이 완료되었습니다.");
-        goAddressSearchPage();
-      },
-      (error) => {
-        console.error("위치 등록 중 오류 발생:", error);
-        alert("위치 등록 중 오류가 발생했습니다.");
-      }
-    );
+  const aliasComplete = () => {
+    if (addressId && alias) {
+      AddressCirrectionForm(
+        addressId,
+        alias,
+        () => {
+          alert("주소 수정완료.");
+          console.log(
+            `메인에서 쓰일 바뀐 주소는 ${address}이고, 별칭은 ${alias} 입니다.`
+          );
+          goAddressSearchPage();
+        },
+        (error) => {
+          console.error("주소 수정 중 오류 발생:", error);
+          alert("주소 수정 중 오류가 발생했습니다.");
+        }
+      );
+    }
   };
 
   return (
@@ -171,12 +171,12 @@ const AddressRegistration = () => {
             ></input>
           </div>
         )}
-        <div className="w-[330px] mx-auto bg-myColor py-3 mt-4 rounded-md text-center">
-          <div
-            onClick={locationsComplete}
-            className="text-base font-semibold text-white"
-          >
-            이 위치로 주소 등록
+        <div
+          onClick={aliasComplete}
+          className="w-[330px] mx-auto bg-myColor py-3 mt-4 rounded-md text-center"
+        >
+          <div className="text-base font-semibold text-white">
+            이 위치로 주소 수정
           </div>
         </div>
       </div>
@@ -184,4 +184,4 @@ const AddressRegistration = () => {
   );
 };
 
-export default AddressRegistration;
+export default AddressCorrection;

@@ -1,8 +1,9 @@
-import FavoriteButton from "@/components/button/FavoriteButton";
-import FavoritePostForm from "@/services/favorites/FavoritePostService";
-import FavoriteDeleteForm from "@/services/favorites/FavoriteDeleteService";
+import { useState } from "react";
+import FavoriteButton from "../button/FavoriteButton";
+import FavoritePostForm from "../../services/favorites/FavoritePostService";
+import FavoriteDeleteForm from "../../services/favorites/FavoriteDeleteService";
 
-import { FavoriteItem } from "@/types/FavoriteType";
+import { FavoriteItem } from "../../types/FavoriteType";
 
 interface FavoriteListProps {
   favorites: FavoriteItem[];
@@ -19,13 +20,21 @@ const FavoriteList = ({ favorites }: FavoriteListProps) => {
 };
 
 const FavoriteListItem = ({ favorite }: { favorite: FavoriteItem }) => {
-  const handleToggle = (isFavorite: boolean) => {
-    if (isFavorite) {
-      // 찜 등록 API 호출
-      FavoritePostForm({ storeId: favorite.storeId });
-    } else {
-      // 찜 삭제 API 호출
-      FavoriteDeleteForm({ favoriteId: favorite.favoriteId });
+  const [isFavorite, setIsFavorite] = useState(true);
+
+  const handleToggle = async (newIsFavorite: boolean) => {
+    try {
+      if (newIsFavorite) {
+        // 찜 등록 API 호출
+        await FavoritePostForm({ storeId: favorite.storeId });
+      } else {
+        // 찜 삭제 API 호출
+        await FavoriteDeleteForm({ favoriteId: favorite.favoriteId });
+      }
+      setIsFavorite(newIsFavorite);
+    } catch (error) {
+      // 에러 처리
+      console.error(error);
     }
   };
 
@@ -49,7 +58,7 @@ const FavoriteListItem = ({ favorite }: { favorite: FavoriteItem }) => {
         </div>
         {/* 토글 버튼 */}
         <FavoriteButton
-          isFavorite={favorite.isFavorite}
+          isFavorite={isFavorite}
           onToggle={handleToggle}
         />
       </div>

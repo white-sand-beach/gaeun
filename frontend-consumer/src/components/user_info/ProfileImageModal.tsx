@@ -1,27 +1,34 @@
 // ProfileImageModal.tsx
 import React, { useState, useEffect } from "react";
-import UserState from "@/types/UserState";
-import "@/components/modal/Modal.css"
+import UserState from "../../types/UserState";
+import "../modal/Modal.css";
 
 interface ProfileImageModalProps {
   onClose: () => void;
+  onImageUpload: (file: File | null) => void;
 }
 
 const ProfileImageModal: React.FC<UserState & ProfileImageModalProps> = ({
-  profileImg,
+  profileImage,
   onClose,
+  onImageUpload,
 }) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedImage(event.target.files[0]);
     }
   };
 
-  const handleImageUpload = () => {
-    // 프로필 사진 업로드 로직 구현
-    console.log("업로드된 이미지:", selectedImage);
+  const handleImageUpload = async () => {
+    if (!selectedImage) return;
+
+    try {
+      onImageUpload(selectedImage);
+      onClose();
+    } catch (error) {
+      console.error("업로드 실패:", error);
+    }
   };
 
   const handleOutsideClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -54,8 +61,10 @@ const ProfileImageModal: React.FC<UserState & ProfileImageModalProps> = ({
         <div className="center">
           <div className="relative flex justify-center items-center w-36 h-36 rounded-full border-[1px] border-gray-200 shadow-md mb-4">
             <img
-              className="w-32 h-32 rounded-full"
-              src={profileImg}
+              className="w-32 h-32 rounded-full object-cover"
+              src={
+                selectedImage ? URL.createObjectURL(selectedImage) : profileImage
+              }
               alt="프로필 사진"
             />
           </div>

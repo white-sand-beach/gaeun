@@ -1,15 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import left from "@/assets/navbar/back.png";
 import { useNavigate } from "react-router-dom";
+import AddressList from "./AddressList";
+import AddressListForm from "../../services/searchs/AddressListService.ts";
 
 const AddressSearchPage = () => {
+  interface AddressData {
+    locationId: number;
+    address: string;
+    alias: string;
+    roadAddress: string;
+    longitude: number;
+    latitude: number;
+  }
+
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [address, setAddress] = useState(""); // 주소를 저장할 상태
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [roadAddress, setJibunAddress] = useState("");
+  const [addresses, setAddresses] = useState<AddressData[]>([]);
+
+  useEffect(() => {
+    AddressListForm(setAddresses).catch(console.error);
+  }, []); // token을 의존성 배열에 추가합니다.
+
+  const goBack = () => {
+    navigate(-1);
+  };
 
   const goAddressRegistration = () => {
     navigate("/address-search-registration", {
@@ -45,7 +65,7 @@ const AddressSearchPage = () => {
   return (
     <div className="container max-w-md mx-auto">
       <header className="flex items-center justify-between p-4 border-b border-gray-200">
-        <button className="w-6 h-6">
+        <button onClick={goBack} className="w-6 h-6">
           <img src={left} alt="left" />
         </button>
         <h1 className="text-lg">주소 선택</h1>
@@ -69,7 +89,7 @@ const AddressSearchPage = () => {
       </div>
 
       {isOpen && (
-        <div className="top-0 left-0 flex flex-col items-center justify-center max-w-[400px] w-full h-full border-2 gap-4 bg-white z-30">
+        <div className="top-0 left-0 flex flex-col items-center justify-center max-w-[400px] w-full h-full border-2 gap-4 bg-white">
           <div className="flex items-center justify-between w-full p-4 bg-gray-100 ">
             <span>주소 선택</span>
             <button onClick={handleAddress}>[닫기]</button>
@@ -78,22 +98,19 @@ const AddressSearchPage = () => {
         </div>
       )}
 
+      <hr className="w-full my-2" />
       <ul className="divide-y divide-gray-200">
-        <li className="between p-4">
-          <div className="text-sm">
-            <p className="font-bold">우리집</p>
-            <p>강남구 역삼동 진달래 317</p>
-          </div>
-          <button>선택</button>
-        </li>
-        <li className="between p-4">
-          <div className="text-sm">
-            <p>우리집</p>
-            <p>강남구 역삼동 진달래 317</p>
-          </div>
-          <button>선택</button>
-        </li>
-        {/* 더 많은 주소 항목을 추가하세요 */}
+        {addresses.map((addressData) => (
+          <AddressList
+            key={addressData.locationId}
+            address={addressData.address}
+            addressId={addressData.locationId}
+            alias={addressData.alias}
+            roadAddress={addressData.roadAddress}
+            latitude={addressData.latitude}
+            longitude={addressData.longitude}
+          />
+        ))}
       </ul>
     </div>
   );
