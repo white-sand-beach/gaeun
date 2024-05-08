@@ -9,7 +9,7 @@ interface ProfileImageModalProps {
 }
 
 const ProfileImageModal: React.FC<UserState & ProfileImageModalProps> = ({
-  profileImg,
+  profileImage,
   onClose,
   onImageUpload,
 }) => {
@@ -61,9 +61,9 @@ const ProfileImageModal: React.FC<UserState & ProfileImageModalProps> = ({
         <div className="center">
           <div className="relative flex justify-center items-center w-36 h-36 rounded-full border-[1px] border-gray-200 shadow-md mb-4">
             <img
-              className="w-32 h-32 rounded-full"
+              className="w-32 h-32 rounded-full object-cover"
               src={
-                selectedImage ? URL.createObjectURL(selectedImage) : profileImg
+                selectedImage ? URL.createObjectURL(selectedImage) : profileImage
               }
               alt="프로필 사진"
             />

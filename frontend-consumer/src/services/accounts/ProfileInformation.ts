@@ -1,8 +1,8 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
-import { ProfileInfoProps } from "../../types/UserInfo";
+import UserState from "../../types/UserState";
 
-const ProfileForm = async (): Promise<ProfileInfoProps> => {
+const ProfileForm = async (): Promise<UserState> => {
   const cookies = new Cookies();
   const token = cookies.get("accessToken");
 

@@ -5,10 +5,10 @@ import heart from "../../assets/profile/heart.png";
 import order from "../../assets/profile/order.png";
 import review from "../../assets/profile/review.png";
 import ProfileForm from "../../services/accounts/ProfileInformation";
-import { ProfileInfoProps } from "../../types/UserInfo";
+import UserState from "../../types/UserState";
 
 const ProfileCard: React.FC = () => {
-  const [profileData, setProfileData] = useState<ProfileInfoProps>({
+  const [profileData, setProfileData] = useState<UserState>({
     profileImage: "",
     nickname: "",
     socialType: "",
