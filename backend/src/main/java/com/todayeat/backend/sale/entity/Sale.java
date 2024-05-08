@@ -77,4 +77,8 @@ public class Sale extends BaseTime {
     public void updateStatus() {
         this.isFinished = !isFinished;
     }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

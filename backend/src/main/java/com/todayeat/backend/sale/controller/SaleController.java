@@ -3,6 +3,7 @@ package com.todayeat.backend.sale.controller;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend._common.response.success.SuccessType;
 import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
+import com.todayeat.backend.sale.dto.request.UpdateSaleContentRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStatusRequest;
 import com.todayeat.backend.sale.service.SaleService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,14 @@ public class SaleController implements SaleControllerDocs {
         saleService.updateStatus(saleId, request);
 
         return SuccessResponse.of(SuccessType.UPDATE_SALE_STATUS_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<Void> updateContent(Long saleId, UpdateSaleContentRequest request) {
+
+        saleService.updateContent(saleId, request);
+
+        return SuccessResponse.of(SuccessType.UPDATE_SALE_CONTENT_SUCCESS);
     }
 }
 

@@ -3,6 +3,7 @@ package com.todayeat.backend.sale.controller;
 import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
+import com.todayeat.backend.sale.dto.request.UpdateSaleContentRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStatusRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -65,4 +66,30 @@ public interface SaleControllerDocs {
                                        @RequestBody
                                        @Valid
                                        UpdateSaleStatusRequest request);
+
+    @Operation(summary = "판매 내용 변경",
+            description = """
+                    `ROLE_SELLER` \n
+                    path variable로 sale-id 넣어주세요. \n
+                    request body 넣어주세요.
+                    """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @ApiResponse(responseCode = "404",
+            description = """ 
+                    판매자의 가게가 맞는지 확인, 가게 존재 여부 확인 \n
+                    해당 메뉴의 존재 여부 확인 및 가게에 있는 메뉴인지 확인 \n
+                    """,
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "400",
+            description = "해당 가게의 메뉴인 판매가 있는지 확인",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PutMapping(value = "/{sale-id}/content")
+    @PreAuthorize("hasRole('SELLER')")
+    SuccessResponse<Void> updateContent(@PathVariable(name = "sale-id")
+                                       @Schema(description = "판매 ID", example = "1")
+                                       Long saleId,
+                                       @RequestBody
+                                       @Valid
+                                        UpdateSaleContentRequest request);
 }
