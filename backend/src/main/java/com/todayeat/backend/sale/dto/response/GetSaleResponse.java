@@ -32,8 +32,11 @@ public class GetSaleResponse {
     @Schema(description = "판매 남은 수량", example = "3")
     private Integer restStock;
 
+    @Schema(description = "판매 종료 여부", example = "false")
+    private Boolean isFinished;
+
     @Builder
-    private GetSaleResponse(Long saleId, String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer restStock) {
+    private GetSaleResponse(Long saleId, String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer restStock, Boolean isFinished) {
         this.saleId = saleId;
         this.imageUrl = imageUrl;
         this.name = name;
@@ -42,5 +45,6 @@ public class GetSaleResponse {
         this.discountRate = discountRate;
         this.content = content;
         this.restStock = restStock;
+        this.isFinished = isFinished;
     }
 }

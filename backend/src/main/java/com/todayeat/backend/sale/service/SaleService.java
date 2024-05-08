@@ -3,6 +3,7 @@ package com.todayeat.backend.sale.service;
 import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
+import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.repository.MenuRepository;
 import com.todayeat.backend.sale.dto.request.*;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,12 +68,23 @@ public class SaleService {
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
 
-        List<GetSaleResponse> getSaleResponseList = saleRepository.findAllByStoreAndDeletedAtIsNull(store)
-                .stream()
-                .map(s -> SaleMapper.INSTANCE.getSaleResponse(s, s.getStock() - s.getTotalQuantity()))
-                .toList();
+        if(securityUtil.getPrincipalClass().equals(Seller.class)) {
+            List<GetSaleResponse> getSaleResponseList = saleRepository.findAllByStoreAndDeletedAtIsNull(store)
+                    .stream()
+                    .map(s -> SaleMapper.INSTANCE.getSaleResponse(s, s.getStock() - s.getTotalQuantity()))
+                    .toList();
 
-        return GetSaleListResponse.of(storeId, getSaleResponseList, getSaleResponseList.size());
+            return GetSaleListResponse.of(storeId, getSaleResponseList, getSaleResponseList.size());
+        } else if(securityUtil.getPrincipalClass().equals(Consumer.class)) {
+            List<GetSaleResponse> getSaleResponseList = saleRepository.findAllByStoreAndIsFinishedIsFalseAndDeletedAtIsNull(store)
+                    .stream()
+                    .map(s -> SaleMapper.INSTANCE.getSaleResponse(s, s.getStock() - s.getTotalQuantity()))
+                    .toList();
+
+            return GetSaleListResponse.of(storeId, getSaleResponseList, getSaleResponseList.size());
+        }
+
+        throw new BusinessException(ErrorType.REQUEST_FORBIDDEN);
     }
 
     @Transactional
