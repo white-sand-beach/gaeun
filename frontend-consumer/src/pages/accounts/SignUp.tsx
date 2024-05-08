@@ -6,9 +6,7 @@ import SignUpButton from "../../components/button/SignUpButton";
 import "../../components/modal/Modal.css";
 import ProfileForm from "../../services/accounts/ProfileInfoService";
 import UserState from "../../types/UserState";
-// import { ProfileInfoProps } from "../../types/UserInfo";
-
-// import ProfileUpdateService from "../../services/ProfileUpdateService";
+import ProfileUpdateButton from "../../components/button/ProfileUpdateButton";
 
 import edit from "../../assets/profile/edit.png";
 
@@ -18,7 +16,13 @@ const SignUp = () => {
     socialType: "",
     nickname: "",
     email: "",
+    phoneNumber: "",
   });
+
+  let headerText;
+  headerText = "본인 인증"
+  let buttonText;
+  buttonText = "회원 가입"
 
   const [showModal, setShowModal] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
@@ -44,7 +48,6 @@ const SignUp = () => {
       .catch((error) => {
         console.error("Failed to fetch profile data", error);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // 빈 배열을 넣어서 컴포넌트 마운트 시에만 호출되도록 함
 
   return (
@@ -81,15 +84,10 @@ const SignUp = () => {
       </div>
 
       <div className="flex justify-center mt-14">
-        <PhoneCheck phoneNumber={profileData.phoneNumber} />
+        <PhoneCheck phoneNumber={profileData.phoneNumber} headerText={headerText} />
       </div>
-      {/* <ProfileUpdateService
-        nickname={nickname}
-        profileImage={profileImage}
-        phoneNumber={phoneNumber}
-      /> */}
       <div className="center my-14">
-        <SignUpButton
+        <ProfileUpdateButton
           nickname={profileData.nickname}
           profileImage={
             uploadedImage
@@ -97,6 +95,7 @@ const SignUp = () => {
               : profileData.profileImage
           }
           phoneNumber={profileData.phoneNumber}
+          buttonText={buttonText}
         />
       </div>
     </div>

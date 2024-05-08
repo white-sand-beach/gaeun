@@ -6,6 +6,8 @@ interface UserState {
   phoneNumber?: string;
   socialType?: string;
   data?: any;
+  headerText?: string;
+  buttonText?: string;
 
   // K는 제네릭 타입 변수
   // UserStore의 모든 키를 유니온 타입으로 반환
