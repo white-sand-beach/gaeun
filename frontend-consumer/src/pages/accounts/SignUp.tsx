@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import NicknameCheck from "../../components/user_info/NicknameCheck";
 import PhoneCheck from "../../components/user_info/PhoneCheck";
 import ProfileImageModal from "../../components/user_info/ProfileImageModal";
-import SignUpButton from "../../components/button/SignUpButton";
 import "../../components/modal/Modal.css";
 import ProfileForm from "../../services/accounts/ProfileInfoService";
 import UserState from "../../types/UserState";
