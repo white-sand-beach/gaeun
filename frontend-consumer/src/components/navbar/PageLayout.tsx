@@ -24,6 +24,7 @@ const hideFooterLayoutPaths = [
   "/my-review",
   "/address-correction",
   "/profile-setting",
+  "/profile",
 ];
 
 const PageLayout = () => {

@@ -1,25 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NicknameCheck from "../../components/user_info/NicknameCheck";
 import PhoneCheck from "../../components/user_info/PhoneCheck";
 import ProfileImageModal from "../../components/user_info/ProfileImageModal";
 import SignUpButton from "../../components/button/SignUpButton";
 import "../../components/modal/Modal.css";
+import ProfileForm from "../../services/accounts/ProfileInfoService";
+import UserState from "../../types/UserState";
+// import { ProfileInfoProps } from "../../types/UserInfo";
 
 // import ProfileUpdateService from "../../services/ProfileUpdateService";
-
-import useUserStore from "../../store/UserStore";
-import UserState from "../../types/UserState";
 
 import edit from "../../assets/profile/edit.png";
 
 const SignUp = () => {
-  const { profileImg, nickname, phoneNumber } = useUserStore(
-    (state: UserState) => ({
-      nickname: state.nickname,
-      profileImg: state.profileImg,
-      phoneNumber: state.phoneNumber,
-    })
-  );
+  const [profileData, setProfileData] = useState<UserState>({
+    profileImage: "",
+    socialType: "",
+    nickname: "",
+    email: "",
+  });
+
   const [showModal, setShowModal] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
 
@@ -35,13 +35,29 @@ const SignUp = () => {
     setUploadedImage(file);
   };
 
+  useEffect(() => {
+    ProfileForm()
+      .then((data) => {
+        setProfileData(data); 
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch profile data", error);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // 빈 배열을 넣어서 컴포넌트 마운트 시에만 호출되도록 함
+
   return (
     <div className="pt-14">
       <div className="mt-8 center">
         <div className="relative flex justify-center items-center w-36 h-36 rounded-full border-[1px] border-gray-200 shadow-md">
           <img
-            className="w-32 h-32 rounded-full"
-            src={uploadedImage ? URL.createObjectURL(uploadedImage) : profileImg}
+            className="w-32 h-32 rounded-full object-cover"
+            src={
+              uploadedImage
+                ? URL.createObjectURL(uploadedImage)
+                : profileData.profileImage
+            }
             alt="프로필 사진"
           />
           <button className="absolute bottom-2 right-3" onClick={toggleModal}>
@@ -52,27 +68,35 @@ const SignUp = () => {
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            <ProfileImageModal profileImg={profileImg} onClose={closeModal} onImageUpload={handleImageUpload} />
+            <ProfileImageModal
+              profileImage={profileData.profileImage}
+              onClose={closeModal}
+              onImageUpload={handleImageUpload}
+            />
           </div>
         </div>
       )}
       <div className="flex justify-center mt-14">
-        <NicknameCheck nickname={nickname} />
+        <NicknameCheck nickname={profileData.nickname} />
       </div>
 
       <div className="flex justify-center mt-14">
-        <PhoneCheck phoneNumber={phoneNumber} />
+        <PhoneCheck phoneNumber={profileData.phoneNumber} />
       </div>
       {/* <ProfileUpdateService
         nickname={nickname}
-        profileImg={profileImg}
+        profileImage={profileImage}
         phoneNumber={phoneNumber}
       /> */}
       <div className="center my-14">
         <SignUpButton
-          nickname={nickname}
-          profileImg={uploadedImage ? URL.createObjectURL(uploadedImage) : profileImg}
-          phoneNumber={phoneNumber}
+          nickname={profileData.nickname}
+          profileImage={
+            uploadedImage
+              ? URL.createObjectURL(uploadedImage)
+              : profileData.profileImage
+          }
+          phoneNumber={profileData.phoneNumber}
         />
       </div>
     </div>

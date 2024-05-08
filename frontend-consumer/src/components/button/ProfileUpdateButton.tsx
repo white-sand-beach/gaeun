@@ -2,7 +2,7 @@
 import UpdateProfileForm from "../../services/accounts/ProfileUpdateService";
 import UserState from "../../types/UserState";
 
-const ProfileUpdateButton = ({ nickname, phoneNumber, profileImg }: UserState) => {
+const ProfileUpdateButton = ({ nickname, phoneNumber, profileImage }: UserState) => {
   // const { mutate, isLoading } = ProfileUpdateService();
 
   const handleSignUp = async (event: React.FormEvent<HTMLButtonElement>) => {
@@ -12,9 +12,9 @@ const ProfileUpdateButton = ({ nickname, phoneNumber, profileImg }: UserState) =
       const response = await UpdateProfileForm({
         nickname,
         phoneNumber,
-        profileImg,
+        profileImage,
       });
-      console.log(profileImg)
+      console.log(profileImage)
       console.log(response.data);
     } catch (error) {
       console.log("실패");
