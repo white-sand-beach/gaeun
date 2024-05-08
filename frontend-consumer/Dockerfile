@@ -10,14 +10,16 @@ RUN npm install
 COPY . .
 RUN npm run build || exit 1
 
-# 정적 파일을 /app/dist 에 복사
-RUN cp -r /app/dist /app/fe-consumer/dist
+# 정적 파일을 /app/fe-consumer/dist 에 복사
+RUN mkdir ./fe-consumer
+RUN mkdir ./fe-consumer/dist
+RUN cp -r /app/dist ./fe-consumer/dist
 
 # nginx 이미지를 사용. 뒤에 tag가 없으면 latest 를 사용.
 FROM nginx
 
 # 정적 파일 복사
-COPY --from=builder /app/fe-consumer/dist /usr/share/nginx/html/fe-consumer
+COPY --from=builder /app/fe-consumer/dist /usr/share/nginx/html/consumer
 
 # 80 포트 오픈
 EXPOSE 80

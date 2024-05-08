@@ -48,7 +48,7 @@ pipeline {
         }
     
         
-        stage('fe_consummer_build'){
+        stage('fe_consumer_build'){
             steps{
                 script {
                     def feConsumerRunning = sh(script: 'docker ps -a --filter "name=fe-consumer" --format "{{.Names}}"', returnStdout: true).trim()
@@ -93,12 +93,6 @@ pipeline {
 
                     sh dockerCmd 
                 }
-            }
-        }
-
-        stage('deploy'){
-            steps{
-                sh 'sudo docker-compose up -d --build'
             }
         }
     }
