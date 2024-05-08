@@ -41,7 +41,11 @@ public class Sale extends BaseTime {
     private String content;
 
     @Column(nullable = false)
-    private Integer stock;
+    private Integer stock; // 재고량
+
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer totalQuantity; // 현재 판매량
 
     @Column(nullable = false)
     @ColumnDefault("false")
@@ -56,7 +60,7 @@ public class Sale extends BaseTime {
     private Menu menu;
 
     @Builder
-    private Sale(String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer stock, Boolean isFinished, Store store, Menu menu) {
+    public Sale(String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer stock, Integer totalQuantity, Boolean isFinished, Store store, Menu menu) {
         this.imageUrl = imageUrl;
         this.name = name;
         this.originalPrice = originalPrice;
@@ -64,8 +68,13 @@ public class Sale extends BaseTime {
         this.discountRate = discountRate;
         this.content = content;
         this.stock = stock;
+        this.totalQuantity = totalQuantity;
         this.isFinished = isFinished;
         this.store = store;
         this.menu = menu;
+    }
+
+    public void updateStatus() {
+        this.isFinished = !isFinished;
     }
 }

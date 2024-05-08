@@ -19,10 +19,6 @@ public class CreateSaleRequest {
     @Schema(description = "판매 재고", example = "12")
     private Integer stock;
 
-    @NotNull(message = "storeId: 값이 null이 아니어야 합니다.")
-    @Schema(description = "가게 ID", example = "1")
-    private Long storeId;
-
     @NotNull(message = "menuId: 값이 null이 아니어야 합니다.")
     @Schema(description = "메 ID", example = "1")
     private Long menuId;
