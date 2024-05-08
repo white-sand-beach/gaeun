@@ -2,8 +2,10 @@
 interface UserState {
   email?: string;
   nickname?: string;
-  profileImg?: string;
+  profileImage?: string;
   phoneNumber?: string;
+  socialType?: string;
+  data?: any;
 
   // K는 제네릭 타입 변수
   // UserStore의 모든 키를 유니온 타입으로 반환

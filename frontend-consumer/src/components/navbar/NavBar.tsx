@@ -81,10 +81,7 @@ const NavBar = () => {
       title = "";
   }
 
-  const showHomeAddress =
-    location.pathname === "/" ||
-    location.pathname === "/search" ||
-    location.pathname === "/search-result";
+  const showHomeAddress = location.pathname === "/";
 
   const showCartAndNotification = location.pathname !== "/sign-up";
 

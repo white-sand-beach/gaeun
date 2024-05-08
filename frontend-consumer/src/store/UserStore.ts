@@ -13,7 +13,7 @@ const useUserStore = create<UserState>()(
     (set) => ({
       email: '',
       nickname: '',
-      profileImg: '',
+      profileImage: '',
       phoneNumber: '',
       updateUserState: (key, value) => set((state) => ({ ...state, [key]: value })),
     }),
@@ -23,7 +23,7 @@ const useUserStore = create<UserState>()(
       partialize: (state) => ({
         email: state.email,
         nickname: state.nickname,
-        profileImg: state.profileImg,
+        profileImage: state.profileImage,
         phoneNumber: state.phoneNumber,
       }),
     } as PersistOptions<UserState>
