@@ -10,6 +10,7 @@ const LoginAPI = () => {
         formData.append("password", password)
         axios.post(import.meta.env.VITE_BASE_URL + "/api/auth/login", formData)
         .then(() => {
+            console.log("로그인 성공")
             navigate("/")
         })
         .catch(err => {
