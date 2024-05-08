@@ -2,16 +2,19 @@ package com.todayeat.backend.sale.controller;
 
 import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
+import com.todayeat.backend.menu.dto.response.GetMenuListResponse;
 import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleContentRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStatusRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStockRequest;
+import com.todayeat.backend.sale.dto.response.GetSaleListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +44,24 @@ public interface SaleControllerDocs {
     @PostMapping
     @PreAuthorize("hasRole('SELLER')")
     SuccessResponse<Void> create(@RequestBody @Valid CreateSaleListRequest request);
+
+    @Operation(summary = "판매 조회",
+            description = """
+                    `ROLE_SELLER` \n
+                    `ROLE_CONSUMER` \n
+                    요청 파라미터로 가게ID를 넣어주세요.
+                    """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetMenuListResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "가게 존재 여부 확인",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @GetMapping
+    SuccessResponse<GetSaleListResponse> getList(@RequestParam(required = true, name = "store-id")
+                                                             @NotNull(message = "store-id: 값이 null이 아니어야 합니다.")
+                                                             @Schema(description = "가게 ID", example = "1")
+                                                             Long storeId);
 
     @Operation(summary = "판매 상태 변경",
             description = """

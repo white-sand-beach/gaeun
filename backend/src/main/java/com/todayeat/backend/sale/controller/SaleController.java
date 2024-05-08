@@ -6,6 +6,7 @@ import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleContentRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStatusRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStockRequest;
+import com.todayeat.backend.sale.dto.response.GetSaleListResponse;
 import com.todayeat.backend.sale.service.SaleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,12 @@ public class SaleController implements SaleControllerDocs {
         saleService.create(request);
 
         return SuccessResponse.of(SuccessType.CREATE_SALE_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<GetSaleListResponse> getList(Long storeId) {
+
+        return SuccessResponse.of(saleService.getList(storeId), SuccessType.GET_SALE_LIST_SUCCESS);
     }
 
     @Override

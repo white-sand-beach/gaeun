@@ -64,6 +64,7 @@ public enum SuccessType {
 
     // sale
     CREATE_SALE_SUCCESS("판매 등록에 성공하였습니다."),
+    GET_SALE_LIST_SUCCESS("판매 목록조회에 성공하였습니다."),
     UPDATE_SALE_STATUS_SUCCESS("판매 상태 변경에 성공하였습니다."),
     UPDATE_SALE_CONTENT_SUCCESS("판매 내용 변경에 성공하였습니다."),
     UPDATE_SALE_STOCK_SUCCESS("판매 재고 변경에 성공하였습니다."),

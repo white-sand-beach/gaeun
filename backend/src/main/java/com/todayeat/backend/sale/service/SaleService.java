@@ -6,12 +6,15 @@ import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.repository.MenuRepository;
 import com.todayeat.backend.sale.dto.request.*;
+import com.todayeat.backend.sale.dto.response.GetSaleListResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleResponse;
 import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.sale.mapper.SaleMapper;
 import com.todayeat.backend.sale.repository.SaleRepository;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.entity.Store;
+import com.todayeat.backend.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,7 @@ public class SaleService {
     private final MenuRepository menuRepository;
     private final SellerRepository sellerRepository;
     private final SaleRepository saleRepository;
+    private final StoreRepository storeRepository;
 
     @Transactional
     public void create(CreateSaleListRequest request) {
@@ -55,6 +59,19 @@ public class SaleService {
         }
 
         saleRepository.saveAll(saleList);
+    }
+
+    public GetSaleListResponse getList(Long storeId) {
+
+        Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
+
+        List<GetSaleResponse> getSaleResponseList = saleRepository.findAllByStoreAndDeletedAtIsNull(store)
+                .stream()
+                .map(s -> SaleMapper.INSTANCE.getSaleResponse(s, s.getStock() - s.getTotalQuantity()))
+                .toList();
+
+        return GetSaleListResponse.of(storeId, getSaleResponseList, getSaleResponseList.size());
     }
 
     @Transactional
