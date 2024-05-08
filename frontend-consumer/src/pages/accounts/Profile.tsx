@@ -1,8 +1,32 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import setting from "../../assets/profile/setting.png";
+import heart from "../../assets/profile/heart.png";
+import order from "../../assets/profile/order.png";
+import review from "../../assets/profile/review.png";
+import ProfileForm from "../../services/accounts/ProfileInformation";
+import { ProfileInfoProps } from "../../types/UserInfo";
 
-import setting from "../../assets/profile/setting.png"
+const ProfileCard: React.FC = () => {
+  const [profileData, setProfileData] = useState<ProfileInfoProps>({
+    profileImage: "",
+    nickname: "",
+    socialType: "",
+    email: "",
+  });
 
-const ProfileCard = () => {
+  useEffect(() => {
+    ProfileForm()
+      .then((data) => {
+        setProfileData(data); // 이 부분에서 data 타입이 ProfileInfoProps와 일치해야 합니다.
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch profile data", error);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // 빈 배열을 넣어서 컴포넌트 마운트 시에만 호출되도록 함
+
   return (
     <div className="w-full h-screen bg-white border border-black">
       <div className="flex items-center justify-center w-11/12 pt-20 m-auto">
@@ -17,28 +41,28 @@ const ProfileCard = () => {
           <div className="flex items-center ml-4 space-x-4 mb-9 mt-9">
             <div className="w-16 h-16 overflow-hidden bg-blue-100 rounded-full">
               <img
-                src="/path/to/profile-image.jpg"
+                src={profileData.profileImage}
                 alt="프로필 이미지"
                 className="object-cover w-full h-full"
               />
             </div>
             <div>
               <p className="text-lg font-medium text-gray-900">
-                음식지킴이, 팽둔
+                음식지킴이, {profileData.nickname}
               </p>
-              <p className="text-sm text-gray-500">kimyoung100@naver.com</p>
+              <p className="text-sm text-gray-500">{profileData.email}</p>
             </div>
           </div>
           {/* 아이콘들 */}
           <div className="flex justify-around">
-            <button className="flex items-center justify-center w-8 h-8 text-blue-600 bg-blue-100 rounded-lg">
-              🔍
+            <button className="flex items-center justify-center w-10 h-10 rounded-lg">
+              <img src={order} alt="" />
             </button>
-            <button className="flex items-center justify-center w-8 h-8 text-red-600 bg-red-100 rounded-lg">
-              ❤️
+            <button className="flex items-center justify-center w-10 h-10 rounded-lg">
+              <img src={heart} alt="" />
             </button>
-            <button className="flex items-center justify-center w-8 h-8 text-yellow-600 bg-yellow-100 rounded-lg">
-              📅
+            <button className="flex items-center justify-center w-10 h-10 rounded-lg">
+              <img src={review} alt="" />
             </button>
           </div>
         </div>
@@ -52,7 +76,7 @@ const ProfileCard = () => {
         <div className="relative h-64 p-4 bg-white border border-gray-500 rounded-lg shadow-lg">
           {/* 왼쪽 상단 문구 */}
           <span className="absolute text-sm text-gray-800 top-4 left-4">
-            팽둔님이 지금까지 지킨 음식은?
+            {profileData.nickname}님이 지금까지 지킨 음식은?
           </span>
           {/* 중앙 아래 식물 이미지 */}
           <div className="absolute transform -translate-x-1/2 bottom-4 left-1/2">
