@@ -33,7 +33,7 @@ pipeline {
                 }
                 
                 sh 'docker build -t fe-seller ./frontend-seller'
-                sh 'docker run -d --name fe-seller -p 5174:5174 fe-seller'   
+                sh 'docker run -d --name fe-seller -p 5174:80 fe-seller'   
             }
         }
 
@@ -48,7 +48,7 @@ pipeline {
         }
     
         
-        stage('fe_consumer_build'){
+        stage('fe_consummer_build'){
             steps{
                 script {
                     def feConsumerRunning = sh(script: 'docker ps -a --filter "name=fe-consumer" --format "{{.Names}}"', returnStdout: true).trim()
@@ -60,9 +60,9 @@ pipeline {
                         sh 'docker rmi fe-consumer'
                     }
                 }
-                
+
                 sh 'docker build -t fe-consumer ./frontend-consumer'
-                sh 'docker run -d --name fe-consumer -p 5173:5173 fe-consumer'   
+                sh 'docker run -d --name fe-consumer -p 5173:80 fe-consumer'   
             }
         }
 
@@ -95,7 +95,15 @@ pipeline {
                 }
             }
         }
+
+        stage('deploy'){
+            steps{
+                sh 'sudo docker-compose up -d --build'
+            }
+        }
     }
+
+    
 
     // post {
     //     success {
