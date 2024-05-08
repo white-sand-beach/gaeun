@@ -80,6 +80,7 @@ public enum ErrorType {
     // sale
     SALE_STATUS_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 상태 변경에 실패했습니다."),
     SALE_CONTENT_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 내용 변경에 실패했습니다."),
+    SAEL_STOCK_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 재고 변경에 실패했습니다.")
     ;
 
     private HttpStatus httpStatus;

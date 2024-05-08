@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 
+import java.util.Objects;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -80,5 +82,20 @@ public class Sale extends BaseTime {
 
     public void updateContent(String content) {
         this.content = content;
+    }
+
+    public boolean updateStock(Integer stock) {
+
+        if (this.totalQuantity > stock) {
+            return false;
+        }
+
+        if(Objects.equals(this.totalQuantity, stock)) {
+            this.isFinished = true;
+        }
+
+        this.stock = stock;
+
+        return true;
     }
 }
