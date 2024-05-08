@@ -2,7 +2,7 @@ import camera from "../../assets/addphoto.png"
 
 const RegisterShop = () => {
     return (
-        <div className="">
+        <div className="flex flex-col items-center w-screen h-full gap-3">
             {/* 사진 등록하기 */}
             <div className="flex flex-col items-center justify-center w-full h-[320px] bg-gray-300">
                 <img src={camera} alt="" className="m-2" />
