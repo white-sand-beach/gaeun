@@ -5,6 +5,7 @@ import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -24,6 +25,9 @@ public class Sale extends BaseTime {
     @Column(nullable = true)
     private String imageUrl;
 
+    @Column(nullable = true)
+    private String name;
+
     @Column(nullable = false)
     private Integer originalPrice;
 
@@ -35,9 +39,6 @@ public class Sale extends BaseTime {
 
     @Column(nullable = true, length = 100)
     private String content;
-
-    @Column(nullable = false)
-    private Integer sequence; // 화면에 보이는 메뉴 목차 순서
 
     @Column(nullable = false)
     private Integer stock;
@@ -53,4 +54,18 @@ public class Sale extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", referencedColumnName = "menu_id")
     private Menu menu;
+
+    @Builder
+    private Sale(String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer stock, Boolean isFinished, Store store, Menu menu) {
+        this.imageUrl = imageUrl;
+        this.name = name;
+        this.originalPrice = originalPrice;
+        this.sellPrice = sellPrice;
+        this.discountRate = discountRate;
+        this.content = content;
+        this.stock = stock;
+        this.isFinished = isFinished;
+        this.store = store;
+        this.menu = menu;
+    }
 }
