@@ -16,5 +16,5 @@ public interface SaleMapper {
     @Mapping(source = "createSaleRequest.sellPrice", target = "sellPrice")
     @Mapping(source = "menu.name", target = "name")
     @Mapping(source = "menu", target = "menu")
-    Sale createSaleReqeustToSale(CreateSaleRequest createSaleRequest, Integer discountRate, Boolean isFinished, Store store, Menu menu);
+    Sale createSaleReqeustToSale(CreateSaleRequest createSaleRequest, Integer discountRate, Boolean isFinished, Integer totalQuantity, Store store, Menu menu);
 }

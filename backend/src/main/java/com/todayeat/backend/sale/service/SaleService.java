@@ -7,6 +7,7 @@ import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.repository.MenuRepository;
 import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
 import com.todayeat.backend.sale.dto.request.CreateSaleRequest;
+import com.todayeat.backend.sale.dto.request.UpdateSaleStatusRequest;
 import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.sale.mapper.SaleMapper;
 import com.todayeat.backend.sale.repository.SaleRepository;
@@ -51,11 +52,35 @@ public class SaleService {
                     SaleMapper.INSTANCE
                     .createSaleReqeustToSale(createSaleRequest,
                             getDiscountRate(menu.getOriginalPrice(), createSaleRequest.getSellPrice()),
-                            false, store, menu)
+                            false, 0, store, menu)
             );
         }
 
         saleRepository.saveAll(saleList);
+    }
+
+    @Transactional
+    public void updateStatus(Long saleId, UpdateSaleStatusRequest request) {
+
+        Seller seller = securityUtil.getSeller();
+
+        // todo 쿼리 세개 나가는데 성능 리펙토링 해보기
+        // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
+        Store store = validateStoreAndSeller(seller, request.getStoreId());
+
+        // 해당 메뉴의 존재 여부 확인 및 가게에 있는 메뉴인지 확인
+        Menu menu = validateMenuAndStore(request.getMenuId(), store);
+
+        // 해당 가게의 메뉴인 판매가 있는지 확인
+        Sale sale = saleRepository
+                .findByIdAndStoreIdAndMenuIdAndDeletedAtIsNullAndStoreDeletedAtIsNullAndMenuDeletedAtIsNull(
+                        saleId,
+                        store.getId(),
+                        menu.getId()
+                )
+                .orElseThrow(() -> new BusinessException(ErrorType.SALE_STATUS_UPDATE_FAIL));
+
+        sale.updateStatus();
     }
 
     // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
