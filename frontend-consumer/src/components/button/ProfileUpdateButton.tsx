@@ -2,7 +2,7 @@
 import UpdateProfileForm from "../../services/accounts/ProfileUpdateService";
 import UserState from "../../types/UserState";
 
-const ProfileUpdateButton = ({ nickname, phoneNumber, profileImage }: UserState) => {
+const ProfileUpdateButton = ({ nickname, profileImage, phoneNumber, buttonText }: UserState) => {
   // const { mutate, isLoading } = ProfileUpdateService();
 
   const handleSignUp = async (event: React.FormEvent<HTMLButtonElement>) => {
@@ -14,9 +14,9 @@ const ProfileUpdateButton = ({ nickname, phoneNumber, profileImage }: UserState)
         phoneNumber,
         profileImage,
       });
-      console.log(profileImage)
-      console.log(response.data);
+      console.log(response);
     } catch (error) {
+      console.log(profileImage, nickname, phoneNumber)
       console.log("실패");
     }
   };
@@ -27,7 +27,7 @@ const ProfileUpdateButton = ({ nickname, phoneNumber, profileImage }: UserState)
       onClick={handleSignUp}
       // disabled={isLoading}
     >
-      회원 정보 수정
+      {buttonText}
       {/* {isLoading ? "회원가입 중..." : "회원가입"} */}
     </button>
   );
