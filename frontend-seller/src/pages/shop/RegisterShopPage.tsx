@@ -1,14 +1,13 @@
 // import RegisterOnestep from "../../components/shop/RegisterOnestep.tsx"
 // import RegisterTwostep from "../../components/shop/RegisterTwostep.tsx";
-import RegisterThreestep from "../../components/shop/RegisterThreestep.tsx";
+// import RegisterThreestep from "../../components/shop/RegisterThreestep.tsx";
 
 const RegisterShopPage = () => {
     return (
-        <div className="fixed flex flex-col items-center w-full h-full top-[60px] gap-2">
+        <div className="no-footer overflow-y-scroll top-[60px] gap-3">
             {/* <RegisterOnestep /> */}
             {/* <RegisterTwostep /> */}
-            <RegisterThreestep />
-            
+            {/* <RegisterThreestep /> */}
         </div>
     );
 };
