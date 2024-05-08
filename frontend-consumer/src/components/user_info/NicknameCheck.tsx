@@ -53,7 +53,7 @@ const NicknameCheck: React.FC<UserState> = ({ nickname }) => {
           id="nickname"
           name="nickname"
           placeholder={nickname ? nickname : "닉네임을 입력하세요."}
-          maxLength={10}
+          maxLength={8}
           value={inputNickname}
           onChange={handleNicknameChange}
         />
@@ -66,7 +66,7 @@ const NicknameCheck: React.FC<UserState> = ({ nickname }) => {
       </div>
       {!isNicknameValid && inputNickname.length > 0 && (
         <p className="ml-2 text-xxs text-red-400">
-          2자 이상 10자 이내로 작성해주세요.
+          2자 이상 8자 이내로 작성해주세요.
         </p>
       )}
       {isNicknameAvailable && (
