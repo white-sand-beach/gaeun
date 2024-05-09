@@ -13,6 +13,7 @@ public enum ErrorType {
     URL_NOT_FOUND(HttpStatus.BAD_REQUEST, "잘못된 URL 입니다."),
     PATH_VARIABLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "Path Variable이 없습니다."),
     REQUEST_PARAM_NOT_FOUND(HttpStatus.BAD_REQUEST, "Request Param이 없습니다."),
+    REQUEST_FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 
     /**
      * CUSTOM ERROR
@@ -76,6 +77,11 @@ public enum ErrorType {
     // image
     IMAGE_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 형식의 파일이 아닙니다."),
     IMAGE_URL_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 url 형식이 잘못되었습니다."),
+
+    // sale
+    SALE_STATUS_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 상태 변경에 실패했습니다."),
+    SALE_CONTENT_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 내용 변경에 실패했습니다."),
+    SALE_STOCK_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 재고 변경에 실패했습니다.")
     ;
 
     private HttpStatus httpStatus;
