@@ -48,6 +48,7 @@ const RegisterShop: React.FC<InputRegisterShopType> = (props) => {
     props.onUpdateShopStore("shoproadAddr", data.roadAddress);
     props.onUpdateShopStore("shopLat", 33.450701);
     props.onUpdateShopStore("shopLon", 126.570667);
+    props.onUpdateShopStore("shopCategoryId", 1)
     setIsOpen(false)
   };
 

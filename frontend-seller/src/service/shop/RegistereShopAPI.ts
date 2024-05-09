@@ -47,7 +47,7 @@ const RegisterShopAPI = () => {
             }
         })
         .then(res => {
-            console.log(res)
+            console.log(res.data)
             window.alert("가게 등록 성공 ㅎㅎ")
             navigate("/")
         })
