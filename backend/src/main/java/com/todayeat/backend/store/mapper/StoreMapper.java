@@ -2,6 +2,7 @@ package com.todayeat.backend.store.mapper;
 
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
+import com.todayeat.backend.store.dto.response.CreateStoreResponse;
 import com.todayeat.backend.store.dto.response.GetConsumerDetailStoreResponse;
 import com.todayeat.backend.store.dto.response.GetConsumerInfoStoreResponse;
 import com.todayeat.backend.store.dto.response.GetSellerStoreResponse;
@@ -19,6 +20,8 @@ public interface StoreMapper {
 
     @Mapping(target = "location", source = "location")
     Store createStoreRequestToStore(CreateStoreRequest createStoreRequest, Point location, String imageURL);
+
+    CreateStoreResponse storeIdToCreateStoreResponse(Long storeId);
 
     @Mapping(target = "longitude", source = "location.y")
     @Mapping(target = "latitude", source = "location.x")

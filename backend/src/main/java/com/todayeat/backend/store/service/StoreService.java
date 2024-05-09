@@ -12,10 +12,7 @@ import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
-import com.todayeat.backend.store.dto.response.GetConsumerDetailStoreResponse;
-import com.todayeat.backend.store.dto.response.GetConsumerInfoStoreResponse;
-import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse;
-import com.todayeat.backend.store.dto.response.GetSellerStoreResponse;
+import com.todayeat.backend.store.dto.response.*;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.mapper.StoreMapper;
 import com.todayeat.backend.store.repository.StoreRepository;
@@ -54,7 +51,7 @@ public class StoreService {
     private final S3Util s3Util;
 
     @Transactional
-    public void create(CreateStoreRequest createStoreRequest) {
+    public CreateStoreResponse create(CreateStoreRequest createStoreRequest) {
 
         Seller seller = sellerRepository.findById(securityUtil.getSeller().getId())
                 .orElseThrow(() -> new BusinessException(SELLER_NOT_FOUND));
@@ -81,6 +78,8 @@ public class StoreService {
                             .orElseThrow(() -> new BusinessException(CATEGORY_NOT_FOUND)))
                     .map(category -> StoreCategoryMapper.INSTANCE.toStoreCategory(store, category))
                     .forEach(storeCategoryRepository::save);
+
+            return StoreMapper.INSTANCE.storeIdToCreateStoreResponse(store.getId());
         } catch (RuntimeException e) {
 
             s3Util.deleteImage(imageURL);
