@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import UserState from "../../types/UserState";
 import NicknameCheckForm from "../../services/accounts/NicknameCheckService";
 
-const NicknameCheck: React.FC<UserState> = ({ nickname }) => {
+const NicknameCheck: React.FC<
+  UserState & { updateNickname: (newNickname: string) => void }
+> = ({ nickname, updateNickname }) => {
   const [inputNickname, setInputNickname] = useState("");
   const [isNicknameValid, setIsNicknameValid] = useState(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
@@ -29,10 +31,10 @@ const NicknameCheck: React.FC<UserState> = ({ nickname }) => {
         setIsNicknameChecked(false); // 중복 확인 상태 초기화
         setIsNicknameAvailable(false); // 닉네임 사용 가능 여부 초기화
         const response = await NicknameCheckForm({ nickname: inputNickname });
-        
+
         if (response.data.isValid === true) {
           setIsNicknameAvailable(true); // 닉네임이 사용 가능한 경우
-          nickname = inputNickname
+          updateNickname(inputNickname);
         } else {
           setIsNicknameAvailable(false); // 닉네임이 이미 사용 중인 경우
         }

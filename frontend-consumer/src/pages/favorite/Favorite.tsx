@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import FavoriteList from "../../components/favorite/FavoriteList";
 import FavoriteGetForm from "../../services/favorites/FavoriteGetService";
 import { FavoriteResponse, FavoriteState } from "../../types/FavoriteType";
+import ReissueService from "../../services/authentication/ReissueService";
 
 const Favorite = () => {
   const [favoriteState, setFavoriteState] = useState<FavoriteState>({
@@ -45,6 +46,7 @@ const Favorite = () => {
           page: favoriteState.page,
           size: 10,
         });
+        ReissueService();
         setFavoriteState((prevState) => ({
           ...prevState,
           favorites: [

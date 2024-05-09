@@ -8,7 +8,7 @@ const useTokenStore = create<CookieState>((set) => ({
   accessToken: cookies.get('accessToken') || '',
   setAccessToken: (token) => {
     cookies.set('accessToken', token, { path: '/', secure: true, httpOnly: true });
-    set({ accessToken: token });
+    set({ accessToken: token })
   },
 }));
 

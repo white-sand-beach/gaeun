@@ -19,10 +19,15 @@ const ProfileSetting = () => {
     phoneNumber: "",
   });
 
-  let headerText;
-  headerText = "전화번호 수정"
-  let buttonText;
-  buttonText = "회원정보 수정"
+  const headerText = "전화번호 수정";
+  const buttonText = "회원정보 수정";
+
+  const updateUserState: UserState["updateUserState"] = (key, value) => {
+    setProfileData((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   const [showModal, setShowModal] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
@@ -42,7 +47,7 @@ const ProfileSetting = () => {
   useEffect(() => {
     ProfileForm()
       .then((data) => {
-        setProfileData(data); 
+        setProfileData(data);
         console.log(data);
       })
       .catch((error) => {
@@ -56,7 +61,11 @@ const ProfileSetting = () => {
         <div className="relative flex justify-center items-center w-36 h-36 rounded-full border-[1px] border-gray-200 shadow-md">
           <img
             className="w-32 h-32 rounded-full object-cover"
-            src={uploadedImage ? URL.createObjectURL(uploadedImage) : profileData.profileImage}
+            src={
+              uploadedImage
+                ? URL.createObjectURL(uploadedImage)
+                : profileData.profileImage
+            }
             alt="프로필 사진"
           />
           <button className="absolute bottom-2 right-3" onClick={toggleModal}>
@@ -67,21 +76,37 @@ const ProfileSetting = () => {
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            <ProfileImageModal profileImage={profileData.profileImage} onClose={closeModal} onImageUpload={handleImageUpload} />
+            <ProfileImageModal
+              profileImage={profileData.profileImage}
+              onClose={closeModal}
+              onImageUpload={handleImageUpload}
+            />
           </div>
         </div>
       )}
       <div className="flex justify-center mt-14">
-        <NicknameCheck nickname={profileData.nickname} />
+        <NicknameCheck
+          nickname={profileData.nickname}
+          updateNickname={(newNickname) =>
+            updateUserState("nickname", newNickname)
+          }
+        />
       </div>
 
       <div className="flex justify-center mt-14">
-        <PhoneCheck phoneNumber={profileData.phoneNumber} headerText={headerText} />
+        <PhoneCheck
+          phoneNumber={profileData.phoneNumber}
+          headerText={headerText}
+        />
       </div>
       <div className="center my-14">
         <ProfileUpdateButton
           nickname={profileData.nickname}
-          profileImage={uploadedImage ? URL.createObjectURL(uploadedImage) : profileData.profileImage}
+          profileImage={
+            uploadedImage
+              ? URL.createObjectURL(uploadedImage)
+              : profileData.profileImage
+          }
           phoneNumber={profileData.phoneNumber}
           buttonText={buttonText}
         />
