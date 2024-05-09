@@ -19,8 +19,8 @@ import MyPage from "@/pages/user/MyPage.tsx";
 const App = () => {
   return (
     <BrowserRouter basename="/seller">
-      <Routes>
-        <Route element={<MainLayout />}>
+        <MainLayout />
+        <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
@@ -33,7 +33,6 @@ const App = () => {
           <Route path="/sales" element={<SaleslistPage />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/mypage" element={<MyPage />} />
-        </Route>
       </Routes>
     </BrowserRouter>
   );
