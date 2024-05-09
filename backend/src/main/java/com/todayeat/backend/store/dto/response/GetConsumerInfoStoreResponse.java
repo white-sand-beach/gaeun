@@ -17,8 +17,11 @@ public class GetConsumerInfoStoreResponse {
     @Schema(description = "전화번호", example = "01012345678")
     private String tel;
 
-    @Schema(description = "주소", example = "OO OO시 O로 OOO")
+    @Schema(description = "지번 주소", example = "OO시 OO구 OO동 OOO-OO")
     private String address;
+
+    @Schema(description = "도로명 주소", example = "OO OO시 O로 OOO")
+    private String roadAddress;
 
     @Schema(description = "위도", example = "36.936936")
     private BigDecimal latitude;

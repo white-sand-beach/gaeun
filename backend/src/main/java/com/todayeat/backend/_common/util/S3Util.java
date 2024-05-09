@@ -29,6 +29,7 @@ public class S3Util {
 
     // S3 버킷에 이미지 파일 업로
     public String uploadImage(MultipartFile multipartFile, DirectoryType directoryType, Long dirNamePrincipalId) {
+
         // 이미지 형식의 파일인지 확인
         if (!Objects.requireNonNull(multipartFile.getContentType()).contains("image")) {
             throw new BusinessException(ErrorType.IMAGE_FORMAT_INVALID);
@@ -52,16 +53,19 @@ public class S3Util {
 
     //S3 버킷의 이미지 객체 삭제, 이미지 수정시 기존 이미지 제거에 사용
     public void deleteImage(String fileUrl) {
+
+        String key = getS3ObjetKey(fileUrl);
         try {
-            amazonS3.deleteObject(bucket, getS3ObjetKey(fileUrl));
+            amazonS3.deleteObject(bucket, key);
         } catch (AmazonServiceException e) {
-            log.error("S3Util deleteImage deleteObject error : ", e);
+            log.error("S3Util deleteImage deleteObject error : {}, {}", e, key);
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR);
         }
     }
 
     // 저장할 파일의 메타 데이터 생성
     private ObjectMetadata createMetadata(MultipartFile multipartFile) {
+
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
@@ -71,17 +75,20 @@ public class S3Util {
 
     // 저장할 파일의 확장자 반환
     private String getFileExtension(MultipartFile multipartFile) {
+
         return StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
     }
 
     // 저장할 파일의 이름 생성
     private String createFileName(DirectoryType directoryType, Long dirNamePrincipalId, String fileExtension) {
+
         return directoryType.getDirNamePrincipal() + "/" + dirNamePrincipalId + "/"
                 + directoryType.getDirNameAttribute() + "/" + UUID.randomUUID() + "." + fileExtension;
     }
 
     // fileUrl로 S3 Object key값 추출하기
     private String getS3ObjetKey(String fileUrl) {
+
         int startIndex = fileUrl.indexOf('/', fileUrl.indexOf("//") + 2);
 
         if (startIndex < 0)

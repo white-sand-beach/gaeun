@@ -8,7 +8,6 @@ import com.todayeat.backend.category.mapper.CategoryMapper;
 import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
-import com.todayeat.backend.location.service.LocationService;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
@@ -51,32 +50,42 @@ public class StoreService {
     private final SellerRepository sellerRepository;
     private final StoreRepository storeRepository;
 
-    private final LocationService locationService;
-
     private final SecurityUtil securityUtil;
     private final S3Util s3Util;
 
     @Transactional
     public void create(CreateStoreRequest createStoreRequest) {
 
-        Seller seller = securityUtil.getSeller();
+        Seller seller = sellerRepository.findById(securityUtil.getSeller().getId())
+                .orElseThrow(() -> new BusinessException(SELLER_NOT_FOUND));
+
+        if (seller.getStore() != null) {
+
+            throw new BusinessException(STORE_CONFLICT);
+        }
 
         String imageURL = imageToURL(createStoreRequest.getImage());
 
-        Store store = storeRepository.save(
-                StoreMapper.INSTANCE.createStoreRequestToStore(
-                        createStoreRequest,
-                        createPoint(createStoreRequest.getLatitude(), createStoreRequest.getLongitude()),
-                        imageURL));
+        try {
 
-        seller.updateStore(store);
-        sellerRepository.save(seller);
+            Store store = storeRepository.save(
+                    StoreMapper.INSTANCE.createStoreRequestToStore(
+                            createStoreRequest,
+                            createPoint(createStoreRequest.getLatitude(), createStoreRequest.getLongitude()),
+                            imageURL));
 
-        createStoreRequest.getCategoryIdList().stream()
-                .map(categoryId -> categoryRepository.findById(categoryId)
-                        .orElseThrow(() -> new BusinessException(CATEGORY_NOT_FOUND)))
-                .map(category -> StoreCategoryMapper.INSTANCE.toStoreCategory(store, category))
-                .forEach(storeCategoryRepository::save);
+            seller.updateStore(store);
+
+            createStoreRequest.getCategoryIdList().stream()
+                    .map(categoryId -> categoryRepository.findById(categoryId)
+                            .orElseThrow(() -> new BusinessException(CATEGORY_NOT_FOUND)))
+                    .map(category -> StoreCategoryMapper.INSTANCE.toStoreCategory(store, category))
+                    .forEach(storeCategoryRepository::save);
+        } catch (RuntimeException e) {
+
+            s3Util.deleteImage(imageURL);
+            throw new RuntimeException(e);
+        }
     }
 
     public GetSellerStoreResponse getSellerStore(Long storeId) {
@@ -124,39 +133,48 @@ public class StoreService {
     @Transactional
     public void update(Long storeId, UpdateStoreRequest updateStoreRequest) {
 
-        Store store = securityUtil.getSeller().getStore();
+        Store store = sellerRepository.findById(securityUtil.getSeller().getId())
+                .map(Seller::getStore)
+                .filter(s -> s != null && Objects.equals(s.getId(), storeId))
+                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
 
-        if (store == null || !Objects.equals(store.getId(), storeId)) {
+        String imageURL = imageToURL(updateStoreRequest.getImage());
 
-            throw new BusinessException(STORE_NOT_FOUND);
+        try {
+
+            StoreMapper.INSTANCE.updateStoreRequestToStore(
+                    updateStoreRequest,
+                    imageURL,
+                    createPoint(updateStoreRequest.getLatitude(), updateStoreRequest.getLongitude()),
+                    store);
+
+            List<StoreCategory> existingCategories = storeCategoryRepository.findByStoreIdAndDeletedAtIsNull(storeId);
+            Set<Long> existingCategoryIds = existingCategories.stream()
+                    .map(sc -> sc.getCategory().getId())
+                    .collect(Collectors.toSet());
+
+            existingCategories.stream()
+                    .filter(sc -> !updateStoreRequest.getCategoryIdList().contains(sc.getCategory().getId()))
+                    .forEach(storeCategoryRepository::delete);
+
+            updateStoreRequest.getCategoryIdList().stream()
+                    .filter(id -> !existingCategoryIds.contains(id))
+                    .forEach(id -> storeCategoryRepository.save(
+                            StoreCategoryMapper.INSTANCE.toStoreCategory(store, categoryRepository.findById(id).get())));
+        } catch (RuntimeException e) {
+
+            s3Util.deleteImage(imageURL);
+            throw new RuntimeException(e);
         }
-
-        StoreMapper.INSTANCE.updateStoreRequestToStore(
-                updateStoreRequest,
-                imageToURL(updateStoreRequest.getImage()),
-                createPoint(updateStoreRequest.getLatitude(), updateStoreRequest.getLongitude()),
-                store);
-        storeRepository.save(store);
-
-        List<StoreCategory> existingCategories = storeCategoryRepository.findByStoreIdAndDeletedAtIsNull(storeId);
-        Set<Long> existingCategoryIds = existingCategories.stream()
-                .map(sc -> sc.getCategory().getId())
-                .collect(Collectors.toSet());
-
-        existingCategories.stream()
-                .filter(sc -> !updateStoreRequest.getCategoryIdList().contains(sc.getCategory().getId()))
-                .forEach(storeCategoryRepository::delete);
-
-        updateStoreRequest.getCategoryIdList().stream()
-                .filter(id -> !existingCategoryIds.contains(id))
-                .forEach(id -> storeCategoryRepository.save(
-                        StoreCategoryMapper.INSTANCE.toStoreCategory(store, categoryRepository.findById(id).get())));
     }
 
     @Transactional
     public void updateIsOpened(Long storeId) {
 
-        Store store = securityUtil.getSeller().getStore();
+        Store store = sellerRepository.findById(securityUtil.getSeller().getId())
+                .map(Seller::getStore)
+                .filter(s -> s != null && Objects.equals(s.getId(), storeId))
+                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
 
         if (store == null || !Objects.equals(store.getId(), storeId)) {
 
@@ -167,6 +185,11 @@ public class StoreService {
     }
 
     private String imageToURL(MultipartFile image) {
+
+        if (image == null) {
+
+            return null;
+        }
 
         return s3Util.uploadImage(image, SELLER_STORE_IMAGE, securityUtil.getSeller().getId());
     }
