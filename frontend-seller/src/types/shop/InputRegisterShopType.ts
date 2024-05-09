@@ -1,4 +1,4 @@
-export type RegisterShopType = {
+export type InputRegisterShopType = {
     shopImage?: string; // 가게 이미지
     shopName: string; // 가게(상호명)
     shopOwner: string; // 대표자명

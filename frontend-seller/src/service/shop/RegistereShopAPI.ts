@@ -1,6 +1,6 @@
 import axios from "axios";
 // import { useNavigate } from "react-router-dom";
-import { RegisterShopType } from "../../types/shop/RegisterShopType";
+import { InputRegisterShopType } from "../../types/shop/InputRegisterShopType";
 import Cookies from "universal-cookie";
 import { CategoryIdType } from "../../types/shop/CategoryIdType";
 
@@ -25,7 +25,7 @@ const RegisterShopAPI = () => {
         shopHoliday,
         FoodOrigin,
         shopCategoryId,
-    }: RegisterShopType) => {
+    }: InputRegisterShopType) => {
         axios.post(import.meta.env.VITE_BASE_URL + "/api/stores", {
             "registeredName": shopName,
             "bossName": shopOwner,
@@ -45,15 +45,17 @@ const RegisterShopAPI = () => {
         .then(res => {
             console.log(res)
             console.log("가게등록 성공")
+            window.alert("가게 등록 성공 ㅎㅎ")
         })
         .catch(err => {
-            console.log("가게등록 실패")
             console.error(err)
+            console.log("가게등록 실패")
+            window.alert("가게등록 실패 ㅠㅠ")
         })
     }
 
     // 가게 카테고리 목록 불러오는 api
-    const getCategories = ({id, setId}:CategoryIdType) => {
+    const getCategories = ({setId}:CategoryIdType) => {
         axios.get(import.meta.env.VITE_BASE_URL + "/api/categories", {
             headers: {
                 Authorization: `Bearer ${accessToken}`
@@ -62,6 +64,9 @@ const RegisterShopAPI = () => {
         .then(res => {
             console.log(res)
             setId(res)
+        })
+        .catch(err => {
+            console.error(err)
         })
     }
 

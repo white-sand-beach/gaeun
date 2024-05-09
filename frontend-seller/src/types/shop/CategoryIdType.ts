@@ -1,4 +1,6 @@
+import { AxiosResponse } from "axios";
+
 export type CategoryIdType = {
     id?: number;
-    setId: () => void;
+    setId: (value: AxiosResponse) => void;
 }
