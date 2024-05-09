@@ -1,17 +1,16 @@
 import camera from "../../assets/addphoto.png"
-import useShopStore from "../../store/shop/UseShopStore";
+// import useShopStore from "../../store/shop/UseShopStore";
 import TotalButton from "../ui/TotalButton";
 
 const RegisterShop = () => {
-    const { updateShopStore } = useShopStore();
+    // const { updateShopStore } = useShopStore();
 
-    // name은 input 태그의 name 옵션
-    // value는 input 태그의 value 옵션
-    const handleChangeInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value, name } = event.target;
-        // 입력값을 store에 전달. 데이터 관리
-        updateShopStore(name, value);
-    };
+    // // name은 input 태그의 name 옵션
+    // // value는 input 태그의 value 옵션
+    // const handleChangeInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { value, name } = event.target;
+    //     // 입력값을 store에 전달. 데이터 관리
+    //     updateShopStore(name, value);
 
     return (
         <div className="flex flex-col items-center w-screen h-full gap-3">

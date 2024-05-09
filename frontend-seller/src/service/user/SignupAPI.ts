@@ -42,7 +42,7 @@ const SignupAPI = () => {
                 else {
                     console.log(res.data.data.isValid)
                     setValid(false)
-                    setComment("유효하지 않은 사업자 등록번호 입니다!")
+                    setComment("유효하지 않거나 이미 등록된 번호 입니다!")
                 }
             })
             .catch((err) => {
@@ -61,12 +61,13 @@ const SignupAPI = () => {
             .then(() => {
                 setValid(true)
                 setComment("회원가입 성공")
-                navigate("/signupFin")
+                window.alert("회원가입 성공!")
+                navigate("/")
 
             })
             .catch((err) => {
                 setValid(false)
-                setComment("이미 등록된 이메일/등록번호 입니다!")
+                setComment("올바른 회원정보를 입력해주세요!")
                 console.error(err)
             })
     }
