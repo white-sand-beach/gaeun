@@ -7,7 +7,8 @@ import ServiceBanner from "../../components/navbar/ServiceBanner";
 import useUserLocation from "../../store/UserLocation";
 import MainMapData from "../../types/MainMapDataType";
 import MapListForm from "../../services/maps/MapMainService";
-import MainAllData from "../../types/MainAllDataType";
+import { MainAllData } from "../../types/MainAllDataType";
+import { StoreList } from "../../types/StoreList";
 
 interface LocationState {
   lat: number | undefined;
@@ -45,6 +46,7 @@ const Main: React.FC = () => {
   });
 
   const [allData, setAllData] = useState<MainAllData[]>([]);
+  const [storeList, setStoreList] = useState<StoreList[]>([]);
 
   useEffect(() => {
     const mainData: MainMapData = {
@@ -60,16 +62,14 @@ const Main: React.FC = () => {
       try {
         const response = await MapListForm(mainData);
         setAllData(response); // 비동기 결과로 상태 업데이트
-        console.log(allData);
+        setStoreList(response.storeList);
       } catch (error) {
         console.error(error);
       }
     })();
   }, [lng, lat]); // mainData 객체 자체를 의존성 배열에 추가
 
-  useEffect(() => {
-    console.log(allData); // 상태가 업데이트 된 후에 로그를 찍음
-  }, [allData]);
+  useEffect(() => {}, [allData, storeList]);
 
   const handleGPSButtonClick = async () => {
     if (navigator.geolocation) {
@@ -203,6 +203,7 @@ const Main: React.FC = () => {
           lat={lat}
           lng={lng}
           updateCounter={findlocation.updateCounter}
+          storeList={storeList} // 근처 가게 리스트를 전달
         />
         {/* 왼쪽 버튼 */}
         <button className={gpsButtonClass} onClick={handleGPSButtonClick}>

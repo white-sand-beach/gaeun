@@ -24,7 +24,7 @@ const MapListForm = async (mainData: MainMapData): Promise<any> => {
         },
       }
     );
-    return response.data, console.log(response.data);
+    return response.data.data;
   } catch (error: any) {
     console.error("주소리스트 에러", error); // 에러 로깅 개선
   }

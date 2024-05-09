@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import useUserLocation from "../../store/UserLocation";
 import firefighter from "../../assets/maker/firefighter.png";
+import { StoreList } from "../../types/StoreList";
 
 // 전역(window) 객체의 타입 확장
 declare global {
@@ -14,21 +15,15 @@ interface KakaoMapProps {
   lng?: number;
   height: string;
   updateCounter?: number;
+  storeList?: StoreList[] | undefined; // nearbyStores 속성의 타입 수정
 }
-
-const dummyData = [
-  { latitude: 36.1023456, longitude: 128.4209876 },
-  { latitude: 36.1034567, longitude: 128.4223456 },
-  { latitude: 36.1005556, longitude: 128.4230688 },
-  { latitude: 36.1003356, longitude: 128.4221688 },
-  // 필요한 만큼 더미 데이터를 추가할 수 있습니다.
-];
 
 const KakaoMap: React.FC<KakaoMapProps> = ({
   lat,
   lng,
   height,
   updateCounter,
+  storeList,
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const markerRef = useRef<any>(null);
@@ -43,8 +38,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
     ) {
       initMap(currentPosition.lat, currentPosition.lng);
     }
-    console.log(lat, lng);
-  }, [currentPosition, updateCounter]); // currentPosition의 변경을 감지합니다.
+  }, [currentPosition, updateCounter, storeList]); // currentPosition의 변경을 감지합니다.
 
   useEffect(() => {
     if (!lat || !lng) {
@@ -96,27 +90,29 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
     });
 
     // 일반 마커 생성
-    dummyData.forEach((item) => {
-      const markerPosition = new window.kakao.maps.LatLng(
-        item.latitude,
-        item.longitude
-      );
+    if (storeList) {
+      storeList.forEach((item) => {
+        const markerPosition = new window.kakao.maps.LatLng(
+          item.latitude,
+          item.longitude
+        );
 
-      // 일반 마커를 생성합니다.
-      const marker = new window.kakao.maps.Marker({
-        position: markerPosition,
-        map: map,
+        // 일반 마커를 생성합니다.
+        const marker = new window.kakao.maps.Marker({
+          position: markerPosition,
+          map: map,
+        });
+
+        // 일반 마커에 대한 참조를 설정합니다.
+        markerRef.current = marker;
+        map.setCenter(markerPosition);
       });
-
-      // 일반 마커에 대한 참조를 설정합니다.
-      markerRef.current = marker;
-      map.setCenter(markerPosition);
-    });
-
+    }
     // 메인 마커에 대한 참조를 설정합니다.
     markerRef.current = marker;
     map.setCenter(markerPosition);
   };
+
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(

@@ -1,6 +1,8 @@
-// 상태 인터페이스 정의 !
-interface MainAllData {
-  data: any;
-}
+// MainAllData.ts
+import { StoreList } from "./StoreList";
 
-export default MainAllData;
+export interface MainAllData {
+  storeList: StoreList[];
+  page: number;
+  hasNext: boolean;
+}
