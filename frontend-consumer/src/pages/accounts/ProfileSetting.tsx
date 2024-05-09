@@ -16,7 +16,13 @@ const ProfileSetting = () => {
     socialType: "",
     nickname: "",
     email: "",
+    phoneNumber: "",
   });
+
+  let headerText;
+  headerText = "전화번호 수정"
+  let buttonText;
+  buttonText = "회원정보 수정"
 
   const [showModal, setShowModal] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
@@ -42,7 +48,6 @@ const ProfileSetting = () => {
       .catch((error) => {
         console.error("Failed to fetch profile data", error);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // 빈 배열을 넣어서 컴포넌트 마운트 시에만 호출되도록 함
 
   return (
@@ -71,18 +76,14 @@ const ProfileSetting = () => {
       </div>
 
       <div className="flex justify-center mt-14">
-        <PhoneCheck phoneNumber={profileData.phoneNumber} />
+        <PhoneCheck phoneNumber={profileData.phoneNumber} headerText={headerText} />
       </div>
-      {/* <ProfileUpdateService
-        nickname={nickname}
-        profileImage={profileImage}
-        phoneNumber={phoneNumber}
-      /> */}
       <div className="center my-14">
         <ProfileUpdateButton
           nickname={profileData.nickname}
           profileImage={uploadedImage ? URL.createObjectURL(uploadedImage) : profileData.profileImage}
           phoneNumber={profileData.phoneNumber}
+          buttonText={buttonText}
         />
       </div>
       <div className="center text-xs text-gray-400">
