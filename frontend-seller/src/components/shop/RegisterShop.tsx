@@ -1,4 +1,5 @@
 import camera from "../../assets/addphoto.png"
+import TotalButton from "../ui/TotalButton";
 
 const RegisterShop = () => {
     return (
@@ -6,7 +7,8 @@ const RegisterShop = () => {
             {/* 사진 등록하기 */}
             <div className="flex flex-col items-center justify-center w-full h-[320px] bg-gray-300">
                 <img src={camera} alt="" className="m-2" />
-                <p className="text-xl font-bold">사진 등록하기</p>
+                <label htmlFor="input-file" className="text-2xl font-bold">사진 등록하기</label>
+                <input type="file" accept="image/*" id="input-file" className="hidden"/>
             </div>
 
             <div className="flex flex-col items-center justify-center mt-2">
@@ -29,14 +31,14 @@ const RegisterShop = () => {
             <input type="text" placeholder="가게 소개를 입력해주세요." className="border-b-2" />
 
             <p>영업시간 / 휴무일</p>
-            <textarea name="" id="" cols={30} rows={10} placeholder="영업시간을 입력해주세요." className="border-b-2"></textarea>
-            <textarea name="" id="" cols={30} rows={10} placeholder="휴무일을 선택해주세요." className="border-b-2"></textarea>
+            <textarea name="" id="" cols={40} rows={5} placeholder="영업시간을 입력해주세요." className="border-b-2" />
+            <textarea name="" id="" cols={40} rows={5} placeholder="휴무일을 선택해주세요." className="border-b-2" />
 
             <p className="mt-6">재료 / 원산지</p>
-            <textarea name="" id="" cols={30} rows={10} placeholder="재료를 입력해주세요." className="border-b-2"></textarea>
-            <textarea name="" id="" cols={30} rows={10} placeholder="원산지를 입력해주세요." className="border-b-2"></textarea>
-
-            <button className="mt-2 common-btn">다음</button>
+            <textarea name="" id="" cols={40} rows={5} placeholder="재료를 입력해주세요." className="border-b-2" />
+            <textarea name="" id="" cols={40} rows={5} placeholder="원산지를 입력해주세요." className="border-b-2" />
+            <TotalButton
+            title="가게 등록하기" />
         </div>
     );
 };
