@@ -67,9 +67,7 @@ export default defineConfig({
   ],
   server: {
     port: 5174,
-    open: "/seller"
+    open: "/seller",
+    host: "0.0.0.0",
   },
-  build: {
-    minify: false
-  }
 })
