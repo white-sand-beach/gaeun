@@ -10,19 +10,18 @@ RUN npm install
 COPY . .
 RUN npm run build || exit 1
 
-# 2단계: 빌드된 애플리케이션 실행
-FROM node:20.11.0
-WORKDIR /app
+# 정적 파일을 /app/fe-seller/dist 에 복사
+RUN mkdir -p fe-seller/{dist}
+RUN cp -r /app/dist /app/fe-seller/dist
 
-# 빌드된 애플리케이션 복사
-COPY --from=builder /app/dist /app/dist
+# nginx 이미지를 사용. 뒤에 tag가 없으면 latest 를 사용.
+FROM nginx
 
-# serve 설치
-RUN npm install -g serve
+# 정적 파일 복사
+COPY --from=builder /app/fe-seller/dist /usr/share/nginx/html/seller
 
-# 5173 포트 노출
-EXPOSE 5174
+# 80 포트 오픈
+EXPOSE 80
 
-# 애플리케이션 실행
-ENTRYPOINT ["serve", "-l", "5174", "-s", "dist"]
-
+# nginx 시작
+CMD ["nginx", "-g", "daemon off;"]
