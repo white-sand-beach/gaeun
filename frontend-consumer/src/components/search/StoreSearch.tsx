@@ -43,7 +43,7 @@ const StoreSearch = () => {
   return (
     <div className="search">
       <input
-        className={`w-[250px] text-xs pl-2  ${isAnimating ? 'animate-placeholder' : ''}`}
+        className={`w-[250px] py-2 text-xs pl-2  ${isAnimating ? 'animate-placeholder' : ''}`}
         type="text"
         placeholder={placeholder}
       />
