@@ -1,9 +1,7 @@
-import { useRef } from "react";
 import camera from "../../assets/addphoto.png"
 import TotalButton from "../ui/TotalButton";
 
 const RegisterShop = () => {
-    const imgRef = useRef<HTMLImageElement>(null)
     
     return (
         <div className="flex flex-col items-center w-screen h-full gap-3">
@@ -12,7 +10,6 @@ const RegisterShop = () => {
                 <img src={camera} alt="" className="m-2" />
                 <label htmlFor="input-file" className="text-2xl font-bold">사진 등록하기</label>
                 <input type="file" accept="image/*" id="input-file" className="hidden" />
-                <img ref={imgRef} alt="" />
             </div>
 
             <div className="flex flex-col items-center justify-center mt-2">
