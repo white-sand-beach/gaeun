@@ -35,7 +35,8 @@ public enum ErrorType {
     LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 위치입니다."),
 
     // cart
-    CART_NOT_ADD(HttpStatus.BAD_REQUEST, "장바구니에 추가할 수 없습니다."),
+    CART_NOT_ADD_QUANTITY(HttpStatus.BAD_REQUEST, "수량이 현재 재고보다 많아서 장바구니에 추가할 수 없습니다."),
+    CART_NOT_ADD_STORE(HttpStatus.BAD_REQUEST, "다른 가게의 음식이 있어 장바구니에 추가할 수 없습니다."),
 
     // order
 

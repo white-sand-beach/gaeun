@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -37,6 +39,9 @@ public class CartService {
         Store store = storeRepository
                 .findByIdAndIsOpenedIsTrueAndDeletedAtIsNull(request.getStoreId())
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_OPEN));
+
+        // 장바구니에 다른 가게 음식이 담겨있는지 확인
+        validateDifferentStore(consumer.getId(), store.getId());
 
         // 해당 가게에 판매 존재 여부, 판매 중지인지 확인
         Sale sale = saleRepository
@@ -70,6 +75,18 @@ public class CartService {
 
     private void validateQuantityAndRestStock(Integer quantity, Integer stock, Integer totalQuantity) {
         if (stock - totalQuantity - quantity < 0)
-            throw new BusinessException(ErrorType.CART_NOT_ADD);
+            throw new BusinessException(ErrorType.CART_NOT_ADD_QUANTITY);
+    }
+
+    private void validateDifferentStore(Long consumerId, Long storeId) {
+
+        List<Cart> cartList = cartRepository.findAllByConsumerId(consumerId);
+
+        for(Cart c : cartList) {
+            if(!Objects.equals(c.getStoreId(), storeId)) {
+
+                throw new BusinessException(ErrorType.CART_NOT_ADD_STORE);
+            }
+        }
     }
 }
