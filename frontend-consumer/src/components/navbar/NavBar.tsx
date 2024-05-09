@@ -86,7 +86,7 @@ const NavBar = () => {
   const showCartAndNotification = location.pathname !== "/sign-up";
 
   return (
-    <div className="fixed z-20 w-full p-4 rounded-b-lg between bg-myColor">
+    <div className="fixed between min-h-[57px] z-20 w-full p-4 rounded-b-lg  bg-myColor">
       <div className="w-[33%]">
         {showHomeAddress ? (
           <p

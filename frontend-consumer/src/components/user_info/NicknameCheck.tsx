@@ -29,9 +29,10 @@ const NicknameCheck: React.FC<UserState> = ({ nickname }) => {
         setIsNicknameChecked(false); // 중복 확인 상태 초기화
         setIsNicknameAvailable(false); // 닉네임 사용 가능 여부 초기화
         const response = await NicknameCheckForm({ nickname: inputNickname });
-
+        
         if (response.data.isValid === true) {
           setIsNicknameAvailable(true); // 닉네임이 사용 가능한 경우
+          nickname = inputNickname
         } else {
           setIsNicknameAvailable(false); // 닉네임이 이미 사용 중인 경우
         }

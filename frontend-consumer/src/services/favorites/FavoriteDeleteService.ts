@@ -4,10 +4,9 @@ import Cookies from "universal-cookie";
 const FavoriteDeleteForm = async ({ favoriteId }: { favoriteId: number }): Promise<any> => {
   const cookies = new Cookies();
   const accessToken = cookies.get("accessToken")
-  const API_BASE_URL = import.meta.env.VITE_API_URL;
 
   const response = await axios.delete(
-    `${API_BASE_URL}/api/favorites/${favoriteId}`, {
+    `${import.meta.env.VITE_API_URL}/api/favorites/${favoriteId}`, {
     withCredentials: true,
     headers: {
       "Content-Type": "application/json",
