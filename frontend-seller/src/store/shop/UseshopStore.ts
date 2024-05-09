@@ -28,13 +28,16 @@ const useShopStore = create(
             shoeImage: "" || undefined,
             shopName: "",
             shopOwner: "",
-            shopAddr: "",
-            shopDetailAddr: "",
+            shopNumber: "",
+            shopzibunAddr: "",
+            shoproadAddr: "",
+            shopLat: 0,
+            shopLon: 0,
             shopIntro: "",
             shopWorkday: "",
             shopHoliyday: "",
-            FoodIngredients: "",
             FoodOrigin: "",
+            shopCategoryId: 0,
 
             // 상태 업데이트
             updateShopStore: (key: string, value: string) =>
@@ -46,16 +49,19 @@ const useShopStore = create(
             // 상태 초기화
             resetShopStore: () =>
                 set({
-                    shoeImage: "" || undefined,
+                    shopImage: "" || undefined,
                     shopName: "",
                     shopOwner: "",
-                    shopAddr: "",
-                    shopDetailAddr: "",
+                    shopNumber: "",
+                    shopzibunAddr: "",
+                    shoproadAddr: "",
+                    shopLat: 0,
+                    shopLon: 0,
                     shopIntro: "",
                     shopWorkday: "",
-                    shopHoliyday: "",
-                    FoodIngredients: "",
+                    shopHoliday: "",
                     FoodOrigin: "",
+                    shopCategoryId: 0,
                 })
         }),
         {

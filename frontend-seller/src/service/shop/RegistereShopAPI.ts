@@ -2,6 +2,7 @@ import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 import { RegisterShopType } from "../../types/shop/RegisterShopType";
 import Cookies from "universal-cookie";
+import { CategoryIdType } from "../../types/shop/CategoryIdType";
 
 const RegisterShopAPI = () => {
     // const navigate = useNavigate()
@@ -52,11 +53,15 @@ const RegisterShopAPI = () => {
     }
 
     // 가게 카테고리 목록 불러오는 api
-    const getCategories = () => {
+    const getCategories = ({id, setId}:CategoryIdType) => {
         axios.get(import.meta.env.VITE_BASE_URL + "/api/categories", {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
+        })
+        .then(res => {
+            console.log(res)
+            setId(res)
         })
     }
 
