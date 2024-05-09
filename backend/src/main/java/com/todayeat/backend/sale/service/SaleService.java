@@ -3,14 +3,13 @@ package com.todayeat.backend.sale.service;
 import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
-import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.repository.MenuRepository;
 import com.todayeat.backend.sale.dto.request.*;
-import com.todayeat.backend.sale.dto.response.GetSaleListToConsumerResponse;
-import com.todayeat.backend.sale.dto.response.GetSaleListToSellerResponse;
-import com.todayeat.backend.sale.dto.response.GetSaleToConsumerResponse;
-import com.todayeat.backend.sale.dto.response.GetSaleToSellerResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleListConsumerResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleListSellerResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleConsumerResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleSellerResponse;
 import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.sale.mapper.SaleMapper;
 import com.todayeat.backend.sale.repository.SaleRepository;
@@ -64,30 +63,30 @@ public class SaleService {
         saleRepository.saveAll(saleList);
     }
 
-    public GetSaleListToConsumerResponse getListToConsumer(Long storeId) {
+    public GetSaleListConsumerResponse getListToConsumer(Long storeId) {
 
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
 
-        List<GetSaleToConsumerResponse> getSaleToConsumerResponseList = saleRepository.findAllByStoreAndIsFinishedIsFalseAndDeletedAtIsNull(store)
+        List<GetSaleConsumerResponse> getSaleToConsumerResponseList = saleRepository.findAllByStoreAndIsFinishedIsFalseAndDeletedAtIsNull(store)
                 .stream()
-                .map(s -> SaleMapper.INSTANCE.getSaleToConsumerResponse(s, s.getStock() - s.getTotalQuantity()))
+                .map(s -> SaleMapper.INSTANCE.getSaleConsumerResponse(s, s.getStock() - s.getTotalQuantity()))
                 .toList();
 
-        return GetSaleListToConsumerResponse.of(storeId, getSaleToConsumerResponseList, getSaleToConsumerResponseList.size());
+        return GetSaleListConsumerResponse.of(storeId, getSaleToConsumerResponseList, getSaleToConsumerResponseList.size());
     }
 
-    public GetSaleListToSellerResponse getListToSeller(Long storeId) {
+    public GetSaleListSellerResponse getListToSeller(Long storeId) {
 
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
 
-        List<GetSaleToSellerResponse> getSaleToSellerResponseList = saleRepository.findAllByStoreAndDeletedAtIsNull(store)
+        List<GetSaleSellerResponse> getSaleToSellerResponseList = saleRepository.findAllByStoreAndDeletedAtIsNull(store)
                 .stream()
-                .map(s -> SaleMapper.INSTANCE.getSaleToSellerResponse(s, s.getStock() - s.getTotalQuantity()))
+                .map(s -> SaleMapper.INSTANCE.getSaleSellerResponse(s, s.getStock() - s.getTotalQuantity()))
                 .toList();
 
-        return GetSaleListToSellerResponse.of(storeId, getSaleToSellerResponseList, getSaleToSellerResponseList.size());
+        return GetSaleListSellerResponse.of(storeId, getSaleToSellerResponseList, getSaleToSellerResponseList.size());
     }
 
     @Transactional

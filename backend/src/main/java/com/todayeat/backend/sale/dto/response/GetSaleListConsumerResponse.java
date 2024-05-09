@@ -8,26 +8,26 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-@Schema(name = "GetSaleListToSellerResponse", description = "판매자용 판매 목록 조회")
-public class GetSaleListToSellerResponse {
+@Schema(name = "GetSaleListToConsumerResponse", description = "소비자용 판매 목록 조회")
+public class GetSaleListConsumerResponse {
 
     @NotNull(message = "storeId: 값이 null이 아니어야 합니다.")
     @Schema(description = "가게 ID", example = "1")
     private Long storeId;
 
-    private List<GetSaleToSellerResponse> saleList;
+    private List<GetSaleConsumerResponse> saleList;
 
     @Schema(description = "판매자용 판매 등록 응답 총 개수", example = "1")
     private Integer size;
 
     @Builder
-    private GetSaleListToSellerResponse(Long storeId, List<GetSaleToSellerResponse> saleList, Integer size) {
+    private GetSaleListConsumerResponse(Long storeId, List<GetSaleConsumerResponse> saleList, Integer size) {
         this.storeId = storeId;
         this.saleList = saleList;
         this.size = size;
     }
 
-    public static GetSaleListToSellerResponse of(Long storeId, List<GetSaleToSellerResponse> saleList, Integer size) {
+    public static GetSaleListConsumerResponse of(Long storeId, List<GetSaleConsumerResponse> saleList, Integer size) {
         return builder()
                 .storeId(storeId)
                 .saleList(saleList)

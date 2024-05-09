@@ -7,8 +7,8 @@ import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleContentRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStatusRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStockRequest;
-import com.todayeat.backend.sale.dto.response.GetSaleListToConsumerResponse;
-import com.todayeat.backend.sale.dto.response.GetSaleListToSellerResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleListConsumerResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleListSellerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -59,7 +59,7 @@ public interface SaleControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/consumer")
     @PreAuthorize("hasRole('CONSUMER')")
-    SuccessResponse<GetSaleListToConsumerResponse> getListToConsumer(@RequestParam(required = true, name = "store-id")
+    SuccessResponse<GetSaleListConsumerResponse> getListToConsumer(@RequestParam(required = true, name = "store-id")
                                                              @NotNull(message = "store-id: 값이 null이 아니어야 합니다.")
                                                              @Schema(description = "가게 ID", example = "1")
                                                              Long storeId);
@@ -77,7 +77,7 @@ public interface SaleControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/seller")
     @PreAuthorize("hasRole('SELLER')")
-    SuccessResponse<GetSaleListToSellerResponse> getListToSeller(@RequestParam(required = true, name = "store-id")
+    SuccessResponse<GetSaleListSellerResponse> getListToSeller(@RequestParam(required = true, name = "store-id")
                                                                  @NotNull(message = "store-id: 값이 null이 아니어야 합니다.")
                                                                  @Schema(description = "가게 ID", example = "1")
                                                                  Long storeId);
