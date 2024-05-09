@@ -5,7 +5,7 @@ import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.consumer.dto.request.CheckNicknameRequest;
 import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
 import com.todayeat.backend.consumer.dto.response.CheckNicknameResponse;
-import com.todayeat.backend.consumer.dto.response.GetConsumerResponse;
+import com.todayeat.backend.consumer.dto.response.GetConsumerProfileResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -53,9 +53,9 @@ public interface ConsumerControllerDocs {
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
-            content = @Content(schema = @Schema(implementation = GetConsumerResponse.class)))
-    @GetMapping
-    SuccessResponse<GetConsumerResponse> get();
+            content = @Content(schema = @Schema(implementation = GetConsumerProfileResponse.class)))
+    @GetMapping("/profile")
+    SuccessResponse<GetConsumerProfileResponse> getProfile();
 
     @Operation(summary = "로그아웃",
             description = """

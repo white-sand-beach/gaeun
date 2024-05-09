@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Schema(name = "GetConsumerResponse", description = "소비자 프로필 조회 응답")
-public class GetConsumerResponse {
+public class GetConsumerProfileResponse {
 
     @Schema(description = "프로필 이미지 URL", example = "--")
     private String profileImage;
@@ -22,7 +22,7 @@ public class GetConsumerResponse {
     private String email;
 
     @Builder
-    private GetConsumerResponse(String profileImage, String nickname, OAuth2Provider socialType, String email) {
+    private GetConsumerProfileResponse(String profileImage, String nickname, OAuth2Provider socialType, String email) {
         this.profileImage = profileImage;
         this.nickname = nickname;
         this.socialType = socialType;
