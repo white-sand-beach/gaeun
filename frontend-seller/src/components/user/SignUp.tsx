@@ -19,9 +19,9 @@ const SignUp: React.FC<InputSignupType> = (props) => {
                 <input name="password" type="password" placeholder="비밀번호" className="w-full border-b-2" value={props.password} onChange={props.onChangeInfo} />
                 <input name="passwordCheck" type="password" placeholder="비밀번호 확인" className="w-full border-b-2" value={props.passwordCheck} onChange={props.onChangeInfo} />
             </div>
-            {props.password.length < 8 && <p className="font-bold text-red-500">비밀번호가 너무 짧습니다!</p>}
+            {(props.password && props.password.length < 8) && <p className="font-bold text-red-500">비밀번호가 너무 짧습니다!</p>}
             {props.password.length > 20 && <p className="font-bold text-red-500">비밀번호가 너무 깁니다!</p>}
-            {(props.password !== props.passwordCheck) && <p className="font-bold text-red-500">비밀번호를 다시 확인해주세요!</p>}
+            {((props.password.length > 0 && props.passwordCheck.length > 0) && (props.password !== props.passwordCheck)) && <p className="font-bold text-red-500">비밀번호를 다시 확인해주세요!</p>}
 
             {/* 전화번호 인증 */}
             <p className="m-2 text-2xl font-bold">전화번호 인증</p>

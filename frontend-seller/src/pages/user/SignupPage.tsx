@@ -66,7 +66,7 @@ const SignupPage = () => {
     }
 
     return (
-        <div className="no-footer top-[60px]">
+        <div className="no-footer top-[65px]">
             <SignUp 
             email={sellerInfo.email}
             password={sellerInfo.password}

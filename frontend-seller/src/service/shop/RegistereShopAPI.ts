@@ -7,6 +7,7 @@ import { CategoryIdType } from "../../types/shop/CategoryIdType";
 const RegisterShopAPI = () => {
     // const navigate = useNavigate()
     const cookies = new Cookies();
+    
     // 쿠키에서 토큰 가져오기
     const accessToken = cookies.get("accessToken")
 
