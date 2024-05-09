@@ -4,10 +4,7 @@ import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
-import com.todayeat.backend.store.dto.response.GetConsumerDetailStoreResponse;
-import com.todayeat.backend.store.dto.response.GetConsumerInfoStoreResponse;
-import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse;
-import com.todayeat.backend.store.dto.response.GetSellerStoreResponse;
+import com.todayeat.backend.store.dto.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,13 +25,13 @@ public interface StoreControllerDocs {
     @Operation(summary = "가게 등록")
     @ApiResponse(responseCode = "200",
             description = "성공",
-            content = @Content(schema = @Schema()))
+            content = @Content(schema = @Schema(implementation = CreateStoreResponse.class)))
     @ApiResponse(responseCode = "404",
             description = "해당하는 판매자를 찾을 수 없습니다. / 존재하지 않는 카테고리입니다.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('SELLER')")
-    SuccessResponse<Void> create(@ModelAttribute @Valid CreateStoreRequest createStoreRequest);
+    SuccessResponse<CreateStoreResponse> create(@ModelAttribute @Valid CreateStoreRequest createStoreRequest);
 
     @Operation(summary = "판매자 가게 조회")
     @ApiResponse(responseCode = "200",
@@ -73,13 +70,13 @@ public interface StoreControllerDocs {
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema(implementation = GetConsumerListStoreResponse.class)))
-   @GetMapping()
+    @GetMapping()
     @PreAuthorize("hasRole('CONSUMER')")
     SuccessResponse<GetConsumerListStoreResponse> getConsumerListStore(@NotNull(message = "latitude: 값이 null이 아니어야 합니다.")
                                                                        @DecimalMin(value = "33", message = "latitude: 33 이상이어야 합니다.")
                                                                        @DecimalMax(value = "38", message = "latitude: 38 이하이어야 합니다.")
                                                                        @Schema(description = "위도", example = "36.108184")
-                                                                       @RequestParam (required = true, name = "latitude")
+                                                                       @RequestParam(required = true, name = "latitude")
                                                                        BigDecimal latitude,
 
                                                                        @NotNull(message = "longitude: 값이 null이 아니어야 합니다.")
