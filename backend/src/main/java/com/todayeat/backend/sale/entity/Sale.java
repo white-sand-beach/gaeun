@@ -62,7 +62,7 @@ public class Sale extends BaseTime {
     private Menu menu;
 
     @Builder
-    public Sale(String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer stock, Integer totalQuantity, Boolean isFinished, Store store, Menu menu) {
+    private Sale(String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer stock, Integer totalQuantity, Boolean isFinished, Store store, Menu menu) {
         this.imageUrl = imageUrl;
         this.name = name;
         this.originalPrice = originalPrice;
@@ -85,6 +85,8 @@ public class Sale extends BaseTime {
     }
 
     public boolean updateStock(Integer stock) {
+
+        // todo 주문 접수 건수도 고려하기
 
         if (this.totalQuantity > stock) {
             return false;

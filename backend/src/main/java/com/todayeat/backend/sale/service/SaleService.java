@@ -158,7 +158,7 @@ public class SaleService {
 
         // 재고 검증 및 업데이트. 총 판매량보다 재고가 작은 경우 예외
         if(!sale.updateStock(request.getStock())) {
-            throw new BusinessException(ErrorType.SAEL_STOCK_UPDATE_FAIL);
+            throw new BusinessException(ErrorType.SALE_STOCK_UPDATE_FAIL);
         }
     }
 
@@ -173,7 +173,7 @@ public class SaleService {
     private Menu validateMenuAndStore(Long menuId, Store store) {
 
         return menuRepository.findByIdAndStoreAndDeletedAtIsNullAndStoreDeletedAtIsNull(menuId, store)
-                .orElseThrow(() -> new BusinessException(ErrorType.MENU_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
     }
 
     // 할인률 계산
@@ -189,9 +189,5 @@ public class SaleService {
         }
 
         return 100 * (originalPrice - sellPrice) / originalPrice;
-    }
-
-    private void validateStock(Sale sale, Integer stock) {
-
     }
 }
