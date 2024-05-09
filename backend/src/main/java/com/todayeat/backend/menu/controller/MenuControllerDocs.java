@@ -51,7 +51,7 @@ public interface MenuControllerDocs {
             description = "판매자의 가게가 맞는지 확인, 가게 존재 여부 확인",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping
-    SuccessResponse<GetMenuListResponse> getMenusResponse(@RequestParam(required = true, name = "store-id")
+    SuccessResponse<GetMenuListResponse> getList(@RequestParam(required = true, name = "store-id")
                                                        @NotNull(message = "store-id: 값이 null이 아니어야 합니다.")
                                                        @Schema(description = "가게 ID", example = "1")
                                                        Long storeId);
