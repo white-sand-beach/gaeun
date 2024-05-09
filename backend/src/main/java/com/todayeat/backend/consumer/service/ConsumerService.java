@@ -8,6 +8,7 @@ import com.todayeat.backend.consumer.dto.request.CheckNicknameRequest;
 import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
 import com.todayeat.backend.consumer.dto.response.CheckNicknameResponse;
 import com.todayeat.backend.consumer.dto.response.GetConsumerProfileResponse;
+import com.todayeat.backend.consumer.dto.response.GetConsumerResponse;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.consumer.mapper.ConsumerMapper;
 import com.todayeat.backend.consumer.repository.ConsumerRepository;
@@ -73,10 +74,16 @@ public class ConsumerService {
         return CheckNicknameResponse.of(!existsByNickname(request.getNickname()));
     }
 
+    public GetConsumerResponse get() {
+
+        Consumer consumer = securityUtil.getConsumer();
+        return ConsumerMapper.INSTANCE.toGetConsumerResponse(consumer);
+    }
+
     public GetConsumerProfileResponse getProfile() {
 
         Consumer consumer = securityUtil.getConsumer();
-        return ConsumerMapper.INSTANCE.consumerToGetConsumerResponse(consumer);
+        return ConsumerMapper.INSTANCE.toGetConsumerProfileResponse(consumer);
     }
 
     @Transactional

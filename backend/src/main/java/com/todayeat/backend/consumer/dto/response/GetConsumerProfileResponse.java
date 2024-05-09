@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Schema(name = "GetConsumerResponse", description = "소비자 프로필 조회 응답")
+@Schema(name = "GetConsumerProfileResponse", description = "소비자 프로필 조회 응답")
 public class GetConsumerProfileResponse {
 
     @Schema(description = "프로필 이미지 URL", example = "--")

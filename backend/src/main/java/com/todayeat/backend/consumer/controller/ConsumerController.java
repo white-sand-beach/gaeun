@@ -5,6 +5,7 @@ import com.todayeat.backend.consumer.dto.request.CheckNicknameRequest;
 import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
 import com.todayeat.backend.consumer.dto.response.CheckNicknameResponse;
 import com.todayeat.backend.consumer.dto.response.GetConsumerProfileResponse;
+import com.todayeat.backend.consumer.dto.response.GetConsumerResponse;
 import com.todayeat.backend.consumer.service.ConsumerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,6 +33,12 @@ public class ConsumerController implements ConsumerControllerDocs {
     public SuccessResponse<CheckNicknameResponse> checkNickname(CheckNicknameRequest request) {
 
         return SuccessResponse.of(consumerService.checkNickname(request), CHECK_NICKNAME_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<GetConsumerResponse> get() {
+
+        return SuccessResponse.of(consumerService.get(), GET_CONSUMER_SUCCESS);
     }
 
     @Override

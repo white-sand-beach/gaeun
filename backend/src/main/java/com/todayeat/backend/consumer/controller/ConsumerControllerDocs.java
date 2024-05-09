@@ -6,6 +6,7 @@ import com.todayeat.backend.consumer.dto.request.CheckNicknameRequest;
 import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
 import com.todayeat.backend.consumer.dto.response.CheckNicknameResponse;
 import com.todayeat.backend.consumer.dto.response.GetConsumerProfileResponse;
+import com.todayeat.backend.consumer.dto.response.GetConsumerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -46,6 +47,16 @@ public interface ConsumerControllerDocs {
                 content = @Content(schema = @Schema(implementation = CheckNicknameResponse.class)))
     @PostMapping("/check-nickname")
     SuccessResponse<CheckNicknameResponse> checkNickname(@RequestBody @Valid CheckNicknameRequest request);
+
+    @Operation(summary = "회원 정보 조회",
+            description = """
+                          `ROLE_CONSUMER`
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetConsumerResponse.class)))
+    @GetMapping
+    SuccessResponse<GetConsumerResponse> get();
 
     @Operation(summary = "프로필 정보 조회",
             description = """
