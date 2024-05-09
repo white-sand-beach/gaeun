@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { LoginType } from "../../types/LoginType";
+import { LoginType } from "../../types/user/LoginType";
 import Cookies from "universal-cookie";
 
 const LoginAPI = () => {

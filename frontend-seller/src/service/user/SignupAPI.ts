@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SignupType } from "../../types/SignupType";
+import { SignupType } from "../../types/user/SignupType";
 import { useNavigate } from "react-router-dom";
 
 // 이메일 중복 확인
