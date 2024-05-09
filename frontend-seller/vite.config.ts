@@ -17,6 +17,7 @@ export default defineConfig({
       manifest: {
         name: "빨리드셔-사장님",
         short_name: "빨리드셔-사장님",
+        description: '음식 당일 소진 장려 플랫폼',
         display: "standalone",
         theme_color: "#FFAF38",
         icons: [

@@ -19,25 +19,7 @@ pipeline {
             }
         }
         
-        stage('fe_seller_build'){
-            steps{
-                script {
-                    def feSellerRunning = sh(script: 'docker ps -a --filter "name=fe-seller" --format "{{.Names}}"', returnStdout: true).trim()
-                    sh 'echo ${feSellerRunning}'
-                    if (feSellerRunning) {
-                        // fe container is running, stop and remove it
-                        sh 'docker stop fe-seller'
-                        sh 'docker rm fe-seller'
-                        sh 'docker rmi fe-seller'
-                    }
-                }
-                
-                sh 'docker build -t fe-seller ./frontend-seller'
-                sh 'docker run -d --name fe-seller -p 5174:80 fe-seller'   
-            }
-        }
-
-        stage("front_env download") {
+         stage("front_env download") {
             steps {
                 withCredentials([file(credentialsId: 'front_env', variable: 'configFile')]) {
                     script {
@@ -47,7 +29,6 @@ pipeline {
             }
         }
     
-        
         stage('fe_consumer_build'){
             steps{
                 script {
@@ -63,6 +44,24 @@ pipeline {
 
                 sh 'docker build -t fe-consumer ./frontend-consumer'
                 sh 'docker run -d --name fe-consumer -p 5173:80 fe-consumer'   
+            }
+        }
+
+        stage('fe_seller_build'){
+            steps{
+                script {
+                    def feSellerRunning = sh(script: 'docker ps -a --filter "name=fe-seller" --format "{{.Names}}"', returnStdout: true).trim()
+                    sh 'echo ${feSellerRunning}'
+                    if (feSellerRunning) {
+                        // fe container is running, stop and remove it
+                        sh 'docker stop fe-seller'
+                        sh 'docker rm fe-seller'
+                        sh 'docker rmi fe-seller'
+                    }
+                }
+                
+                sh 'docker build -t fe-seller ./frontend-seller'
+                sh 'docker run -d --name fe-seller -p 5174:80 fe-seller'   
             }
         }
 

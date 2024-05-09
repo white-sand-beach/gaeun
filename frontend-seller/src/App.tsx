@@ -18,7 +18,7 @@ import MyPage from "@/pages/user/MyPage.tsx";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/seller">
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Main />} />
