@@ -5,6 +5,9 @@ import KakaoMap from "./Kakaomap";
 import Shops from "./Shops";
 import ServiceBanner from "../../components/navbar/ServiceBanner";
 import useUserLocation from "../../store/UserLocation";
+import MainMapData from "../../types/MainMapDataType";
+import MapListForm from "../../services/maps/MapMainService";
+import MainAllData from "../../types/MainAllDataType";
 
 interface LocationState {
   lat: number | undefined;
@@ -30,21 +33,50 @@ const Main: React.FC = () => {
     ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-80 z-10"
     : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-7 z-10";
 
-  const [findlocation, setLocation] = useState<LocationState>({
-    lat: undefined,
-    lng: undefined,
-    updateCounter: 0,
-  });
-
   const { lat, lng } = useUserLocation((state) => ({
     lat: state.latitude,
     lng: state.longitude,
   })); // 스토어에서 위치 데이터 가져오기
 
-  const handleGPSButtonClick = () => {
+  const [findlocation, setLocation] = useState<LocationState>({
+    lat: lat,
+    lng: lng,
+    updateCounter: 0,
+  });
+
+  const [allData, setAllData] = useState<MainAllData[]>([]);
+
+  useEffect(() => {
+    const mainData: MainMapData = {
+      longitude: lng,
+      latitude: lat,
+      page: 0,
+      size: 10,
+      radius: 3,
+      sort: "distance",
+    };
+    // 즉시 실행 함수로 비동기 로직 처리
+    (async () => {
+      try {
+        const response = await MapListForm(mainData);
+        setAllData(response); // 비동기 결과로 상태 업데이트
+        console.log(allData);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [lng, lat]); // mainData 객체 자체를 의존성 배열에 추가
+
+  useEffect(() => {
+    console.log(allData); // 상태가 업데이트 된 후에 로그를 찍음
+  }, [allData]);
+
+  const handleGPSButtonClick = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          const { latitude, longitude } = position.coords;
+          console.log("Latitude:", latitude, "Longitude:", longitude);
           console.log(findlocation);
           // 강제 업데이트를 트리거하려면 상태를 갱신할 때마다 updateCounter를 증가시키기
           const update = useUserLocation.getState().updateUserState; // 스토어의 상태 업데이트 함수를 가져옵니다.
@@ -54,8 +86,8 @@ const Main: React.FC = () => {
             update("alias", "현재위치");
           }
           setLocation((prev) => ({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
+            lat: latitude,
+            lng: longitude,
             updateCounter: prev.updateCounter + 1, // 항상 증가시키기
           }));
         },
