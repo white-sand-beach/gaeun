@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import Cookies from "universal-cookie";
 import { persist } from "zustand/middleware";
-import { RegisterShopType } from "../../types/RegisterShopType";
+import { RegisterShopType } from "../../types/shop/RegisterShopType";
 
 const cookies = new Cookies();
 

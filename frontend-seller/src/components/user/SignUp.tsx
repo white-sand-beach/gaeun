@@ -1,6 +1,6 @@
 import React from "react";
 import TotalButton from "../ui/TotalButton";
-import { InputSignupType } from "../../types/InputSignupType";
+import { InputSignupType } from "../../types/user/InputSignupType";
 
 const SignUp: React.FC<InputSignupType> = (props) => {
     return (

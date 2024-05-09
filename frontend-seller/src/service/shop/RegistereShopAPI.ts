@@ -1,6 +1,6 @@
 import axios from "axios";
 // import { useNavigate } from "react-router-dom";
-import { RegisterShopType } from "../../types/RegisterShopType";
+import { RegisterShopType } from "../../types/shop/RegisterShopType";
 import Cookies from "universal-cookie";
 
 const RegisterShopAPI = () => {
