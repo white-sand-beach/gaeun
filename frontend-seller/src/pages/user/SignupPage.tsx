@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { postEmailCheck, postCheckRegisterNo, postSignUp } from "../../service/user/SignupAPI.ts";
+import SignupAPI from "../../service/user/SignupAPI.ts";
 import SignUp from "../../components/user/SignUp.tsx";
 
 const SignupPage = () => {
@@ -32,6 +32,9 @@ const SignupPage = () => {
         });
     };
 
+    // SignupAPI 컴포넌트에서 아래 함수들 return 받아오기
+    const {postEmailCheck, postCheckRegisterNo, postSignUp} = SignupAPI();
+    
     // 이메일 유효 확인 api 요청
     const handleCheckEmail = () => {
         postEmailCheck({
