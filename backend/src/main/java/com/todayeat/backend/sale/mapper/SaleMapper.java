@@ -2,7 +2,8 @@ package com.todayeat.backend.sale.mapper;
 
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.sale.dto.request.CreateSaleRequest;
-import com.todayeat.backend.sale.dto.response.GetSaleResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleToConsumerResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleToSellerResponse;
 import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.store.entity.Store;
 import org.mapstruct.Mapper;
@@ -20,5 +21,8 @@ public interface SaleMapper {
     Sale createSaleReqeustToSale(CreateSaleRequest createSaleRequest, Integer discountRate, Boolean isFinished, Integer totalQuantity, Store store, Menu menu);
 
     @Mapping(source = "sale.id", target = "saleId")
-    GetSaleResponse getSaleResponse(Sale sale, Integer restStock);
+    GetSaleToConsumerResponse getSaleToConsumerResponse(Sale sale, Integer restStock);
+
+    @Mapping(source = "sale.id", target = "saleId")
+    GetSaleToSellerResponse getSaleToSellerResponse(Sale sale, Integer restStock);
 }

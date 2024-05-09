@@ -7,8 +7,10 @@ import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.repository.MenuRepository;
 import com.todayeat.backend.sale.dto.request.*;
-import com.todayeat.backend.sale.dto.response.GetSaleListResponse;
-import com.todayeat.backend.sale.dto.response.GetSaleResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleListToConsumerResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleListToSellerResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleToConsumerResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleToSellerResponse;
 import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.sale.mapper.SaleMapper;
 import com.todayeat.backend.sale.repository.SaleRepository;
@@ -21,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,28 +64,30 @@ public class SaleService {
         saleRepository.saveAll(saleList);
     }
 
-    public GetSaleListResponse getList(Long storeId) {
+    public GetSaleListToConsumerResponse getListToConsumer(Long storeId) {
 
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
 
-        if(securityUtil.getPrincipalClass().equals(Seller.class)) {
-            List<GetSaleResponse> getSaleResponseList = saleRepository.findAllByStoreAndDeletedAtIsNull(store)
-                    .stream()
-                    .map(s -> SaleMapper.INSTANCE.getSaleResponse(s, s.getStock() - s.getTotalQuantity()))
-                    .toList();
+        List<GetSaleToConsumerResponse> getSaleToConsumerResponseList = saleRepository.findAllByStoreAndIsFinishedIsFalseAndDeletedAtIsNull(store)
+                .stream()
+                .map(s -> SaleMapper.INSTANCE.getSaleToConsumerResponse(s, s.getStock() - s.getTotalQuantity()))
+                .toList();
 
-            return GetSaleListResponse.of(storeId, getSaleResponseList, getSaleResponseList.size());
-        } else if(securityUtil.getPrincipalClass().equals(Consumer.class)) {
-            List<GetSaleResponse> getSaleResponseList = saleRepository.findAllByStoreAndIsFinishedIsFalseAndDeletedAtIsNull(store)
-                    .stream()
-                    .map(s -> SaleMapper.INSTANCE.getSaleResponse(s, s.getStock() - s.getTotalQuantity()))
-                    .toList();
+        return GetSaleListToConsumerResponse.of(storeId, getSaleToConsumerResponseList, getSaleToConsumerResponseList.size());
+    }
 
-            return GetSaleListResponse.of(storeId, getSaleResponseList, getSaleResponseList.size());
-        }
+    public GetSaleListToSellerResponse getListToSeller(Long storeId) {
 
-        throw new BusinessException(ErrorType.REQUEST_FORBIDDEN);
+        Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
+
+        List<GetSaleToSellerResponse> getSaleToSellerResponseList = saleRepository.findAllByStoreAndDeletedAtIsNull(store)
+                .stream()
+                .map(s -> SaleMapper.INSTANCE.getSaleToSellerResponse(s, s.getStock() - s.getTotalQuantity()))
+                .toList();
+
+        return GetSaleListToSellerResponse.of(storeId, getSaleToSellerResponseList, getSaleToSellerResponseList.size());
     }
 
     @Transactional

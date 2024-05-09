@@ -6,7 +6,8 @@ import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleContentRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStatusRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStockRequest;
-import com.todayeat.backend.sale.dto.response.GetSaleListResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleListToConsumerResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleListToSellerResponse;
 import com.todayeat.backend.sale.service.SaleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,9 +29,15 @@ public class SaleController implements SaleControllerDocs {
     }
 
     @Override
-    public SuccessResponse<GetSaleListResponse> getList(Long storeId) {
+    public SuccessResponse<GetSaleListToConsumerResponse> getListToConsumer(Long storeId) {
 
-        return SuccessResponse.of(saleService.getList(storeId), SuccessType.GET_SALE_LIST_SUCCESS);
+        return SuccessResponse.of(saleService.getListToConsumer(storeId), SuccessType.GET_SALE_LIST_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<GetSaleListToSellerResponse> getListToSeller(Long storeId) {
+
+        return SuccessResponse.of(saleService.getListToSeller(storeId), SuccessType.GET_SALE_LIST_SUCCESS);
     }
 
     @Override

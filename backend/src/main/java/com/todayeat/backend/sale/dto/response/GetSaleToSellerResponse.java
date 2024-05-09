@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Schema(name = "GetSaleResponse", description = "판매 조회")
-public class GetSaleResponse {
+@Schema(name = "GetSaleToSellerResponse", description = "판매자용 판매 조회")
+public class GetSaleToSellerResponse {
 
     @Schema(description = "판매 ID", example = "1")
     private Long saleId;
@@ -36,7 +36,7 @@ public class GetSaleResponse {
     private Boolean isFinished;
 
     @Builder
-    private GetSaleResponse(Long saleId, String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer restStock, Boolean isFinished) {
+    private GetSaleToSellerResponse(Long saleId, String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer restStock, Boolean isFinished) {
         this.saleId = saleId;
         this.imageUrl = imageUrl;
         this.name = name;

@@ -7,7 +7,8 @@ import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleContentRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStatusRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStockRequest;
-import com.todayeat.backend.sale.dto.response.GetSaleListResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleListToConsumerResponse;
+import com.todayeat.backend.sale.dto.response.GetSaleListToSellerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -45,9 +46,8 @@ public interface SaleControllerDocs {
     @PreAuthorize("hasRole('SELLER')")
     SuccessResponse<Void> create(@RequestBody @Valid CreateSaleListRequest request);
 
-    @Operation(summary = "판매 조회",
+    @Operation(summary = "소비자용 판매 조회",
             description = """
-                    `ROLE_SELLER` \n
                     `ROLE_CONSUMER` \n
                     요청 파라미터로 가게ID를 넣어주세요.
                     """)
@@ -57,12 +57,30 @@ public interface SaleControllerDocs {
     @ApiResponse(responseCode = "404",
             description = "가게 존재 여부 확인",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @GetMapping
-    SuccessResponse<GetSaleListResponse> getList(@RequestParam(required = true, name = "store-id")
+    @GetMapping("/consumer")
+    @PreAuthorize("hasRole('CONSUMER')")
+    SuccessResponse<GetSaleListToConsumerResponse> getListToConsumer(@RequestParam(required = true, name = "store-id")
                                                              @NotNull(message = "store-id: 값이 null이 아니어야 합니다.")
                                                              @Schema(description = "가게 ID", example = "1")
                                                              Long storeId);
 
+    @Operation(summary = "판매자용 판매 조회",
+            description = """
+                    `ROLE_SELLER` \n
+                    요청 파라미터로 가게ID를 넣어주세요.
+                    """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetMenuListResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "가게 존재 여부 확인",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @GetMapping("/seller")
+    @PreAuthorize("hasRole('SELLER')")
+    SuccessResponse<GetSaleListToSellerResponse> getListToSeller(@RequestParam(required = true, name = "store-id")
+                                                                 @NotNull(message = "store-id: 값이 null이 아니어야 합니다.")
+                                                                 @Schema(description = "가게 ID", example = "1")
+                                                                 Long storeId);
     @Operation(summary = "판매 상태 변경",
             description = """
                     `ROLE_SELLER` \n
