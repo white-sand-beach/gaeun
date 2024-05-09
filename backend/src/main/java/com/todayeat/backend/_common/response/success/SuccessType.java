@@ -27,6 +27,7 @@ public enum SuccessType {
 
     // cart
     CREATE_CART_SUCCESS("장바구니 등록에 성공하였습니다."),
+    DELETE_CART_SUCCESS("장바구니 삭제에 성공하였습니다."),
 
     // order
 

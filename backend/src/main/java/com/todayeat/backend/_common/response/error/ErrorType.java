@@ -37,6 +37,8 @@ public enum ErrorType {
     // cart
     CART_NOT_ADD_QUANTITY(HttpStatus.BAD_REQUEST, "수량이 현재 재고보다 많아서 장바구니에 추가할 수 없습니다."),
     CART_NOT_ADD_STORE(HttpStatus.BAD_REQUEST, "다른 가게의 음식이 있어 장바구니에 추가할 수 없습니다."),
+    CART_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 장바구니를 찾을 수 없습니다."),
+    CART_NOT_MINE(HttpStatus.UNAUTHORIZED, "내 장바구니가 아닙니다."),
 
     // order
 

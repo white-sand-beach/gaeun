@@ -29,7 +29,7 @@ public class Cart implements Serializable {
     private Long saleId;
 
     @Builder
-    public Cart(Integer quantity, Long consumerId, Long storeId, String storeName, Long saleId) {
+    private Cart(Integer quantity, Long consumerId, Long storeId, String storeName, Long saleId) {
         this.quantity = quantity;
         this.consumerId = consumerId;
         this.storeId = storeId;
@@ -37,8 +37,8 @@ public class Cart implements Serializable {
         this.saleId = saleId;
     }
 
-    public Integer updateQuantity(Integer quantity) {
+    public void updateQuantity(Integer quantity) {
 
-        return this.quantity += quantity;
+        this.quantity += quantity;
     }
 }

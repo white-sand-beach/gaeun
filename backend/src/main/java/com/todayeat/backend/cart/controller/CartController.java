@@ -22,4 +22,12 @@ public class CartController implements CartControllerDocs {
 
         return SuccessResponse.of(SuccessType.CREATE_CART_SUCCESS);
     }
+
+    @Override
+    public SuccessResponse<Void> delete(String cartId) {
+
+        cartService.delete(cartId);
+
+        return SuccessResponse.of(SuccessType.DELETE_CART_SUCCESS);
+    }
 }

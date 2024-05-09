@@ -73,6 +73,22 @@ public class CartService {
         }
     }
 
+    @Transactional
+    public void delete(String cartId) {
+
+        Consumer consumer = securityUtil.getConsumer();
+
+        // 장바구니 존재 확인
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new BusinessException(ErrorType.CART_NOT_FOUND));
+
+        // 내 장바구니가 맞는지 확인
+        if(!Objects.equals(cart.getConsumerId(), consumer.getId()))
+            throw new BusinessException(ErrorType.CART_NOT_MINE);
+
+        cartRepository.delete(cart);
+    }
+
     private void validateQuantityAndRestStock(Integer quantity, Integer stock, Integer totalQuantity) {
         if (stock - totalQuantity - quantity < 0)
             throw new BusinessException(ErrorType.CART_NOT_ADD_QUANTITY);
