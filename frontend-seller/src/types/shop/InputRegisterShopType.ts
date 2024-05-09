@@ -1,5 +1,5 @@
 export type InputRegisterShopType = {
-    shopImage?: string; // 가게 이미지
+    shopImage?: File | null; // 가게 이미지
     shopName: string; // 가게(상호명)
     shopOwner: string; // 대표자명
     shopNumber: string; // 가게 전화번호
@@ -12,4 +12,8 @@ export type InputRegisterShopType = {
     shopHoliday?: string; // 휴무일
     FoodOrigin?: string; // 원산지
     shopCategoryId: number; // 카테고리 id
+
+    onUpdateShopStore: <K extends keyof InputRegisterShopType>(key: K, value: InputRegisterShopType[K]) => void | null;
+    onResetShopStore?: () => void;
+    onRegisterShop?: () => void;
 }
