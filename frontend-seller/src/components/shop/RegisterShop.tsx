@@ -1,31 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import camera from "../../assets/addphoto.png";
 import TotalButton from "../ui/TotalButton";
-import { InputRegisterShopType } from "../../types/shop/InputRegisterShopType";
+import { RegisterShopType } from "../../types/shop/RegisterShopType";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { MapDataType } from "../../types/shop/MapDataType";
 
-const RegisterShop: React.FC<InputRegisterShopType> = (props) => {
+const RegisterShop: React.FC<RegisterShopType> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectImg, setSelectImg] = useState<File | null>(
     props.shopImage ? props.shopImage : null
   );
 
-  useEffect(() => {
-    // selectImg가 변경될 때마다 실행
-    if (selectImg) {
-      const objectUrl = URL.createObjectURL(selectImg); // selectImg로부터 URL 생성
+  
+  // useEffect(() => {
+  //   // selectImg가 변경될 때마다 실행
+  //   if (selectImg) {
+  //     const objectUrl = URL.createObjectURL(selectImg); // selectImg로부터 URL 생성
 
-      // 컴포넌트가 언마운트될 때 URL 해제
-      return () => URL.revokeObjectURL(objectUrl);
-    }
-  }, [selectImg]);
+  //     // 컴포넌트가 언마운트될 때 URL 해제
+  //     return () => URL.revokeObjectURL(objectUrl);
+  //   }
+  // }, [selectImg]);
 
   // input type file로 가게 사진 받아올 때
   const handleChangeImg = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectImg(event.target.files[0]);
-      props.onUpdateShopStore("shopImage", event.target.files[0]);
+      props.onUpdateShopStore?.("shopImage", event.target.files[0]);
       console.log(event.target.files[0].name);
     }
   };
@@ -35,21 +36,19 @@ const RegisterShop: React.FC<InputRegisterShopType> = (props) => {
   ) => {
     const { value, name } = event.target;
     // 입력값을 store에 전달. 데이터 관리
-    props.onUpdateShopStore &&
-      props.onUpdateShopStore(name as keyof InputRegisterShopType, value);
+    props.onUpdateShopStore?.(name as keyof RegisterShopType, value);
     console.log(`${name}: ${value}`);
   };
 
   // 다음 주소 찾기 api 를 통한 주소데이터 얻는 함수
   // 얻은 데이터 중, 지번주소, 도로명주소를 store에서 관리
-  const handleAboutAddr = (data:MapDataType) => {
+  const handleAboutAddr = (data: MapDataType) => {
     console.log(data);
-    props.onUpdateShopStore("shopzibunAddr", data.jibunAddress);
-    props.onUpdateShopStore("shoproadAddr", data.roadAddress);
-    props.onUpdateShopStore("shopLat", 33.450701);
-    props.onUpdateShopStore("shopLon", 126.570667);
-    props.onUpdateShopStore("shopCategoryId", 1)
-    setIsOpen(false)
+    props.onUpdateShopStore?.("shopzibunAddr", data.jibunAddress);
+    props.onUpdateShopStore?.("shoproadAddr", data.roadAddress);
+    props.onUpdateShopStore?.("shopLat", 33.450701);
+    props.onUpdateShopStore?.("shopLon", 126.570667);
+    setIsOpen(false);
   };
 
   return (

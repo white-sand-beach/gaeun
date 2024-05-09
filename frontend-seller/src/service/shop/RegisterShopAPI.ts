@@ -1,14 +1,17 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { InputRegisterShopType } from "../../types/shop/InputRegisterShopType";
+import { RegisterShopType } from "../../types/shop/RegisterShopType";
 import Cookies from "universal-cookie";
 import { CategoryIdType } from "../../types/shop/CategoryIdType";
+import useShopStore from "../../store/shop/UseshopStore";
 
 const RegisterShopAPI = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const cookies = new Cookies();
     // 쿠키에서 토큰 가져오기
-    const accessToken = cookies.get("accessToken")
+    const accessToken = cookies.get("accessToken");
+
+    const { onUpdateShopStore } = useShopStore();
 
     // 가게 등록 api
     const postRegisterShop = ({
@@ -25,7 +28,7 @@ const RegisterShopAPI = () => {
         shopHoliday,
         FoodOrigin,
         shopCategoryId,
-    }: InputRegisterShopType) => {
+    }: RegisterShopType) => {
         const formData = new FormData();
         formData.append("registeredName", shopName);
         formData.append("bossName", shopOwner);
@@ -49,13 +52,14 @@ const RegisterShopAPI = () => {
         .then(res => {
             console.log(res.data)
             window.alert("가게 등록 성공 ㅎㅎ")
+            onUpdateShopStore("shopCategoryId", shopCategoryId)
             navigate("/")
         })
         .catch(err => {
             console.error(err)
             window.alert("가게등록 실패 ㅠㅠ")
         })
-    }
+    };
 
     // 가게 카테고리 목록 불러오는 api
     const getCategories = ({setId}:CategoryIdType) => {
@@ -65,13 +69,13 @@ const RegisterShopAPI = () => {
             }
         })
         .then(res => {
-            console.log(res)
-            setId(res)
+            console.log(res.data.data.categoryList)
+            setId(res.data.data.categoryList)
         })
         .catch(err => {
             console.error(err)
         })
-    }
+    };
 
     return {
         postRegisterShop,

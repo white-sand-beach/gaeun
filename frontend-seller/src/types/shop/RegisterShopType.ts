@@ -1,4 +1,4 @@
-export type InputRegisterShopType = {
+export interface RegisterShopType {
     shopImage?: File | null; // 가게 이미지
     shopName: string; // 가게(상호명)
     shopOwner: string; // 대표자명
@@ -11,9 +11,9 @@ export type InputRegisterShopType = {
     shopWorkday?: string; // 영업시간
     shopHoliday?: string; // 휴무일
     FoodOrigin?: string; // 원산지
-    shopCategoryId: number; // 카테고리 id
-
-    onUpdateShopStore: <K extends keyof InputRegisterShopType>(key: K, value: InputRegisterShopType[K]) => void | null;
+    shopCategoryId: number[]; // 카테고리 id
+    setStoreId?: (value: number) => void; // stordId 얻는 함수
+    onUpdateShopStore: <K extends keyof RegisterShopType>(key: K, value: RegisterShopType[K]) => void | null;
     onResetShopStore?: () => void;
     onRegisterShop?: () => void;
 }

@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { PersistOptions, persist } from "zustand/middleware";
-import { InputRegisterShopType } from "../../types/shop/InputRegisterShopType";
+import { RegisterShopType } from "../../types/shop/RegisterShopType";
 
 // 상태관리 정의
 const useShopStore = create(
-    persist<InputRegisterShopType>(
+    persist<RegisterShopType>(
         (set) => ({
             shopImage: null,
             shopName: "",
@@ -18,13 +18,13 @@ const useShopStore = create(
             shopWorkday: "",
             shopHoliday: "",
             FoodOrigin: "",
-            shopCategoryId: 0,
+            shopCategoryId: [],
 
             // 상태 업데이트
             // 데이터의 타입들이 다양하다.
             // 이런 경우에는 유니온 타입을 사용하여, 여러개 중 하나를 사용한다고 명시
             // inputRegisterShopType내의 키에 해당하는 값을 동적으로 참조한다고 명시
-            onUpdateShopStore: <K extends keyof InputRegisterShopType>(key: K, value: InputRegisterShopType[K]) =>
+            onUpdateShopStore: <K extends keyof RegisterShopType>(key: K, value: RegisterShopType[K]) =>
                 set((state) => ({
                     ...state,
                     [key]: value,
@@ -45,12 +45,12 @@ const useShopStore = create(
                     shopWorkday: "",
                     shopHoliday: "",
                     FoodOrigin: "",
-                    shopCategoryId: 0,
+                    shopCategoryId: [],
                 })
         }),
         {
             name: "shopInfo",
-        } as PersistOptions<InputRegisterShopType>
+        } as PersistOptions<RegisterShopType>
     )
 );
 

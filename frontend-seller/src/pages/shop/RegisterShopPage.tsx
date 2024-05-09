@@ -1,5 +1,5 @@
 import RegisterShop from "../../components/shop/RegisterShop";
-import RegisterShopAPI from "../../service/shop/RegistereShopAPI";
+import RegisterShopAPI from "../../service/shop/RegisterShopAPI";
 import useShopStore from "../../store/shop/UseshopStore";
 
 const RegisterShopPage = () => {
@@ -19,7 +19,7 @@ const RegisterShopPage = () => {
     shopHoliday,
     FoodOrigin,
     shopCategoryId,
-    onUpdateShopStore,
+    onUpdateShopStore
   } = useShopStore();
 
   const { postRegisterShop } = RegisterShopAPI();
@@ -41,6 +41,7 @@ const RegisterShopPage = () => {
       onUpdateShopStore
     });
   };
+
   return (
     <div className="no-footer overflow-y-scroll top-[60px]">
       <RegisterShop
@@ -57,8 +58,8 @@ const RegisterShopPage = () => {
         shopHoliday={shopHoliday}
         FoodOrigin={FoodOrigin}
         shopCategoryId={shopCategoryId}
-        onUpdateShopStore={onUpdateShopStore}
         onRegisterShop={handleRegisterShop}
+        onUpdateShopStore={onUpdateShopStore}
       />
     </div>
   );

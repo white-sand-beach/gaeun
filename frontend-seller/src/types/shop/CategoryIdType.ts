@@ -1,6 +1,5 @@
 import { AxiosResponse } from "axios";
 
-export type CategoryIdType = {
-    id?: number;
+export interface CategoryIdType {
     setId: (value:AxiosResponse) => void;
 }
