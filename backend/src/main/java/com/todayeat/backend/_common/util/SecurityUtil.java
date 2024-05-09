@@ -19,4 +19,9 @@ public class SecurityUtil {
 
         return (Seller) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
+
+    public Class<?> getPrincipalClass() {
+
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass();
+    }
 }

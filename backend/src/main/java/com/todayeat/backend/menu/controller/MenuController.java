@@ -27,7 +27,7 @@ public class MenuController implements MenuControllerDocs {
     }
 
     @Override
-    public SuccessResponse<GetMenuListResponse> getMenusResponse(Long storeId) {
+    public SuccessResponse<GetMenuListResponse> getList(Long storeId) {
         return SuccessResponse.of(menuService.getMenusResponse(storeId), SuccessType.GET_MENU_LIST_SUCCESS);
     }
 
