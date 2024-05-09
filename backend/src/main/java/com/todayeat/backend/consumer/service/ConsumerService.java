@@ -1,8 +1,10 @@
 package com.todayeat.backend.consumer.service;
 
+import com.todayeat.backend._common.entity.DirectoryType;
 import com.todayeat.backend._common.refreshtoken.repository.RefreshTokenRepository;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.CookieUtil;
+import com.todayeat.backend._common.util.S3Util;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.dto.request.CheckNicknameRequest;
 import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
@@ -23,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-import static com.todayeat.backend._common.response.error.ErrorType.NICKNAME_CONFLICT;
+import static com.todayeat.backend._common.response.error.ErrorType.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,6 +37,7 @@ public class ConsumerService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final SecurityUtil securityUtil;
     private final CookieUtil cookieUtil;
+    private final S3Util s3Util;
 
     private static String REFRESH_TOKEN_COOKIE_NAME = "RefreshToken";
     private static String ACCESS_TOKEN_COOKIE_NAME = "accessToken";
@@ -51,15 +54,34 @@ public class ConsumerService {
     @Transactional
     public void update(UpdateConsumerRequest request) {
 
-        Consumer consumer = securityUtil.getConsumer();
+        Consumer consumer = findBySecurityContext();
 
         // 닉네임 중복 검사
         if (existsByNickname(request.getNickname()) && !consumer.getNickname().equals(request.getNickname())) {
             throw new BusinessException(NICKNAME_CONFLICT);
         }
 
-        consumerRepository.findByIdAndDeletedAtIsNull(consumer.getId())
-                .get().update(request);
+        String imageUrl = null;
+
+        // 이미지 S3 업로드
+        if (request.getProfileImage() != null) {
+            imageUrl = s3Util.uploadImage(request.getProfileImage(), DirectoryType.CONSUMER_PROFILE_IMAGE, consumer.getId());
+        }
+
+        // 소비자 회원 정보 수정
+        try {
+            consumerRepository.updateConsumer(consumer.getId(), imageUrl, request.getNickname(), request.getPhoneNumber());
+        } catch (Exception e) {
+            if (imageUrl != null) {
+                s3Util.deleteImage(imageUrl);
+            }
+            throw new BusinessException(CONSUMER_UPDATE_FAIL);
+        }
+
+        // 기존 이미지 삭제
+        if (imageUrl == null && consumer.getProfileImage() != null) {
+            s3Util.deleteImage(consumer.getProfileImage());
+        }
     }
 
     public Consumer getConsumerOrNull(OAuth2Provider socialType, String email) {
@@ -76,13 +98,13 @@ public class ConsumerService {
 
     public GetConsumerResponse get() {
 
-        Consumer consumer = securityUtil.getConsumer();
+        Consumer consumer = findBySecurityContext();
         return ConsumerMapper.INSTANCE.toGetConsumerResponse(consumer);
     }
 
     public GetConsumerProfileResponse getProfile() {
 
-        Consumer consumer = securityUtil.getConsumer();
+        Consumer consumer = findBySecurityContext();
         return ConsumerMapper.INSTANCE.toGetConsumerProfileResponse(consumer);
     }
 
@@ -113,7 +135,6 @@ public class ConsumerService {
         // 쿠키 삭제
         cookieUtil.deleteCookie(request, response, ACCESS_TOKEN_COOKIE_NAME);
         cookieUtil.deleteCookie(request, response, REFRESH_TOKEN_COOKIE_NAME);
-
     }
 
     private boolean existsByNickname(String nickname) {
@@ -125,5 +146,10 @@ public class ConsumerService {
 
         return consumerRepository.findBySocialTypeAndEmailAndDeletedAtIsNull(socialType, email)
                 .orElse(null);
+    }
+
+    private Consumer findBySecurityContext() {
+        return consumerRepository.findByIdAndDeletedAtIsNull(securityUtil.getConsumer().getId())
+                .orElseThrow(() -> new BusinessException(CONSUMER_NOT_FOUND));
     }
 }

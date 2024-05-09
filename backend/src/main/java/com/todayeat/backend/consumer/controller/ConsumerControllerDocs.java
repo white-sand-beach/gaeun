@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "consumers", description = "소비자")
@@ -32,8 +33,8 @@ public interface ConsumerControllerDocs {
     @ApiResponse(responseCode = "409",
                 description = "닉네임 중복",
                 content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PutMapping
-    SuccessResponse<Void> update(@RequestBody @Valid UpdateConsumerRequest request);
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    SuccessResponse<Void> update(@ModelAttribute @Valid UpdateConsumerRequest request);
 
     @Operation(summary = "닉네임 중복 확인",
             description = """
