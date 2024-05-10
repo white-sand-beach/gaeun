@@ -249,8 +249,8 @@ const Main: React.FC = () => {
               style={{ maxHeight: isExpanded ? "467px" : "212px" }}
             >
               {storeList &&
-                storeList.map((item, index) => (
-                  <Shops key={index} /> // 각 요소에 대한 JSX 생성 및 Shops 컴포넌트에 데이터 전달
+                storeList.map(() => (
+                  <Shops /> // 각 요소에 대한 JSX 생성 및 Shops 컴포넌트에 데이터 전달
                 ))}
             </div>
           </div>
