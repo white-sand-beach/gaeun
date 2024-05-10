@@ -90,6 +90,7 @@ public class ConsumerService {
             updateConsumer(consumer, afterUrl, request);
         } catch (Exception e) {
             deleteS3ImageIfPresent(afterUrl); // 실패 시 S3에 업로드했던 파일 삭제
+            throw new BusinessException(CONSUMER_UPDATE_FAIL);
         }
 
         // 기존 이미지 삭제
