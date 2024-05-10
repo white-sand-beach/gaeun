@@ -15,8 +15,6 @@ import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse.Stor
 import com.todayeat.backend.store.entity.QStore;
 import com.todayeat.backend.store.entity.Store;
 import lombok.RequiredArgsConstructor;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -38,7 +36,6 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
         QStoreCategory storeCategory = QStoreCategory.storeCategory;
         QCategory category = QCategory.category;
 
-
         JPAQuery<StoreInfo> query = jpaQueryFactory
                 .select(fields(
                         StoreInfo.class,
@@ -57,8 +54,11 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
                                         Expressions.constant(location))
                                 .as("distance")))
                 .from(store)
-                .where(store.isOpened.isTrue())
-                ;
+                .where(store.isOpened.isTrue()
+                        .and(Expressions.numberTemplate(Double.class,
+                                "haversine_point({0}, {1})",
+                                store.location,
+                                Expressions.constant(location)).loe(radius.doubleValue())));
 
         if (categoryId != null) {
 
@@ -124,6 +124,6 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
             hasNext = true;
         }
 
-        return GetConsumerListStoreResponse.of(storeInfos, pageable.getPageSize() , hasNext);
+        return GetConsumerListStoreResponse.of(storeInfos, pageable.getPageSize(), hasNext);
     }
 }
