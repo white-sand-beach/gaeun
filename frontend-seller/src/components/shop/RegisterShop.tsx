@@ -5,22 +5,17 @@ import { RegisterShopType } from "../../types/shop/RegisterShopType";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { MapDataType } from "../../types/shop/MapDataType";
 
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 const RegisterShop: React.FC<RegisterShopType> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectImg, setSelectImg] = useState<File | null>(
     props.shopImage ? props.shopImage : null
   );
-
-  
-  // useEffect(() => {
-  //   // selectImg가 변경될 때마다 실행
-  //   if (selectImg) {
-  //     const objectUrl = URL.createObjectURL(selectImg); // selectImg로부터 URL 생성
-
-  //     // 컴포넌트가 언마운트될 때 URL 해제
-  //     return () => URL.revokeObjectURL(objectUrl);
-  //   }
-  // }, [selectImg]);
 
   // input type file로 가게 사진 받아올 때
   const handleChangeImg = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +43,24 @@ const RegisterShop: React.FC<RegisterShopType> = (props) => {
     props.onUpdateShopStore?.("shoproadAddr", data.roadAddress);
     props.onUpdateShopStore?.("shopLat", 33.450701);
     props.onUpdateShopStore?.("shopLon", 126.570667);
+    props.onUpdateShopStore?.("shopCategoryId", [1, 2, 3]);
+    console.log(data.jibunAddress)
+    console.log(data.roadAddress)
+    
+    // 찾은 주소를 이용하여 좌표정보 얻기
+    // Kakao 객체가 로드된 후에 지번주소 또는 도로명주소를 통해 좌표 검색
+    window.kakao.maps.load(() => {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      geocoder.addressSearch(data.jibunAddress || data.roadAddress, (result: any, status: any) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          console.log(result)
+          props.onUpdateShopStore("shopLat", result[0].y)
+          props.onUpdateShopStore("shopLon", result[0].x)
+        }
+      })
+    });
+
+    // 주소검색 다 하면 모달창 닫음
     setIsOpen(false);
   };
 
@@ -193,7 +206,7 @@ const RegisterShop: React.FC<RegisterShopType> = (props) => {
 
       {isOpen && (
         <>
-          <div className="bg-black bg-opacity-50 z-10 w-screen h-screen fixed"></div>
+          <div className="fixed z-10 w-screen h-screen bg-black bg-opacity-50"></div>
           <div className="fixed z-50">
             <DaumPostcodeEmbed onComplete={handleAboutAddr} autoClose />
             <TotalButton title="닫기" onClick={() => setIsOpen(false)} />
