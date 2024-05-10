@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import Cookies from "universal-cookie";
 
 const LoginCallback = () => {
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(["accessToken"]);
+  const cookies = new Cookies();
 
   useEffect(() => {
     const handleLoginCallback = async () => {
@@ -12,10 +12,10 @@ const LoginCallback = () => {
         const params = new URL(window.location.href);
         const nextPage = params.searchParams.get("next-page");
         const accessToken = params.searchParams.get("access-token");
-        console.log(nextPage)
+        console.log(nextPage);
 
         if (accessToken) {
-          setCookie("accessToken", accessToken, { path: "/" });
+          cookies.set("accessToken", accessToken, { path: "/" });
         }
 
         console.log(cookies, nextPage, accessToken);
@@ -31,7 +31,7 @@ const LoginCallback = () => {
     };
 
     handleLoginCallback();
-  }, [navigate, setCookie]);
+  }, [navigate, cookies]);
 
   return <div>로그인 중...</div>;
 };

@@ -1,13 +1,9 @@
-import axios from "axios";
-import Cookies from "universal-cookie";
+import axiosInstance from "../authentication/AxiosSet";
 import MainMapData from "../../types/MainMapDataType";
-
-const cookies = new Cookies();
-const token = cookies.get("accessToken");
 
 const MapListForm = async (mainData: MainMapData): Promise<any> => {
   try {
-    const response = await axios.get(
+    const response = await axiosInstance.get(
       `${import.meta.env.VITE_API_URL}/api/stores`,
       {
         params: {
@@ -18,9 +14,6 @@ const MapListForm = async (mainData: MainMapData): Promise<any> => {
           size: mainData.size,
           radius: mainData.radius,
           sort: mainData.sort,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
         },
       }
     );
