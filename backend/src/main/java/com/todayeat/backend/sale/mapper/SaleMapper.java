@@ -34,5 +34,7 @@ public interface SaleMapper {
     @Mapping(source = "sale.sellPrice", target = "sellPrice")
     @Mapping(source = "sale.discountRate", target = "discountRate")
     @Mapping(source = "sale.content", target = "content")
-    GetCartResponse getCartResponse(Sale sale, Integer restStock, Integer quantity);
+    @Mapping(source = "sale.isFinished", target="isFinished")
+    @Mapping(source = "id", target = "id")
+    GetCartResponse getCartResponse(String id, Sale sale, Integer restStock, Integer quantity);
 }

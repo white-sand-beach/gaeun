@@ -23,23 +23,20 @@ public class Cart implements Serializable {
     @Indexed
     private Long storeId;
 
-    private String storeName;
-
     @Indexed
     private Long saleId;
 
     @Builder
-    private Cart(String id, Integer quantity, Long consumerId, Long storeId, String storeName, Long saleId) {
+    private Cart(String id, Integer quantity, Long consumerId, Long storeId, Long saleId) {
         this.id = id;
         this.quantity = quantity;
         this.consumerId = consumerId;
         this.storeId = storeId;
-        this.storeName = storeName;
         this.saleId = saleId;
     }
 
     public void updateQuantity(Integer quantity) {
 
-        this.quantity += quantity;
+        this.quantity = quantity;
     }
 }

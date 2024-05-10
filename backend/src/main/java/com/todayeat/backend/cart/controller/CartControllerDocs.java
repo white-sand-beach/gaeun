@@ -3,6 +3,7 @@ package com.todayeat.backend.cart.controller;
 import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.cart.dto.request.CreateCartRequest;
+import com.todayeat.backend.cart.dto.request.UpdateQuantityRequest;
 import com.todayeat.backend.cart.dto.response.GetCartListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,6 +44,30 @@ public interface CartControllerDocs {
             content = @Content(schema = @Schema(implementation = GetCartListResponse.class)))
     @GetMapping
     SuccessResponse<GetCartListResponse> getList();
+
+    @Operation(summary = "장바구니 수량 변경",
+            description = """
+                    `ROLE_CONSUMER` \n
+                    path variable로 cart-id 넣어주세요. \n
+                    """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @ApiResponse(responseCode = "401",
+            description = "내 장바구니가 맞는지 확인",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = """ 
+                    장바구니 존재 확인 \n
+                    메뉴 정보 없음 \n
+                    """,
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PutMapping(value = "/{cart-id}")
+    SuccessResponse<Void> updateQuantity(@PathVariable(name = "cart-id")
+                                         @Schema(description = "장바구니 ID", example = "1")
+                                         String cartId,
+                                         @RequestBody
+                                         @Valid
+                                         UpdateQuantityRequest request);
 
     @Operation(summary = "장바구니 삭제",
             description = """

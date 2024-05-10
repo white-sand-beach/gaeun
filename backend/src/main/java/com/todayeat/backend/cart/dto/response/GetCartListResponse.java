@@ -16,6 +16,9 @@ public class GetCartListResponse {
     @Schema(description = "가게명", example = "옥이네")
     private String storeName;
 
+    @Schema(description = "가게 오픈 여부", example = "true")
+    private Boolean isOpened;
+
     List<GetCartResponse> cartResponseList;
 
     @Schema(description = "원가 총합", example = "20000")
@@ -28,20 +31,22 @@ public class GetCartListResponse {
     private Integer sellTotalPrice;
 
     @Builder
-    private GetCartListResponse (Long storeId, String storeName, List<GetCartResponse> cartResponseList, Integer originalTotalPrice, Integer discountTotalPrice, Integer sellTotalPrice) {
+    private GetCartListResponse (Long storeId, String storeName, Boolean isOpened, List<GetCartResponse> cartResponseList, Integer originalTotalPrice, Integer discountTotalPrice, Integer sellTotalPrice) {
         this.storeId = storeId;
         this.storeName = storeName;
+        this.isOpened = isOpened;
         this.cartResponseList = cartResponseList;
         this.originalTotalPrice = originalTotalPrice;
         this.discountTotalPrice = discountTotalPrice;
         this.sellTotalPrice = sellTotalPrice;
     }
 
-    public static GetCartListResponse of (Long storeId, String storeName, List<GetCartResponse> cartResponseList, Integer originalTotalPrice, Integer discountTotalPrice, Integer sellTotalPrice) {
+    public static GetCartListResponse of (Long storeId, String storeName, Boolean isOpened, List<GetCartResponse> cartResponseList, Integer originalTotalPrice, Integer discountTotalPrice, Integer sellTotalPrice) {
 
         return builder()
                 .storeId(storeId)
                 .storeName(storeName)
+                .isOpened(isOpened)
                 .cartResponseList(cartResponseList)
                 .originalTotalPrice(originalTotalPrice)
                 .discountTotalPrice(discountTotalPrice)
