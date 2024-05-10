@@ -38,11 +38,8 @@ const RegisterShop: React.FC<RegisterShopType> = (props) => {
   // 다음 주소 찾기 api 를 통한 주소데이터 얻는 함수
   // 얻은 데이터 중, 지번주소, 도로명주소를 store에서 관리
   const handleAboutAddr = (data: MapDataType) => {
-    console.log(data);
     props.onUpdateShopStore?.("shopzibunAddr", data.jibunAddress);
     props.onUpdateShopStore?.("shoproadAddr", data.roadAddress);
-    props.onUpdateShopStore?.("shopLat", 33.450701);
-    props.onUpdateShopStore?.("shopLon", 126.570667);
     props.onUpdateShopStore?.("shopCategoryId", [1, 2, 3]);
     console.log(data.jibunAddress)
     console.log(data.roadAddress)
