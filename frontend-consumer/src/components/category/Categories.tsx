@@ -9,9 +9,6 @@ const Categories = () => {
     const fetchCategories = async () => {
       try {
         const data = await CategoryForm();
-        if (!data.categoryList) {
-          throw new Error("categoryList is missing in the response");
-        }
         setCategories(data.categoryList);
       } catch (error) {
         console.error("카테고리를 불러오는 과정에서 에러 발생!!!!:", error);
