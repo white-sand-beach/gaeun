@@ -58,30 +58,42 @@ public class ConsumerService {
 
         // 닉네임 중복 검사
         if (existsByNickname(request.getNickname()) && !consumer.getNickname().equals(request.getNickname())) {
-            throw new BusinessException(NICKNAME_CONFLICT);
+            throw new BusinessException(CONSUMER_NICKNAME_CONFLICT);
         }
 
-        String imageUrl = null;
-
-        // 이미지 S3 업로드
-        if (request.getProfileImage() != null) {
-            imageUrl = s3Util.uploadImage(request.getProfileImage(), DirectoryType.CONSUMER_PROFILE_IMAGE, consumer.getId());
+        // 잘못된 이미지 요청
+        if (request.getProfileImage() != null && request.getImageUrl() != null) {
+            throw new BusinessException(CONSUMER_IMAGE_DUPLICATE);
         }
 
-        // 소비자 회원 정보 수정
-        try {
-            consumerRepository.updateConsumer(consumer.getId(), imageUrl, request.getNickname(), request.getPhoneNumber());
-        } catch (Exception e) {
-            if (imageUrl != null) {
-                s3Util.deleteImage(imageUrl);
+        if (request.getImageUrl() != null) {
+
+            if (!consumer.getProfileImage().equals(request.getImageUrl())) {
+                throw new BusinessException(CONSUMER_IMAGE_URL_BAD_REQUEST);
             }
-            throw new BusinessException(CONSUMER_UPDATE_FAIL);
+
+            // 기존 이미지 유지
+            updateConsumer(consumer, consumer.getProfileImage(), request);
+            return;
+        }
+
+        String beforeUrl = consumer.getProfileImage();
+        String afterUrl = null;
+
+        // S3에 이미지 업로드
+        if (request.getProfileImage() != null) {
+            afterUrl = s3Util.uploadImage(request.getProfileImage(), DirectoryType.CONSUMER_PROFILE_IMAGE, consumer.getId());
+        }
+
+        // 소비자 정보 수정
+        try {
+            updateConsumer(consumer, afterUrl, request);
+        } catch (Exception e) {
+            deleteS3ImageIfPresent(afterUrl); // 실패 시 S3에 업로드했던 파일 삭제
         }
 
         // 기존 이미지 삭제
-        if (imageUrl == null && consumer.getProfileImage() != null) {
-            s3Util.deleteImage(consumer.getProfileImage());
-        }
+        deleteS3ImageIfPresent(beforeUrl);
     }
 
     public Consumer getConsumerOrNull(OAuth2Provider socialType, String email) {
@@ -112,8 +124,7 @@ public class ConsumerService {
     public void delete(Consumer consumer) {
 
         // 리프레시 토큰 삭제
-        refreshTokenRepository.findByMemberIdAndRole(consumer.getId(), "CONSUMER")
-                        .forEach(r -> refreshTokenRepository.delete(r));
+        refreshTokenRepository.deleteAll(refreshTokenRepository.findByMemberIdAndRole(consumer.getId(), "CONSUMER"));
 
         // DB 삭제
         consumerRepository.delete(consumer);
@@ -128,9 +139,10 @@ public class ConsumerService {
     @Transactional
     public void logout(HttpServletRequest request, HttpServletResponse response) {
 
-        cookieUtil.getCookie(request, REFRESH_TOKEN_COOKIE_NAME) // 쿠키에서 리프레시 토큰 찾기
-                .ifPresent(c -> refreshTokenRepository.findByRefreshToken(c.getValue())
-                        .ifPresent(refreshTokenRepository::delete)); // Redis 삭제
+        // 쿠키에서 리프레시 토큰 찾기
+        cookieUtil.getCookie(request, REFRESH_TOKEN_COOKIE_NAME)
+                .flatMap(c -> refreshTokenRepository.findByRefreshToken(c.getValue()))
+                .ifPresent(refreshTokenRepository::delete); // Redis 삭제
 
         // 쿠키 삭제
         cookieUtil.deleteCookie(request, response, ACCESS_TOKEN_COOKIE_NAME);
@@ -151,5 +163,18 @@ public class ConsumerService {
     private Consumer findBySecurityContext() {
         return consumerRepository.findByIdAndDeletedAtIsNull(securityUtil.getConsumer().getId())
                 .orElseThrow(() -> new BusinessException(CONSUMER_NOT_FOUND));
+    }
+
+    private void updateConsumer(Consumer consumer, String imageUrl, UpdateConsumerRequest request) {
+        consumerRepository.updateConsumer(consumer.getId(),
+                                            imageUrl,
+                                            request.getNickname(),
+                                            request.getPhoneNumber());
+    }
+
+    private void deleteS3ImageIfPresent(String imageUrl) {
+        if (s3Util.getOptionalS3ObjetKey(imageUrl).isPresent()) {
+            s3Util.deleteImage(imageUrl);
+        }
     }
 }

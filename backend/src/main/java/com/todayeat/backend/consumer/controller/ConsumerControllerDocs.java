@@ -25,8 +25,11 @@ public interface ConsumerControllerDocs {
     @Operation(summary = "회원 정보 수정",
             description = """
                           `ROLE_CONSUMER` \n
-                          사용자의 닉네임, 휴대폰 번호를 수정합니다. \n
-                          request body 넣어주세요.
+                          사용자의 프로필 사진, 닉네임, 휴대폰 번호를 수정합니다. \n
+                          form data 넣어주세요. \n
+                          - 프로필 사진 변경 => profileImage (새 파일), imageUrl (null)
+                          - 프로필 사진 삭제 => profileImage (null), imageUrl (null)
+                          - 프로필 사진 유지 => profileImage (null), imageUrl (기존 이미지 URL)
                           """)
     @ApiResponse(responseCode = "200",
                 description = "성공")

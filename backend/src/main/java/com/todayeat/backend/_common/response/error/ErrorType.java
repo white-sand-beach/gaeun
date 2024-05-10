@@ -22,8 +22,10 @@ public enum ErrorType {
 
     // consumer
     CONSUMER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 소비자를 찾을 수 없습니다."),
-    NICKNAME_CONFLICT(HttpStatus.CONFLICT, "이미 사용중인 닉네임입니다."),
+    CONSUMER_NICKNAME_CONFLICT(HttpStatus.CONFLICT, "이미 사용중인 닉네임입니다."),
     CONSUMER_UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "소비자 회원 정보 수정에 실패하였습니다."),
+    CONSUMER_IMAGE_DUPLICATE(HttpStatus.BAD_REQUEST, "이미지 URL(기존 이미지)과 이미지 파일(신규 이미지) 중 하나를 요청해야 합니다."),
+    CONSUMER_IMAGE_URL_BAD_REQUEST(HttpStatus.BAD_REQUEST, "기존 이미지 URL이 맞지 않습니다."),
 
     // favorite
     FAVORITE_CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 찜입니다."),

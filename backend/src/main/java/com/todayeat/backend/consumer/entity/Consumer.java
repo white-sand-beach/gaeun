@@ -32,7 +32,7 @@ public class Consumer extends BaseTime {
     @Column(length = 50, nullable = false)
     private String email;
 
-    @Column(length = 10, nullable = true)
+    @Column(length = 8, nullable = true)
     private String nickname;
 
     @Column(nullable = true)
