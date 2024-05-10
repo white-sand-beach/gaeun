@@ -1,6 +1,6 @@
 import { useState } from "react";
-import RegisterFood from "../../components/foods/RegisterFood";
-import AddFoodAPI from "../../service/foods/AddFoodAPI";
+import RegisterFood from "../../components/foods/RegisterFood.tsx";
+import RegisterFoodAPI from "../../service/foods/RegisterFoodAPI.ts";
 import Cookies from "universal-cookie";
 
 const RegisterFoodPage = () => {
@@ -24,11 +24,11 @@ const RegisterFoodPage = () => {
     };
 
     // 메뉴 등록을 위한 api import
-    const { postRegisterMenu } = AddFoodAPI();
+    const { postRegisterFood } = RegisterFoodAPI();
 
     // 메뉴 등록 요청
     const handleRegisterMenu = () => {
-        postRegisterMenu({
+        postRegisterFood({
             image: foodInfo.image,
             name: foodInfo.name,
             originalPrice: foodInfo.originalPrice,

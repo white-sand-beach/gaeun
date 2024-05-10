@@ -1,14 +1,14 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { AddMenuType } from "../../types/foods/AddMenuType";
+import { RegisterFoodType } from "../../types/foods/RegisterFoodType.ts";
 import Cookies from "universal-cookie";
 
-const AddFoodAPI = () => {
+const RegisterFoodAPI = () => {
   const navigate = useNavigate()
   const cookies = new Cookies()
   const accessToken = cookies.get("accessToken")
 
-  const postRegisterMenu = ({image, name, originalPrice, sellPrice, storeId}: AddMenuType) => {
+  const postRegisterFood = ({image, name, originalPrice, sellPrice, storeId}: RegisterFoodType) => {
     const formData = new FormData()
     formData.append("image", image)
     formData.append("name", name)
@@ -30,8 +30,8 @@ const AddFoodAPI = () => {
     });
   };
   return {
-    postRegisterMenu,
+    postRegisterFood,
   };
 };
 
-export default AddFoodAPI;
+export default RegisterFoodAPI;

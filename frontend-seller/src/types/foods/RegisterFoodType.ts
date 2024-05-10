@@ -1,4 +1,4 @@
-export type AddMenuType = {
+export type RegisterFoodType = {
   image: string;
   name: string;
   originalPrice: number;

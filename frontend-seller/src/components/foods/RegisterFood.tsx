@@ -1,8 +1,8 @@
 import logo from "/icons/size-192.png";
 import camera from "../../assets/addphoto.png";
 import React, { useRef } from "react";
-import { InputFoodType } from "../../types/foods/InputFoodType";
-import TotalButton from "../ui/TotalButton";
+import { InputFoodType } from "../../types/foods/InputFoodType.ts";
+import TotalButton from "../ui/TotalButton.tsx";
 
 const RegisterFood: React.FC<InputFoodType> = (props) => {
     const imgRef = useRef<HTMLInputElement>(null);
