@@ -68,7 +68,7 @@ public class CartService {
         } else {
 
             // 수량 업데이트
-            cart.get().updateQuantity(request.getQuantity());
+            cart.get().updateQuantity(cart.get().getQuantity() + request.getQuantity());
 
             // 수량이 남은 재고 보다 작거나 같은지 확인
             validateQuantityAndRestStock(cart.get().getQuantity(), sale.getStock(), sale.getTotalQuantity());
