@@ -15,7 +15,7 @@ public class Cart implements Serializable {
     @Id
     private String id;
 
-    private Integer quantity;
+    private Integer quantity; //담은 수량
 
     @Indexed
     private Long consumerId;
@@ -29,7 +29,8 @@ public class Cart implements Serializable {
     private Long saleId;
 
     @Builder
-    private Cart(Integer quantity, Long consumerId, Long storeId, String storeName, Long saleId) {
+    private Cart(String id, Integer quantity, Long consumerId, Long storeId, String storeName, Long saleId) {
+        this.id = id;
         this.quantity = quantity;
         this.consumerId = consumerId;
         this.storeId = storeId;

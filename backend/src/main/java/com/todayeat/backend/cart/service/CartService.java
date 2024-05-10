@@ -4,11 +4,14 @@ import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.cart.dto.request.CreateCartRequest;
+import com.todayeat.backend.cart.dto.response.GetCartListResponse;
+import com.todayeat.backend.cart.dto.response.GetCartResponse;
 import com.todayeat.backend.cart.entity.Cart;
 import com.todayeat.backend.cart.mapper.CartMapper;
 import com.todayeat.backend.cart.repository.CartRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.sale.entity.Sale;
+import com.todayeat.backend.sale.mapper.SaleMapper;
 import com.todayeat.backend.sale.repository.SaleRepository;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.repository.StoreRepository;
@@ -16,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -71,6 +75,43 @@ public class CartService {
             // 레디스에 수량 업데이트
             cartRepository.save(cart.get());
         }
+    }
+
+    public GetCartListResponse getList() {
+
+        Consumer consumer = securityUtil.getConsumer();
+
+        List<Cart> cartList = cartRepository.findAllByConsumerId(consumer.getId());
+
+        List<GetCartResponse> cartResponseList = new ArrayList<>();
+
+        Integer originalTotalPrice = 0; // 원가 총합
+        Integer sellTotalPrice = 0; // 할인가 총합
+
+        for(Cart c : cartList) {
+
+            Sale sale = saleRepository.findByIdAndDeletedAtIsNull(c.getSaleId())
+                    .orElse(null);
+
+            if(sale == null)
+                continue;
+
+            Integer restStock = sale.getStock() - sale.getTotalQuantity();
+
+            if(restStock <= 0)
+                continue;
+
+            cartResponseList.add(SaleMapper
+                    .INSTANCE.getCartResponse(sale, restStock, c.getQuantity()));
+            originalTotalPrice += sale.getOriginalPrice() * c.getQuantity();
+            sellTotalPrice += sale.getSellPrice() * c.getQuantity();
+        }
+
+        Long storeId = cartList.isEmpty() ? 0 : cartList.getFirst().getStoreId();
+        String storeName = cartList.isEmpty() ? null : cartList.getFirst().getStoreName();
+
+        return GetCartListResponse.of(storeId, storeName, cartResponseList,
+                originalTotalPrice, originalTotalPrice - sellTotalPrice, sellTotalPrice);
     }
 
     @Transactional

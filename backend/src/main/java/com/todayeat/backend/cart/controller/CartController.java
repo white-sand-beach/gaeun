@@ -3,7 +3,9 @@ package com.todayeat.backend.cart.controller;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend._common.response.success.SuccessType;
 import com.todayeat.backend.cart.dto.request.CreateCartRequest;
+import com.todayeat.backend.cart.dto.response.GetCartListResponse;
 import com.todayeat.backend.cart.service.CartService;
+import com.todayeat.backend.menu.dto.response.GetMenuListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,12 @@ public class CartController implements CartControllerDocs {
         cartService.create(request);
 
         return SuccessResponse.of(SuccessType.CREATE_CART_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<GetCartListResponse> getList() {
+
+        return SuccessResponse.of(cartService.getList(), SuccessType.GET_CART_LIST_SUCCESS);
     }
 
     @Override

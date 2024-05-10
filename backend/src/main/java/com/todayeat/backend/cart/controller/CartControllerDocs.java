@@ -3,7 +3,7 @@ package com.todayeat.backend.cart.controller;
 import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.cart.dto.request.CreateCartRequest;
-import com.todayeat.backend.menu.dto.request.DeleteMenuRequest;
+import com.todayeat.backend.cart.dto.response.GetCartListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,6 +33,16 @@ public interface CartControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping
     SuccessResponse<Void> create(@RequestBody @Valid CreateCartRequest request);
+
+    @Operation(summary = "장바구니 조회",
+            description = """
+                    `ROLE_CONSUMER` \n
+                    """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetCartListResponse.class)))
+    @GetMapping
+    SuccessResponse<GetCartListResponse> getList();
 
     @Operation(summary = "장바구니 삭제",
             description = """
