@@ -46,4 +46,12 @@ public class CartController implements CartControllerDocs {
 
         return SuccessResponse.of(SuccessType.DELETE_CART_SUCCESS);
     }
+
+    @Override
+    public SuccessResponse<Void> deleteAll() {
+
+        cartService.deleteAll();
+
+        return SuccessResponse.of(SuccessType.DELETE_ALL_CART_SUCCESS);
+    }
 }

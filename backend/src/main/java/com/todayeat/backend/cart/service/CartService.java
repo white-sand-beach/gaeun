@@ -161,6 +161,16 @@ public class CartService {
         cartRepository.delete(cart);
     }
 
+    @Transactional
+    public void deleteAll() {
+
+        Consumer consumer = securityUtil.getConsumer();
+
+        List<Cart> cartList = cartRepository.findAllByConsumerId(consumer.getId());
+
+        cartRepository.deleteAll(cartList);
+    }
+
     private void validateQuantityAndRestStock(Integer quantity, Integer stock, Integer totalQuantity) {
 
         if (stock - totalQuantity - quantity < 0)

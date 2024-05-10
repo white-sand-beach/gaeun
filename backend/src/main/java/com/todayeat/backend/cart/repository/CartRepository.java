@@ -11,4 +11,6 @@ public interface CartRepository extends CrudRepository<Cart, String> {
     List<Cart> findAllByConsumerId (Long consumerId);
 
     Optional<Cart> findByConsumerIdAndSaleId(Long consumerId, Long saleId);
+
+    void deleteAllByConsumerId(Long consumerId);
 }

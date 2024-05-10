@@ -86,4 +86,11 @@ public interface CartControllerDocs {
     SuccessResponse<Void> delete(@PathVariable(name = "cart-id")
                                  @Schema(description = "장바구니 ID", example = "0018c673-a755-454f-9777-4b4d29fe5fb1")
                                  String cartId);
+
+    @Operation(summary = "장바구니 전체 삭제",
+            description = "`ROLE_CONSUMER`")
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @DeleteMapping
+    SuccessResponse<Void> deleteAll();
 }
