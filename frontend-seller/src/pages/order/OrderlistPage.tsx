@@ -1,4 +1,4 @@
-import OrderList from "../../components/list/OrderList.tsx";
+import OrderList from "../../components/order/OrderList.tsx";
 import TotalButton from "../../components/ui/TotalButton.tsx";
 
 const OrderListPage = () => {

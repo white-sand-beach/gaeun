@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Main from "./components/ui/Main.tsx";
 import LogIn from "./pages/user/LogInPage.tsx"
 import SignUp from "./pages/user/SignupPage.tsx";
-import SignupFinish from "./components/login/SignupFinish.tsx";
 import RegisterFood from "./components/foods/RegisterFood.tsx";
 import MainLayout from "./components/ui/MainLayout.tsx";
 
@@ -17,6 +16,12 @@ import MyPage from "./pages/user/MyPage.tsx";
 
 
 const App = () => {
+
+  // 브라우저 종료하면 로컬스토리지 클리어
+  window.addEventListener("unload", () => {
+    localStorage.clear()
+  })
+  
   return (
     <BrowserRouter basename="/seller">
       <MainLayout />
@@ -24,7 +29,6 @@ const App = () => {
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/signupFin" element={<SignupFinish />} />
           <Route path="/register/shop" element={<RegisterShopPage />} />
           <Route path="/register/food" element={<RegisterFood />} />
           <Route path="/order" element={<OrderListPage />} />
