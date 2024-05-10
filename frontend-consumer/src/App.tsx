@@ -46,7 +46,7 @@ const App = () => {
           <Route path="/order-list" element={<OrderList />} />
           <Route path="/profile" element={<Profile />} />.
           <Route path="/profile-setting" element={<ProfileSetting />} />
-          <Route path="/shop" element={<Shop />} />
+          <Route path="/shop/:Id" element={<Shop />} />
           <Route path="/address-search" element={<AddressSearchPage />} />
           <Route
             path="/address-search-registration"
