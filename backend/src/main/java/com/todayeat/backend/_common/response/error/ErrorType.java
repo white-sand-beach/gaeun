@@ -37,7 +37,7 @@ public enum ErrorType {
     // cart
     CART_QUANTITY_MORE_THAN_REST_STOCK(HttpStatus.BAD_REQUEST, "수량이 남은 재고보다 많습니다."),
     CART_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 장바구니를 찾을 수 없습니다."),
-    CART_NOT_MINE(HttpStatus.UNAUTHORIZED, "내 장바구니가 아닙니다."),
+    CART_FORBIDDEN(HttpStatus.FORBIDDEN, "내 장바구니가 아닙니다."),
 
     // order
 

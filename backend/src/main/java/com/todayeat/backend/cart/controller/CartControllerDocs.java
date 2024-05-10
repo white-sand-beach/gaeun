@@ -26,10 +26,10 @@ public interface CartControllerDocs {
             description = "성공")
     @ApiResponse(responseCode = "400",
             description = """
-                    가게 존재 여부, 가게가 열려 있는지 확인 \n
-                    장바구니에 다른 가게 음식이 담겨있는지 확인 \n
-                    해당 가게에 판매 존재 여부, 판매 중지인지 확인 \n
-                    수량이 남은 재고 보다 작거나 같은지 확인
+                    가게가 없거나, 가게 영업 종료일 경우 \n
+                    장바구니에 다른 가게 음식이 담겨있는 경우 \n
+                    해당 가게의 판매가 아닌 경우, 판매 중지인 경우 \n
+                    수량이 남은 재고 보다 클 경우
                     """,
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping
@@ -52,13 +52,19 @@ public interface CartControllerDocs {
                     """)
     @ApiResponse(responseCode = "200",
             description = "성공")
-    @ApiResponse(responseCode = "401",
-            description = "내 장바구니가 맞는지 확인",
+    @ApiResponse(responseCode = "403",
+            description = "내 장바구니가 아닌 경우",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "404",
-            description = """ 
-                    장바구니 존재 확인 \n
-                    메뉴 정보 없음 \n
+            description = """
+                    해당 장바구니가 없는 경우 \n
+                    """,
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "400",
+            description = """
+                    가게가 없거나, 가게 영업 종료일 경우 \n
+                    가게에 해당 판매가 없는 경우, 판매 중지인 경우 \n
+                    수량이 남은 재고 보다 클 경우
                     """,
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PutMapping(value = "/{cart-id}")
@@ -77,10 +83,10 @@ public interface CartControllerDocs {
     @ApiResponse(responseCode = "200",
             description = "성공")
     @ApiResponse(responseCode = "404",
-            description = "장바구니 존재 확인",
+            description = "장바구니 존재 안하는 경우",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @ApiResponse(responseCode = "401",
-            description = "내 장바구니가 맞는지 확인",
+    @ApiResponse(responseCode = "403",
+            description = "내 장바구니가 아닌 경우",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @DeleteMapping("/{cart-id}")
     SuccessResponse<Void> delete(@PathVariable(name = "cart-id")

@@ -19,6 +19,6 @@ public class UpdateQuantityRequest {
     private Long storeId;
 
     @NotNull(message = "saleId: 값이 null이 아니어야 합니다.")
-    @Schema(description = "메뉴 ID", example = "2")
+    @Schema(description = "판매 ID", example = "2")
     private Long saleId;
 }

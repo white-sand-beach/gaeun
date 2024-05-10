@@ -127,6 +127,11 @@ public class CartService {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new BusinessException(ErrorType.CART_NOT_FOUND));
 
+        // 내 장바구니가 맞는지 확인
+        if (!Objects.equals(cart.getConsumerId(), consumer.getId())) {
+            throw new BusinessException(ErrorType.CART_FORBIDDEN);
+        }
+
         // 가게 존재 여부, 가게가 열려 있는지 확인
         Store store = storeRepository
                 .findByIdAndDeletedAtIsNull(request.getStoreId())
@@ -155,8 +160,9 @@ public class CartService {
                 .orElseThrow(() -> new BusinessException(ErrorType.CART_NOT_FOUND));
 
         // 내 장바구니가 맞는지 확인
-        if(!Objects.equals(cart.getConsumerId(), consumer.getId()))
-            throw new BusinessException(ErrorType.CART_NOT_MINE);
+        if (!Objects.equals(cart.getConsumerId(), consumer.getId())) {
+            throw new BusinessException(ErrorType.CART_FORBIDDEN);
+        }
 
         cartRepository.delete(cart);
     }
