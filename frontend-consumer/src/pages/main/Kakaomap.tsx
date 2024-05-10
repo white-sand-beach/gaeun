@@ -16,6 +16,7 @@ interface KakaoMapProps {
   height: string;
   updateCounter?: number;
   storeList?: StoreList[] | undefined; // nearbyStores 속성의 타입 수정
+  isShop?: boolean;
 }
 
 const KakaoMap: React.FC<KakaoMapProps> = ({
@@ -24,6 +25,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
   height,
   updateCounter,
   storeList,
+  isShop,
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const markerRef = useRef<any>(null);
@@ -46,8 +48,10 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
     } else {
       setCurrentPosition({ lat, lng });
       if (update) {
-        update("latitude", lat);
-        update("longitude", lng);
+        if (!isShop) {
+          update("latitude", lat);
+          update("longitude", lng);
+        }
       }
     }
   }, [lat, lng]); // lat, lng props의 변경을 감지합니다.
