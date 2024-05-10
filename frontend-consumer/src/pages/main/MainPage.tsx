@@ -248,10 +248,10 @@ const Main: React.FC = () => {
               className="flex flex-col gap-2 py-2 pl-2 overflow-y-auto "
               style={{ maxHeight: isExpanded ? "467px" : "212px" }}
             >
-              <Shops />
-              <Shops />
-              <Shops />
-              <Shops />
+              {storeList &&
+                storeList.map((item, index) => (
+                  <Shops key={index} /> // 각 요소에 대한 JSX 생성 및 Shops 컴포넌트에 데이터 전달
+                ))}
             </div>
           </div>
         </div>

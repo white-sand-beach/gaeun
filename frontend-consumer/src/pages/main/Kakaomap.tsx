@@ -91,6 +91,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
 
     // 일반 마커 생성
     if (storeList) {
+      console.log(storeList);
       storeList.forEach((item) => {
         const markerPosition = new window.kakao.maps.LatLng(
           item.latitude,
