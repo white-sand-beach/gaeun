@@ -1,18 +1,9 @@
-import axios from "axios";
-import Cookies from "universal-cookie";
+import axiosInstance from "../authentication/AxiosSet";
 
 const FavoriteDeleteForm = async ({ favoriteId }: { favoriteId: number }): Promise<any> => {
-  const cookies = new Cookies();
-  const accessToken = cookies.get("accessToken")
 
-  const response = await axios.delete(
-    `${import.meta.env.VITE_API_URL}/api/favorites/${favoriteId}`, {
-    withCredentials: true,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const response = await axiosInstance.delete(
+    `${import.meta.env.VITE_API_URL}/api/favorites/${favoriteId}`);
   return response.data;
 };
 

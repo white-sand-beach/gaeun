@@ -1,20 +1,11 @@
-import axios from "axios";
-import Cookies from "universal-cookie";
+import axiosInstance from "../authentication/AxiosSet";
 
 const FavoritePostForm = async ({ storeId }: { storeId: number }): Promise<any> => {
-  const cookies = new Cookies();
-  const accessToken = cookies.get("accessToken")
 
-  const response = await axios.post(
+  const response = await axiosInstance.post(
     `${import.meta.env.VITE_API_URL}/api/favorites`,
     { storeId },
-    {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    );
   return response.data;
 };
 
