@@ -10,7 +10,7 @@ import lombok.Getter;
 public class CheckNicknameRequest {
 
     @NotBlank(message = "nickname: 값이 비어 있지 않아야 합니다.")
-    @Size(min = 2, max = 8, message = "nickname: 길이가 2에서 10 사이여야 합니다.")
+    @Size(min = 2, max = 8, message = "nickname: 길이가 2에서 8 사이여야 합니다.")
     @Schema(description = "닉네임", example = "김지녕")
     private String nickname;
 }
