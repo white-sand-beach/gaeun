@@ -18,10 +18,10 @@ pipeline {
                 }
             }
         }
-        
-         stage("front_env download") {
+
+        stage("fe_consumer_env download") {
             steps {
-                withCredentials([file(credentialsId: 'front_env', variable: 'configFile')]) {
+                withCredentials([file(credentialsId: 'fe_consumer_env', variable: 'configFile')]) {
                     script {
                         sh 'cp -rf $configFile ./frontend-consumer/.env'
                     }
@@ -43,7 +43,18 @@ pipeline {
                 }
 
                 sh 'docker build -t fe-consumer ./frontend-consumer'
-                sh 'docker run -d --name fe-consumer -p 5173:80 fe-consumer'   
+                sh 'docker run -d --name fe-consumer -p 5173:80 fe-consumer'
+                sh 'docker cp fe-consumer:/usr/share/nginx/html/consumer /nginx/html'
+            }
+        }
+
+        stage("fe_seller_env download") {
+            steps {
+                withCredentials([file(credentialsId: 'fe_seller_env', variable: 'configFile')]) {
+                    script {
+                        sh 'cp -rf $configFile ./frontend-seller/.env'
+                    }
+                }
             }
         }
 
@@ -61,7 +72,8 @@ pipeline {
                 }
                 
                 sh 'docker build -t fe-seller ./frontend-seller'
-                sh 'docker run -d --name fe-seller -p 5174:80 fe-seller'   
+                sh 'docker run -d --name fe-seller -p 5174:80 fe-seller'
+                sh 'docker cp fe-seller:/usr/share/nginx/html/seller /nginx/html'
             }
         }
 
