@@ -16,6 +16,12 @@ import MyPage from "./pages/user/MyPage.tsx";
 
 
 const App = () => {
+
+  // 브라우저 종료하면 로컬스토리지 클리어
+  window.addEventListener("unload", () => {
+    localStorage.clear()
+  })
+  
   return (
     <BrowserRouter basename="/seller">
       <MainLayout />

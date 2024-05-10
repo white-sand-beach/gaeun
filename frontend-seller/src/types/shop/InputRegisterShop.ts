@@ -1,4 +1,6 @@
-export interface RegisterShopType {
+import { CategoryIdType } from "./CategoryIdType";
+
+export type InputRegisterShop = {
     shopImage?: File | null; // 가게 이미지
     shopName: string; // 가게(상호명)
     shopOwner: string; // 대표자명
@@ -12,7 +14,9 @@ export interface RegisterShopType {
     shopHoliday?: string; // 휴무일
     FoodOrigin?: string; // 원산지
     shopCategoryId: number[]; // 카테고리 id
-    onUpdateShopStore: <K extends keyof RegisterShopType>(key: K, value: RegisterShopType[K]) => void | null;
+    onUpdateShopStore: <K extends keyof InputRegisterShop>(key: K, value: InputRegisterShop[K]) => void | null;
     onResetShopStore?: () => void;
     onRegisterShop?: () => void;
+
+    categoryList: CategoryIdType[]
 }

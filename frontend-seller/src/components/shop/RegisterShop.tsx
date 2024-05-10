@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import camera from "../../assets/addphoto.png";
 import TotalButton from "../ui/TotalButton";
-import { RegisterShopType } from "../../types/shop/RegisterShopType";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { MapDataType } from "../../types/shop/MapDataType";
+import { InputRegisterShop } from "../../types/shop/InputRegisterShop";
 
 declare global {
   interface Window {
@@ -11,12 +11,17 @@ declare global {
   }
 }
 
-const RegisterShop: React.FC<RegisterShopType> = (props) => {
+const RegisterShop: React.FC<InputRegisterShop> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [categoryId, setCategoryId] = useState<number[]>([])
   const [selectImg, setSelectImg] = useState<File | null>(
     props.shopImage ? props.shopImage : null
   );
 
+  useEffect(() => {
+    console.log(categoryId)
+  }, [categoryId])
+  
   // input type file로 가게 사진 받아올 때
   const handleChangeImg = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -26,12 +31,13 @@ const RegisterShop: React.FC<RegisterShopType> = (props) => {
     }
   };
 
+  // 입력하는 가게 정보를 store에 저장 및 관리
   const handleChangeInfo = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { value, name } = event.target;
     // 입력값을 store에 전달. 데이터 관리
-    props.onUpdateShopStore?.(name as keyof RegisterShopType, value);
+    props.onUpdateShopStore?.(name as keyof InputRegisterShop, value);
     console.log(`${name}: ${value}`);
   };
 
@@ -40,10 +46,9 @@ const RegisterShop: React.FC<RegisterShopType> = (props) => {
   const handleAboutAddr = (data: MapDataType) => {
     props.onUpdateShopStore?.("shopzibunAddr", data.jibunAddress);
     props.onUpdateShopStore?.("shoproadAddr", data.roadAddress);
-    props.onUpdateShopStore?.("shopCategoryId", [1, 2, 3]);
     console.log(data.jibunAddress)
     console.log(data.roadAddress)
-    
+
     // 찾은 주소를 이용하여 좌표정보 얻기
     // Kakao 객체가 로드된 후에 지번주소 또는 도로명주소를 통해 좌표 검색
     window.kakao.maps.load(() => {
@@ -60,6 +65,20 @@ const RegisterShop: React.FC<RegisterShopType> = (props) => {
     // 주소검색 다 하면 모달창 닫음
     setIsOpen(false);
   };
+
+  // 카테고리 id 할당
+  const handleCategoryId = (cateId: number) => {
+    // 카테고리 id 리스트에 이미 있는경우는 제외
+    if (categoryId.includes(cateId)) {
+      setCategoryId((prevCategory) =>
+        prevCategory.filter((id) => id !== cateId)
+      )
+    }
+    // 없으면 추가
+    else {
+      setCategoryId((prevCategory) => [...prevCategory, cateId])
+    }
+  }
 
   return (
     <div className="flex flex-col items-center w-screen h-full gap-3">
@@ -87,6 +106,19 @@ const RegisterShop: React.FC<RegisterShopType> = (props) => {
       )}
 
       <div className="flex flex-col items-center justify-center">
+        {/* 가게 카테고리 */}
+        <div className="flex flex-col gap-2">
+          <p className="mt-10 text-xl font-bold">카테고리</p>
+          <div className="grid grid-cols-2">
+            {props.categoryList.map((category) => (
+              <div key={category.id} className={`grid grid-cols-2 gap-4 m-1 border-2 p-2 rounded-[15px] ${categoryId.includes(category.id!) ? "bg-orange-300" : ""}`} onClick={() => handleCategoryId(category.id!)}>
+                {category.name}
+                <img src={category.imageURL} alt="카테고리 이미지" className="w-[30px]" />
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* 가게(상호)명 입력하기 */}
         <div className="flex flex-col gap-2">
           <p className="mt-10 text-xl font-bold">가게(상호명)</p>

@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { RegisterShopType } from "../../types/shop/RegisterShopType";
+import { InputRegisterShop } from "../../types/shop/InputRegisterShop";
 import Cookies from "universal-cookie";
-import { CategoryIdType } from "../../types/shop/CategoryIdType";
 
 const RegisterShopAPI = () => {
     const navigate = useNavigate();
@@ -25,7 +24,7 @@ const RegisterShopAPI = () => {
         shopHoliday,
         FoodOrigin,
         shopCategoryId,
-    }: RegisterShopType) => {
+    }: InputRegisterShop) => {
         const formData = new FormData();
         formData.append("registeredName", shopName);
         formData.append("bossName", shopOwner);
@@ -59,7 +58,7 @@ const RegisterShopAPI = () => {
     };
 
     // 가게 카테고리 목록 불러오는 api
-    const getCategories = ({setId}:CategoryIdType) => {
+    const getCategories = (setList:any) => {
         axios.get(import.meta.env.VITE_BASE_URL + "/api/categories", {
             headers: {
                 Authorization: `Bearer ${accessToken}`
@@ -67,7 +66,7 @@ const RegisterShopAPI = () => {
         })
         .then(res => {
             console.log(res.data.data.categoryList)
-            setId(res.data.data.categoryList)
+            setList(res.data.data.categoryList)
         })
         .catch(err => {
             console.error(err)
