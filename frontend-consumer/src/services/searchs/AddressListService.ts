@@ -1,14 +1,6 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
-
-interface AddressData {
-  locationId: number;
-  address: string;
-  alias: string;
-  roadAddress: string;
-  longitude: number;
-  latitude: number;
-}
+import AddressData from "../../types/AdressDataType";
 
 const cookies = new Cookies();
 const token = cookies.get("accessToken");
