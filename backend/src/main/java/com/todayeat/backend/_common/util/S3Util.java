@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -63,6 +64,14 @@ public class S3Util {
         }
     }
 
+    public Optional<String> getOptionalS3ObjetKey(String fileUrl) {
+        try {
+            return Optional.of(getS3ObjetKey(fileUrl));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
     // 저장할 파일의 메타 데이터 생성
     private ObjectMetadata createMetadata(MultipartFile multipartFile) {
 
@@ -91,8 +100,9 @@ public class S3Util {
 
         int startIndex = fileUrl.indexOf('/', fileUrl.indexOf("//") + 2);
 
-        if (startIndex < 0)
+        if (startIndex < 0) {
             throw new BusinessException(ErrorType.IMAGE_URL_FORMAT_INVALID);
+        }
 
         return fileUrl.substring(startIndex + 1);
     }
