@@ -1,4 +1,4 @@
-import logo from "../../../public/icons/size-512.png";
+import logo from "../../../public/android/android-launchericon-512-512.png";
 
 interface TrendingItem {
   rank: number;
@@ -20,15 +20,14 @@ const trendingItems: TrendingItem[] = [
 
 // 현재시간,
 const RealTimeTrendingSearch = () => {
-
   return (
     <div className="w-[300px] text-sm">
-      <div className="between px-4">
+      <div className="px-4 between">
         <div className="text-sm font-bold">
           <h1>실시간 급상승 검색어 순위</h1>
-          <p className="text-gray-400 text-sm font-normal">00:00 기준</p>
+          <p className="text-sm font-normal text-gray-400">00:00 기준</p>
         </div>
-        <img className="w-12 rounded-lg mr-4" src={logo} alt="로고" />
+        <img className="w-12 mr-4 rounded-lg" src={logo} alt="로고" />
       </div>
 
       {/* 순위 */}
@@ -36,7 +35,7 @@ const RealTimeTrendingSearch = () => {
         <div className="w-[150px] pl-4">
           {trendingItems.slice(0, 5).map((item) => (
             <div className="pt-2" key={item.rank}>
-              <span className="font-bold font-mono">{item.rank} </span>
+              <span className="font-mono font-bold">{item.rank} </span>
               {item.name}
             </div>
           ))}
@@ -44,7 +43,7 @@ const RealTimeTrendingSearch = () => {
         <div className="w-[150px] pl-4">
           {trendingItems.slice(5, 10).map((item) => (
             <div className="pt-2" key={item.rank}>
-              <span className="font-bold font-mono">{item.rank} </span>
+              <span className="font-mono font-bold">{item.rank} </span>
               {item.name}
             </div>
           ))}
