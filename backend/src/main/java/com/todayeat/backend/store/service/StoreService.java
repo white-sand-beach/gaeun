@@ -1,5 +1,6 @@
 package com.todayeat.backend.store.service;
 
+import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.S3Util;
 import com.todayeat.backend._common.util.SecurityUtil;
@@ -95,6 +96,9 @@ public class StoreService {
 
             throw new BusinessException(STORE_NOT_FOUND);
         }
+
+        store = storeRepository.findByIdAndDeletedAtIsNull(store.getId())
+                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
 
         GetSellerStoreResponse getSellerStoreResponse = StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store);
 
