@@ -62,7 +62,7 @@ const SignupAPI = () => {
                 setValid(true)
                 setComment("회원가입 성공")
                 window.alert("회원가입 성공!")
-                navigate("/")
+                navigate("/login")
 
             })
             .catch((err) => {

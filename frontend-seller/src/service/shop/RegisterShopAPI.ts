@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { RegisterShopType } from "../../types/shop/RegisterShopType";
 import Cookies from "universal-cookie";
 import { CategoryIdType } from "../../types/shop/CategoryIdType";
-import useShopStore from "../../store/shop/UseshopStore";
+import useSellerStore from "../../store/user/UsesellerStore";
 
 const RegisterShopAPI = () => {
     const navigate = useNavigate();
@@ -11,7 +11,8 @@ const RegisterShopAPI = () => {
     // 쿠키에서 토큰 가져오기
     const accessToken = cookies.get("accessToken");
 
-    const { onUpdateShopStore } = useShopStore();
+    // 스토어 id 저장하기 위한  useSellerStore 훅
+    const { updateSellerStore } = useSellerStore();
 
     // 가게 등록 api
     const postRegisterShop = ({
@@ -52,7 +53,7 @@ const RegisterShopAPI = () => {
         .then(res => {
             console.log(res.data)
             window.alert("가게 등록 성공 ㅎㅎ")
-            onUpdateShopStore("shopCategoryId", shopCategoryId)
+            updateSellerStore("stordId", res.data.data.storeId)
             navigate("/")
         })
         .catch(err => {
