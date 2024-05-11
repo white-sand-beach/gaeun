@@ -65,7 +65,7 @@ const RegisterShopAPI = () => {
             }
         })
         .then(res => {
-            console.log(res.data.data.categoryList)
+            console.log(res.data.data)
             setList(res.data.data.categoryList)
         })
         .catch(err => {
