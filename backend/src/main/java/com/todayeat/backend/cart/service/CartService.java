@@ -134,12 +134,12 @@ public class CartService {
 
         // 가게 존재 여부, 가게가 열려 있는지 확인
         Store store = storeRepository
-                .findByIdAndDeletedAtIsNull(request.getStoreId())
+                .findByIdAndDeletedAtIsNull(cart.getStoreId())
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_OPEN));
 
         // 해당 가게에 판매 존재 여부, 판매 중지인지 확인
         Sale sale = saleRepository
-                .findByIdAndStoreAndIsFinishedIsFalseAndDeletedAtIsNull(request.getSaleId(), store)
+                .findByIdAndStoreAndIsFinishedIsFalseAndDeletedAtIsNull(cart.getSaleId(), store)
                 .orElseThrow(() -> new BusinessException(ErrorType.SALE_NOT_SELLING));
 
         cart.updateQuantity(request.getQuantity());
