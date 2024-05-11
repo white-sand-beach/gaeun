@@ -10,7 +10,7 @@ import { MenuItem } from "../../types/ShopMenuType";
 
 const AddCart = () => {
   const location = useLocation();
-  const menu = location.state as MenuItem;
+  const {menu, storeId} = location.state as { menu: MenuItem; storeId: number; };
   const [quantity, setQuantity] = useState<number>(1);
 
   return (
@@ -37,7 +37,7 @@ const AddCart = () => {
       </div>
       <hr className="border-4 border-gray-100 " />
       <div className="center">
-        <AddCartButton menu={menu} quantity={quantity}/>
+        <AddCartButton menu={menu} quantity={quantity} storeId={storeId}/>
       </div>
     </div>
   );

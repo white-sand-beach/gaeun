@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { MenuItem } from "../../types/ShopMenuType";
 
@@ -7,9 +7,10 @@ import sale from "../../assets/store/sale.png";
 
 const ShopMenu = ({ menu }: { menu: MenuItem }) => {
   const navigate = useNavigate();
+  const { Id } = useParams();
 
   const handleClick = () => {
-    navigate('/add-cart', { state: menu });
+    navigate('/add-cart', { state: {menu, storeId: Id} });
   };
 
   return (

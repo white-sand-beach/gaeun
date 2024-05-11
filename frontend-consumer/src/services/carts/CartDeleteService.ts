@@ -1,7 +1,7 @@
 import axiosInstance from "../authentication/AxiosSet";
-import { CartItem } from "../../types/CartType";
+// import { CartItem } from "../../types/CartType";
 
-const CartDeleteService = async (cartId: CartItem) => {
+const CartDeleteService = async (cartId: string) => {
   const response = await axiosInstance.delete(
     `${import.meta.env.VITE_API_URL}/api/carts/${cartId}`);
   return response.data;
