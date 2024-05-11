@@ -80,7 +80,7 @@ public class RefreshTokenService {
 
         // 토큰 넘기기
         response.addHeader(HttpHeaders.AUTHORIZATION, createdAccessToken);
-        cookieUtil.addCookie(response, REFRESH_TOKEN_COOKIE_NAME, createdRefreshToken, REFRESH_TOKEN_EXPIRED_TIME);
+        cookieUtil.addHttpOnlyCookie(response, REFRESH_TOKEN_COOKIE_NAME, createdRefreshToken, REFRESH_TOKEN_EXPIRED_TIME);
     }
 
     private String getAccessToken(HttpServletRequest request) {

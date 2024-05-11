@@ -26,12 +26,21 @@ public class CookieUtil {
         return Optional.empty();
     }
 
-    public void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+    public void addHttpOnlyCookie(HttpServletResponse response, String name, String value, int maxAge) {
 
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
+        cookie.setMaxAge(maxAge);
+        response.addCookie(cookie);
+    }
+
+    public void addNonHttpOnlyCookie(HttpServletResponse response, String name, String value, int maxAge) {
+
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath("/");
+        cookie.setSecure(true);
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
     }

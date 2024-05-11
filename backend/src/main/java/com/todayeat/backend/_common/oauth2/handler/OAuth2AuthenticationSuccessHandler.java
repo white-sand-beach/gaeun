@@ -188,7 +188,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     .build().toUriString(); // 주소
 
         clearAuthenticationAttributes(request, response); // 쿠키 삭제
-        cookieUtil.addCookie(response, "RefreshToken", refreshToken, REFRESH_TOKEN_EXPIRED_TIME); // 리프레시 토큰 담기
+        cookieUtil.addHttpOnlyCookie(response, "RefreshToken", refreshToken, REFRESH_TOKEN_EXPIRED_TIME); // 리프레시 토큰 담기
 
         response.sendRedirect(targetUrl);
     }
