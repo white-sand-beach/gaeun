@@ -23,8 +23,8 @@ RUN rm /etc/nginx/conf.d/default.conf
 # host pc 의 nginx.conf를 복사
 COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
 
-# 80 포트 오픈
-EXPOSE 80
+# 5174 포트 오픈
+EXPOSE 5174
 
 # nginx 시작
 CMD ["nginx", "-g", "daemon off;"]
