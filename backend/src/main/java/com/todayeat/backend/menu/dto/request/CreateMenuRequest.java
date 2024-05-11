@@ -15,7 +15,7 @@ public class CreateMenuRequest {
     private MultipartFile image;
 
     @NotBlank(message = "name: 값이 비어 있지 않아야 합니다.")
-    @Size(max = 20, message = "address: 길이가 20 이하여야 합니다.")
+    @Size(max = 20, message = "name: 길이가 20 이하여야 합니다.")
     @Schema(description = "메뉴 이름", example = "마라샹궈")
     private String name;
 

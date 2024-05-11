@@ -1,5 +1,6 @@
 package com.todayeat.backend.sale.mapper;
 
+import com.todayeat.backend.cart.dto.response.GetCartResponse;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.sale.dto.request.CreateSaleRequest;
 import com.todayeat.backend.sale.dto.response.GetSaleConsumerResponse;
@@ -25,4 +26,15 @@ public interface SaleMapper {
 
     @Mapping(source = "sale.id", target = "saleId")
     GetSaleSellerResponse getSaleSellerResponse(Sale sale, Integer restStock);
+
+    @Mapping(source = "sale.id", target = "saleId")
+    @Mapping(source = "sale.imageUrl", target = "imageUrl")
+    @Mapping(source = "sale.name", target = "saleName")
+    @Mapping(source = "sale.originalPrice", target = "originalPrice")
+    @Mapping(source = "sale.sellPrice", target = "sellPrice")
+    @Mapping(source = "sale.discountRate", target = "discountRate")
+    @Mapping(source = "sale.content", target = "content")
+    @Mapping(source = "sale.isFinished", target="isFinished")
+    @Mapping(source = "cartId", target = "cartId")
+    GetCartResponse getCartResponse(String cartId, Sale sale, Integer restStock, Integer quantity);
 }
