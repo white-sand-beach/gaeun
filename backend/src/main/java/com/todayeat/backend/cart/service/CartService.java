@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -84,38 +85,39 @@ public class CartService {
 
         List<Cart> cartList = cartRepository.findAllByConsumerId(consumer.getId());
 
-        Long storeId = cartList.isEmpty() ? null : cartList.getFirst().getStoreId();
-        Optional<Store> store = storeRepository.findByIdAndDeletedAtIsNull(storeId);
-        String storeName = store.isEmpty() ? null : store.get().getName();
-        Boolean isOpened = store.isEmpty() ? null : store.get().isOpened();
+        if(cartList.isEmpty())
+            return null;
+
+        Long storeId = cartList.getFirst().getStoreId();
+        Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
+        String storeName = store.getName();
+        Boolean isOpened = store.isOpened();
 
         List<GetCartResponse> cartResponseList = new ArrayList<>();
 
-        Integer originalTotalPrice = 0; // 원가 총합
-        Integer sellTotalPrice = 0; // 할인가 총합
+        AtomicReference<Integer> originalTotalPrice = new AtomicReference<>(0); // 원가 총합
+        AtomicReference<Integer> sellTotalPrice = new AtomicReference<>(0); // 할인가 총합
 
         for(Cart c : cartList) {
 
-            Sale sale = saleRepository.findByIdAndDeletedAtIsNull(c.getSaleId())
-                    .orElse(null);
+            saleRepository.findByIdAndDeletedAtIsNull(c.getSaleId())
+                    .ifPresent(s -> {
+                        Integer restStock = s.getStock() - s.getTotalQuantity();
 
-            if(sale == null)
-                continue;
+                        cartResponseList.add(SaleMapper
+                                .INSTANCE.getCartResponse(c.getId(), s, restStock, c.getQuantity()));
 
-            Integer restStock = sale.getStock() - sale.getTotalQuantity();
-
-            cartResponseList.add(SaleMapper
-                    .INSTANCE.getCartResponse(c.getId(), sale, restStock, c.getQuantity()));
-
-            // (현재 남은 재고 - 장바구니에 넣은 수량)이 음수여도 보여는 준다. 대신 결제 금액에는 반영하지 않도록 한다.
-            if(restStock - c.getQuantity() >= 0) {
-                originalTotalPrice += sale.getOriginalPrice() * c.getQuantity();
-                sellTotalPrice += sale.getSellPrice() * c.getQuantity();
-            }
+                        // (현재 남은 재고 - 장바구니에 넣은 수량)이 음수여도 보여는 준다. 대신 결제 금액에는 반영하지 않도록 한다.
+                        if(restStock - c.getQuantity() >= 0) {
+                            originalTotalPrice.updateAndGet(v -> v + s.getOriginalPrice() * c.getQuantity());
+                            sellTotalPrice.updateAndGet(v -> v + s.getSellPrice() * c.getQuantity());
+                        }
+                    });
         }
 
         return GetCartListResponse.of(storeId, storeName, isOpened, cartResponseList,
-                originalTotalPrice, originalTotalPrice - sellTotalPrice, sellTotalPrice);
+                originalTotalPrice.get(), originalTotalPrice.get() - sellTotalPrice.get(), sellTotalPrice.get());
     }
 
     @Transactional
@@ -190,7 +192,7 @@ public class CartService {
         for(Cart c : cartList) {
             if(!Objects.equals(c.getStoreId(), storeId)) {
 
-                throw new BusinessException(ErrorType.SALE_NOT_SELLING);
+                throw new BusinessException(ErrorType.CART_CONFLICT_STORE);
             }
         }
     }

@@ -27,10 +27,12 @@ public interface CartControllerDocs {
     @ApiResponse(responseCode = "400",
             description = """
                     가게가 없거나, 가게 영업 종료일 경우 \n
-                    장바구니에 다른 가게 음식이 담겨있는 경우 \n
                     해당 가게의 판매가 아닌 경우, 판매 중지인 경우 \n
                     수량이 남은 재고 보다 클 경우
                     """,
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "409",
+            description = "장바구니에 다른 가게 음식이 담겨있는 경우",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping
     SuccessResponse<Void> create(@RequestBody @Valid CreateCartRequest request);
@@ -42,6 +44,9 @@ public interface CartControllerDocs {
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema(implementation = GetCartListResponse.class)))
+    @ApiResponse(responseCode = "400",
+            description = "가게가 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping
     SuccessResponse<GetCartListResponse> getList();
 

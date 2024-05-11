@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-@Schema(name = "GetCartListResponse", description = "장바구니 목 조회")
+@Schema(name = "GetCartListResponse", description = "장바구니 목록 조회")
 public class GetCartListResponse {
 
     @Schema(description = "가게 ID", example = "2")
@@ -24,7 +24,7 @@ public class GetCartListResponse {
     @Schema(description = "원가 총합", example = "20000")
     private Integer originalTotalPrice;
 
-    @Schema(description = "할인해주는 총가격", example = "4000")
+    @Schema(description = "할인 해주는 총가격", example = "4000")
     private Integer discountTotalPrice;
 
     @Schema(description = "할인가 총합", example = "16000")

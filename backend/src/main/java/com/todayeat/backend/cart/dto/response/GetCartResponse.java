@@ -9,7 +9,7 @@ import lombok.Getter;
 public class GetCartResponse {
 
     @Schema(description = "장바구니 ID", example = "62cfa7eb-365d-46ab-97d7-1ad2063cb757")
-    private String id;
+    private String cartId;
 
     @Schema(description = "판매 ID", example = "2")
     private Long saleId;
@@ -42,8 +42,8 @@ public class GetCartResponse {
     private Integer quantity;
 
     @Builder
-    private GetCartResponse(String id, Long saleId, String imageUrl, String saleName, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer restStock, Boolean isFinished, Integer quantity) {
-        this.id = id;
+    private GetCartResponse(String cartId, Long saleId, String imageUrl, String saleName, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer restStock, Boolean isFinished, Integer quantity) {
+        this.cartId = cartId;
         this.saleId = saleId;
         this.imageUrl = imageUrl;
         this.saleName = saleName;
