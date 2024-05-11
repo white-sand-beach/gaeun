@@ -13,15 +13,15 @@ declare global {
 
 const RegisterShop: React.FC<InputRegisterShop> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [categoryId, setCategoryId] = useState<number[]>([])
+  const [categoryId, setCategoryId] = useState<number[]>([]);
   const [selectImg, setSelectImg] = useState<File | null>(
     props.shopImage ? props.shopImage : null
   );
 
   useEffect(() => {
-    console.log(categoryId)
-  }, [categoryId])
-  
+    console.log(categoryId);
+  }, [categoryId]);
+
   // input type file로 가게 사진 받아올 때
   const handleChangeImg = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -46,20 +46,23 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
   const handleAboutAddr = (data: MapDataType) => {
     props.onUpdateShopStore?.("shopzibunAddr", data.jibunAddress);
     props.onUpdateShopStore?.("shoproadAddr", data.roadAddress);
-    console.log(data.jibunAddress)
-    console.log(data.roadAddress)
+    console.log(data.jibunAddress);
+    console.log(data.roadAddress);
 
     // 찾은 주소를 이용하여 좌표정보 얻기
     // Kakao 객체가 로드된 후에 지번주소 또는 도로명주소를 통해 좌표 검색
     window.kakao.maps.load(() => {
       const geocoder = new window.kakao.maps.services.Geocoder();
-      geocoder.addressSearch(data.jibunAddress || data.roadAddress, (result: any, status: any) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          console.log(result)
-          props.onUpdateShopStore("shopLat", result[0].y)
-          props.onUpdateShopStore("shopLon", result[0].x)
+      geocoder.addressSearch(
+        data.jibunAddress || data.roadAddress,
+        (result: any, status: any) => {
+          if (status === window.kakao.maps.services.Status.OK) {
+            console.log(result);
+            props.onUpdateShopStore("shopLat", result[0].y);
+            props.onUpdateShopStore("shopLon", result[0].x);
+          }
         }
-      })
+      );
     });
 
     // 주소검색 다 하면 모달창 닫음
@@ -72,13 +75,15 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
     if (categoryId.includes(cateId)) {
       setCategoryId((prevCategory) =>
         prevCategory.filter((id) => id !== cateId)
-      )
+      );
+      props.onUpdateShopStore("shopCategoryId", categoryId);
     }
     // 없으면 추가
     else {
-      setCategoryId((prevCategory) => [...prevCategory, cateId])
+      setCategoryId((prevCategory) => [...prevCategory, cateId]);
+      props.onUpdateShopStore("shopCategoryId", categoryId)
     }
-  }
+  };
 
   return (
     <div className="flex flex-col items-center w-screen h-full gap-3">
@@ -111,9 +116,17 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
           <p className="mt-10 text-xl font-bold">카테고리</p>
           <div className="grid grid-cols-2">
             {props.categoryList.map((category) => (
-              <div key={category.id} className={`grid grid-cols-2 gap-4 m-1 border-2 p-2 rounded-[15px] ${categoryId.includes(category.id!) ? "bg-orange-300" : ""}`} onClick={() => handleCategoryId(category.id!)}>
+              <div
+                key={category.id}
+                className={`grid grid-cols-2 gap-4 m-1 border-2 p-2 rounded-[15px] ${categoryId.includes(category.id!) ? "bg-orange-300" : ""}`}
+                onClick={() => handleCategoryId(category.id!)}
+              >
                 {category.name}
-                <img src={category.imageURL} alt="카테고리 이미지" className="w-[30px]" />
+                <img
+                  src={category.imageURL}
+                  alt="카테고리 이미지"
+                  className="w-[30px]"
+                />
               </div>
             ))}
           </div>
