@@ -38,7 +38,7 @@ const RegisterFoodPage = () => {
     };
 
     return (
-        <div className="no-footer top-[70px] gap-3">
+        <div className="no-footer top-[70px]">
             <RegisterFood 
             image={foodInfo.image}
             name={foodInfo.name}

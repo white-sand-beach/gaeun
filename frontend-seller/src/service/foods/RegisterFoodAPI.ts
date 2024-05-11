@@ -10,7 +10,9 @@ const RegisterFoodAPI = () => {
 
   const postRegisterFood = ({image, name, originalPrice, sellPrice, storeId}: RegisterFoodType) => {
     const formData = new FormData()
-    formData.append("image", image)
+    if (image) {
+      formData.append("image", image)
+    }
     formData.append("name", name)
     formData.append("originalPrice", originalPrice.toString())
     formData.append("sellPrice", sellPrice.toString())
