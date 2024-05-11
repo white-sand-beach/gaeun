@@ -37,7 +37,7 @@ public class OAuth2AuthorizationRepository implements AuthorizationRequestReposi
         }
 
         // 쿠키 저장
-        cookieUtil.addCookie(response,
+        cookieUtil.addHttpOnlyCookie(response,
                 OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
                 cookieUtil.serialize(authorizationRequest),
                 COOKIE_EXPIRE_SECONDS);
@@ -45,7 +45,7 @@ public class OAuth2AuthorizationRepository implements AuthorizationRequestReposi
         // redirect uri
         String redirectUri = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
         if (StringUtils.hasText(redirectUri)) {
-            cookieUtil.addCookie(response,
+            cookieUtil.addHttpOnlyCookie(response,
                     REDIRECT_URI_PARAM_COOKIE_NAME,
                     redirectUri,
                     COOKIE_EXPIRE_SECONDS);
@@ -54,7 +54,7 @@ public class OAuth2AuthorizationRepository implements AuthorizationRequestReposi
         // mode (login, logout, unlink)
         String mode = request.getParameter(MODE_PARAM_COOKIE_NAME);
         if (StringUtils.hasText(mode)) {
-            cookieUtil.addCookie(response,
+            cookieUtil.addHttpOnlyCookie(response,
                     MODE_PARAM_COOKIE_NAME,
                     mode,
                     COOKIE_EXPIRE_SECONDS);
