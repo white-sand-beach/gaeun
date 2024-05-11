@@ -10,6 +10,7 @@ import com.todayeat.backend._common.oauth2.service.OAuth2UserService;
 import com.todayeat.backend._common.refreshtoken.service.RefreshTokenService;
 import com.todayeat.backend._common.util.CookieUtil;
 import com.todayeat.backend._common.util.JwtUtil;
+import com.todayeat.backend.seller.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -72,6 +73,8 @@ public class SecurityConfig {
 
     private final RefreshTokenService refreshTokenService;
 
+    private final SellerRepository sellerRepository;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -98,7 +101,7 @@ public class SecurityConfig {
                         .requestMatchers(sellerList).hasRole("SELLER")
                         .requestMatchers(consumerList).hasRole("CONSUMER")
                         .anyRequest().authenticated())
-                .addFilterAt(new SellerLoginFilter(authenticationManager(authenticationConfiguration), cookieUtil, jwtUtil, refreshTokenService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(new SellerLoginFilter(authenticationManager(authenticationConfiguration), cookieUtil, jwtUtil, refreshTokenService, sellerRepository), UsernamePasswordAuthenticationFilter.class)
                 // RESTful API
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
