@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import NicknameCheck from "../../components/user_info/NicknameCheck";
 import PhoneCheck from "../../components/user_info/PhoneCheck";
 import ProfileImageModal from "../../components/user_info/ProfileImageModal";
+import ProfileUpdateButton from "../../components/button/ProfileUpdateButton";
 import "../../components/modal/Modal.css";
 import ProfileForm from "../../services/accounts/ProfileInfoService";
 import UserState from "../../types/UserState";
-import ProfileUpdateButton from "../../components/button/ProfileUpdateButton";
 
 import edit from "../../assets/profile/edit.png";
 
@@ -18,10 +18,15 @@ const SignUp = () => {
     phoneNumber: "",
   });
 
-  let headerText;
-  headerText = "본인 인증"
-  let buttonText;
-  buttonText = "회원 가입"
+  const headerText = "본인 인증";
+  const buttonText = "회원 가입";
+
+  const updateUserState: UserState["updateUserState"] = (key, value) => {
+    setProfileData((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   const [showModal, setShowModal] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
@@ -41,7 +46,7 @@ const SignUp = () => {
   useEffect(() => {
     ProfileForm()
       .then((data) => {
-        setProfileData(data); 
+        setProfileData(data);
         console.log(data);
       })
       .catch((error) => {
@@ -79,11 +84,19 @@ const SignUp = () => {
         </div>
       )}
       <div className="flex justify-center mt-14">
-        <NicknameCheck nickname={profileData.nickname} />
+        <NicknameCheck
+          nickname={profileData.nickname}
+          updateNickname={(newNickname) =>
+            updateUserState("nickname", newNickname)
+          }
+        />
       </div>
 
       <div className="flex justify-center mt-14">
-        <PhoneCheck phoneNumber={profileData.phoneNumber} headerText={headerText} />
+        <PhoneCheck
+          phoneNumber={profileData.phoneNumber}
+          headerText={headerText}
+        />
       </div>
       <div className="center my-14">
         <ProfileUpdateButton

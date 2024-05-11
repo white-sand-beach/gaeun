@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import useUserLocation from "../../store/UserLocation";
+import firefighter from "../../assets/maker/firefighter.png";
+import { StoreList } from "../../types/StoreList";
 
 // 전역(window) 객체의 타입 확장
 declare global {
@@ -13,6 +15,8 @@ interface KakaoMapProps {
   lng?: number;
   height: string;
   updateCounter?: number;
+  storeList?: StoreList[] | undefined; // nearbyStores 속성의 타입 수정
+  isShop?: boolean;
 }
 
 const KakaoMap: React.FC<KakaoMapProps> = ({
@@ -20,6 +24,8 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
   lng,
   height,
   updateCounter,
+  storeList,
+  isShop,
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const markerRef = useRef<any>(null);
@@ -34,7 +40,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
     ) {
       initMap(currentPosition.lat, currentPosition.lng);
     }
-  }, [currentPosition, updateCounter]); // currentPosition의 변경을 감지합니다.
+  }, [currentPosition, updateCounter, storeList]); // currentPosition의 변경을 감지합니다.
 
   useEffect(() => {
     if (!lat || !lng) {
@@ -42,8 +48,10 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
     } else {
       setCurrentPosition({ lat, lng });
       if (update) {
-        update("latitude", lat);
-        update("longitude", lng);
+        if (!isShop) {
+          update("latitude", lat);
+          update("longitude", lng);
+        }
       }
     }
   }, [lat, lng]); // lat, lng props의 변경을 감지합니다.
@@ -59,11 +67,53 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
 
     const map = new window.kakao.maps.Map(container, options);
     const markerPosition = new window.kakao.maps.LatLng(latitude, longitude);
+
+    // 커스텀 마커 이미지를 위한 설정
+    // 마커 이미지의 크기를 설정합니다.
+    const imageSize = new window.kakao.maps.Size(32, 35); // 마커 이미지의 크기
+
+    // 마커 이미지의 옵션을 설정합니다.
+    const imageOption = {
+      offset: new window.kakao.maps.Point(
+        imageSize.width / 2,
+        imageSize.height / 2
+      ),
+    }; // 마커의 위치를 조정합니다.
+
+    // 마커 이미지 객체를 생성합니다.
+    const markerImage = new window.kakao.maps.MarkerImage(
+      firefighter, // 이미지 소스를 사용합니다.
+      imageSize,
+      imageOption
+    );
+
     const marker = new window.kakao.maps.Marker({
       position: markerPosition,
       map: map,
+      image: markerImage, // 커스텀 이미지 사용
     });
 
+    // 일반 마커 생성
+    if (storeList) {
+      console.log(storeList);
+      storeList.forEach((item) => {
+        const markerPosition = new window.kakao.maps.LatLng(
+          item.latitude,
+          item.longitude
+        );
+
+        // 일반 마커를 생성합니다.
+        const marker = new window.kakao.maps.Marker({
+          position: markerPosition,
+          map: map,
+        });
+
+        // 일반 마커에 대한 참조를 설정합니다.
+        markerRef.current = marker;
+        map.setCenter(markerPosition);
+      });
+    }
+    // 메인 마커에 대한 참조를 설정합니다.
     markerRef.current = marker;
     map.setCenter(markerPosition);
   };

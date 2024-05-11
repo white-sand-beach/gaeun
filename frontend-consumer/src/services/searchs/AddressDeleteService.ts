@@ -1,20 +1,10 @@
-import axios from "axios";
-import Cookies from "universal-cookie";
-
-const cookies = new Cookies();
-const token = cookies.get("accessToken");
+import axiosInstance from "../authentication/AxiosSet";
 
 const AddressDeleteForm = async (addressId: number): Promise<void> => {
   try {
     // DELETE 요청으로 주소 삭제
-    await axios.delete(
-      `${import.meta.env.VITE_API_URL}/api/locations/${addressId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    await axiosInstance.delete(
+      `${import.meta.env.VITE_API_URL}/api/locations/${addressId}`);
 
     // 삭제 성공 알림
     alert("주소 삭제 완료.");

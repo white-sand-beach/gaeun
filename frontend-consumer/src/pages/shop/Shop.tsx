@@ -1,48 +1,88 @@
-import heartIcon from "@/assets/shop/heart.png";
-import phoneIcon from "@/assets/shop/phone.png";
-import KakaoMap from "@/pages/main/Kakaomap";
-import { useState } from "react";
-import ShopInformation from "@/pages/shop/ShopInformation";
-import ShopReview from "@/pages/shop/ShopReview";
-import ShopMenu from "@/pages/shop/ShopMenu";
+import heartIcon from "../../assets/shop/heart.png";
+import phoneIcon from "../../assets/shop/phone.png";
+import KakaoMap from "../main/Kakaomap";
+import { useEffect, useState } from "react";
+import ShopInformation from "./ShopInformation";
+import ShopReview from "./ShopReview";
+import ShopMenu from "./ShopMenu";
+import { useParams } from "react-router-dom";
+import ShopInfoGetForm from "../../services/shops/ShopInfoGetService";
+import { ShopInfo } from "../../types/ShopInfoType";
 
 const mapHeight = "105px"; // 예시 높이값
-const lat = 36.093952;
-const lng = 128.4243456;
 const updateCounter = 0;
 
 const Shop = () => {
   const [activeTab, setActiveTab] = useState("details");
+  const { Id } = useParams();
+  const [shopInfo, setShopInfo] = useState<ShopInfo>({
+    name: "",
+    tel: "",
+    address: "",
+    roadAddress: "",
+    latitude: 0,
+    longitude: 0,
+    imageURL: "",
+    operatingTime: "",
+    reviewCnt: 0,
+    favoriteCnt: 0,
+    opened: false,
+  });
+
+  const makePhoneCall = (phoneNumber: string) => {
+    window.location.href = `tel:${phoneNumber}`;
+  };
+
+  const handlePhoneClick = () => {
+    makePhoneCall(shopInfo.tel);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await ShopInfoGetForm({ Id });
+        setShopInfo(response);
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching shop info:", error);
+      }
+    };
+
+    fetchData();
+  }, [Id]);
 
   return (
     <div className="sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
       {/* Header image container */}
-      <div className="bg-black h-[150px] text-white center mb-8 ">
-        {/* 이미지 태그는 나중에 넣을 예정입니다. */}
-        <span>사진 들어가는 곳</span>
+      <div className="h-[150px] center mb-8 ">
+        <img
+          src={shopInfo.imageURL}
+          alt="가게 대표 이미지"
+          className="object-cover w-full h-[150px]"
+        />
       </div>
 
       <div className="my-4 text-center">
         {/* Shop Details */}
-        <h1 className="text-xl font-bold">대영이와 현성이의 치킨</h1>
+        <h1 className="text-xl font-bold">{shopInfo.name}</h1>
 
         {/* Icons and details */}
         <div className="flex items-center justify-center mt-2 space-x-3">
-          <div className="flex items-center">
+          <div onClick={handlePhoneClick} className="flex items-center">
             <img src={phoneIcon} alt="Phone" className="w-5 h-5 mr-1" />
             <span className="text-sm">전화</span>
           </div>
 
           <div className="flex items-center">
             <img src={heartIcon} alt="Heart" className="w-5 h-5 mr-1" />
-            <span className="text-sm">72</span>
+            <span className="text-sm">{shopInfo.favoriteCnt}</span>
           </div>
         </div>
 
         {/* Other details */}
         <div className="flex flex-col items-center mt-2 ">
           <span className="text-sm text-gray-600">
-            리뷰 수 686 | 마감 시간 21:00
+            리뷰 수 {shopInfo.reviewCnt} | 마감 시간 {shopInfo.operatingTime}
           </span>
         </div>
       </div>
@@ -52,12 +92,7 @@ const Shop = () => {
           <p className="text-sm font-semibold whitespace-nowrap ">위치안내</p>
         </div>
         <div>
-          <p className="text-xs text-gray-600">
-            경상북도 구미시 인의동 590-2 (삼산 세빛타운 맞은편 2층)
-          </p>
-          <p className="text-xs text-gray-600">
-            (한송스포타운 맞은편 42m, 도보 1분)
-          </p>
+          <p className="text-xs text-gray-600">{shopInfo.roadAddress}</p>
         </div>
       </div>
       {/* 지도 정보 */}
@@ -68,9 +103,10 @@ const Shop = () => {
         <div className="z-0 w-full border border-black">
           <KakaoMap
             height={mapHeight}
-            lat={lat}
-            lng={lng}
+            lat={shopInfo.latitude}
+            lng={shopInfo.longitude}
             updateCounter={updateCounter}
+            isShop={true}
           />
         </div>
       </div>
