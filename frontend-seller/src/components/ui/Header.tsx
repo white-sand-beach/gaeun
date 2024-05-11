@@ -1,8 +1,8 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import GotoBack from "@/assets/back.png"
-import NotiIcon from "@/assets/notification.png"
+import GotoBack from "../../assets/back.png"
+import NotiIcon from "../../assets/notification.png"
 
 const Header: React.FC = () => {
     const location = useLocation();

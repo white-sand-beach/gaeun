@@ -1,4 +1,4 @@
-import SalesList from "@/components/sales/SalesList";
+import SalesList from "../../components/sales/SalesList";
 
 const SaleslistPage = () => {
   const saleslists = [

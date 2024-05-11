@@ -1,5 +1,5 @@
 import React from "react";
-import { ReviewType } from "@/types/ReviewType";
+import { ReviewType } from "../../types/review/ReviewType";
 
 const ReviewList: React.FC<ReviewType> = (props) => {
   return (

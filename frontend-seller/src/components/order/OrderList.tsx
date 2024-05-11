@@ -1,5 +1,5 @@
 import React from "react";
-import { OrderType } from "@/types/OrderType.ts";
+import { OrderType } from "../../types/order/OrderType.ts";
 import { Link } from "react-router-dom";
 
 const OrderList: React.FC<OrderType> = (props) => {

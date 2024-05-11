@@ -1,4 +1,4 @@
-import { ButtonTypes } from "@/types/ButtonTypes";
+import { ButtonTypes } from "../../types/@common/ButtonTypes";
 
 const TotalButton:React.FC<ButtonTypes> = (props) => {
   return (

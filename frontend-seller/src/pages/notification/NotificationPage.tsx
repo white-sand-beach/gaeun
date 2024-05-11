@@ -1,4 +1,4 @@
-import NotificationList from "@/components/notification/NotificationList";
+import NotificationList from "../../components/notification/NotificationList";
 
 const NotificationPage = () => {
     const alarmlists = [

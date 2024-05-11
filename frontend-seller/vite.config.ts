@@ -17,7 +17,6 @@ export default defineConfig({
       manifest: {
         name: "빨리드셔-사장님",
         short_name: "빨리드셔-사장님",
-        description: '음식 당일 소진 장려 플랫폼',
         display: "standalone",
         theme_color: "#FFAF38",
         icons: [
@@ -69,14 +68,7 @@ export default defineConfig({
   ],
   server: {
     port: 5174,
+    open: "/seller",
     host: "0.0.0.0",
-  },
-  build: {
-    minify: false,
-  },
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
   },
 })
