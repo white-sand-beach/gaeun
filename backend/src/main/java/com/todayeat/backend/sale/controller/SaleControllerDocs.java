@@ -53,7 +53,7 @@ public interface SaleControllerDocs {
                     """)
     @ApiResponse(responseCode = "200",
             description = "성공",
-            content = @Content(schema = @Schema(implementation = GetMenuListResponse.class)))
+            content = @Content(schema = @Schema(implementation = GetSaleListConsumerResponse.class)))
     @ApiResponse(responseCode = "404",
             description = "가게 존재 여부 확인",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
@@ -71,7 +71,7 @@ public interface SaleControllerDocs {
                     """)
     @ApiResponse(responseCode = "200",
             description = "성공",
-            content = @Content(schema = @Schema(implementation = GetMenuListResponse.class)))
+            content = @Content(schema = @Schema(implementation = GetSaleListSellerResponse.class)))
     @ApiResponse(responseCode = "404",
             description = "가게 존재 여부 확인",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
