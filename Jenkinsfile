@@ -44,7 +44,6 @@ pipeline {
 
                 sh 'docker build -t fe-consumer ./frontend-consumer'
                 sh 'docker run -d --name fe-consumer -p 5173:80 fe-consumer'
-                sh 'docker cp fe-consumer:/usr/share/nginx/html/consumer /nginx/html'
             }
         }
 
@@ -73,7 +72,6 @@ pipeline {
                 
                 sh 'docker build -t fe-seller ./frontend-seller'
                 sh 'docker run -d --name fe-seller -p 5174:80 fe-seller'
-                sh 'docker cp fe-seller:/usr/share/nginx/html/seller /nginx/html'
             }
         }
 
@@ -100,9 +98,7 @@ pipeline {
                     }
 
                     sh 'docker build -t be ./backend'
-                    def dockerCmd = "docker run -d --name be -p 8081:8081 be"
-
-                    sh dockerCmd 
+                    sh 'docker run -d --name be -p 8081:8081 be'
                 }
             }
         }
