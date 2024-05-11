@@ -1,7 +1,7 @@
-import ReviewDeleteButton from "@/components/button/ReviewDeleteButton";
+import ReviewDeleteButton from "../../components/button/ReviewDeleteButton";
 
-import food1 from "@/assets/foods/food1.png";
-import user1 from "@/assets/user1.jpg";
+import food1 from "../../assets/foods/food1.png";
+import user1 from "../../assets/user1.jpg";
 
 const Review = () => {
   return (

@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 
-import search from "@/assets/footer/search.png";
-import like from "@/assets/footer/like.png";
-import map from "@/assets/footer/map.png";
-import order from "@/assets/footer/order.png";
-import profile from "@/assets/footer/profile.png";
+import search from "../../assets/footer/search.png";
+import like from "../../assets/footer/like.png";
+import map from "../../assets/footer/map.png";
+import order from "../../assets/footer/order.png";
+import profile from "../../assets/footer/profile.png";
 
 // bg-gray-100 rounded-2xl 지우지마용 ㅠㅠ
 const Footer = () => {

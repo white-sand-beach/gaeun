@@ -1,5 +1,5 @@
-import OrderSearch from "@/components/search/OrderSearch";
-import Ordertarget from "@/components/order/OrderTarget";
+import OrderSearch from "../../components/search/OrderSearch";
+import Ordertarget from "../../components/order/OrderTarget";
 
 const OrderList = () => {
   return (

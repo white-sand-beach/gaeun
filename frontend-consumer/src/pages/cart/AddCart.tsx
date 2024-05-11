@@ -1,7 +1,7 @@
-import CartInfo from "@/components/cart/CartInfo";
-import ServiceBanner from "@/components/navbar/ServiceBanner";
-import CountButton from "@/components/button/CountButton";
-import AddCartButton from "@/components/button/AddCartButton";
+import CartInfo from "../../components/cart/CartInfo";
+import ServiceBanner from "../../components/navbar/ServiceBanner";
+import CountButton from "../../components/button/CountButton";
+import AddCartButton from "../../components/button/AddCartButton";
 
 const AddCart = () => {
   return (

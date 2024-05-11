@@ -1,5 +1,5 @@
-import right from "@/assets/right.png";
-import sale from "@/assets/store/sale.png";
+import right from "../../assets/right.png";
+import sale from "../../assets/store/sale.png";
 
 const CartInfo = () => {
   return (

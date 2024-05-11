@@ -1,5 +1,5 @@
-import CountButton from "@/components/button/CountButton";
-import right from "@/assets/right.png";
+import CountButton from "../button/CountButton";
+import right from "../../assets/right.png";
 
 const CheckOrder = () => {
   return (

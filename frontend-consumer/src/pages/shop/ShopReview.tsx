@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import ServiceBanner from "@/components/navbar/ServiceBanner";
-import Review from "@/pages/shop/Review";
+import ServiceBanner from "../../components/navbar/ServiceBanner";
+import Review from "../shop/Review";
 
 const ShopReview = () => {
   const [checked, setChecked] = useState(false);

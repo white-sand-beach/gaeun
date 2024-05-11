@@ -1,5 +1,5 @@
-import OrderDetailButton from "@/components/button/OrderDetailButton";
-import CallButton from "@/components/button/CallButton";
+import OrderDetailButton from "../button/OrderDetailButton";
+import CallButton from "../button/CallButton";
 
 const Ordertarget = () => {
   return (

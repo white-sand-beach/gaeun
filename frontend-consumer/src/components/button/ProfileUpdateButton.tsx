@@ -1,6 +1,6 @@
-// import ProfileUpdateService from "@/services/ProfileUpdateService";
-import UpdateProfileForm from "@/services/accounts/ProfileUpdateService";
-import UserState from "@/types/UserState";
+// import ProfileUpdateService from "../../services/ProfileUpdateService";
+import UpdateProfileForm from "../../services/accounts/ProfileUpdateService";
+import UserState from "../../types/UserState";
 
 const ProfileUpdateButton = ({ nickname, profileImage, phoneNumber, buttonText }: UserState) => {
   // const { mutate, isLoading } = ProfileUpdateService();
