@@ -4,5 +4,5 @@ export type PutMenuAPIType = {
   originalPrice: number;
   sellPrice: number;
   storeId?: number;
-  menuId?: number;
+  menuId?: string;
 }

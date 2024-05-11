@@ -53,7 +53,7 @@ const UpdateFood = () => {
   const { putMenu } = PutMenuAPI();
   const handleUpdateMenu = () => {
     putMenu({
-      menuId: Number(menuId),
+      menuId: menuId,
       name: updateMenuInfo.name,
       image: updateMenuInfo.image,
       originalPrice: updateMenuInfo.originalPrice,
