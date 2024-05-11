@@ -1,5 +1,5 @@
 export interface CategoryIdType {
-    id?: number;
-    name?: string;
-    imageURL?: string;
+    id: number;
+    name: string;
+    imageURL: string;
 }
