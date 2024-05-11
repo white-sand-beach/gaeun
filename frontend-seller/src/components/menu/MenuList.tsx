@@ -2,9 +2,12 @@ import React from "react";
 import { MenuListType } from "../../types/menu/MenuListType";
 import { useNavigate } from "react-router-dom";
 import TotalButton from "../ui/TotalButton";
+import DeleteMenuAPI from "../../service/menu/DeleteMenuAPI";
 
 const MenuList: React.FC<MenuListType> = (props) => {
   const navigate = useNavigate()
+  const { DeleteMenu } = DeleteMenuAPI();
+
   return (
     <div>
       <h1>메뉴 보여줄 페이지 입니다.</h1>
@@ -18,7 +21,7 @@ const MenuList: React.FC<MenuListType> = (props) => {
             <h1>판매가 : {menu.sellPrice}원</h1>
             <h1>할인율 : {menu.discountRate}%</h1>
               <TotalButton title="메뉴 수정하기" onClick={() => navigate(`/update/food/${menu.menuId}`)} />
-              <TotalButton title="메뉴 삭제하기" onClick={() => 1} />
+              <TotalButton title="메뉴 삭제하기" onClick={() => DeleteMenu(menu.menuId)} />
           </div>
         ))}
       </div>

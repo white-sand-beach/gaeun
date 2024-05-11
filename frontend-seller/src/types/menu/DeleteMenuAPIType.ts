@@ -1,3 +1,4 @@
 export type DeleteMenuAPIType = {
-  menuId: 
+  menuId: string;
+  storeId: number;
 }
