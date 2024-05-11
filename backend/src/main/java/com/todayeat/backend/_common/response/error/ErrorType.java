@@ -38,6 +38,10 @@ public enum ErrorType {
     LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 위치입니다."),
 
     // cart
+    CART_QUANTITY_MORE_THAN_REST_STOCK(HttpStatus.BAD_REQUEST, "수량이 남은 재고보다 많습니다."),
+    CART_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 장바구니를 찾을 수 없습니다."),
+    CART_FORBIDDEN(HttpStatus.FORBIDDEN, "내 장바구니가 아닙니다."),
+    CART_CONFLICT_STORE(HttpStatus.CONFLICT, "이미 다른 가게의 음식이 장바구니에 있습니다."),
 
     // order
 
@@ -58,6 +62,7 @@ public enum ErrorType {
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 가게입니다."),
     STORE_FORBIDDEN(HttpStatus.FORBIDDEN, "금지된 가게 요청입니다."),
     STORE_CONFLICT(HttpStatus.CONFLICT, "이미 가게가 존재합니다."),
+    STORE_NOT_OPEN(HttpStatus.BAD_REQUEST, "가게 영업시간이 아닙니다."),
 
     // category
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 카테고리입니다."),
@@ -84,7 +89,8 @@ public enum ErrorType {
     // sale
     SALE_STATUS_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 상태 변경에 실패했습니다."),
     SALE_CONTENT_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 내용 변경에 실패했습니다."),
-    SALE_STOCK_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 재고 변경에 실패했습니다.")
+    SALE_STOCK_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 재고 변경에 실패했습니다."),
+    SALE_NOT_SELLING(HttpStatus.BAD_REQUEST, "판매하고 있지 않습니다.")
     ;
 
     private HttpStatus httpStatus;

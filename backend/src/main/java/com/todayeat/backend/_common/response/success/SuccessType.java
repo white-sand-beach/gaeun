@@ -27,6 +27,12 @@ public enum SuccessType {
     DELETE_LOCATION_SUCCESS("위치 삭제에 성공하였습니다."),
 
     // cart
+    CREATE_CART_SUCCESS("장바구니 등록에 성공하였습니다."),
+    GET_CART_LIST_SUCCESS("장바구니 목록 조회에 성공하였습니다."),
+    UPDATE_CART_SUCCESS("장바구니 수량 변경에 성공하였습니다."),
+    DELETE_CART_SUCCESS("장바구니 삭제에 성공하였습니다."),
+    DELETE_ALL_CART_SUCCESS("장바구니 전체 삭제에 성공하였습니다."),
+
 
     // order
 
