@@ -1,5 +1,6 @@
 import React from "react";
 import { MenuListType } from "../../types/menu/MenuListType";
+import { Link } from "react-router-dom";
 
 const MenuList: React.FC<MenuListType> = (props) => {
   return (
@@ -14,6 +15,9 @@ const MenuList: React.FC<MenuListType> = (props) => {
             <h1>원가 : {menu.originalPrice}원</h1>
             <h1>판매가 : {menu.sellPrice}원</h1>
             <h1>할인율 : {menu.discountRate}%</h1>
+            <Link to={`/menus/${menu.menuId}`}>
+              <button className="common-btn">상세보기</button>
+            </Link>
           </div>
         ))}
       </div>

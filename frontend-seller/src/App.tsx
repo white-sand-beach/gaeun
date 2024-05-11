@@ -15,6 +15,7 @@ import ReviewPage from "./pages/review/ReviewPage.tsx";
 import MyPage from "./pages/user/MyPage.tsx";
 import MenuListPage from "./pages/menu/MenuListPage.tsx";
 import Cookies from "universal-cookie";
+import MenuDetailPage from "./pages/menu/MenuDetailPage.tsx";
 
 
 const App = () => {
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/order/:orderNum" element={<OrderDetail />} />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/menus" element={<MenuListPage />} />
+          <Route path="/menus/:menuId" element={<MenuDetailPage />} />
           <Route path="/sales" element={<SaleslistPage />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/mypage" element={<MyPage />} />
