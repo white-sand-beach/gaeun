@@ -1,5 +1,5 @@
 # 1단계: 애플리케이션 빌드
-FROM node:20.11.0 as builder
+FROM node:20.11.0
 WORKDIR /app
 
 # 필요한 파일들 복사
@@ -11,7 +11,8 @@ COPY . .
 RUN npm run build || exit 1
 
 # 빌드된 애플리케이션 복사
-COPY --from=builder ./dist ./dist
+RUN mkdir ./dist
+ADD ./dist ./dist
 
 # nginx 이미지를 사용 (뒤에 tag가 없으면 latest를 사용)
 FROM nginx
