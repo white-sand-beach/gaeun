@@ -1,9 +1,12 @@
 import CartInfo from "../../components/cart/CartInfo";
 import ServiceBanner from "../../components/navbar/ServiceBanner";
-import CountButton from "../../components/button/CountButton";
+import FirstCountButton from "../../components/button/FirstCountButton";
 import AddCartButton from "../../components/button/AddCartButton";
 
+import { Cart } from "../../types/CartType";
+
 const AddCart = () => {
+
   return (
     <div>
       <div className="bg-black h-[150px] text-white center mb-8 ">
@@ -18,9 +21,9 @@ const AddCart = () => {
       </div>
       <hr className="border-4 border-gray-100" />
 
-      <div className="center py-2 border-b-2">
+      <div className="center py-2 border-b-2 ">
         <p className="font-extrabold mr-44">수량</p>
-        <CountButton />
+        <FirstCountButton />
       </div>
       <hr className="border-4 border-gray-100 " />
       <div className="center">

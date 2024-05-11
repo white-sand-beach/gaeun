@@ -13,9 +13,7 @@ axiosInstance.interceptors.request.use((config) => {
   const accessToken = cookies.get("accessToken");
   if (accessToken) {
     config.headers["Authorization"] = `Bearer ${accessToken}`; // 모든 요청에 accessToken을 헤더에 추가
-    config.headers["Content-Type"] = "application/json";
   }
-  console.log("요청이 보내지는 정보 로그:", config);
   return config;
 }, (error) => {
   console.error("에러시 보내지는 에러:", error);
@@ -24,7 +22,6 @@ axiosInstance.interceptors.request.use((config) => {
 
 // 응답 인터셉터
 axiosInstance.interceptors.response.use((response) => {
-  console.log("성공 응답의 상태 코드 로그:", response.status, response.config);
   // 성공 시 response 반환
   return response;
 }, async (error) => {

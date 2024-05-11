@@ -1,7 +1,14 @@
 import CountButton from "../button/CountButton";
-import right from "../../assets/right.png";
+import right from "../../assets/store/right.png";
+
+import CartAllDeleteService from "../../services/carts/CartAllDeleteService";
+
 
 const CheckOrder = () => {
+
+  const handleAllDelete = () => {
+    CartAllDeleteService();
+  }
   return (
     <div className="border-gray-400 border-2 rounded-lg w-[300px]">
           {/* 가게 로고 및 가게명 전체 삭제 기능 */}
@@ -14,7 +21,7 @@ const CheckOrder = () => {
               />
               <p className="ml-2 text-sm font-bold">가게 이름 · OO점</p>
             </div>
-            <p className="font-bold text-gray-400 text-xxxs">전체 삭제</p>
+            <button onClick={handleAllDelete} className="font-bold text-gray-400 text-xxxs">전체 삭제</button>
           </div>
           <hr />
 
