@@ -10,11 +10,11 @@ RUN npm install
 COPY . .
 RUN npm run build || exit 1
 
-# 빌드된 애플리케이션 복사
-COPY --from=builder /app/dist ./dist
-
 # nginx 이미지를 사용 (뒤에 tag가 없으면 latest를 사용)
 FROM nginx
+
+# 빌드된 애플리케이션 복사
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 # nginx 의 default.conf를 삭제
 RUN rm /etc/nginx/conf.d/default.conf
