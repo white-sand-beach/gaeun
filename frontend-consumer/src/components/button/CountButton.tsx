@@ -8,7 +8,6 @@ import CartDeleteService from "../../services/carts/CartDeleteService";
 const CountButton = () => {
   const [quantity, setQuantity] = useState<Number>(1);
   const [showBtn, setShowBtn] = useState<boolean>(true);
-  const cartId = 16
 
   const handlePlusClick = () => {
     if (Number(quantity) < 1) {

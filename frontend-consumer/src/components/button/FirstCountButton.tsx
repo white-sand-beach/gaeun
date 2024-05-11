@@ -1,17 +1,22 @@
 import { useState } from "react";
-import deleteBtn from "../../assets/btn/deleteBtn.png"
 import minusBtn from "../../assets/btn/minusBtn.png"
 import plusBtn from "../../assets/btn/plusBtn.png"
 
+import { MenuItem } from "../../types/ShopMenuType"
 
-const FirstCountButton = () => {
-  const [quantity, setQuantity] = useState<Number>(1);
+interface CartInfoProps {
+  menu: MenuItem;
+  quantity: number;
+  setQuantity: (quantity: number | ((prevQuantity: number) => number)) => void;
+}
+
+const FirstCountButton = ({ menu, quantity, setQuantity }: CartInfoProps) => {
 
   const handlePlusClick = () => {
-    if (Number(quantity) < 1) {
+    if (Number(quantity) < menu.restStock) {
       setQuantity((prev) => Number(prev) + 1);
     } else {
-      setQuantity((prev) => Number(prev) + 1);
+      setQuantity(Number(menu.restStock));
     }
   };
 

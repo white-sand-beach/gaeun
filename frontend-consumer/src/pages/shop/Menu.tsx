@@ -1,12 +1,21 @@
-import right from "../../assets/store/right.png";
-import sale from "../../assets/store/sale.png";
+import { useNavigate } from 'react-router-dom';
+
 import { MenuItem } from "../../types/ShopMenuType";
 
+import right from "../../assets/store/right.png";
+import sale from "../../assets/store/sale.png";
+
 const ShopMenu = ({ menu }: { menu: MenuItem }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/add-cart', { state: menu });
+  };
+
   return (
     <div>
       <div className="m-auto mt-5 center">
-        <div className="w-[350px] h-[135px] border-2 rounded-xl px-4 pt-2">
+        <div onClick={handleClick} className="w-[350px] h-[135px] border-2 rounded-xl px-4 pt-2">
           <div className="between">
             <div>
               <div className="flex items-center space-x-1">
