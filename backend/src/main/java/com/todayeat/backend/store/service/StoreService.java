@@ -9,6 +9,8 @@ import com.todayeat.backend.category.mapper.CategoryMapper;
 import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
+import com.todayeat.backend.consumer.entity.Consumer;
+import com.todayeat.backend.favorite.repository.FavoriteRepository;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
@@ -44,6 +46,7 @@ import static com.todayeat.backend._common.response.error.ErrorType.*;
 public class StoreService {
 
     private final StoreCategoryRepository storeCategoryRepository;
+    private final FavoriteRepository favoriteRepository;
     private final CategoryRepository categoryRepository;
     private final SellerRepository sellerRepository;
     private final StoreRepository storeRepository;
@@ -115,7 +118,11 @@ public class StoreService {
         GetConsumerInfoStoreResponse getStoreConsumerResponse = StoreMapper.INSTANCE.storeToGetConsumerStoreResponse(
                 validateAndGetStore(storeId));
 
-        //todo getDetailStoreConsumerResponse에 찜 여부 넣어야 함
+        Consumer consumer = securityUtil.getConsumer();
+        Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
+                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
+
+        getStoreConsumerResponse.setFavorite(favoriteRepository.existsByConsumerAndStoreAndDeletedAtIsNull(consumer, store));
 
         return getStoreConsumerResponse;
     }
