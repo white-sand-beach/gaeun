@@ -10,7 +10,7 @@ const ShopMenu = ({ menu }: { menu: MenuItem }) => {
   const { Id } = useParams();
 
   const handleClick = () => {
-    navigate('/add-cart', { state: {menu, storeId: Id} });
+    navigate('/add-cart', { state: {saleId: menu.saleId, storeId: Id} });
   };
 
   return (
