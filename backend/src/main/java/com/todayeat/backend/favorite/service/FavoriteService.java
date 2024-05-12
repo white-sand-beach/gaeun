@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,7 +77,7 @@ public class FavoriteService {
     public GetFavoriteListResponse getList(Integer page, Integer size) {
 
         Consumer consumer = securityUtil.getConsumer();
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         // 찜 가져오기
         Page<Favorite> favorites = favoriteRepository.findAllByConsumerAndDeletedAtIsNull(consumer, pageable);
