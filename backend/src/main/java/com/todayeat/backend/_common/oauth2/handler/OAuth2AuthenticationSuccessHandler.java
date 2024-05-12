@@ -131,7 +131,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
 
-        // TODO: 로그아웃 로직 구현
         sendRedirectToFailUrl(request, response, redirectUri);
     }
 
