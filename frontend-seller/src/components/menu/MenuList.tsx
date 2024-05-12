@@ -26,7 +26,7 @@ const MenuList: React.FC<MenuListType> = (props) => {
             <h1>할인율 : {menu.discountRate}%</h1>
             <TotalButton title="메뉴 수정하기" onClick={() => navigate(`/update/food/${menu.menuId}`)} />
             <TotalButton title="메뉴 삭제하기" onClick={() => DeleteMenu(menu.menuId)} />
-            <TotalButton title="판매 등록" />
+            <TotalButton title="판매 등록" onClick={() => postSales({"storeId": 37, "saleList": [{"sellPrice": menu.sellPrice, "content": "ㅎㅇ", "stock": 12, "menuId": menu.menuId}]})}/>
           </div>
         ))}
       </div>
