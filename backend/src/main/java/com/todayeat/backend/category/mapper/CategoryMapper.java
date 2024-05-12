@@ -26,6 +26,6 @@ public interface CategoryMapper {
     @Named("imageToURL")
     default String imageToURL(MultipartFile image, @Context Long id, @Context S3Util s3Util) {
 
-        return s3Util.uploadImage(image, SELLER_STORE_IMAGE, id);
+        return s3Util.uploadImageIfPresent(image, SELLER_STORE_IMAGE, id);
     }
 }

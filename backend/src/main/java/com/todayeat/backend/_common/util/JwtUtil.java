@@ -28,10 +28,10 @@ import static com.todayeat.backend._common.response.error.ErrorType.TOKEN_INVALI
 @RequiredArgsConstructor
 public class JwtUtil {
 
-    // TODO: 토큰 재발급 로직 구현
     private final ConsumerRepository consumerRepository;
     private final SellerRepository sellerRepository;
-    private final long ACCESS_TOKEN_VALID_TIME = (60 * 1000) * 30; // 30분
+//    private final long ACCESS_TOKEN_VALID_TIME = (60 * 1000) * 30; // 30분
+    private final long ACCESS_TOKEN_VALID_TIME = (60 * 1000) * 60 * 24 * 3; // 3일
     private final String AUTHORITIES_KEY = "role";
     private final String TOKEN_PREFIX = "Bearer ";
 

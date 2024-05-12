@@ -72,7 +72,7 @@ public interface CartControllerDocs {
                     수량이 남은 재고 보다 클 경우
                     """,
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PutMapping(value = "/{cart-id}")
+    @PutMapping("/{cart-id}")
     SuccessResponse<Void> updateQuantity(@PathVariable(name = "cart-id")
                                          @Schema(description = "장바구니 ID", example = "1")
                                          String cartId,

@@ -83,7 +83,7 @@ public class StoreService {
             return StoreMapper.INSTANCE.storeIdToCreateStoreResponse(store.getId());
         } catch (RuntimeException e) {
 
-            s3Util.deleteImage(imageURL);
+            s3Util.deleteImageIfPresent(imageURL);
             throw new RuntimeException(e);
         }
     }
@@ -166,7 +166,7 @@ public class StoreService {
                             StoreCategoryMapper.INSTANCE.toStoreCategory(store, categoryRepository.findById(id).get())));
         } catch (RuntimeException e) {
 
-            s3Util.deleteImage(imageURL);
+            s3Util.deleteImageIfPresent(imageURL);
             throw new RuntimeException(e);
         }
     }
@@ -189,12 +189,7 @@ public class StoreService {
 
     private String imageToURL(MultipartFile image) {
 
-        if (image == null) {
-
-            return null;
-        }
-
-        return s3Util.uploadImage(image, SELLER_STORE_IMAGE, securityUtil.getSeller().getId());
+        return s3Util.uploadImageIfPresent(image, SELLER_STORE_IMAGE, securityUtil.getSeller().getId());
     }
 
     private Store validateAndGetStore(Long storeId) {

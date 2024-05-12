@@ -100,7 +100,7 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
             List<CategoryInfo> categories = jpaQueryFactory
                     .select(Projections.fields(
                             CategoryInfo.class,
-                            category.id,
+                            category.id.as("categoryId"),
                             category.name,
                             category.imageURL
                     ))

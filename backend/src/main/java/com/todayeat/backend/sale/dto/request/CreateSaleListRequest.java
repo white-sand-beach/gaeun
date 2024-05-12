@@ -15,7 +15,4 @@ public class CreateSaleListRequest {
     private Long storeId;
 
     private List<CreateSaleRequest> saleList;
-
-    @Schema(description = "판매 목록 등록 요청 총 개수", example = "1")
-    private Integer size;
 }
