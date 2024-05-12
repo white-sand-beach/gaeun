@@ -115,16 +115,13 @@ public class StoreService {
 
     public GetConsumerInfoStoreResponse getConsumerInfoStore(Long storeId) {
 
-        GetConsumerInfoStoreResponse getStoreConsumerResponse = StoreMapper.INSTANCE.storeToGetConsumerStoreResponse(
-                validateAndGetStore(storeId));
-
         Consumer consumer = securityUtil.getConsumer();
-        Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
 
-        getStoreConsumerResponse.setFavorite(favoriteRepository.existsByConsumerAndStoreAndDeletedAtIsNull(consumer, store));
+        Store store = validateAndGetStore(storeId);
 
-        return getStoreConsumerResponse;
+        boolean isFavorite = favoriteRepository.existsByConsumerAndStoreAndDeletedAtIsNull(consumer, store);
+
+        return StoreMapper.INSTANCE.storeToGetConsumerStoreResponse(store, isFavorite);
     }
 
     public GetConsumerDetailStoreResponse getConsumerDetailStore(Long storeId) {
