@@ -7,6 +7,7 @@ export interface MenuItem {
   discountRate: number;
   content: string;
   restStock: number;
+  totalPrice?: number;
 }
 
 export interface ShopMenuType {
