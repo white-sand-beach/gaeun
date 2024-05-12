@@ -15,6 +15,8 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
     Optional<Sale> findByIdAndDeletedAtIsNull(Long saleId);
 
+    Optional<Sale> findByIdAndIsFinishedIsFalseAndDeletedAtIsNull(Long saleId);
+
     List<Sale> findAllByStoreAndDeletedAtIsNull(Store store);
 
     List<Sale> findAllByStoreAndIsFinishedIsFalseAndDeletedAtIsNull(Store store);

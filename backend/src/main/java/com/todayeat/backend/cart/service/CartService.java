@@ -12,7 +12,6 @@ import com.todayeat.backend.cart.mapper.CartMapper;
 import com.todayeat.backend.cart.repository.CartRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.sale.entity.Sale;
-import com.todayeat.backend.sale.mapper.SaleMapper;
 import com.todayeat.backend.sale.repository.SaleRepository;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.repository.StoreRepository;
@@ -105,7 +104,7 @@ public class CartService {
                     .ifPresent(s -> {
                         Integer restStock = s.getStock() - s.getTotalQuantity();
 
-                        cartResponseList.add(SaleMapper
+                        cartResponseList.add(CartMapper
                                 .INSTANCE.getCartResponse(c.getId(), s, restStock, c.getQuantity()));
 
                         // (현재 남은 재고 - 장바구니에 넣은 수량)이 음수여도 보여는 준다. 대신 결제 금액에는 반영하지 않도록 한다.
