@@ -43,10 +43,7 @@ public class MenuService {
         Store store = validateStoreAndSeller(seller, request.getStoreId());
 
         // S3에 이미지 저장
-        String imageUrl = null;
-        if(request.getImage() != null) {
-            imageUrl = s3Util.uploadImage(request.getImage(), DirectoryType.SELLER_MENU_IMAGE, seller.getId());
-        }
+        String  imageUrl = s3Util.uploadImageIfPresent(request.getImage(), DirectoryType.SELLER_MENU_IMAGE, seller.getId());
 
         try {
             Menu menu = MenuMapper.INSTANCE
@@ -55,8 +52,9 @@ public class MenuService {
 
             menuRepository.save(menu);
         } catch (RuntimeException e) {
-            if(imageUrl != null)
-                s3Util.deleteImage(imageUrl);
+
+            s3Util.deleteImageIfPresent(imageUrl);
+
             throw new RuntimeException(e);
         }
     }
@@ -78,6 +76,11 @@ public class MenuService {
     @Transactional
     public void update(Long menuId, UpdateMenuRequest request) {
 
+        // 잘못된 이미지 요청
+        if (request.getImage() != null && request.getImageUrl() != null) {
+            throw new BusinessException(ErrorType.MENU_IMAGE_DUPLICATE);
+        }
+
         Seller seller = securityUtil.getSeller();
 
         // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
@@ -87,28 +90,38 @@ public class MenuService {
         Menu menu = menuRepository.findByIdAndDeletedAtIsNull(menuId)
                 .orElseThrow(() -> new BusinessException(ErrorType.MENU_NOT_FOUND));
 
-        String imageUrl = menu.getImageUrl();
-        // 수정 메뉴 이미지 s3에 저장
-        if(request.getImage() != null) {
-            log.info("수정 메뉴 이미지 s3에 저장: {}", request.getImage().getName());
-            imageUrl = s3Util.uploadImage(request.getImage(), DirectoryType.SELLER_MENU_IMAGE, seller.getId());
+        // 기존 이미지 유지
+        if (request.getImageUrl() != null) {
+
+            if (!menu.getImageUrl().equals(request.getImageUrl())) {
+                throw new BusinessException(ErrorType.MENU_IMAGE_URL_BAD_REQUEST);
+            }
+
+            // s3 롤백 필요없으니까 더티체킹 가능
+            menu.update(request.getName(), request.getOriginalPrice(),
+                    request.getSellPrice(), getDiscountRate(request.getOriginalPrice(), request.getSellPrice()));
+            return;
         }
 
+        // 기존 이미지 url
+        String beforUrl = menu.getImageUrl();
+
+        // 수정 메뉴 이미지 s3에 저장
+        String afterUrl = s3Util.uploadImageIfPresent(request.getImage(), DirectoryType.SELLER_MENU_IMAGE, seller.getId());
+
         try {
-            menuRepository.updateMenu(menuId, imageUrl, request.getName(),
+            menuRepository.updateMenu(menuId, afterUrl, request.getName(),
                     request.getOriginalPrice(), request.getSellPrice(),
                     getDiscountRate(request.getOriginalPrice(), request.getSellPrice()));
         } catch (RuntimeException e) {
-            if(request.getImage() != null) {
-                s3Util.deleteImage(imageUrl);
-            }
-            throw new RuntimeException(e);
+
+            s3Util.deleteImageIfPresent(afterUrl);
+
+            throw new BusinessException(ErrorType.MENU_UPDATE_FAIL);
         }
 
         // 기존 메뉴 이미지 삭제
-        if(request.getImage() != null) {
-            s3Util.deleteImage(menu.getImageUrl());
-        }
+        s3Util.deleteImageIfPresent(beforUrl);
     }
 
     @Transactional
@@ -117,7 +130,7 @@ public class MenuService {
         Seller seller = securityUtil.getSeller();
 
         // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
-        Store store = validateStoreAndSeller(seller, request.getStoreId());
+        validateStoreAndSeller(seller, request.getStoreId());
 
         // 메뉴 존재 여부 확인
         Menu menu = menuRepository.findByIdAndDeletedAtIsNull(menuId)
@@ -128,7 +141,7 @@ public class MenuService {
 
         menuRepository.delete(menu);
 
-        s3Util.deleteImage(imageUrl);
+        s3Util.deleteImageIfPresent(imageUrl);
     }
 
     // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
