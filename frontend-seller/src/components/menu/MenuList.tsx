@@ -9,13 +9,15 @@ const MenuList: React.FC<MenuListType> = (props) => {
   const { DeleteMenu } = DeleteMenuAPI();
 
   return (
-    <div>
+    <div className="flex flex-col items-center gap-4">
+      <TotalButton title="판매 등록" />
       <h1>메뉴 보여줄 페이지 입니다.</h1>
       <h1>여기서 바로 음식 수량을 결정, 판매를 등록합니다.</h1>
 
-      <div className="flex flex-col items-center mt-10 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {props.menusInfo.map((menu) => (
-          <div key={menu.menuId} className="border-2 rounded-lg gap-3 flex flex-col">
+          <div key={menu.menuId} className="flex flex-col gap-3 border-2 rounded-lg">
+            <img src={menu.imageUrl} alt="" className="w-[40px] h-[40px]"/>
             <h1>메뉴이름 : {menu.name}</h1>
             <h1>원가 : {menu.originalPrice}원</h1>
             <h1>판매가 : {menu.sellPrice}원</h1>
