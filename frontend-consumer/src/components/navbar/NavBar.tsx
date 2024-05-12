@@ -1,4 +1,4 @@
-import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import useUserLocation from "../../store/UserLocation";
 import cart from "../../assets/navbar/cart.png";
 import ring from "../../assets/navbar/ring.png";

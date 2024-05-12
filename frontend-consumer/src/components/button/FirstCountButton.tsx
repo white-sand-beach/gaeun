@@ -1,4 +1,3 @@
-import { useState } from "react";
 import minusBtn from "../../assets/btn/minusBtn.png"
 import plusBtn from "../../assets/btn/plusBtn.png"
 
