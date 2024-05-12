@@ -6,10 +6,7 @@ import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.repository.MenuRepository;
 import com.todayeat.backend.sale.dto.request.*;
-import com.todayeat.backend.sale.dto.response.GetSaleListConsumerResponse;
-import com.todayeat.backend.sale.dto.response.GetSaleListSellerResponse;
-import com.todayeat.backend.sale.dto.response.GetSaleConsumerResponse;
-import com.todayeat.backend.sale.dto.response.GetSaleSellerResponse;
+import com.todayeat.backend.sale.dto.response.*;
 import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.sale.mapper.SaleMapper;
 import com.todayeat.backend.sale.repository.SaleRepository;
@@ -74,6 +71,14 @@ public class SaleService {
                 .toList();
 
         return GetSaleListConsumerResponse.of(storeId, getSaleToConsumerResponseList, getSaleToConsumerResponseList.size());
+    }
+
+    public GetSaleDetailConsumerResponse getDetailToConsumer(Long saleId) {
+
+        Sale sale = saleRepository.findByIdAndIsFinishedIsFalseAndDeletedAtIsNull(saleId)
+                .orElseThrow(() -> new BusinessException(ErrorType.SALE_NOT_SELLING));
+
+        return SaleMapper.INSTANCE.getSaleDetailConsumerResponse(sale);
     }
 
     public GetSaleListSellerResponse getListToSeller(Long storeId) {
