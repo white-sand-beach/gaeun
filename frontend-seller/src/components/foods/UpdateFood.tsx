@@ -19,6 +19,17 @@ const UpdateFood = () => {
     sellPrice: 0
   })
 
+  useEffect(() => {
+    if (menuInfo) {
+      setUpdateMenuInfo({
+        image: menuInfo.imageURL,
+        name: menuInfo.name,
+        originalPrice: menuInfo.originalPrice,
+        sellPrice: menuInfo.sellPrice
+      })
+    }
+  }, [menuInfo])
+
   const imgRef = useRef<HTMLInputElement>(null);
   const handleImage = () => {
     imgRef.current && imgRef.current.click();
@@ -27,11 +38,11 @@ const UpdateFood = () => {
   const handleChangeInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
     setUpdateMenuInfo({
-        ...updateMenuInfo,
-        [name]: value,
+      ...updateMenuInfo,
+      [name]: value,
     });
     console.log(`${name} : ${value}`)
-};
+  };
 
   // 메뉴 id의 변화에 따른 메뉴 상세보기 페이지 rendering
   useEffect(() => {
@@ -81,7 +92,6 @@ const UpdateFood = () => {
         type="text"
         placeholder="음식명을 입력하세요."
         className="w-[290px] border-b-[3px]"
-        defaultValue={menuInfo?.name}
         value={updateMenuInfo.name}
         onChange={handleChangeInfo}
       />
@@ -93,7 +103,6 @@ const UpdateFood = () => {
           type="number"
           placeholder="상품의 원가를 입력하세요."
           className="w-[270px] border-b-[3px]"
-          defaultValue={menuInfo?.originalPrice}
           value={updateMenuInfo.originalPrice}
           onChange={handleChangeInfo}
           onFocus={(event) =>
@@ -111,7 +120,6 @@ const UpdateFood = () => {
             type="number"
             placeholder="상품의 판매가를 입력하세요."
             className="w-[270px] border-b-[3px]"
-            defaultValue={menuInfo?.sellPrice}
             value={updateMenuInfo.sellPrice}
             onChange={handleChangeInfo}
             onFocus={(event) =>
