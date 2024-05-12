@@ -163,6 +163,8 @@ public class MenuService {
             throw new BusinessException(ErrorType.MENU_GET_DISCOUNT_RATE_FAIL);
         }
 
-        return 100 * (originalPrice - sellPrice) / originalPrice;
+        long dif = originalPrice.longValue() - sellPrice.longValue();
+
+        return Math.toIntExact(100 * dif / originalPrice);
     }
 }
