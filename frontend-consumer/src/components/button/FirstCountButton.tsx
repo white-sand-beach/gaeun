@@ -21,10 +21,10 @@ const FirstCountButton = ({ menu, quantity, setQuantity }: CartInfoProps) => {
   };
 
   const handleMinusClick = () => {
-    if (Number(quantity) > 1) {
+    if (Number(quantity) > 2) {
       setQuantity((prev) => Number(prev) - 1);
     } else {
-      setQuantity(0);
+      setQuantity(1);
     }
   };
 

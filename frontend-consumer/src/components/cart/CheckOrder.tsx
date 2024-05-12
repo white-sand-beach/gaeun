@@ -12,7 +12,7 @@ const CheckOrder = ({ menuData }: CheckOrderProps) => {
   const formattedSellPrice = new Intl.NumberFormat('ko-KR').format(menuData.sellPrice * menuData.quantity);
 
   return (
-    <div className="p-2">
+    <div className={`p-2 ${menuData.isFinished ? 'bg-gray-100' : ""}`}>
       <div className="flex items-center">
         {/* 음식 이미지 */}
         <img
