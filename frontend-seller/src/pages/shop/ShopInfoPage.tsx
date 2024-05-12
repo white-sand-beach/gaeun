@@ -3,8 +3,8 @@ import { getShopInfoType } from "../../types/shop/getShopInfoType";
 import getShopInfoAPI from "../../service/shop/getShopInfoAPI";
 import ShopInfo from "../../components/shop/ShopInfo";
 import MySalesList from "../../components/shop/MySalesList";
-// import { GetSalesListType } from "../../types/shop/GetSalesListType";
-// import GetMySalesListAPI from "../../service/shop/GetMySalesListAPI";
+import { SalesInfoType } from "../../types/shop/SalesInfoType";
+import GetMySalesListAPI from "../../service/shop/GetMySalesListAPI";
 
 const ShopInfoPage = () => {
     // 가게 정보
@@ -32,14 +32,14 @@ const ShopInfoPage = () => {
         ]
     });
     // 판매 내역 정보
-    // const [salesList, setSalesList] = useState<GetSalesListType[]>([])
+    const [salesLists, setSalesLists] = useState<SalesInfoType[]>([])
 
-    // const { getSalesSeller } = GetMySalesListAPI()
+    const { getSalesSeller } = GetMySalesListAPI()
     const { getShopInfo } = getShopInfoAPI();
     
     useEffect(() => {
         getShopInfo(setShopInfo)
-        // getSalesSeller(setSalesList)
+        getSalesSeller(setSalesLists)
     }, []);
     
     return (
@@ -53,7 +53,8 @@ const ShopInfoPage = () => {
             <hr />
             <hr />
             <h1>등록된 판매 목록</h1>
-            <MySalesList />
+            <MySalesList 
+            salesLists={salesLists}/>
         </div>
     );
 };

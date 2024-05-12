@@ -1,4 +1,4 @@
-export type GetSalesListType = {
+export type SalesInfoType = {
     saleId: number;
     imageUrl: string;
     name: string;

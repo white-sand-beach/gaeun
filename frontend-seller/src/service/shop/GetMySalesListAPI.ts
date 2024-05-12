@@ -1,11 +1,11 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
-import { GetSalesListType } from "../../types/shop/GetSalesListType";
+import { SalesInfoType } from "../../types/shop/SalesInfoType";
 
 const GetMySalesListAPI = () => {
     const cookies = new Cookies()
     const accessToken = cookies.get("accessToken")
-    const getSalesSeller = (setFunc:(saleList:GetSalesListType[]) => void) => {
+    const getSalesSeller = (setFunc:(saleList:SalesInfoType[]) => void) => {
         axios.get(import.meta.env.VITE_BASE_URL + "/api/sales/seller", {
             params: {
                 "store-id": 37,
