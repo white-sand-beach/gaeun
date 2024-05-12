@@ -3,6 +3,7 @@ import deleteBtn from "../../assets/btn/deleteBtn.png"
 import minusBtn from "../../assets/btn/minusBtn.png"
 import plusBtn from "../../assets/btn/plusBtn.png"
 
+import CartAmountService from "../../services/carts/CartAmountService";
 import CartDeleteService from "../../services/carts/CartDeleteService";
 import { CartItem } from "../../types/CartType"
 
@@ -14,21 +15,29 @@ const CountButton = ({ menuData }: CheckOrderProps) => {
   const [quantity, setQuantity] = useState<Number>(menuData.quantity);
   const [showBtn, setShowBtn] = useState<boolean>(true);
 
-  const handlePlusClick = () => {
-    if (Number(quantity) < menuData.restStock) {
-      setQuantity((prev) => Number(prev) + 1);
+  const handlePlusClick = async () => {
+    const newQuantity = Number(quantity) < menuData.restStock ? Number(quantity) + 1 : menuData.restStock;
+
+    try {
+      const response = await CartAmountService({ quantity: newQuantity, cartId: menuData.cartId });
+      setQuantity(newQuantity);
       setShowBtn(true);
-    } else {
-      setQuantity(menuData.restStock);
+      console.log("수량 변경 응답:", response);
+    } catch (error) {
+      console.error(newQuantity, "수량 변경 오류:", error);
     }
   };
 
-  const handleMinusClick = () => {
-    if (Number(quantity) > 1) {
-      setQuantity((prev) => Number(prev) - 1);
-    } else {
-      setQuantity(0);
-      setShowBtn(false);
+  const handleMinusClick = async () => {
+    const newQuantity = Number(quantity) > 2 ? Number(quantity) - 1 : 1;
+
+    try {
+      const response = await CartAmountService({ quantity: newQuantity, cartId: menuData.cartId });
+      setQuantity(newQuantity);
+      newQuantity > 1 ? setShowBtn(true) : setShowBtn(false);
+      console.log("수량 변경 응답:", response);
+    } catch (error) {
+      console.error(newQuantity,"수량 변경 오류:", error);
     }
   };
 

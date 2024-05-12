@@ -43,7 +43,7 @@ const Favorite = () => {
       try {
         const response: FavoriteResponse = await FavoriteGetForm({
           page: favoriteState.page,
-          size: 10,
+          size: 20,
         });
         setFavoriteState((prevState) => ({
           ...prevState,

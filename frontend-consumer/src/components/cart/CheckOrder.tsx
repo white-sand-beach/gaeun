@@ -1,8 +1,6 @@
 import CountButton from "../button/CountButton";
 import right from "../../assets/store/right.png";
 
-import CartAllDeleteService from "../../services/carts/CartAllDeleteService";
-
 import { CartItem } from "../../types/CartType"
 
 interface CheckOrderProps {

@@ -1,5 +1,4 @@
 import axiosInstance from "../authentication/AxiosSet";
-// import { CartItem } from "../../types/CartType";
 
 const CartDeleteService = async (cartId: string) => {
   const response = await axiosInstance.delete(

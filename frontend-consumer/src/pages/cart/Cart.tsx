@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import CountButton from "../../components/button/CountButton";
-import right from "../../assets/store/right.png";
 
 import CartAllDeleteService from "../../services/carts/CartAllDeleteService";
 
