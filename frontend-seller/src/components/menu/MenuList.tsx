@@ -12,7 +12,8 @@ const MenuList: React.FC<MenuListType> = (props) => {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <button className="common-btn fixed top-[80px]">판매 등록</button>
+      <button className="common-btn">판매 등록</button>
+      <button className="common-btn" onClick={() => navigate("/register/food")}>메뉴 등록</button>
       <h1>메뉴 보여줄 페이지 입니다.</h1>
       <h1>여기서 바로 음식 수량을 결정, 판매를 등록합니다.</h1>
 
