@@ -1,14 +1,13 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { RegisterFoodType } from "../../types/foods/RegisterFoodType.ts";
+import { PutMenuAPIType } from "../../types/menu/PutMenuAPIType";
 import Cookies from "universal-cookie";
 
-const RegisterFoodAPI = () => {
-  const navigate = useNavigate()
+const PutMenuAPI = () => {
   const cookies = new Cookies()
   const accessToken = cookies.get("accessToken")
-
-  const postRegisterFood = ({image, name, originalPrice, sellPrice, storeId}: RegisterFoodType) => {
+  const navigate = useNavigate()
+  const putMenu = ({menuId, image, name, originalPrice, sellPrice, storeId}: PutMenuAPIType) => {
     const formData = new FormData()
     if (image) {
       formData.append("image", image)
@@ -16,24 +15,25 @@ const RegisterFoodAPI = () => {
     formData.append("name", name)
     formData.append("originalPrice", originalPrice.toString())
     formData.append("sellPrice", sellPrice.toString())
-    formData.append("storeId", storeId.toString())
-    axios.post(import.meta.env.VITE_BASE_URL + '/api/menus', formData, {
+    formData.append("storeId", storeId!.toString())
+    axios.put(import.meta.env.VITE_BASE_URL + `/api/menus/${menuId}`, formData, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
     })
     .then(res => {
       console.log(res)
-      window.alert("메뉴 등록 성공")
-      navigate("/")
+      window.alert("메뉴 수정 성공")
+      navigate("/menus")
     })
     .catch(err => {
       console.error(err)
-    });
+      window.alert("메뉴 수정 실패")
+    })
   };
   return {
-    postRegisterFood,
+    putMenu
   };
 };
 
-export default RegisterFoodAPI;
+export default PutMenuAPI;

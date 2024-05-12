@@ -16,7 +16,7 @@ const MenuListPage = () => {
   }, [])
 
   return (
-    <div className="yes-footer top-[70px]">
+    <div className="yes-footer top-[70px] overflow-y-scroll">
       <MenuList 
       menusInfo={menusInfo}
       />
