@@ -44,5 +44,6 @@ public class GetConsumerInfoStoreResponse {
     @Schema(description = "찜 수", example = "0")
     private int favoriteCnt;
 
-    // todo 찜 여부
+    @Schema(description = "찜 여부", example = "false")
+    private boolean isFavorite;
 }

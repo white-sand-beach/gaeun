@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
     boolean existsByConsumerAndStoreAndDeletedAtIsNull(Consumer consumer, Store store);
+
     Optional<Favorite> findByIdAndDeletedAtIsNull(Long favoriteId);
+
     Page<Favorite> findAllByConsumerAndDeletedAtIsNull(Consumer consumer, Pageable pageable);
 }

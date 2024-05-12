@@ -27,9 +27,9 @@ public interface StoreMapper {
     @Mapping(target = "latitude", source = "location.x")
     GetSellerStoreResponse storeToGetSellerStoreResponse(Store store);
 
-    @Mapping(target = "longitude", source = "location.y")
-    @Mapping(target = "latitude", source = "location.x")
-    GetConsumerInfoStoreResponse storeToGetConsumerStoreResponse(Store store);
+    @Mapping(target = "longitude", source = "store.location.y")
+    @Mapping(target = "latitude", source = "store.location.x")
+    GetConsumerInfoStoreResponse storeToGetConsumerStoreResponse(Store store, boolean favorite);
 
     GetConsumerDetailStoreResponse storeToGetConsumerDetailStoreResponse(Store store);
 
