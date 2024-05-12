@@ -123,7 +123,7 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
               >
                 {category.name}
                 <img
-                  src={category.imageURL}
+                  src={category.imageUrl}
                   alt="카테고리 이미지"
                   className="w-[30px]"
                 />
