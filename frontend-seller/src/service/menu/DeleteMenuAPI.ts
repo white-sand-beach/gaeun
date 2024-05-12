@@ -1,9 +1,7 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 const DeleteMenuAPI = () => {
-  const navigate = useNavigate()
   const cookies = new Cookies()
   const accessToken = cookies.get("accessToken")
   const DeleteMenu = (menuId:any) => {
@@ -21,7 +19,7 @@ const DeleteMenuAPI = () => {
     .then(res => {
       console.log(res)
       window.alert("메뉴 삭제 성공")
-      navigate("/menus")
+      window.location.reload()
     })
     .catch(err => {
       console.log(err)

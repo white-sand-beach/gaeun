@@ -1,6 +1,6 @@
 export type MenuInfoType = {
   menuId?: number;
-  imageURL: string;
+  imageUrl: string;
   name: string;
   originalPrice: number;
   sellPrice: number;
