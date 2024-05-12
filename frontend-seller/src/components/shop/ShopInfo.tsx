@@ -13,7 +13,7 @@ const ShopInfo:React.FC<getShopInfoType> = (props) => {
             <h1>가게번호 : {props.tel}</h1>
             <h1>가게주소 : {props.roadAddress}</h1>
 
-            <div className="flex flex-row justify-around w-full text-gray-300">
+            <div className="flex flex-row justify-around w-full text-gray-500">
                 <div className="flex flex-col items-center">
                     <img src={reviewImg} alt="리뷰 아이콘" className="w-[80px] h-[80px]" />
                     <p>리뷰조회</p>
