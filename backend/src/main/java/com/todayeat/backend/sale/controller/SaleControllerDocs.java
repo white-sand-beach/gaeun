@@ -7,6 +7,7 @@ import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleContentRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStatusRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStockRequest;
+import com.todayeat.backend.sale.dto.response.GetSaleDetailConsumerResponse;
 import com.todayeat.backend.sale.dto.response.GetSaleListConsumerResponse;
 import com.todayeat.backend.sale.dto.response.GetSaleListSellerResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -63,6 +64,19 @@ public interface SaleControllerDocs {
                                                              @NotNull(message = "store-id: 값이 null이 아니어야 합니다.")
                                                              @Schema(description = "가게 ID", example = "1")
                                                              Long storeId);
+
+    @Operation(summary = "소비자용 판매 상세 조회",
+            description = """
+                    `ROLE_CONSUMER` \n
+                    """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetSaleDetailConsumerResponse.class)))
+    @GetMapping("/{sale-id}/consumer")
+    @PreAuthorize("hasRole('CONSUMER')")
+    SuccessResponse<GetSaleDetailConsumerResponse> getDetailToConsumer(@PathVariable(name = "sale-id")
+                                                                     @Schema(description = "판매 ID", example = "1")
+                                                                     Long saleId);
 
     @Operation(summary = "판매자용 판매 조회",
             description = """

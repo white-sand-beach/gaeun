@@ -6,6 +6,7 @@ import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleContentRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStatusRequest;
 import com.todayeat.backend.sale.dto.request.UpdateSaleStockRequest;
+import com.todayeat.backend.sale.dto.response.GetSaleDetailConsumerResponse;
 import com.todayeat.backend.sale.dto.response.GetSaleListConsumerResponse;
 import com.todayeat.backend.sale.dto.response.GetSaleListSellerResponse;
 import com.todayeat.backend.sale.service.SaleService;
@@ -32,6 +33,12 @@ public class SaleController implements SaleControllerDocs {
     public SuccessResponse<GetSaleListConsumerResponse> getListToConsumer(Long storeId) {
 
         return SuccessResponse.of(saleService.getListToConsumer(storeId), SuccessType.GET_SALE_LIST_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<GetSaleDetailConsumerResponse> getDetailToConsumer(Long saleId) {
+
+        return SuccessResponse.of(saleService.getDetailToConsumer(saleId), SuccessType.GET_SALE_DETAIL_SUCCESS);
     }
 
     @Override
