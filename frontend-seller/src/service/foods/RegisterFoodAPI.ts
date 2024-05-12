@@ -25,7 +25,7 @@ const RegisterFoodAPI = () => {
     .then(res => {
       console.log(res)
       window.alert("메뉴 등록 성공")
-      navigate("/")
+      navigate("/menus")
     })
     .catch(err => {
       console.error(err)

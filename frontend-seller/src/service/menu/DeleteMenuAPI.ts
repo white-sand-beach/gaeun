@@ -9,12 +9,15 @@ const DeleteMenuAPI = () => {
   const DeleteMenu = (menuId:any) => {
     axios.delete(import.meta.env.VITE_BASE_URL + `/api/menus/${menuId}`, {
       params: {
-        "storeId": 37
+        "menu-id": menuId
       },
       headers: {
         Authorization: `Bearer ${accessToken}`
+      },
+      data: {
+        "storeId": 37,
       }
-    })
+    },)
     .then(res => {
       console.log(res)
       window.alert("메뉴 삭제 성공")

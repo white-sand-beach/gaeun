@@ -13,7 +13,7 @@ const MenuListPage = () => {
 
   useEffect(() => {
     handleGetMenu()
-  }, [])
+  }, [menusInfo])
 
   return (
     <div className="yes-footer top-[70px] overflow-y-scroll">
