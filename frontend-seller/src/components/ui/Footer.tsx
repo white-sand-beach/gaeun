@@ -26,10 +26,13 @@ const Footer = () => {
           <p>등록하기</p>
         </div>
       </Link>
-      <div className="flex flex-col items-center justify-center">
-        <img src={ProfileIcon} alt="프로필" />
-        <p>프로필</p>
-      </div>
+
+      <Link to={"/mystore"}>
+        <div className="flex flex-col items-center justify-center">
+          <img src={ProfileIcon} alt="프로필" />
+          <p>프로필</p>
+        </div>
+      </Link>
     </footer>
   );
 };

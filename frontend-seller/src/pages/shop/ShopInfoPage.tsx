@@ -36,10 +36,11 @@ const ShopInfoPage = () => {
     return (
         <div className="yes-footer top-[60px] overflow-y-scroll">
             <ShopInfo 
-            imageURL={shopInfo?.imageURL}
-            name={shopInfo?.name}
-            roadAddress={shopInfo?.roadAddress}
+            imageURL={shopInfo.imageURL}
+            name={shopInfo.name}
+            roadAddress={shopInfo.roadAddress}
             tel={shopInfo.tel}/>
+            <h1>등록된 판매 목록</h1>
         </div>
     );
 };
