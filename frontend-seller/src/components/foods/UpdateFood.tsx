@@ -22,7 +22,7 @@ const UpdateFood = () => {
   useEffect(() => {
     if (menuInfo) {
       setUpdateMenuInfo({
-        image: menuInfo.imageURL,
+        image: menuInfo.imageUrl,
         name: menuInfo.name,
         originalPrice: menuInfo.originalPrice,
         sellPrice: menuInfo.sellPrice
