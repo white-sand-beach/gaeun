@@ -3,6 +3,9 @@ package com.todayeat.backend.sale.service;
 import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
+import com.todayeat.backend.cart.entity.Cart;
+import com.todayeat.backend.cart.repository.CartRepository;
+import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.repository.MenuRepository;
 import com.todayeat.backend.sale.dto.request.*;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -34,6 +38,7 @@ public class SaleService {
     private final SellerRepository sellerRepository;
     private final SaleRepository saleRepository;
     private final StoreRepository storeRepository;
+    private final CartRepository cartRepository;
 
     @Transactional
     public void create(CreateSaleListRequest request) {
@@ -78,7 +83,10 @@ public class SaleService {
         Sale sale = saleRepository.findByIdAndIsFinishedIsFalseAndDeletedAtIsNull(saleId)
                 .orElseThrow(() -> new BusinessException(ErrorType.SALE_NOT_SELLING));
 
-        return SaleMapper.INSTANCE.getSaleDetailConsumerResponse(sale);
+        // 내 장바구니 고려한 재고로 바꾸기
+        Integer restStock = getRestStock(sale);
+
+        return SaleMapper.INSTANCE.getSaleDetailConsumerResponse(sale, restStock);
     }
 
     public GetSaleListSellerResponse getListToSeller(Long storeId) {
@@ -198,5 +206,15 @@ public class SaleService {
         long dif = originalPrice.longValue() - sellPrice.longValue();
 
         return Math.toIntExact(100 * dif / originalPrice);
+    }
+
+    private Integer getRestStock(Sale sale) {
+        Consumer consumer = securityUtil.getConsumer();
+
+        Optional<Cart> cart = cartRepository.findByConsumerIdAndSaleId(consumer.getId(), sale.getId());
+
+        int cartStock = cart.isEmpty() ? 0 : cart.get().getQuantity();
+
+        return sale.getStock() - sale.getTotalQuantity() - cartStock;
     }
 }
