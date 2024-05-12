@@ -3,14 +3,16 @@ import { MenuListType } from "../../types/menu/MenuListType";
 import { useNavigate } from "react-router-dom";
 import TotalButton from "../ui/TotalButton";
 import DeleteMenuAPI from "../../service/menu/DeleteMenuAPI";
+import RegisterSalesAPI from "../../service/sales/RegisterSalesAPI";
 
 const MenuList: React.FC<MenuListType> = (props) => {
   const navigate = useNavigate()
   const { DeleteMenu } = DeleteMenuAPI();
+  const { postSales } = RegisterSalesAPI();
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <TotalButton title="판매 등록" />
+      <button className="common-btn fixed top-[80px]">판매 등록</button>
       <h1>메뉴 보여줄 페이지 입니다.</h1>
       <h1>여기서 바로 음식 수량을 결정, 판매를 등록합니다.</h1>
 

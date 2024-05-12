@@ -1,8 +1,7 @@
+import { SalesListType } from "./SalesListType";
+
 export type PostSalesTypeAPI = {
     storeId: number;
-    sellPrice: number;
-    content: string;
-    stock: number;
-    menuId: number;
+    saleList: SalesListType[]
     size: number;
 }

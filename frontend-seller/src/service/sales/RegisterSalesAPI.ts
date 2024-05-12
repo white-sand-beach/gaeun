@@ -2,18 +2,11 @@ import axios from "axios";
 import { PostSalesTypeAPI } from "../../types/sales/PostSalesTypeAPI";
 
 const RegisterSalesAPI = () => {
-    const postSales = ({storeId, sellPrice, content, menuId, stock, size}: PostSalesTypeAPI) => {
+    const postSales = ({storeId, saleList, size}: PostSalesTypeAPI) => {
         axios.post(import.meta.env.VITE_BASE_URL + "/api/sales", {
-            "storeId": storeId,
-            "saleList": [
-                {
-                    "sellPrice": sellPrice,
-                    "content": content,
-                    "stock": stock,
-                    "menuId": menuId,
-                }
-            ],
-            "size": size,
+            storeId,
+            saleList,
+            size,
         })
         .then(res => {
             console.log(res)
