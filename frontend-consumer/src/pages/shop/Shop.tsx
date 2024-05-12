@@ -1,4 +1,5 @@
-import heartIcon from "../../assets/shop/heart.png";
+// import heartIcon from "../../assets/shop/heart.png";
+import FavoriteButton from "../../components/button/FavoriteButton";
 import phoneIcon from "../../assets/shop/phone.png";
 import KakaoMap from "../main/Kakaomap";
 import { useEffect, useState } from "react";
@@ -8,6 +9,8 @@ import ShopMenu from "./ShopMenu";
 import { useParams } from "react-router-dom";
 import ShopInfoGetForm from "../../services/shops/ShopInfoGetService";
 import { ShopInfo } from "../../types/ShopInfoType";
+import ShoptFavoritePostForm from "../../services/favorites/ShopFavoritePostService";
+import ShopDetailGetForm from "../../services/shops/ShopDetailGetService";
 
 const mapHeight = "105px"; // 예시 높이값
 const updateCounter = 0;
@@ -35,6 +38,24 @@ const Shop = () => {
 
   const handlePhoneClick = () => {
     makePhoneCall(shopInfo.tel);
+  };
+
+  const [isFavorite, setIsFavorite] = useState(true);
+
+  const handleToggle = async (newIsFavorite: boolean) => {
+    try {
+      if (newIsFavorite) {
+        // 찜 등록 API 호출
+        await ShoptFavoritePostForm({ Id });
+      } else {
+        // 찜 삭제 API 호출
+        await ShopDetailGetForm({ Id });
+      }
+      setIsFavorite(newIsFavorite);
+    } catch (error) {
+      // 에러 처리
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -74,7 +95,8 @@ const Shop = () => {
           </div>
 
           <div className="flex items-center">
-            <img src={heartIcon} alt="Heart" className="w-5 h-5 mr-1" />
+            {/* 토글 버튼 */}
+            <FavoriteButton isFavorite={isFavorite} onToggle={handleToggle} />
             <span className="text-sm">{shopInfo.favoriteCnt}</span>
           </div>
         </div>
