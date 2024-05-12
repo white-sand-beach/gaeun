@@ -72,6 +72,9 @@ public enum ErrorType {
     MENU_CREATE_FAIL(HttpStatus.BAD_REQUEST, "판매가가 원가보다 커 메뉴 등록에 실패했습니다."),
     MENU_GET_DISCOUNT_RATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "메뉴의 할인가 계산에 실패했습니다."),
     MENU_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 메뉴입니다."),
+    MENU_UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "메뉴 수정에 실패했습니다."),
+    MENU_IMAGE_DUPLICATE(HttpStatus.BAD_REQUEST, "이미지 URL(기존 이미지)과 이미지 파일(신규 이미지) 중 하나를 요청해야 합니다."),
+    MENU_IMAGE_URL_BAD_REQUEST(HttpStatus.BAD_REQUEST, "기존 이미지 URL이 맞지 않습니다."),
 
     // store
 
@@ -84,7 +87,6 @@ public enum ErrorType {
 
     // image
     IMAGE_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 형식의 파일이 아닙니다."),
-    IMAGE_URL_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "이미지 url 형식이 잘못되었습니다."),
 
     // sale
     SALE_STATUS_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 상태 변경에 실패했습니다."),
