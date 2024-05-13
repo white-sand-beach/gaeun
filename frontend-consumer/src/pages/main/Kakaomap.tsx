@@ -62,7 +62,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
 
     const options = {
       center: new window.kakao.maps.LatLng(latitude, longitude),
-      level: 3,
+      level: 6,
     };
 
     const map = new window.kakao.maps.Map(container, options);
@@ -103,10 +103,26 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
         );
 
         // 일반 마커를 생성합니다.
-        const marker = new window.kakao.maps.Marker({
-          position: markerPosition,
-          map: map,
-        });
+        let marker;
+        if (item.categoryList && item.categoryList[0]?.imageURL) {
+          // 카테고리에 이미지 URL이 있는 경우 해당 이미지를 사용하여 마커를 생성합니다.
+          const markerImage = new window.kakao.maps.MarkerImage(
+            item.categoryList[0].imageURL, // 이미지 URL
+            new window.kakao.maps.Size(32, 32) // 이미지 크기
+          );
+
+          marker = new window.kakao.maps.Marker({
+            position: markerPosition,
+            map: map,
+            image: markerImage,
+          });
+        } else {
+          // 이미지 URL이 없는 경우 기본 마커를 생성합니다.
+          marker = new window.kakao.maps.Marker({
+            position: markerPosition,
+            map: map,
+          });
+        }
 
         // 일반 마커에 대한 참조를 설정합니다.
         markerRef.current = marker;
