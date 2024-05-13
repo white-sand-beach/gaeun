@@ -103,17 +103,13 @@ public class StoreService {
         store = storeRepository.findByIdAndDeletedAtIsNull(store.getId())
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
 
-        GetSellerStoreResponse getSellerStoreResponse = StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store);
-
-        List<CategoryInfo> categoryInfoList = storeCategoryRepository.findByStoreIdAndDeletedAtIsNull(storeId).stream()
+        List<CategoryInfo> categoryList = store.getStoreCategoryList().stream()
                 .map(storeCategory -> categoryRepository.findById(storeCategory.getCategory().getId()))
                 .flatMap(Optional::stream)
                 .map(CategoryMapper.INSTANCE::categoryToCategoryInfo)
                 .toList();
 
-        getSellerStoreResponse.setCategoryList(categoryInfoList);
-
-        return getSellerStoreResponse;
+        return StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store, categoryList);
     }
 
     public GetConsumerInfoStoreResponse getConsumerInfoStore(Long storeId) {
