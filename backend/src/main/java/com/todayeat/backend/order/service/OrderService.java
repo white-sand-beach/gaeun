@@ -6,6 +6,7 @@ import com.todayeat.backend.cart.entity.Cart;
 import com.todayeat.backend.cart.repository.CartRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.order.dto.request.CreateOrderRequest;
+import com.todayeat.backend.order.dto.response.CreateOrderResponse;
 import com.todayeat.backend.order.entity.OrderInfo;
 import com.todayeat.backend.order.entity.OrderInfoItem;
 import com.todayeat.backend.order.repository.OrderInfoItemRepository;
@@ -37,7 +38,8 @@ public class OrderService {
     private final SaleRepository saleRepository;
     private final SecurityUtil securityUtil;
 
-    public void create(CreateOrderRequest createOrderRequest) {
+    @Transactional
+    public CreateOrderResponse create(CreateOrderRequest createOrderRequest) {
 
         List<String> cartIdList = createOrderRequest.getCartIdList();
 
@@ -63,12 +65,12 @@ public class OrderService {
             Cart cart = findCartOrElseThrow(cartId);
 
             // 같은 가게가 아닌 경우
-            if (cart.getStoreId().equals(firstStore.getId())) {
+            if (!cart.getStoreId().equals(firstStore.getId())) {
                 throw new BusinessException(CART_CONFLICT_STORE);
             }
 
             // 해당 소비자가 아닌 경우
-            if (cart.getConsumerId().equals(consumer.getId())) {
+            if (!cart.getConsumerId().equals(consumer.getId())) {
                 throw new BusinessException(CART_FORBIDDEN);
             }
 
@@ -82,7 +84,7 @@ public class OrderService {
         }
 
         // 주문 정보 저장
-        OrderInfo orderInfo = OrderInfo.of(makeUUID(), makeUUID(), totalPrice, consumer, firstStore);
+        OrderInfo orderInfo = OrderInfo.of(UUID.randomUUID().toString(), totalPrice, consumer, firstStore);
         orderInfoRepository.save(orderInfo);
 
         // 주문 아이템 정보 저장
@@ -95,7 +97,7 @@ public class OrderService {
                 }
         );
 
-        // TODO: CreateOrderResponse 필요함.
+        return CreateOrderResponse.of(orderInfo.getId());
     }
 
     private Sale findSaleOrElseThrow(Cart cart) {
@@ -123,10 +125,5 @@ public class OrderService {
         if (stock.compareTo(cart.getQuantity()) < 0) {
             throw new BusinessException(CART_QUANTITY_MORE_THAN_REST_STOCK);
         }
-    }
-
-    private String makeUUID() {
-
-        return UUID.randomUUID().toString();
     }
 }

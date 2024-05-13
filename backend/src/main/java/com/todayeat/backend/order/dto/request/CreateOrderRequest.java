@@ -11,6 +11,6 @@ import java.util.List;
 public class CreateOrderRequest {
 
     @NotNull(message = "cartIdList: 값이 null이 아니어야 합니다.")
-    @Schema(description = "장바구니 ID 목록", example = "[1, 2, 3]")
+    @Schema(description = "장바구니 ID 목록", example = "[\"13413\", \"abcd2\", \"dfsf3d3\"]")
     private List<String> cartIdList;
 }

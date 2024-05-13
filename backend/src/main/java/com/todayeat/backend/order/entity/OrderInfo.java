@@ -28,7 +28,7 @@ public class OrderInfo extends BaseTime {
     @Column(nullable = true)
     private String paymentId;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String orderNo;
 
     @Column(nullable = false)
@@ -66,9 +66,8 @@ public class OrderInfo extends BaseTime {
         this.review = review;
     }
 
-    public static OrderInfo of(String paymentId, String orderNo, Integer totalPrice, Consumer consumer, Store store) {
+    public static OrderInfo of(String orderNo, Integer totalPrice, Consumer consumer, Store store) {
         return builder()
-                .paymentId(paymentId)
                 .orderNo(orderNo)
                 .totalPrice(totalPrice)
                 .consumer(consumer)
