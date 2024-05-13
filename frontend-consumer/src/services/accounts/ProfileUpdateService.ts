@@ -4,6 +4,7 @@ import UserState from "../../types/UserState";
 const UpdateProfileForm = async ({
   nickname,
   profileImage,
+  imageUrl,
   phoneNumber,
 }: UserState): Promise<UserState> => {
   const formData = new FormData();
@@ -13,11 +14,19 @@ const UpdateProfileForm = async ({
   if (profileImage) {
     formData.append("profileImage", profileImage);
   }
+  if (imageUrl) {
+    formData.append("imageUrl", imageUrl);
+  }
+  
   const response = await axiosInstance.put(
     `${import.meta.env.VITE_API_URL}/api/consumers`,
     formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
   );
-  console.log(profileImage)
   return response.data;
 };
 

@@ -2,14 +2,16 @@
 import React, { useState, useEffect } from "react";
 import UserState from "../../types/UserState";
 import "../modal/Modal.css";
+import defaultImg from "../../assets/profile/defaultImg.png"
 
 interface ProfileImageModalProps {
+  propsImage?: string;
   onClose: () => void;
   onImageUpload: (file: File | null) => void;
 }
 
 const ProfileImageModal: React.FC<UserState & ProfileImageModalProps> = ({
-  profileImage,
+  propsImage,
   onClose,
   onImageUpload,
 }) => {
@@ -63,7 +65,7 @@ const ProfileImageModal: React.FC<UserState & ProfileImageModalProps> = ({
             <img
               className="w-32 h-32 rounded-full object-cover"
               src={
-                selectedImage ? URL.createObjectURL(selectedImage) : profileImage
+                selectedImage ? URL.createObjectURL(selectedImage) : (propsImage || defaultImg)
               }
               alt="프로필 사진"
             />

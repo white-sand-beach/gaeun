@@ -7,6 +7,8 @@ import review from "../../assets/profile/review.png";
 import ProfileForm from "../../services/accounts/ProfileInformation";
 import UserState from "../../types/UserState";
 
+import defaultImg from "../../assets/profile/defaultImg.png";
+
 const ProfileCard: React.FC = () => {
   const [profileData, setProfileData] = useState<UserState>({
     profileImage: "",
@@ -41,7 +43,11 @@ const ProfileCard: React.FC = () => {
           <div className="flex items-center ml-4 space-x-4 mb-9 mt-9">
             <div className="w-16 h-16 overflow-hidden bg-blue-100 rounded-full">
               <img
-                src={profileData.profileImage}
+                src={
+                  profileData.profileImage
+                    ? profileData.profileImage
+                    : defaultImg
+                }
                 alt="프로필 이미지"
                 className="object-cover w-full h-full"
               />
