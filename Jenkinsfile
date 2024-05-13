@@ -43,7 +43,7 @@ pipeline {
                 }
                 
                 sh 'docker build -t fe-seller ./frontend-seller'
-                sh 'docker run -d --name fe-seller -p 5174:80 fe-seller'   
+                sh 'docker run -d --name fe-seller -p 5174:5174 fe-seller'   
             }
         }
 
@@ -80,7 +80,7 @@ pipeline {
                 }
                 
                 sh 'docker build -t fe-consumer ./frontend-consumer'
-                sh 'docker run -d --name fe-consumer -p 5173:80 fe-consumer'   
+                sh 'docker run -d --name fe-consumer -p 5173:5173 fe-consumer'   
             }
         }
 
