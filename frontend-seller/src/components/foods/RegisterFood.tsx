@@ -1,4 +1,4 @@
-import logo from "/icons/size-192.png";
+import logo from "/icons/main-icon-192.png";
 import camera from "../../assets/addphoto.png";
 import React, { useRef } from "react";
 import { InputFoodType } from "../../types/foods/InputFoodType.ts";
