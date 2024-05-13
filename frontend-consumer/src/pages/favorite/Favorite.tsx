@@ -96,8 +96,14 @@ const Favorite = () => {
       </div>
       <div className="bg-white pb-14">
         {/* 찜 리스트 */}
-        {favoriteState.favorites && (
-          <FavoriteList favorites={favoriteState?.favorites} />
+        {favoriteState.favorites.length > 0 ? (
+          <FavoriteList favorites={favoriteState.favorites} />
+        ) : (
+          <div className="h-screen pb-40 center">
+            <h2 className="text-lg font-bold">
+              자주 찾는 가게를 <span className="text-4xl font-serif">찜</span>해보세요.
+            </h2>
+          </div>
         )}
       </div>
     </div>

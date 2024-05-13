@@ -32,7 +32,7 @@ const ProfileCard: React.FC = () => {
   return (
     <div className="w-full h-screen bg-white border border-black">
       <div className="flex items-center justify-center w-11/12 pt-20 m-auto">
-        <div className="relative w-full h-56 p-6 m-auto bg-white border border-gray-500 rounded-lg shadow-lg">
+        <div className="relative w-full h-56 pt-2 px-2 m-auto bg-white border border-gray-500 rounded-lg shadow-lg">
           {/* 설정 아이콘 */}
           <div className="absolute right-4 top-4">
             <Link to="/profile-setting">
@@ -40,36 +40,47 @@ const ProfileCard: React.FC = () => {
             </Link>
           </div>
           {/* 프로필 이미지, 이름, 이메일 */}
-          <div className="flex items-center ml-4 space-x-4 mb-9 mt-9">
-            <div className="w-16 h-16 overflow-hidden bg-blue-100 rounded-full">
+          <div className="flex">
+            <div className="relative flex justify-center items-center w-24 h-24 rounded-full border-[1px] border-gray-200 shadow-md">
               <img
+                className="w-20 h-20 rounded-full object-cover"
                 src={
                   profileData.profileImage
                     ? profileData.profileImage
                     : defaultImg
                 }
                 alt="프로필 이미지"
-                className="object-cover w-full h-full"
               />
             </div>
-            <div>
-              <p className="text-lg font-medium text-gray-900">
-                음식지킴이, {profileData.nickname}
+            <div className="pl-4 pt-7 text-sm">
+              <p className="font-serif">여기 뭐 하나 넣자! 어때!?</p>
+              <p className="font-bold">
+                <span className="font-serif">가은,</span> {profileData.nickname}
               </p>
-              <p className="text-sm text-gray-500">{profileData.email}</p>
+              <p className="text-gray-400">{profileData.email}</p>
             </div>
           </div>
           {/* 아이콘들 */}
-          <div className="flex justify-around">
-            <button className="flex items-center justify-center w-10 h-10 rounded-lg">
-              <img src={order} alt="" />
-            </button>
-            <button className="flex items-center justify-center w-10 h-10 rounded-lg">
-              <img src={heart} alt="" />
-            </button>
-            <button className="flex items-center justify-center w-10 h-10 rounded-lg">
-              <img src={review} alt="" />
-            </button>
+          <div className="between mx-6 pt-4">
+            <div>
+              <button className="items-center justify-center w-10 h-10 rounded-lg">
+                <img src={order} alt="주문 내역" />
+                <p className="text-xs">주문 내역</p>
+              </button>
+            </div>
+
+            <div>
+              <button className="items-center justify-center w-10 h-10 rounded-lg">
+                <img src={heart} alt="찜 목록" />
+                <p className="text-xs">찜 목록</p>
+              </button>
+            </div>
+            <div>
+              <button className="items-center justify-center w-10 h-10 rounded-lg">
+                <img src={review} alt="리뷰 목록" />
+                <p className="text-xs">내 리뷰</p>
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -86,7 +86,7 @@ const Cart = () => {
       </div>
     ) : (
       <div className="h-screen pb-40 center">
-        <h2 className="text-xl font-semibold">장바구니가 텅~ 비어있습니다.</h2>
+        <h2 className="text-xl font-bold">장바구니가 텅~ 비어있습니다.</h2>
       </div>
     )}
   </div>
