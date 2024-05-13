@@ -4,11 +4,11 @@ import Cookies from "universal-cookie";
 const getShopInfoAPI = () => {
     const cookies = new Cookies()
     const accessToken = cookies.get("accessToken")
-    const storeId = 37
+    const storeId = 2
     const getShopInfo = (setShopInfo: any) => {
         axios.get(import.meta.env.VITE_BASE_URL + `/api/stores/${storeId}`, {
             params: {
-                "store-id": 37
+                "store-id": storeId
             },
             headers: {
                 Authorization: `Bearer ${accessToken}`
