@@ -11,42 +11,6 @@ pipeline {
             }
         }
 
-        stage("checkout_fe_seller") {
-            steps {
-                script {
-                    git credentialsId: 'gitlab', url: 'https://lab.ssafy.com/s10-final/S10P31D104.git', branch: "feSeller"
-                }
-            }
-        }
-
-        stage("fe_seller_env download") {
-            steps {
-                withCredentials([file(credentialsId: 'fe_seller_env', variable: 'configFile')]) {
-                    script {
-                        sh 'cp -rf $configFile ./frontend-seller/.env'
-                    }
-                }
-            }
-        }
-        
-        stage('fe_seller_build'){
-            steps{
-                script {
-                    def feSellerRunning = sh(script: 'docker ps -a --filter "name=fe-seller" --format "{{.Names}}"', returnStdout: true).trim()
-                    sh 'echo ${feSellerRunning}'
-                    if (feSellerRunning) {
-                        // fe container is running, stop and remove it
-                        sh 'docker stop fe-seller'
-                        sh 'docker rm fe-seller'
-                        sh 'docker rmi fe-seller'
-                    }
-                }
-                
-                sh 'docker build -t fe-seller ./frontend-seller'
-                sh 'docker run -d --name fe-seller -p 5174:5174 fe-seller'   
-            }
-        }
-
         stage("checkout_fe_consumer") {
             steps {
                 script {
@@ -81,6 +45,42 @@ pipeline {
                 
                 sh 'docker build -t fe-consumer ./frontend-consumer'
                 sh 'docker run -d --name fe-consumer -p 5173:5173 fe-consumer'   
+            }
+        }
+
+        stage("checkout_fe_seller") {
+            steps {
+                script {
+                    git credentialsId: 'gitlab', url: 'https://lab.ssafy.com/s10-final/S10P31D104.git', branch: "feSeller"
+                }
+            }
+        }
+
+        stage("fe_seller_env download") {
+            steps {
+                withCredentials([file(credentialsId: 'fe_seller_env', variable: 'configFile')]) {
+                    script {
+                        sh 'cp -rf $configFile ./frontend-seller/.env'
+                    }
+                }
+            }
+        }
+        
+        stage('fe_seller_build'){
+            steps{
+                script {
+                    def feSellerRunning = sh(script: 'docker ps -a --filter "name=fe-seller" --format "{{.Names}}"', returnStdout: true).trim()
+                    sh 'echo ${feSellerRunning}'
+                    if (feSellerRunning) {
+                        // fe container is running, stop and remove it
+                        sh 'docker stop fe-seller'
+                        sh 'docker rm fe-seller'
+                        sh 'docker rmi fe-seller'
+                    }
+                }
+                
+                sh 'docker build -t fe-seller ./frontend-seller'
+                sh 'docker run -d --name fe-seller -p 5174:5174 fe-seller'   
             }
         }
 
