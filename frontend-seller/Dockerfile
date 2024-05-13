@@ -10,18 +10,20 @@ RUN npm install
 COPY . .
 RUN npm run build || exit 1
 
-# 정적 파일을 /app/fe-seller/dist 에 복사
-RUN mkdir -p fe-seller/{dist}
-RUN cp -r /app/dist /app/fe-seller/dist
-
-# nginx 이미지를 사용. 뒤에 tag가 없으면 latest 를 사용.
+# nginx 이미지를 사용 (뒤에 tag가 없으면 latest를 사용)
 FROM nginx
 
-# 정적 파일 복사
-COPY --from=builder /app/fe-seller/dist /usr/share/nginx/html/seller
+# 빌드된 애플리케이션 복사
+COPY --from=builder /app/dist /usr/share/nginx/html/seller
 
-# 80 포트 오픈
-EXPOSE 80
+# nginx 의 default.conf를 삭제
+RUN rm /etc/nginx/conf.d/default.conf
+
+# host pc 의 nginx.conf를 복사
+COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
+
+# 5174 포트 오픈
+EXPOSE 5174
 
 # nginx 시작
 CMD ["nginx", "-g", "daemon off;"]
