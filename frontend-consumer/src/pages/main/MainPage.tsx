@@ -26,13 +26,13 @@ const Main: React.FC = () => {
   // 현재 터치의 Y좌표를 기록하는 상태
   const [currentTouchY, setCurrentTouchY] = useState<number>(0);
   // 지도의 높이를 패널 상태에 따라 결정
-  const mapHeight = isOpen ? "300px" : "100%";
+  const mapHeight = isOpen ? "40%" : "100%";
   const gpsButtonClass = isOpen
-    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-4 mb-80 z-10"
-    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-4 mb-7 z-10";
+    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-[47vh] z-10"
+    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-[5vh] z-10";
   const listButtonClass = isOpen
-    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-80 z-10"
-    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-7 z-10";
+    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-[47vh] z-10"
+    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-[5vh] z-10";
 
   const { lat, lng } = useUserLocation((state) => ({
     lat: state.latitude,
@@ -45,31 +45,56 @@ const Main: React.FC = () => {
     updateCounter: 0,
   });
 
-  const [allData, setAllData] = useState<MainAllData[]>([]);
   const [storeList, setStoreList] = useState<StoreList[]>([]);
+  const [allData, setAllData] = useState<MainAllData>({
+    storeList: [],
+    page: 0,
+    loading: false,
+    hasNext: false,
+  });
 
   useEffect(() => {
-    const mainData: MainMapData = {
-      longitude: lng,
-      latitude: lat,
-      page: 0,
-      size: 10,
-      radius: 3,
-      sort: "distance",
-    };
-    // 즉시 실행 함수로 비동기 로직 처리
-    (async () => {
+    const fetchStoreList = async () => {
+      setAllData((prevState) => ({ ...prevState, loading: true }));
       try {
+        const mainData: MainMapData = {
+          longitude: lng,
+          latitude: lat,
+          page: allData.page,
+          size: 10,
+          radius: 3,
+          sort: "distance",
+        };
         const response = await MapListForm(mainData);
-        setAllData(response); // 비동기 결과로 상태 업데이트
-        setStoreList(response.storeList);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, [lng, lat]); // mainData 객체 자체를 의존성 배열에 추가
 
-  useEffect(() => {}, [allData, storeList]);
+        setAllData((prevState) => ({
+          ...prevState,
+          hasNext: response.hasNext,
+        }));
+        setStoreList((prevStoreList) => [
+          ...prevStoreList,
+          ...response.storeList,
+        ]); // 이전 가게 리스트에 새로운 가게 리스트 추가
+      } catch (error) {
+        console.error("Error fetching store list:", error);
+      } finally {
+        setAllData((prevState) => ({ ...prevState, loading: false }));
+      }
+    };
+
+    fetchStoreList();
+  }, [lng, lat, allData.page]); // mainData 객체 자체를 의존성 배열에 추가
+
+  useEffect(() => {
+    console.log(allData);
+  }, [allData, storeList]);
+
+  useEffect(() => {
+    // 페이지가 처음으로 로드될 때만 실행
+    if (!performance.navigation.type) {
+      window.location.reload();
+    }
+  }, []);
 
   const handleGPSButtonClick = async () => {
     if (navigator.geolocation) {
@@ -108,6 +133,34 @@ const Main: React.FC = () => {
       }));
     }
   };
+
+  useEffect(() => {
+    const modalContent = document.querySelector(".modalContent"); // 정확한 클래스명 확인
+
+    if (modalContent) {
+      const handleModalScroll = () => {
+        const { scrollHeight, scrollTop, clientHeight } = modalContent;
+
+        // 스크롤이 하단에 도달했는지 확인
+        if (
+          scrollTop + clientHeight >= scrollHeight - 5 &&
+          !allData.loading &&
+          allData.hasNext
+        ) {
+          setAllData((prevState) => ({
+            ...prevState,
+            page: prevState.page + 1,
+          }));
+        }
+      };
+
+      modalContent.addEventListener("scroll", handleModalScroll);
+
+      // 컴포넌트 언마운트 시 이벤트 리스너 제거
+      return () =>
+        modalContent.removeEventListener("scroll", handleModalScroll);
+    }
+  }, [allData.loading, allData.hasNext]); // 의존성 배열에 loading과 hasNext 추가
 
   useEffect(() => {
     // 컴포넌트가 마운트될 때 스크롤을 막습니다.
@@ -245,13 +298,14 @@ const Main: React.FC = () => {
 
             {/* 패널 내부 스크롤 부분 */}
             <div
-              className="flex flex-col gap-2 py-2 pl-2 overflow-y-auto "
+              className="flex flex-col gap-2 py-2 pl-2 overflow-y-auto modalContent"
               style={{ maxHeight: isExpanded ? "467px" : "212px" }}
             >
               {storeList &&
                 storeList.map((store, index) => (
                   <Shops key={index} store={store} /> // 각 요소에 대한 JSX 생성 및 Shops 컴포넌트에 데이터 전달
                 ))}
+              {allData.loading && <div>Loading...</div>}
             </div>
           </div>
         </div>

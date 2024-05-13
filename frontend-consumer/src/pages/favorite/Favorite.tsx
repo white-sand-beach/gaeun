@@ -87,10 +87,10 @@ const Favorite = () => {
   }, [favoriteState.loading, favoriteState.hasNext]);
 
   return (
-    <div className="pt-14 bg-gray-100">
+    <div className="bg-gray-100 pt-14">
       <div className="flex items-center border-2 border-gray-200">
         <p className="p-2 text-sm font-bold">내가 찜한 맛집</p>
-        <p className="text-xs text-gray-500 font-bold">
+        <p className="text-xs font-bold text-gray-500">
           {favoriteState.totalCnt}개
         </p>
       </div>

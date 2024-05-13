@@ -98,20 +98,22 @@ const AddressSearchPage = () => {
         </div>
       )}
 
-      <hr className="w-full my-2" />
-      <ul className="divide-y divide-gray-200">
-        {addresses.map((addressData) => (
-          <AddressList
-            key={addressData.locationId}
-            address={addressData.address}
-            addressId={addressData.locationId}
-            alias={addressData.alias}
-            roadAddress={addressData.roadAddress}
-            latitude={addressData.latitude}
-            longitude={addressData.longitude}
-          />
-        ))}
-      </ul>
+      <div className="pb-12">
+        <hr className="w-full my-2" />
+        <ul className="divide-y divide-gray-200">
+          {addresses.map((addressData) => (
+            <AddressList
+              key={addressData.locationId}
+              address={addressData.address}
+              addressId={addressData.locationId}
+              alias={addressData.alias}
+              roadAddress={addressData.roadAddress}
+              latitude={addressData.latitude}
+              longitude={addressData.longitude}
+            />
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
