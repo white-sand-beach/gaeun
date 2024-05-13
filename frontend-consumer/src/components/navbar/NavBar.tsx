@@ -23,14 +23,8 @@ const NavBar = () => {
 
   let title = "";
   switch (location.pathname) {
-    case "/":
-      title = "";
-      break;
     case "/login":
       title = "로그인";
-      break;
-    case "/login-callback":
-      title = "";
       break;
     case "/sign-up":
       title = "회원가입";
@@ -40,9 +34,6 @@ const NavBar = () => {
       break;
     case "/cart":
       title = "장바구니";
-      break;
-    case "/add-cart":
-      title = "장바구니 추가";
       break;
     case "/search":
       title = "검색";
@@ -65,15 +56,6 @@ const NavBar = () => {
     case "/profile-setting":
       title = "프로필 설정";
       break;
-    case "/shop":
-      title = "";
-      break;
-    case "/address-search":
-      title = "";
-      break;
-    case "/address-search-registration":
-      title = "";
-      break;
     case "/my-review":
       title = "나의 리뷰 목록";
       break;
@@ -82,11 +64,11 @@ const NavBar = () => {
   }
 
   const showHomeAddress = location.pathname === "/";
-
   const showCartAndNotification = location.pathname !== "/sign-up";
+  const shouldRemoveBgColor = location.pathname === "/add-cart" || location.pathname.startsWith(`/shop/`);
 
   return (
-    <div className="fixed between min-h-[57px] z-20 w-full p-4 rounded-b-lg  bg-myColor">
+    <div className={`fixed between min-h-[57px] z-20 w-full p-4 rounded-b-lg ${shouldRemoveBgColor ? '' : 'bg-myColor'}`}>
       <div className="w-[33%]">
         {showHomeAddress ? (
           <p

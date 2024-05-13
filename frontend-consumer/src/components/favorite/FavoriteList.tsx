@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import FavoriteButton from "../button/FavoriteButton";
 import FavoritePostForm from "../../services/favorites/FavoritePostService";
 import FavoriteDeleteForm from "../../services/favorites/FavoriteDeleteService";
@@ -41,21 +42,23 @@ const FavoriteListItem = ({ favorite }: { favorite: FavoriteItem }) => {
   return (
     <div>
       <div className="between p-4">
-        <div className="flex items-center">
-          <img
-            className="w-20 h-2w-20 rounded-lg"
-            src={favorite.storeImageUrl}
-            alt={favorite.storeName}
-          />
-          <div>
-            <h1 className="font-bold ml-2">{favorite.storeName}</h1>
-            <div className="ml-2 text-gray-500 text-xs font-bold">
-              <span>찜수 {favorite.storeFavoriteCnt}</span>
-              <span className="mx-1">·</span>
-              <span>리뷰수 {favorite.storeReviewCnt}</span>
+        <Link to={`/shop/${favorite.storeId}`}>
+          <div className="flex items-center">
+            <img
+              className="w-20 h-2w-20 rounded-lg"
+              src={favorite.storeImageUrl}
+              alt={favorite.storeName}
+            />
+            <div>
+              <h1 className="font-bold ml-2">{favorite.storeName}</h1>
+              <div className="ml-2 text-gray-500 text-xs font-bold">
+                <span>찜수 {favorite.storeFavoriteCnt}</span>
+                <span className="mx-1">·</span>
+                <span>리뷰수 {favorite.storeReviewCnt}</span>
+              </div>
             </div>
           </div>
-        </div>
+        </Link>
         {/* 토글 버튼 */}
         <FavoriteButton
           isFavorite={isFavorite}
