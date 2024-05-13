@@ -3,7 +3,6 @@ package com.todayeat.backend.review.entity;
 
 import com.todayeat.backend._common.entity.BaseTime;
 import com.todayeat.backend.consumer.entity.Consumer;
-import com.todayeat.backend.orderinfo.entity.OrderInfo;
 import com.todayeat.backend.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

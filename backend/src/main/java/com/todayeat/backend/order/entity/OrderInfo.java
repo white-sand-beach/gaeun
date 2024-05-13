@@ -1,4 +1,4 @@
-package com.todayeat.backend.orderinfo.entity;
+package com.todayeat.backend.order.entity;
 
 import com.todayeat.backend._common.entity.BaseTime;
 import com.todayeat.backend.consumer.entity.Consumer;
@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,21 +22,22 @@ public class OrderInfo extends BaseTime {
     @Column(name = "order_info_id")
     private Long id;
 
+    @Column(nullable = true)
+    private String paymentId;
+
     @Column(nullable = false, length = 20)
-    private String no;
+    private String orderNo;
 
     @Column(nullable = false)
     private Integer totalPrice;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private PaymentType paymentType;
-
-    @Column(nullable = false)
-    @ColumnDefault("false")
+    @ColumnDefault("'UNPAID'")
     private OrderInfoStatus status;
 
     @Column(nullable = true)
-    private LocalDateTime takenTime;
+    private Integer takenTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consumer_id", referencedColumnName = "consumer_id")
