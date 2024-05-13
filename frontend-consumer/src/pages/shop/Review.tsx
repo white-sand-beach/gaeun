@@ -8,20 +8,20 @@ const Review = () => {
     <div>
       <div className="p-4">
         {/* 사용자정보 */}
-        <div className="between my-2 space-x-2">
+        <div className="my-2 space-x-2 between">
           {/* 사용자 프로필 사진 - 실제 이미지로 교체 필요 */}
           <div className="center">
             <img
               src={user1}
               alt="user"
-              className="w-6 h-6 object-cover rounded-full"
+              className="object-cover w-6 h-6 rounded-full"
             />
-            <p className="text-base font-semibold ml-2">userName</p>
+            <p className="ml-2 text-base font-semibold">userName</p>
           </div>
           <p className="text-xs font-bold text-gray-500">2024.05.03</p>
         </div>
 
-        <p className="menu-name shadow-none my-1">
+        <p className="my-1 shadow-none menu-name">
           숙성돈까스전문점 백돈 대구직영점 {">"}
         </p>
 
@@ -40,7 +40,7 @@ const Review = () => {
         </div>
 
         {/* 음식명 */}
-        <div className="between mt-2">
+        <div className="mt-2 between">
           <div className="flex gap-1 text-gray-500">
             <div className="menu-name">
               <p>메뉴명</p>

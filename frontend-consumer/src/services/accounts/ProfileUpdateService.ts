@@ -6,10 +6,16 @@ const UpdateProfileForm = async ({
   profileImage,
   phoneNumber,
 }: UserState): Promise<UserState> => {
+  const formData = new FormData();
 
+  formData.append("nickname", String(nickname));
+  formData.append("phoneNumber", String(phoneNumber));
+  if (profileImage) {
+    formData.append("profileImage", profileImage);
+  }
   const response = await axiosInstance.put(
     `${import.meta.env.VITE_API_URL}/api/consumers`,
-    { nickname, phoneNumber }
+    formData,
   );
   console.log(profileImage)
   return response.data;
