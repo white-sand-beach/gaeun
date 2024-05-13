@@ -27,7 +27,7 @@ const Footer = () => {
         </div>
       </Link>
       
-      <Link to={"/register/food"}>
+      <Link to={"/register-food"}>
         <div className="flex flex-col items-center justify-center">
           <img src={AddProductIcon} alt="물품등록" />
           <p>등록하기</p>
