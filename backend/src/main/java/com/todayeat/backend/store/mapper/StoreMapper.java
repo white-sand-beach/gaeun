@@ -23,8 +23,12 @@ public interface StoreMapper {
 
     CreateStoreResponse storeIdToCreateStoreResponse(Long storeId);
 
+    @Mapping(target = "latitude", source = "location.lat")
+    @Mapping(target = "longitude", source = "location.lon")
     GetSellerStoreResponse storeToGetSellerStoreResponse(Store store);
 
+    @Mapping(target = "latitude", source = "store.location.lat")
+    @Mapping(target = "longitude", source = "store.location.lon")
     GetConsumerInfoStoreResponse storeToGetConsumerStoreResponse(Store store, boolean favorite);
 
     GetConsumerDetailStoreResponse storeToGetConsumerDetailStoreResponse(Store store);

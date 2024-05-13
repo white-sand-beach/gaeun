@@ -43,23 +43,26 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
                         store.roadAddress,
                         store.location.lat.as("latitude"),
                         store.location.lon.as("longitude"),
-                        //Expressions.numberTemplate(BigDecimal.class, "ST_X(store.location)").as("latitude"),
-                        //Expressions.numberTemplate(BigDecimal.class, "ST_Y(store.location)").as("longitude"),
                         store.name,
                         store.operatingTime,
                         store.reviewCnt,
                         store.favoriteCnt,
                         Expressions.numberTemplate(Double.class,
-                                        "haversine_point({0}, {1})",
-                                        store.location,
-                                        Expressions.constant(location))
+                                        "haversine({0}, {1}, {2}, {3})",
+                                        store.location.lat,
+                                        store.location.lon,
+                                        Expressions.constant(location.getLat()),
+                                        Expressions.constant(location.getLon()))
                                 .as("distance")))
                 .from(store)
                 .where(store.isOpened.isTrue()
                         .and(Expressions.numberTemplate(Double.class,
-                                "haversine_point({0}, {1})",
-                                store.location,
-                                Expressions.constant(location)).loe(radius.doubleValue())));
+                                        "haversine({0}, {1}, {2}, {3})",
+                                        store.location.lat,
+                                        store.location.lon,
+                                        Expressions.constant(location.getLat()),
+                                        Expressions.constant(location.getLon()))
+                                .loe(radius.doubleValue())));
 
         if (categoryId != null) {
 
@@ -78,9 +81,12 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
             switch (order.getProperty()) {
                 case "distance":
                     orderSpecifier = Expressions.numberTemplate(Double.class,
-                            "haversine_point({0}, {1})",
-                            store.location,
-                            Expressions.constant(location)).asc();
+                                    "haversine({0}, {1}, {2}, {3})",
+                                    store.location.lat,
+                                    store.location.lon,
+                                    Expressions.constant(location.getLat()),
+                                    Expressions.constant(location.getLon()))
+                            .asc();
                     break;
                 case "reviewCnt":
                     orderSpecifier = new OrderSpecifier<>(Order.DESC, entityPath.getNumber("reviewCnt", Integer.class));
