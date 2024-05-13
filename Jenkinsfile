@@ -11,44 +11,6 @@ pipeline {
             }
         }
 
-        stage("checkout_be") {
-            steps {
-                script {
-                    git credentialsId: 'gitlab', url: 'https://lab.ssafy.com/s10-final/S10P31D104.git', branch: "be"
-                }
-            }
-        }
-
-        stage("secret.yml download") {
-            steps {
-                withCredentials([file(credentialsId: 'application-secret', variable: 'configFile')]) {
-                    script {
-                        sh 'cp -rf $configFile ./backend/src/main/resources/application-secret.yml'
-                    }
-                }
-            }
-        }
-
-        stage('be_build'){
-            steps{
-                script {
-                    def beRunning = sh(script: 'docker ps -a --filter "name=be" --format "{{.Names}}"', returnStdout: true).trim()
-                    sh 'echo ${beRunning}'
-                    if (beRunning) {
-                        // be container is running, stop and remove it
-                        sh 'docker stop be'
-                        sh 'docker rm be'
-                        sh 'docker rmi be'
-                    }
-
-                    sh 'docker build -t be ./backend'
-                    def dockerCmd = "docker run -d --name be -p 8081:8081 be"
-
-                    sh dockerCmd 
-                }
-            }
-        }
-
         stage("checkout_fe_consumer") {
             steps {
                 script {
@@ -66,7 +28,6 @@ pipeline {
                 }
             }
         }
-    
         
         stage('fe_consumer_build'){
             steps{
@@ -119,6 +80,44 @@ pipeline {
                 
                 sh 'docker build -t fe-seller ./frontend-seller'
                 sh 'docker run -d --name fe-seller -p 5174:5174 fe-seller'   
+            }
+        }
+
+        stage("checkout_be") {
+            steps {
+                script {
+                    git credentialsId: 'gitlab', url: 'https://lab.ssafy.com/s10-final/S10P31D104.git', branch: "be"
+                }
+            }
+        }
+
+        stage("secret.yml download") {
+            steps {
+                withCredentials([file(credentialsId: 'application-secret', variable: 'configFile')]) {
+                    script {
+                        sh 'cp -rf $configFile ./backend/src/main/resources/application-secret.yml'
+                    }
+                }
+            }
+        }
+
+        stage('be_build'){
+            steps{
+                script {
+                    def beRunning = sh(script: 'docker ps -a --filter "name=be" --format "{{.Names}}"', returnStdout: true).trim()
+                    sh 'echo ${beRunning}'
+                    if (beRunning) {
+                        // be container is running, stop and remove it
+                        sh 'docker stop be'
+                        sh 'docker rm be'
+                        sh 'docker rmi be'
+                    }
+
+                    sh 'docker build -t be ./backend'
+                    def dockerCmd = "docker run -d --name be -p 8081:8081 be"
+
+                    sh dockerCmd 
+                }
             }
         }
     }
