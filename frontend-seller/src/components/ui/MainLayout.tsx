@@ -7,7 +7,7 @@ const MainLayout = () => {
     const hiddenHeader = [""];
 
     // 하단바 숨길 페이지 path
-    const hiddeneFooter = ["/login", "/signup", "/notification", "/register/shop", "/register/food"];
+    const hiddeneFooter = ["/login", "/signup", "/notification", "/register-shop", "/register-food"];
 
     const location = useLocation()
     const showHeader = !hiddenHeader.includes(location.pathname);

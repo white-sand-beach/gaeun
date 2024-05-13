@@ -46,7 +46,6 @@ const RegisterShopPage = () => {
       shopHoliday: shopHoliday,
       FoodOrigin: FoodOrigin,
       shopCategoryId: shopCategoryId,
-      categoryList: categoryList,
       onUpdateShopStore: onUpdateShopStore,
     });
   };

@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { PersistOptions, persist } from "zustand/middleware";
 import { InputRegisterShop } from "../../types/shop/InputRegisterShop.ts";
 
+
 // 상태관리 정의
 const useShopStore = create(
     persist<InputRegisterShop>(
@@ -19,7 +20,6 @@ const useShopStore = create(
             shopHoliday: "",
             FoodOrigin: "",
             shopCategoryId: [],
-            categoryList: [],
 
             // 상태 업데이트
             // 데이터의 타입들이 다양하다.
@@ -47,7 +47,6 @@ const useShopStore = create(
                     shopHoliday: "",
                     FoodOrigin: "",
                     shopCategoryId: [],
-                    categoryList: []
                 })
         }),
         {

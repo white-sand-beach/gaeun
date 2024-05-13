@@ -26,7 +26,7 @@ const ShopInfoPage = () => {
         categoryList: [
             {
                 categoryId: 0,
-                name:  "",
+                name: "",
                 imageURL: ""
             }
         ]
@@ -36,25 +36,28 @@ const ShopInfoPage = () => {
 
     const { getSalesSeller } = GetMySalesListAPI()
     const { getShopInfo } = getShopInfoAPI();
-    
+
     useEffect(() => {
         getShopInfo(setShopInfo)
         getSalesSeller(setSalesLists)
     }, []);
-    
+
     return (
         <div className="yes-footer top-[60px] overflow-y-scroll gap-3">
-            <ShopInfo 
-            imageURL={shopInfo.imageURL}
-            name={shopInfo.name}
-            roadAddress={shopInfo.roadAddress}
-            tel={shopInfo.tel}/>
+            <ShopInfo
+                imageURL={shopInfo.imageURL}
+                name={shopInfo.name}
+                roadAddress={shopInfo.roadAddress}
+                tel={shopInfo.tel} />
             <hr />
             <hr />
             <hr />
             <h1>등록된 판매 목록</h1>
-            <MySalesList 
-            salesLists={salesLists}/>
+            {salesLists &&
+                <>
+                    <MySalesList
+                        salesLists={salesLists} />
+                </>}
         </div>
     );
 };
