@@ -65,7 +65,7 @@ public class Store extends BaseTime {
 
     @Column(nullable = false)
     @ColumnDefault("false")
-    private boolean isOpened;
+    private Boolean isOpened;
 
     @Column(nullable = false)
     @ColumnDefault("0")

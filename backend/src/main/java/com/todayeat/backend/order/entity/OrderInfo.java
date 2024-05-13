@@ -6,13 +6,16 @@ import com.todayeat.backend.review.entity.Review;
 import com.todayeat.backend.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 
 @Getter
 @Entity
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE order_info SET deleted_at = CONVERT_TZ(NOW(), '+00:00', '+09:00') WHERE order_info_id = ?")
 public class OrderInfo extends BaseTime {
@@ -50,4 +53,26 @@ public class OrderInfo extends BaseTime {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
     private Review review;
+
+    @Builder
+    private OrderInfo(String paymentId, String orderNo, Integer totalPrice, OrderInfoStatus status, Integer takenTime, Consumer consumer, Store store, Review review) {
+        this.paymentId = paymentId;
+        this.orderNo = orderNo;
+        this.totalPrice = totalPrice;
+        this.status = status;
+        this.takenTime = takenTime;
+        this.consumer = consumer;
+        this.store = store;
+        this.review = review;
+    }
+
+    public static OrderInfo of(String paymentId, String orderNo, Integer totalPrice, Consumer consumer, Store store) {
+        return builder()
+                .paymentId(paymentId)
+                .orderNo(orderNo)
+                .totalPrice(totalPrice)
+                .consumer(consumer)
+                .store(store)
+                .build();
+    }
 }
