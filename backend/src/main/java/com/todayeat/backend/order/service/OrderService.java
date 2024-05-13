@@ -5,10 +5,15 @@ import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.cart.entity.Cart;
 import com.todayeat.backend.cart.repository.CartRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
+import com.todayeat.backend.order.api.dto.request.CancelPaymentRequest;
+import com.todayeat.backend.order.api.dto.response.GetPaymentResponse;
+import com.todayeat.backend.order.api.client.IamportRequestClient;
 import com.todayeat.backend.order.dto.request.CreateOrderRequest;
+import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
 import com.todayeat.backend.order.dto.response.CreateOrderResponse;
 import com.todayeat.backend.order.entity.OrderInfo;
 import com.todayeat.backend.order.entity.OrderInfoItem;
+import com.todayeat.backend.order.entity.OrderInfoStatus;
 import com.todayeat.backend.order.repository.OrderInfoItemRepository;
 import com.todayeat.backend.order.repository.OrderInfoRepository;
 import com.todayeat.backend.sale.entity.Sale;
@@ -17,13 +22,16 @@ import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.todayeat.backend._common.response.error.ErrorType.*;
+import static com.todayeat.backend.order.entity.OrderInfoStatus.PAID;
 
 @Slf4j
 @Service
@@ -36,7 +44,15 @@ public class OrderService {
     private final CartRepository cartRepository;
     private final StoreRepository storeRepository;
     private final SaleRepository saleRepository;
+
     private final SecurityUtil securityUtil;
+
+    private final IamportRequestClient iamportRequestClient;
+
+    @Value("${IAMPORT_API_SECRET_V2}")
+    private String IAMPORT_API_SECRET_V2;
+
+    private String PORTONE_PREFIX = "PortOne ";
 
     @Transactional
     public CreateOrderResponse create(CreateOrderRequest createOrderRequest) {
@@ -98,6 +114,49 @@ public class OrderService {
         );
 
         return CreateOrderResponse.of(orderInfo.getId());
+    }
+
+    @Transactional
+    public void validate(Long orderInfoId, ValidateOrderRequest request) {
+
+        // 주문 확인
+        OrderInfo orderInfo = orderInfoRepository.findByIdAndDeletedAtIsNull(orderInfoId)
+                .orElseThrow(() -> new BusinessException(ORDER_NOT_FOUND));
+
+        // 결제 완료된 주문일 경우 throw
+        if (orderInfo.getStatus() != OrderInfoStatus.UNPAID) {
+            throw new BusinessException(ORDER_ALREADY_PAID);
+        }
+
+        // TODO: 통신 에러 처리하기
+
+        // 아임포트 결제 조회
+        GetPaymentResponse getPaymentResponse =
+                iamportRequestClient.getPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
+                                                request.getPaymentId());
+
+        // 결제 완료 상태가 아니거나 주문 금액과 실제 결제 금액이 다를 경우
+        if (!getPaymentResponse.getStatus().equals("PAID")
+                || !Objects.equals(getPaymentResponse.getAmount().getTotal(), orderInfo.getTotalPrice())) {
+
+            // 아임 포트 결제 취소
+            iamportRequestClient.cancelPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
+                    request.getPaymentId(),
+                    CancelPaymentRequest.of("invalid value"));
+
+            // 주문 아이템 삭제
+            orderInfoItemRepository.findAllByOrderInfoIdAndDeletedAtIsNull(orderInfoId)
+                    .forEach(orderInfoItemRepository::delete);
+
+            // 주문 삭제
+            orderInfoRepository.delete(orderInfo);
+
+            throw new BusinessException(ORDER_PAYMENT_FAIL);
+        }
+
+        // 결제 정보 및 주문 상태 업데이트
+        orderInfo.updatePaymentId(request.getPaymentId());
+        orderInfo.updateStatus(PAID);
     }
 
     private Sale findSaleOrElseThrow(Cart cart) {

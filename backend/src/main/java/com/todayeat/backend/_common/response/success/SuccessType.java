@@ -36,6 +36,7 @@ public enum SuccessType {
 
     // order
     CREATE_ORDER_SUCCESS("주문 등록에 성공하였습니다."),
+    VALIDATE_ORDER_SUCCESS("결제 인증에 성공하였습니다."),
 
     // seller
     CREATE_SELLER_SUCCESS("판매자 회원가입에 성공하였습니다."),

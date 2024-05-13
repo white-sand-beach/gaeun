@@ -74,4 +74,12 @@ public class OrderInfo extends BaseTime {
                 .store(store)
                 .build();
     }
+
+    public void updatePaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public void updateStatus(OrderInfoStatus status) {
+        this.status = status;
+    }
 }
