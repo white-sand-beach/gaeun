@@ -14,9 +14,6 @@ public class GetConsumerDetailStoreResponse {
     @Schema(description = "상호명", example = "상호")
     private String registeredName;
 
-    @Schema(description = "사업자 등록번호", example = "0123456789")
-    private String registeredNo;
-
     @Schema(description = "대표자명", example = "대표자")
     private String bossName;
 
