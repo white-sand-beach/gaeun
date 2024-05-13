@@ -1,5 +1,6 @@
 package com.todayeat.backend.store.mapper;
 
+import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.CreateStoreResponse;
@@ -7,7 +8,6 @@ import com.todayeat.backend.store.dto.response.GetConsumerDetailStoreResponse;
 import com.todayeat.backend.store.dto.response.GetConsumerInfoStoreResponse;
 import com.todayeat.backend.store.dto.response.GetSellerStoreResponse;
 import com.todayeat.backend.store.entity.Store;
-import org.locationtech.jts.geom.Point;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -19,20 +19,16 @@ public interface StoreMapper {
     StoreMapper INSTANCE = Mappers.getMapper(StoreMapper.class);
 
     @Mapping(target = "location", source = "location")
-    Store createStoreRequestToStore(CreateStoreRequest createStoreRequest, Point location, String imageURL);
+    Store createStoreRequestToStore(CreateStoreRequest createStoreRequest, Location location, String imageURL);
 
     CreateStoreResponse storeIdToCreateStoreResponse(Long storeId);
 
-    @Mapping(target = "longitude", source = "location.y")
-    @Mapping(target = "latitude", source = "location.x")
     GetSellerStoreResponse storeToGetSellerStoreResponse(Store store);
 
-    @Mapping(target = "longitude", source = "store.location.y")
-    @Mapping(target = "latitude", source = "store.location.x")
     GetConsumerInfoStoreResponse storeToGetConsumerStoreResponse(Store store, boolean favorite);
 
     GetConsumerDetailStoreResponse storeToGetConsumerDetailStoreResponse(Store store);
 
     @Mapping(target = "location", source = "location")
-    void updateStoreRequestToStore(UpdateStoreRequest updateStoreRequest, String imageURL, Point location, @MappingTarget Store store);
+    void updateStoreRequestToStore(UpdateStoreRequest updateStoreRequest, String imageURL, Location location, @MappingTarget Store store);
 }
