@@ -41,4 +41,4 @@ export default defineConfig({
     open: "/seller",
     host: "0.0.0.0",
   },
-})
+});
