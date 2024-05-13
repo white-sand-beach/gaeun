@@ -58,10 +58,10 @@ public class StoreService {
         Seller seller = sellerRepository.findById(securityUtil.getSeller().getId())
                 .orElseThrow(() -> new BusinessException(SELLER_NOT_FOUND));
 
-        if (seller.getStore() != null) {
-
-            throw new BusinessException(STORE_CONFLICT);
-        }
+        //if (seller.getStore() != null) {
+        //
+        //    throw new BusinessException(STORE_CONFLICT);
+        //}
 
         String imageURL = imageToURL(createStoreRequest.getImage());
 
