@@ -1,7 +1,6 @@
 package com.todayeat.backend.consumer.entity;
 
 import com.todayeat.backend._common.entity.BaseTime;
-import com.todayeat.backend.consumer.dto.request.UpdateConsumerRequest;
 import com.todayeat.backend._common.oauth2.dto.response.OAuth2Provider;
 import com.todayeat.backend.favorite.entity.Favorite;
 import com.todayeat.backend.location.entity.Location;
@@ -33,10 +32,10 @@ public class Consumer extends BaseTime {
     @Column(length = 50, nullable = false)
     private String email;
 
-    @Column(length = 10, nullable = true)
+    @Column(length = 8, nullable = true)
     private String nickname;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String profileImage;
 
     @Column(length = 20, nullable = true)
@@ -55,11 +54,6 @@ public class Consumer extends BaseTime {
         this.nickname = nickname;
         this.profileImage = profileImage;
         this.phoneNumber = phoneNumber;
-    }
-
-    public void update(UpdateConsumerRequest request) {
-        this.nickname = request.getNickname();
-        this.phoneNumber = request.getPhoneNumber();
     }
 
     public boolean isJoined() {

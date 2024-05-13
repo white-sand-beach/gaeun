@@ -45,6 +45,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 
     public void setErrorResponse(HttpServletResponse response, ErrorType errorType) throws IOException {
 
+        response.setStatus(errorType.getHttpStatus().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         Map<String, Object> errors = new HashMap<>();
@@ -54,6 +55,5 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(response.getOutputStream(), errors);
-        response.setStatus(errorType.getHttpStatus().value());
     }
 }

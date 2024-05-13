@@ -13,6 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Schema(name = "UpdateMenuRequest", description = "메뉴 수정 요청")
 public class UpdateMenuRequest {
 
+    @Schema(description = "현재 메뉴 URL", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/987d7e36-c74b-4bec-a7c4-e0bf19690907.png")
+    private String imageUrl;
+
     @Schema(description = "바꿀 메뉴 이미지", example = "img.jpg")
     private MultipartFile image;
 

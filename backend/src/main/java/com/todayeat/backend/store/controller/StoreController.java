@@ -3,10 +3,7 @@ package com.todayeat.backend.store.controller;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
-import com.todayeat.backend.store.dto.response.GetConsumerDetailStoreResponse;
-import com.todayeat.backend.store.dto.response.GetConsumerInfoStoreResponse;
-import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse;
-import com.todayeat.backend.store.dto.response.GetSellerStoreResponse;
+import com.todayeat.backend.store.dto.response.*;
 import com.todayeat.backend.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,10 +19,9 @@ public class StoreController implements StoreControllerDocs {
     private final StoreService storeService;
 
     @Override
-    public SuccessResponse<Void> create(CreateStoreRequest createStoreRequest) {
+    public SuccessResponse<CreateStoreResponse> create(CreateStoreRequest createStoreRequest) {
 
-        storeService.create(createStoreRequest);
-        return SuccessResponse.of(CREATE_STORE_SUCCESS);
+        return SuccessResponse.of(storeService.create(createStoreRequest), CREATE_STORE_SUCCESS);
     }
 
     @Override

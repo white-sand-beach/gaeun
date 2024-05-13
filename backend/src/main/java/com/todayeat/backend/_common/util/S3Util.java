@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -28,7 +29,11 @@ public class S3Util {
     private String bucket;
 
     // S3 버킷에 이미지 파일 업로
-    public String uploadImage(MultipartFile multipartFile, DirectoryType directoryType, Long dirNamePrincipalId) {
+    public String uploadImageIfPresent(MultipartFile multipartFile, DirectoryType directoryType, Long dirNamePrincipalId) {
+
+        if (multipartFile == null) {
+            return null;
+        }
 
         // 이미지 형식의 파일인지 확인
         if (!Objects.requireNonNull(multipartFile.getContentType()).contains("image")) {
@@ -52,9 +57,16 @@ public class S3Util {
     }
 
     //S3 버킷의 이미지 객체 삭제, 이미지 수정시 기존 이미지 제거에 사용
-    public void deleteImage(String fileUrl) {
+    public void deleteImageIfPresent(String fileUrl) {
+
+        // fileUrl이 null이면 삭제 로직 안한다.
+        if (fileUrl == null) {
+            log.error("fileUrl이 null입니다.");
+            return;
+        }
 
         String key = getS3ObjetKey(fileUrl);
+
         try {
             amazonS3.deleteObject(bucket, key);
         } catch (AmazonServiceException e) {
@@ -91,8 +103,10 @@ public class S3Util {
 
         int startIndex = fileUrl.indexOf('/', fileUrl.indexOf("//") + 2);
 
-        if (startIndex < 0)
-            throw new BusinessException(ErrorType.IMAGE_URL_FORMAT_INVALID);
+        if (startIndex < 0) {
+            log.error("s3 key 형식이 아닙니다.");
+            return null;
+        }
 
         return fileUrl.substring(startIndex + 1);
     }

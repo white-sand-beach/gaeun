@@ -2,6 +2,7 @@ package com.todayeat.backend.store.entity;
 
 import com.todayeat.backend._common.entity.BaseTime;
 import com.todayeat.backend.category.entity.StoreCategory;
+import com.todayeat.backend.seller.entity.Location;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,6 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
-import org.locationtech.jts.geom.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +39,8 @@ public class Store extends BaseTime {
     @Column(nullable = false, length = 50)
     private String roadAddress;
 
-    @Column(columnDefinition = "Point")
-    private Point location;
+    @Embedded
+    private Location location;
 
     @Column(nullable = false, length = 20)
     private String tel;

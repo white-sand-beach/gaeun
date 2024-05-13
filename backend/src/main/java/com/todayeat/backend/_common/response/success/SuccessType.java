@@ -7,6 +7,7 @@ public enum SuccessType {
     // consumer
     UPDATE_CONSUMER_SUCCESS("소비자 정보 수정에 성공하였습니다."),
     CHECK_NICKNAME_SUCCESS("닉네임 중복 확인에 성공하였습니다."),
+    GET_CONSUMER_PROFILE_SUCCESS("소비자 프로필 정보 조회에 성공하였습니다."),
     GET_CONSUMER_SUCCESS("소비자 회원 정보 조회에 성공하였습니다."),
     LOGOUT_CONSUMER_SUCCESS("소비자 로그아웃에 성공하였습니다."),
 
@@ -26,6 +27,12 @@ public enum SuccessType {
     DELETE_LOCATION_SUCCESS("위치 삭제에 성공하였습니다."),
 
     // cart
+    CREATE_CART_SUCCESS("장바구니 등록에 성공하였습니다."),
+    GET_CART_LIST_SUCCESS("장바구니 목록 조회에 성공하였습니다."),
+    UPDATE_CART_SUCCESS("장바구니 수량 변경에 성공하였습니다."),
+    DELETE_CART_SUCCESS("장바구니 삭제에 성공하였습니다."),
+    DELETE_ALL_CART_SUCCESS("장바구니 전체 삭제에 성공하였습니다."),
+
 
     // order
 
@@ -65,6 +72,7 @@ public enum SuccessType {
     // sale
     CREATE_SALE_SUCCESS("판매 등록에 성공하였습니다."),
     GET_SALE_LIST_SUCCESS("판매 목록 조회에 성공하였습니다."),
+    GET_SALE_DETAIL_SUCCESS("판매 상세 조회에 성공하였습니다."),
     UPDATE_SALE_STATUS_SUCCESS("판매 상태 변경에 성공하였습니다."),
     UPDATE_SALE_CONTENT_SUCCESS("판매 내용 변경에 성공하였습니다."),
     UPDATE_SALE_STOCK_SUCCESS("판매 재고 변경에 성공하였습니다."),
