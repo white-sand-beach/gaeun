@@ -1,7 +1,7 @@
 import { useState } from "react";
 import RegisterFood from "../../components/foods/RegisterFood.tsx";
 import RegisterFoodAPI from "../../service/foods/RegisterFoodAPI.ts";
-import Cookies from "universal-cookie";
+// import Cookies from "universal-cookie";
 
 const RegisterFoodPage = () => {
     // 등록할 음식에 대한 기본 정보
@@ -12,7 +12,7 @@ const RegisterFoodPage = () => {
         sellPrice: 0,
     });
 
-    const cookies = new Cookies()
+    // const cookies = new Cookies()
 
     const handleChangeInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = event.target;
@@ -33,12 +33,12 @@ const RegisterFoodPage = () => {
             name: foodInfo.name,
             originalPrice: foodInfo.originalPrice,
             sellPrice: foodInfo.sellPrice,
-            storeId: cookies.get("storeId")
+            storeId: 37
         });
     };
 
     return (
-        <div className="no-footer top-[70px] gap-3">
+        <div className="no-footer top-[70px]">
             <RegisterFood 
             image={foodInfo.image}
             name={foodInfo.name}
