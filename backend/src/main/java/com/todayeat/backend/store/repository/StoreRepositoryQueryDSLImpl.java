@@ -10,16 +10,15 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.todayeat.backend.category.dto.CategoryInfo;
 import com.todayeat.backend.category.entity.QCategory;
 import com.todayeat.backend.category.entity.QStoreCategory;
+import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse;
 import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse.StoreInfo;
 import com.todayeat.backend.store.entity.QStore;
 import com.todayeat.backend.store.entity.Store;
 import lombok.RequiredArgsConstructor;
-import org.locationtech.jts.geom.Point;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static com.querydsl.core.types.Projections.fields;
@@ -30,7 +29,7 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public GetConsumerListStoreResponse findStoreList(Point location, Integer radius, String keyword, Long categoryId, Pageable pageable) {
+    public GetConsumerListStoreResponse findStoreList(Location location, Integer radius, String keyword, Long categoryId, Pageable pageable) {
 
         QStore store = QStore.store;
         QStoreCategory storeCategory = QStoreCategory.storeCategory;
@@ -42,23 +41,28 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
                         store.id.as("storeId"),
                         store.address,
                         store.roadAddress,
-                        Expressions.numberTemplate(BigDecimal.class, "ST_X(store.location)").as("latitude"),
-                        Expressions.numberTemplate(BigDecimal.class, "ST_Y(store.location)").as("longitude"),
+                        store.location.lat.as("latitude"),
+                        store.location.lon.as("longitude"),
                         store.name,
                         store.operatingTime,
                         store.reviewCnt,
                         store.favoriteCnt,
                         Expressions.numberTemplate(Double.class,
-                                        "haversine_point({0}, {1})",
-                                        store.location,
-                                        Expressions.constant(location))
+                                        "haversine({0}, {1}, {2}, {3})",
+                                        store.location.lat,
+                                        store.location.lon,
+                                        Expressions.constant(location.getLat()),
+                                        Expressions.constant(location.getLon()))
                                 .as("distance")))
                 .from(store)
                 .where(store.isOpened.isTrue()
                         .and(Expressions.numberTemplate(Double.class,
-                                "haversine_point({0}, {1})",
-                                store.location,
-                                Expressions.constant(location)).loe(radius.doubleValue())));
+                                        "haversine({0}, {1}, {2}, {3})",
+                                        store.location.lat,
+                                        store.location.lon,
+                                        Expressions.constant(location.getLat()),
+                                        Expressions.constant(location.getLon()))
+                                .loe(radius.doubleValue())));
 
         if (categoryId != null) {
 
@@ -77,9 +81,12 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
             switch (order.getProperty()) {
                 case "distance":
                     orderSpecifier = Expressions.numberTemplate(Double.class,
-                            "haversine_point({0}, {1})",
-                            store.location,
-                            Expressions.constant(location)).asc();
+                                    "haversine({0}, {1}, {2}, {3})",
+                                    store.location.lat,
+                                    store.location.lon,
+                                    Expressions.constant(location.getLat()),
+                                    Expressions.constant(location.getLon()))
+                            .asc();
                     break;
                 case "reviewCnt":
                     orderSpecifier = new OrderSpecifier<>(Order.DESC, entityPath.getNumber("reviewCnt", Integer.class));
