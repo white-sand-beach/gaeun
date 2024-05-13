@@ -11,6 +11,7 @@ import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
+import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
@@ -21,9 +22,6 @@ import com.todayeat.backend.store.mapper.StoreMapper;
 import com.todayeat.backend.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -72,7 +70,7 @@ public class StoreService {
             Store store = storeRepository.save(
                     StoreMapper.INSTANCE.createStoreRequestToStore(
                             createStoreRequest,
-                            createPoint(createStoreRequest.getLatitude(), createStoreRequest.getLongitude()),
+                            Location.of(createStoreRequest.getLatitude(), createStoreRequest.getLongitude()),
                             imageURL));
 
             seller.updateStore(store);
@@ -134,7 +132,7 @@ public class StoreService {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sort));
 
-        return storeRepository.findStoreList(createPoint(latitude, longitude), radius * 1000, keyword, categoryId, pageRequest);
+        return storeRepository.findStoreList(Location.of(latitude, longitude), radius * 1000, keyword, categoryId, pageRequest);
     }
 
     @Transactional
@@ -152,7 +150,7 @@ public class StoreService {
             StoreMapper.INSTANCE.updateStoreRequestToStore(
                     updateStoreRequest,
                     imageURL,
-                    createPoint(updateStoreRequest.getLatitude(), updateStoreRequest.getLongitude()),
+                    Location.of(updateStoreRequest.getLatitude(), updateStoreRequest.getLongitude()),
                     store);
 
             List<StoreCategory> existingCategories = storeCategoryRepository.findByStoreIdAndDeletedAtIsNull(storeId);
@@ -199,11 +197,5 @@ public class StoreService {
     private Store validateAndGetStore(Long storeId) {
         return storeRepository.findByIdAndDeletedAtIsNull(storeId)
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
-    }
-
-    private Point createPoint(BigDecimal latitude, BigDecimal longitude) {
-        GeometryFactory geometryFactory = new GeometryFactory();
-        Coordinate coordinate = new Coordinate(latitude.doubleValue(), longitude.doubleValue());
-        return geometryFactory.createPoint(coordinate);
     }
 }
