@@ -53,7 +53,7 @@ public interface FavoriteControllerDocs {
     @ApiResponse(responseCode = "200",
             description = "성공")
     @ApiResponse(responseCode = "404",
-            description = "찜을 찾을 수 없음",
+            description = "가게를 찾을 수 없음 / 찜을 찾을 수 없음",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @DeleteMapping
     SuccessResponse<Void> deleteByStoreId(@RequestBody @Valid DeleteFavoriteRequest request);
