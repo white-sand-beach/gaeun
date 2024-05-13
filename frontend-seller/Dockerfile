@@ -14,7 +14,7 @@ RUN npm run build || exit 1
 FROM nginx
 
 # 빌드된 애플리케이션 복사
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html/seller
 
 # nginx 의 default.conf를 삭제
 RUN rm /etc/nginx/conf.d/default.conf
