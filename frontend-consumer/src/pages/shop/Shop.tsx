@@ -9,8 +9,8 @@ import ShopMenu from "./ShopMenu";
 import { useParams } from "react-router-dom";
 import ShopInfoGetForm from "../../services/shops/ShopInfoGetService";
 import { ShopInfo } from "../../types/ShopInfoType";
-import ShoptFavoritePostForm from "../../services/favorites/ShopFavoritePostService";
-import ShopDetailGetForm from "../../services/shops/ShopDetailGetService";
+import FavoritePostForm from "../../services/favorites/FavoritePostService";
+import FavoriteDeleteForm from "../../services/favorites/FavoriteDeleteService";
 
 const mapHeight = "105px"; // 예시 높이값
 const updateCounter = 0;
@@ -30,6 +30,7 @@ const Shop = () => {
     reviewCnt: 0,
     favoriteCnt: 0,
     opened: false,
+    favorite: false,
   });
 
   const makePhoneCall = (phoneNumber: string) => {
@@ -40,16 +41,19 @@ const Shop = () => {
     makePhoneCall(shopInfo.tel);
   };
 
-  const [isFavorite, setIsFavorite] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(shopInfo.favorite);
+  const [favoriteCount, setFavoriteCount] = useState(shopInfo.favoriteCnt);
 
   const handleToggle = async (newIsFavorite: boolean) => {
     try {
       if (newIsFavorite) {
         // 찜 등록 API 호출
-        await ShoptFavoritePostForm({ Id });
+        await FavoritePostForm({ storeId: Number(Id) });
+        setFavoriteCount((prev) => prev + 1); // 찜 수 증가
       } else {
         // 찜 삭제 API 호출
-        await ShopDetailGetForm({ Id });
+        await FavoriteDeleteForm({ favoriteId: Number(Id) });
+        setFavoriteCount((prev) => prev - 1); // 찜 수 감소
       }
       setIsFavorite(newIsFavorite);
     } catch (error) {
@@ -57,6 +61,10 @@ const Shop = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    setFavoriteCount(shopInfo.favoriteCnt);
+  }, [shopInfo.favoriteCnt]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,7 +105,7 @@ const Shop = () => {
           <div className="flex items-center">
             {/* 토글 버튼 */}
             <FavoriteButton isFavorite={isFavorite} onToggle={handleToggle} />
-            <span className="text-sm">{shopInfo.favoriteCnt}</span>
+            <span className="text-sm">{favoriteCount}</span>
           </div>
         </div>
 
