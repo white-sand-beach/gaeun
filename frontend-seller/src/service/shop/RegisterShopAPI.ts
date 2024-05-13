@@ -40,20 +40,18 @@ const RegisterShopAPI = () => {
         formData.append("holiday", shopHoliday ?? "");
         formData.append("originCountry", FoodOrigin ?? "");
         formData.append("introduction", shopIntro ?? "");
-        if (shopCategoryId) {
-            shopCategoryId.forEach(id => {
-                formData.append("categoryIdList", id.toString())
-            })
-        }
+        shopCategoryId.forEach(id => {
+            formData.append("categoryIdList", id.toString())
+        })
         axios.post(import.meta.env.VITE_BASE_URL + "/api/stores", formData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
         })
             .then(res => {
-                console.log(res.data.data)
+                console.log(`가게id: ${res.data.data.storeId}`)
                 window.alert("가게 등록 성공 ㅎㅎ")
-                cookies.set("storeId", res.data.data.storeId, {path: "/", httpOnly: true, secure: true})
+                cookies.set("storeId", res.data.data.storeId, {path: "/"})
                 navigate("/")
             })
             .catch(err => {
