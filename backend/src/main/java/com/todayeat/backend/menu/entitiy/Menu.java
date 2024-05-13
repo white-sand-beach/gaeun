@@ -50,9 +50,7 @@ public class Menu extends BaseTime {
     }
 
     // 현재 더티체킹 방법을 사용하지 않아서 미사용
-    public void update(String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, Integer sequence) {
-
-        this.imageUrl = imageUrl;
+    public void update(String name, Integer originalPrice, Integer sellPrice, Integer discountRate) {
 
         this.name = name;
 

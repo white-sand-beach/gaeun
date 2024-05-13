@@ -9,7 +9,7 @@ import lombok.Getter;
 public class GetConsumerResponse {
 
     @Schema(description = "프로필 이미지 URL", example = "--")
-    private String profileImage;
+    private String imageUrl;
 
     @Schema(description = "닉네임", example = "김지녕")
     private String nickname;
@@ -18,8 +18,8 @@ public class GetConsumerResponse {
     private String phoneNumber;
 
     @Builder
-    private GetConsumerResponse(String profileImage, String nickname, String phoneNumber) {
-        this.profileImage = profileImage;
+    private GetConsumerResponse(String imageUrl, String nickname, String phoneNumber) {
+        this.imageUrl = imageUrl;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
     }

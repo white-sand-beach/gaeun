@@ -1,5 +1,6 @@
 package com.todayeat.backend.store.service;
 
+import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.S3Util;
 import com.todayeat.backend._common.util.SecurityUtil;
@@ -8,6 +9,9 @@ import com.todayeat.backend.category.mapper.CategoryMapper;
 import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
+import com.todayeat.backend.consumer.entity.Consumer;
+import com.todayeat.backend.favorite.repository.FavoriteRepository;
+import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
@@ -18,9 +22,6 @@ import com.todayeat.backend.store.mapper.StoreMapper;
 import com.todayeat.backend.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,7 @@ import static com.todayeat.backend._common.response.error.ErrorType.*;
 public class StoreService {
 
     private final StoreCategoryRepository storeCategoryRepository;
+    private final FavoriteRepository favoriteRepository;
     private final CategoryRepository categoryRepository;
     private final SellerRepository sellerRepository;
     private final StoreRepository storeRepository;
@@ -68,7 +70,7 @@ public class StoreService {
             Store store = storeRepository.save(
                     StoreMapper.INSTANCE.createStoreRequestToStore(
                             createStoreRequest,
-                            createPoint(createStoreRequest.getLatitude(), createStoreRequest.getLongitude()),
+                            Location.of(createStoreRequest.getLatitude(), createStoreRequest.getLongitude()),
                             imageURL));
 
             seller.updateStore(store);
@@ -82,7 +84,7 @@ public class StoreService {
             return StoreMapper.INSTANCE.storeIdToCreateStoreResponse(store.getId());
         } catch (RuntimeException e) {
 
-            s3Util.deleteImage(imageURL);
+            s3Util.deleteImageIfPresent(imageURL);
             throw new RuntimeException(e);
         }
     }
@@ -96,6 +98,9 @@ public class StoreService {
             throw new BusinessException(STORE_NOT_FOUND);
         }
 
+        store = storeRepository.findByIdAndDeletedAtIsNull(store.getId())
+                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
+
         GetSellerStoreResponse getSellerStoreResponse = StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store);
 
         getSellerStoreResponse.setCategoryList(
@@ -108,12 +113,13 @@ public class StoreService {
 
     public GetConsumerInfoStoreResponse getConsumerInfoStore(Long storeId) {
 
-        GetConsumerInfoStoreResponse getStoreConsumerResponse = StoreMapper.INSTANCE.storeToGetConsumerStoreResponse(
-                validateAndGetStore(storeId));
+        Consumer consumer = securityUtil.getConsumer();
 
-        //todo getDetailStoreConsumerResponse에 찜 여부 넣어야 함
+        Store store = validateAndGetStore(storeId);
 
-        return getStoreConsumerResponse;
+        boolean isFavorite = favoriteRepository.existsByConsumerAndStoreAndDeletedAtIsNull(consumer, store);
+
+        return StoreMapper.INSTANCE.storeToGetConsumerStoreResponse(store, isFavorite);
     }
 
     public GetConsumerDetailStoreResponse getConsumerDetailStore(Long storeId) {
@@ -126,7 +132,7 @@ public class StoreService {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sort));
 
-        return storeRepository.findStoreList(createPoint(latitude, longitude), radius * 1000, keyword, categoryId, pageRequest);
+        return storeRepository.findStoreList(Location.of(latitude, longitude), radius * 1000, keyword, categoryId, pageRequest);
     }
 
     @Transactional
@@ -144,7 +150,7 @@ public class StoreService {
             StoreMapper.INSTANCE.updateStoreRequestToStore(
                     updateStoreRequest,
                     imageURL,
-                    createPoint(updateStoreRequest.getLatitude(), updateStoreRequest.getLongitude()),
+                    Location.of(updateStoreRequest.getLatitude(), updateStoreRequest.getLongitude()),
                     store);
 
             List<StoreCategory> existingCategories = storeCategoryRepository.findByStoreIdAndDeletedAtIsNull(storeId);
@@ -162,7 +168,7 @@ public class StoreService {
                             StoreCategoryMapper.INSTANCE.toStoreCategory(store, categoryRepository.findById(id).get())));
         } catch (RuntimeException e) {
 
-            s3Util.deleteImage(imageURL);
+            s3Util.deleteImageIfPresent(imageURL);
             throw new RuntimeException(e);
         }
     }
@@ -185,22 +191,11 @@ public class StoreService {
 
     private String imageToURL(MultipartFile image) {
 
-        if (image == null) {
-
-            return null;
-        }
-
-        return s3Util.uploadImage(image, SELLER_STORE_IMAGE, securityUtil.getSeller().getId());
+        return s3Util.uploadImageIfPresent(image, SELLER_STORE_IMAGE, securityUtil.getSeller().getId());
     }
 
     private Store validateAndGetStore(Long storeId) {
         return storeRepository.findByIdAndDeletedAtIsNull(storeId)
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
-    }
-
-    private Point createPoint(BigDecimal latitude, BigDecimal longitude) {
-        GeometryFactory geometryFactory = new GeometryFactory();
-        Coordinate coordinate = new Coordinate(latitude.doubleValue(), longitude.doubleValue());
-        return geometryFactory.createPoint(coordinate);
     }
 }
