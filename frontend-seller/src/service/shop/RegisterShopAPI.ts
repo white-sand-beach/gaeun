@@ -50,7 +50,7 @@ const RegisterShopAPI = () => {
             .then(res => {
                 console.log(`가게id: ${res.data.data.storeId}`)
                 window.alert("가게 등록 성공 ㅎㅎ")
-                cookies.set("storeId", res.data.data.storeId, {path: "/"})
+                // cookies.set("storeId", res.data.data.storeId, {path: "/"})
                 navigate("/")
             })
             .catch(err => {

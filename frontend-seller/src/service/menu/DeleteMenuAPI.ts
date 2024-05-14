@@ -13,7 +13,7 @@ const DeleteMenuAPI = () => {
         Authorization: `Bearer ${accessToken}`
       },
       data: {
-        "storeId": 37,
+        "storeId": cookies.get("storeId"),
       }
     },)
     .then(res => {
