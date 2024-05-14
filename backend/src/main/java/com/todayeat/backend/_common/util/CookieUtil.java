@@ -13,8 +13,11 @@ import java.util.Optional;
 @Component
 public class CookieUtil {
 
-    @Value("${BASE_URL}")
-    private String baseURL;
+    @Value("${COOKIE_SERVER_URL}")
+    private String serverURL;
+
+    @Value("${COOKIE_CLIENT_URL}")
+    private String clientURL;
 
     public Optional<Cookie> getCookie(HttpServletRequest request, String name) {
 
@@ -37,7 +40,8 @@ public class CookieUtil {
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setMaxAge(maxAge);
-        cookie.setDomain(baseURL);
+        cookie.setDomain(serverURL);
+        cookie.setDomain(clientURL);
         response.addCookie(cookie);
     }
 
@@ -47,7 +51,8 @@ public class CookieUtil {
         cookie.setPath("/");
         cookie.setSecure(true);
         cookie.setMaxAge(maxAge);
-        cookie.setDomain(baseURL);
+        cookie.setDomain(serverURL);
+        cookie.setDomain(clientURL);
         response.addCookie(cookie);
     }
 
