@@ -1,4 +1,4 @@
-package com.todayeat.backend._common.test;
+package com.todayeat.backend._common.config;
 
 
 import org.springframework.beans.factory.annotation.Value;

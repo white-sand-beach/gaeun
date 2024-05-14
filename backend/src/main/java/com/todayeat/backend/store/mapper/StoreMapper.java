@@ -1,5 +1,6 @@
 package com.todayeat.backend.store.mapper;
 
+import com.todayeat.backend.category.dto.CategoryInfo;
 import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
@@ -8,10 +9,13 @@ import com.todayeat.backend.store.dto.response.GetConsumerDetailStoreResponse;
 import com.todayeat.backend.store.dto.response.GetConsumerInfoStoreResponse;
 import com.todayeat.backend.store.dto.response.GetSellerStoreResponse;
 import com.todayeat.backend.store.entity.Store;
+import com.todayeat.backend.store.entity.StoreDocument;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface StoreMapper {
@@ -35,4 +39,6 @@ public interface StoreMapper {
 
     @Mapping(target = "location", source = "location")
     void updateStoreRequestToStore(UpdateStoreRequest updateStoreRequest, String imageURL, Location location, @MappingTarget Store store);
+
+    StoreDocument storeToStoreDocument(Store store, List<CategoryInfo> categoryInfoList);
 }
