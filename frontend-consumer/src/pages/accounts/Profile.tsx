@@ -6,9 +6,12 @@ import order from "../../assets/profile/order.png";
 import review from "../../assets/profile/review.png";
 import ProfileForm from "../../services/accounts/ProfileInformation";
 import UserState from "../../types/UserState";
-import ServiceBanner from "../../components/navbar/ServiceBanner";
+
 
 import defaultImg from "../../assets/profile/defaultImg.png";
+import sudal from "../../assets/profile/sudal.gif";
+import sudalbg from "../../assets/profile/sudalbg.png";
+import ServiceBanner from "../../components/navbar/ServiceBanner";
 
 const ProfileCard: React.FC = () => {
   const [profileData, setProfileData] = useState<UserState>({
@@ -100,8 +103,29 @@ const ProfileCard: React.FC = () => {
         <div className="center my-5 w-full m-auto border-2 border-orange-400 h-14 rounded-xl">
           <ServiceBanner />
         </div>
-
-        <div className="relative h-64 p-4 bg-white border border-gray-500 rounded-lg shadow-lg"></div>
+        <div className="relative h-64 p-4 bg-white border border-gray-500 rounded-lg shadow-lg">
+          {/* 배경 이미지 */}
+          <div className="absolute inset-0 z-0 opacity-50">
+            <img
+              src={sudalbg}
+              alt="배경 이미지"
+              className="object-cover w-full h-full"
+            />
+          </div>
+          {/* 왼쪽 상단 문구 */}
+          <span className="absolute z-10 text-lg font-bold text-black top-4 left-4">
+            {profileData.nickname}님, 수달을 지켜주세요!!
+          </span>
+          {/* 중앙 아래 식물 이미지 */}
+          <div className="absolute z-10 transform -translate-x-1/2 bottom-4 left-1/2">
+            {/* 아이콘 또는 이미지 */}
+            <img src={sudal} alt="수달키우기" />
+          </div>
+          {/* 오른쪽 하단 금액 */}
+          <span className="absolute text-lg font-bold text-black bottom-4 right-4">
+            10,000원
+          </span>
+        </div>
       </div>
     </div>
   );
