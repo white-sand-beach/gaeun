@@ -71,7 +71,7 @@ const UpdateFood = () => {
       image: updateMenuInfo.image,
       originalPrice: updateMenuInfo.originalPrice,
       sellPrice: updateMenuInfo.sellPrice,
-      storeId: cookies.get("storeId")
+      storeId: 12
     })
   };
 

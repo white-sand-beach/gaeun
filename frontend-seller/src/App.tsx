@@ -27,7 +27,6 @@ const App = () => {
   window.addEventListener("unload", () => {
     localStorage.clear()
     cookies.remove("accessToken")
-    cookies.remove("storeId")
   })
   
   return (

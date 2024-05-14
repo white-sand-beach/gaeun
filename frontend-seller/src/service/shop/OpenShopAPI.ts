@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 const OpenShopAPI = () => {
     const cookies = new Cookies()
     const accessToken = cookies.get("accessToken")
-    const storeId = cookies.get("storeId")
+    const storeId = 12
     const putShopOpened = () => {
         axios.put(import.meta.env.VITE_BASE_URL + `/api/stores/${storeId}/is-opened`, {}, {
             withCredentials: true,
