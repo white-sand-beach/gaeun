@@ -7,12 +7,13 @@ const OpenShopAPI = () => {
     const storeId = cookies.get("storeId")
     const putShopOpened = () => {
         axios.put(import.meta.env.VITE_BASE_URL + `/api/stores/${storeId}/is-opened`, {}, {
+            withCredentials: true,
             params: {
                 "store-id": storeId
             },
             headers: {
                 Authorization: `Bearer ${accessToken}`
-            }
+            },
         })
         .then(res => {
             console.log(res);

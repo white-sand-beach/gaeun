@@ -5,12 +5,15 @@ import reviewImg from "../../assets/mypage-review.png"
 import updateInfoImg from "../../assets/mypage-change-info.png"
 import updateMenuImg from "../../assets/mypage-change-menu.png"
 import OpenShopAPI from "../../service/shop/OpenShopAPI"
+import Cookies from "universal-cookie"
 // import TotalButton from "../ui/TotalButton"
 
 const ShopInfo:React.FC<getShopInfoType> = (props) => {
+    const cookies = new Cookies()
     const { putShopOpened } = OpenShopAPI();
     const handleOpened = () => {
         putShopOpened();
+        console.log(cookies.get("storeId"))
     };
     
     return (

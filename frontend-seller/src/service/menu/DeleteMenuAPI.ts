@@ -6,6 +6,7 @@ const DeleteMenuAPI = () => {
   const accessToken = cookies.get("accessToken")
   const DeleteMenu = (menuId:any) => {
     axios.delete(import.meta.env.VITE_BASE_URL + `/api/menus/${menuId}`, {
+      withCredentials: true,
       params: {
         "menu-id": menuId
       },

@@ -7,6 +7,7 @@ const getShopInfoAPI = () => {
     const storeId = cookies.get("storeId")
     const getShopInfo = (setShopInfo: any) => {
         axios.get(import.meta.env.VITE_BASE_URL + `/api/stores/${storeId}`, {
+            withCredentials: true,
             params: {
                 "store-id": storeId
             },

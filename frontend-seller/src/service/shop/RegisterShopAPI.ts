@@ -47,15 +47,13 @@ const RegisterShopAPI = () => {
                 Authorization: `Bearer ${accessToken}`
             }
         })
-            .then(res => {
-                console.log(`가게id: ${res.data.data.storeId}`)
-                window.alert("가게 등록 성공 ㅎㅎ")
-                // cookies.set("storeId", res.data.data.storeId, {path: "/"})
+            .then(() => {
+                window.alert("가게 등록 성공")
                 navigate("/")
             })
             .catch(err => {
                 console.error(err)
-                window.alert("가게등록 실패 ㅠㅠ")
+                window.alert("가게등록 실패")
             })
     };
 

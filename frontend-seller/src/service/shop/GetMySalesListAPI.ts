@@ -8,6 +8,7 @@ const GetMySalesListAPI = () => {
     const storeId = cookies.get("storeId")
     const getSalesSeller = (setFunc:(saleList:SalesInfoType[]) => void) => {
         axios.get(import.meta.env.VITE_BASE_URL + "/api/sales/seller", {
+            withCredentials: true,
             params: {
                 "store-id": storeId,
             },
