@@ -3,6 +3,7 @@ import useUserLocation from "../../store/UserLocation";
 import cart from "../../assets/navbar/cart.png";
 import ring from "../../assets/navbar/ring.png";
 import back from "../../assets/navbar/back.png";
+import home from "../../assets/navbar/home.png";
 
 const NavBar = () => {
   const { alias, roadAddress } = useUserLocation((state) => ({
@@ -57,7 +58,7 @@ const NavBar = () => {
       title = "프로필 설정";
       break;
     case "/my-review":
-      title = "나의 리뷰 목록";
+      title = "나의 리뷰";
       break;
     default:
       title = "";
@@ -65,11 +66,20 @@ const NavBar = () => {
 
   const showHomeAddress = location.pathname === "/";
   const showCartAndNotification = location.pathname !== "/sign-up";
-  const shouldRemoveBgColor = location.pathname === "/add-cart" || location.pathname.startsWith(`/shop/`);
+  const shouldRemoveBgColor =
+    location.pathname === "/add-cart" || location.pathname.startsWith(`/shop/`);
+  const showHomeBtn =
+    location.pathname !== "/" &&
+    location.pathname !== "/search" &&
+    location.pathname !== "/favorite" &&
+    location.pathname !== "/order-list" &&
+    location.pathname !== "/profile";
 
   return (
-    <div className={`fixed between min-h-[57px] z-20 w-full p-4 rounded-b-lg ${shouldRemoveBgColor ? '' : 'bg-myColor'}`}>
-      <div className="w-[33%]">
+    <div
+      className={`fixed between min-h-[57px] h z-20 w-full p-4 rounded-b-lg ${shouldRemoveBgColor ? "" : "bg-myColor"}`}
+    >
+      <div className="w-[33%] h-[25px]">
         {showHomeAddress ? (
           <p
             className="font-bold whitespace-nowrap"
@@ -86,14 +96,19 @@ const NavBar = () => {
           <img src={back} alt="뒤로가기" onClick={handleBackClick} />
         )}
       </div>
-      <div className="w-[34%] text-center font-extrabold">{title}</div>
+      <div className="w-[34%] h-[25px] text-center font-extrabold">{title}</div>
       {showCartAndNotification ? (
-        <div className="flex w-[33%] justify-end">
+        <div className="flex w-[33%] h-[25px] items-center justify-end">
+          {showHomeBtn && (
+            <Link to="/">
+              <img className="w-5" src={home} alt="홈" />
+            </Link>
+          )}
           <Link to="/notification">
-            <img src={ring} alt="알림" />
+            <img className="mx-4" src={ring} alt="알림" />
           </Link>
           <Link to="/cart">
-            <img src={cart} alt="장바구니" className="ml-6" />
+            <img src={cart} alt="장바구니" />
           </Link>
         </div>
       ) : (

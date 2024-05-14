@@ -56,7 +56,7 @@ const ProfileCard: React.FC = () => {
               />
             </div>
             <div className="pl-4 pt-8 text-sm">
-              <p className="font-serif">궁서체로 텍스트 넣고싶음</p>
+              <p className="font-serif">나누면 더 따뜻한 세상</p>
               <p className="font-bold"> {profileData.nickname}</p>
               <p className="text-gray-400">{profileData.email}</p>
             </div>
@@ -99,7 +99,7 @@ const ProfileCard: React.FC = () => {
         </div>
       </div>
 
-      <div className="w-11/12 mx-auto">
+      <div className="w-11/12 mx-auto pb-16">
         <div className="center my-5 w-full m-auto border-2 border-orange-400 h-14 rounded-xl">
           <ServiceBanner />
         </div>

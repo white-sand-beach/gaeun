@@ -16,7 +16,7 @@ const CheckOrder = ({ menuData }: CheckOrderProps) => {
       <div className="flex items-center">
         {/* 음식 이미지 */}
         <img
-          className="w-16 h-16 rounded-md"
+          className="w-16 h-16 rounded-md object-cover"
           src={menuData.imageUrl}
           alt="메뉴 사진"
         />

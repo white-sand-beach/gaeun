@@ -27,7 +27,7 @@ const CountButton = ({ menuData }: CheckOrderProps) => {
         cartId: menuData.cartId,
       });
       setQuantity(newQuantity);
-      setShowBtn(true);
+      newQuantity == 1 ? setShowBtn(false) : setShowBtn(true);
       console.log("수량 변경 응답:", response);
     } catch (error) {
       console.error(newQuantity, "수량 변경 오류:", error);
@@ -70,7 +70,7 @@ const CountButton = ({ menuData }: CheckOrderProps) => {
     <div className="between px-3 border-gray-200 border-2 rounded-xl w-[80px] font-bold text-sm py-1 ">
       {!showBtn && (
         <img
-          className="w-3 h-4 cursor-pointer"
+          className="w-3 h-[14px] cursor-pointer"
           src={deleteBtn}
           alt="삭제 버튼"
           onClick={handleDeleteClick}
