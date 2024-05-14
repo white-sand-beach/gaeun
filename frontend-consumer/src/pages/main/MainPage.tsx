@@ -9,6 +9,7 @@ import MainMapData from "../../types/MainMapDataType";
 import MapListForm from "../../services/maps/MapMainService";
 import { MainAllData } from "../../types/MainAllDataType";
 import { StoreList } from "../../types/StoreList";
+import { useNavigate } from "react-router-dom";
 
 interface LocationState {
   lat: number | undefined;
@@ -52,6 +53,7 @@ const Main: React.FC = () => {
     loading: false,
     hasNext: false,
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStoreList = async () => {
@@ -77,6 +79,7 @@ const Main: React.FC = () => {
         ]); // 이전 가게 리스트에 새로운 가게 리스트 추가
       } catch (error) {
         console.error("Error fetching store list:", error);
+        navigate("/login")
       } finally {
         setAllData((prevState) => ({ ...prevState, loading: false }));
       }
@@ -85,9 +88,6 @@ const Main: React.FC = () => {
     fetchStoreList();
   }, [lng, lat, allData.page]); // mainData 객체 자체를 의존성 배열에 추가
 
-  useEffect(() => {
-    console.log(allData);
-  }, [allData, storeList]);
 
   useEffect(() => {
     // 페이지가 처음으로 로드될 때만 실행

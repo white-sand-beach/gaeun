@@ -1,25 +1,31 @@
-import { useState } from "react";
-import deleteBtn from "../../assets/btn/deleteBtn.png"
-import minusBtn from "../../assets/btn/minusBtn.png"
-import plusBtn from "../../assets/btn/plusBtn.png"
+import { useEffect, useState } from "react";
+import deleteBtn from "../../assets/btn/deleteBtn.png";
+import minusBtn from "../../assets/btn/minusBtn.png";
+import plusBtn from "../../assets/btn/plusBtn.png";
 
 import CartAmountService from "../../services/carts/CartAmountService";
 import CartDeleteService from "../../services/carts/CartDeleteService";
-import { CartItem } from "../../types/CartType"
+import { CartItem } from "../../types/CartType";
 
 interface CheckOrderProps {
   menuData: CartItem;
 }
 
 const CountButton = ({ menuData }: CheckOrderProps) => {
-  const [quantity, setQuantity] = useState<Number>(menuData.quantity);
+  const [quantity, setQuantity] = useState<number>(menuData.quantity);
   const [showBtn, setShowBtn] = useState<boolean>(true);
 
   const handlePlusClick = async () => {
-    const newQuantity = Number(quantity) < menuData.restStock ? Number(quantity) + 1 : menuData.restStock;
+    const newQuantity =
+      Number(quantity) < menuData.restStock
+        ? Number(quantity) + 1
+        : menuData.restStock;
 
     try {
-      const response = await CartAmountService({ quantity: newQuantity, cartId: menuData.cartId });
+      const response = await CartAmountService({
+        quantity: newQuantity,
+        cartId: menuData.cartId,
+      });
       setQuantity(newQuantity);
       setShowBtn(true);
       console.log("수량 변경 응답:", response);
@@ -32,14 +38,23 @@ const CountButton = ({ menuData }: CheckOrderProps) => {
     const newQuantity = Number(quantity) > 2 ? Number(quantity) - 1 : 1;
 
     try {
-      const response = await CartAmountService({ quantity: newQuantity, cartId: menuData.cartId });
+      const response = await CartAmountService({
+        quantity: newQuantity,
+        cartId: menuData.cartId,
+      });
       setQuantity(newQuantity);
-      newQuantity > 1 ? setShowBtn(true) : setShowBtn(false);
+      newQuantity == 1 ? setShowBtn(false) : setShowBtn(true);
       console.log("수량 변경 응답:", response);
     } catch (error) {
-      console.error(newQuantity,"수량 변경 오류:", error);
+      console.error(newQuantity, "수량 변경 오류:", error);
     }
   };
+
+  useEffect(() => {
+    if (quantity == 1) {
+      setShowBtn(false);
+    }
+  }, []);
 
   const handleDeleteClick = async () => {
     try {
@@ -62,10 +77,20 @@ const CountButton = ({ menuData }: CheckOrderProps) => {
         />
       )}
       {showBtn && (
-        <img onClick={handleMinusClick} className="w-2" src={minusBtn} alt="빼기" />
+        <img
+          onClick={handleMinusClick}
+          className="w-2"
+          src={minusBtn}
+          alt="빼기"
+        />
       )}
       <span className="font-bold">{quantity.toString()}</span>
-      <img onClick={handlePlusClick} className="w-2" src={plusBtn} alt="더하기" />
+      <img
+        onClick={handlePlusClick}
+        className="w-2"
+        src={plusBtn}
+        alt="더하기"
+      />
     </div>
   );
 };
