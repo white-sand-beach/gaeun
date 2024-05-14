@@ -18,16 +18,10 @@ const Shops = ({ store }: { store: StoreList }) => {
     <div>
       <div>
         <div>
-          <hr className="w-full my-2" />
-          <div>
+          <div onClick={goStore}>
             <div className="flex justify-between">
               <div className="flex">
-                <h2
-                  onClick={goStore}
-                  className="text-lg font-bold text-sky-600"
-                >
-                  {store.name}
-                </h2>
+                <h2 className="text-lg font-bold text-sky-600">{store.name}</h2>
                 <p className="mt-auto ml-1 text-sm text-gray-500">
                   {store.categoryList &&
                     store.categoryList.map((category, index) => (
@@ -89,6 +83,7 @@ const Shops = ({ store }: { store: StoreList }) => {
             </div>
           </div>
         </div>
+        <hr className="w-full my-2" />
       </div>
     </div>
   );

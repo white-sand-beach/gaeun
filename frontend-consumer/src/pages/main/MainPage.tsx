@@ -295,6 +295,7 @@ const Main: React.FC = () => {
             <div className="flex items-center justify-center w-full m-auto my-1 border border-orange-400 h-14 rounded-xl">
               <ServiceBanner />
             </div>
+            <hr className="w-full my-2" />
 
             {/* 패널 내부 스크롤 부분 */}
             <div
