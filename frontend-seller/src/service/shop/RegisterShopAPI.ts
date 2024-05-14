@@ -2,7 +2,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { InputRegisterShop } from "../../types/shop/InputRegisterShop";
 import Cookies from "universal-cookie";
-import defaultImg from "/icons/main-icon-192.png"
 
 const RegisterShopAPI = () => {
     const navigate = useNavigate();
@@ -35,7 +34,7 @@ const RegisterShopAPI = () => {
         formData.append("longitude", shopLon.toString());
         formData.append("tel", shopNumber,);
         formData.append("name", shopName,);
-        formData.append("image", shopImage ?? defaultImg);
+        formData.append("image", shopImage ?? "");
         formData.append("operatingTime", shopWorkday ?? "");
         formData.append("holiday", shopHoliday ?? "");
         formData.append("originCountry", FoodOrigin ?? "");

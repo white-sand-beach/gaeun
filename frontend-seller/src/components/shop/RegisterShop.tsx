@@ -14,9 +14,7 @@ declare global {
 const RegisterShop: React.FC<InputRegisterShop> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [categoryId, setCategoryId] = useState<number[]>([]);
-  const [selectImg, setSelectImg] = useState<File | null>(
-    props.shopImage ? props.shopImage : null
-  );
+  const [selectImg, setSelectImg] = useState<File | undefined>();
 
   useEffect(() => {
     console.log("useEffect 카테고리: ", categoryId);
@@ -92,7 +90,7 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
   return (
     <div className="flex flex-col items-center w-screen h-full gap-3">
       {/* 사진 등록하기 */}
-      {selectImg === null ? (
+      {!selectImg ? (
         <div className="flex flex-col items-center justify-center w-full h-[360px] bg-gray-300">
           <img src={camera} alt="" className="m-2" />
           <label htmlFor="input-file" className="text-2xl font-bold">
@@ -109,7 +107,7 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
         </div>
       ) : (
         <img
-          src={URL.createObjectURL(selectImg)}
+          src={URL.createObjectURL(selectImg!)}
           className="w-full h-[360px]"
         />
       )}
