@@ -5,9 +5,10 @@ import { CartItem } from "../../types/CartType"
 
 interface CheckOrderProps {
   menuData: CartItem;
+  onDelete: (cartId: string) => void;
 }
 
-const CheckOrder = ({ menuData }: CheckOrderProps) => {
+const CheckOrder = ({ menuData, onDelete }: CheckOrderProps) => {
   const formattedOriginalPrice = new Intl.NumberFormat('ko-KR').format(menuData.originalPrice * menuData.quantity);
   const formattedSellPrice = new Intl.NumberFormat('ko-KR').format(menuData.sellPrice * menuData.quantity);
 
@@ -38,7 +39,7 @@ const CheckOrder = ({ menuData }: CheckOrderProps) => {
         </div>
       </div>
       <div className="flex justify-end ">
-        <CountButton menuData={menuData}/>
+        <CountButton menuData={menuData} onDelete={onDelete}/>
       </div>
     </div>
   );

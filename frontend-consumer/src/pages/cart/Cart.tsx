@@ -28,6 +28,7 @@ const Cart = () => {
         const response = await CartGetService();
         setCartInfo(response);
         setCartData(response.cartResponseList);
+        console.log("요청성공")
       } catch (error) {
         console.log("장바구니 비어있거나 실패", error);
       }
@@ -38,10 +39,15 @@ const Cart = () => {
   const handleAllDelete = () => {
     try {
       CartAllDeleteService();
+      setCartData([]);
       console.log("전체 삭제 성공");
     } catch {
       console.log("전체 삭제 실패");
     }
+  };
+
+  const handleDeleteItem = (cartId: string) => {
+    setCartData((prevData) => prevData.filter((item) => item.cartId !== cartId));
   };
 
   return (
@@ -70,7 +76,7 @@ const Cart = () => {
               <hr />
 
               {cartData.map((menuData) => (
-                <CheckOrder key={menuData.cartId} menuData={menuData} />
+                <CheckOrder key={menuData.cartId} menuData={menuData} onDelete={handleDeleteItem} />
               ))}
               <hr />
               <Link to={`/shop/${cartInfo.storeId}`}>
@@ -85,7 +91,7 @@ const Cart = () => {
           <div className="center pt-4">
             <CheckPayment cartInfo={cartInfo} />
           </div>
-          <div className="center pt-12">
+          <div className="center pt-10">
             <PaymentButton cartInfo={cartInfo} />
           </div>
         </div>

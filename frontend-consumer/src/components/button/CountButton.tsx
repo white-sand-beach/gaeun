@@ -9,9 +9,10 @@ import { CartItem } from "../../types/CartType";
 
 interface CheckOrderProps {
   menuData: CartItem;
+  onDelete: (cartId: string) => void;
 }
 
-const CountButton = ({ menuData }: CheckOrderProps) => {
+const CountButton = ({ menuData, onDelete }: CheckOrderProps) => {
   const [quantity, setQuantity] = useState<number>(menuData.quantity);
   const [showBtn, setShowBtn] = useState<boolean>(true);
 
@@ -60,6 +61,7 @@ const CountButton = ({ menuData }: CheckOrderProps) => {
     try {
       // Cart를 삭제하는 요청을 보내고 응답을 받음
       const response = await CartDeleteService(menuData.cartId);
+      onDelete(menuData.cartId);
       console.log("Cart 삭제 응답:", response);
     } catch (error) {
       console.error("Cart 삭제 오류:", error);
