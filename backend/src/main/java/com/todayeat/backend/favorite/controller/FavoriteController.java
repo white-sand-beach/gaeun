@@ -2,6 +2,7 @@ package com.todayeat.backend.favorite.controller;
 
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.favorite.dto.request.CreateFavoriteRequest;
+import com.todayeat.backend.favorite.dto.request.DeleteFavoriteRequest;
 import com.todayeat.backend.favorite.dto.response.GetFavoriteListResponse;
 import com.todayeat.backend.favorite.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,16 @@ public class FavoriteController implements FavoriteControllerDocs {
     }
 
     @Override
-    public SuccessResponse<Void> delete(Long favoriteId) {
+    public SuccessResponse<Void> deleteByFavoriteId(Long favoriteId) {
 
-        favoriteService.delete(favoriteId);
+        favoriteService.deleteByFavoriteId(favoriteId);
+        return SuccessResponse.of(DELETE_FAVORITE_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<Void> deleteByStoreId(DeleteFavoriteRequest request) {
+
+        favoriteService.deleteByStoreId(request);
         return SuccessResponse.of(DELETE_FAVORITE_SUCCESS);
     }
 
