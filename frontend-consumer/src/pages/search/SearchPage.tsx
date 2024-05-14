@@ -10,11 +10,11 @@ const SearchPage = () => {
         <StoreSearch />
       </div>
       
-      <div className="py-4 center">
+      <div className="py-2 center">
         <Categories />
       </div>
 
-      <div className="border-y-2">
+      <div className="center mb-4 w-11/12 mx-auto border-2 border-orange-400 h-14 rounded-xl">
         <ServiceBanner />
       </div>
       <hr className="border-4 border-gray-100" />

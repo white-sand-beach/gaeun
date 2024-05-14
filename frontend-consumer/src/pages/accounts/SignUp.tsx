@@ -7,14 +7,14 @@ import "../../components/modal/Modal.css";
 import ProfileForm from "../../services/accounts/ProfileInfoService";
 import UserState from "../../types/UserState";
 
+import defaultImg from "../../assets/profile/defaultImg.png";
 import edit from "../../assets/profile/edit.png";
 
 const SignUp = () => {
   const [profileData, setProfileData] = useState<UserState>({
     profileImage: "",
-    socialType: "",
+    imageUrl: "",
     nickname: "",
-    email: "",
     phoneNumber: "",
   });
 
@@ -22,10 +22,7 @@ const SignUp = () => {
   const buttonText = "회원 가입";
 
   const updateUserState: UserState["updateUserState"] = (key, value) => {
-    setProfileData((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+    setProfileData((prev) => ({ ...prev, [key]: value }));
   };
 
   const [showModal, setShowModal] = useState(false);
@@ -41,7 +38,23 @@ const SignUp = () => {
 
   const handleImageUpload = (file: File | null) => {
     setUploadedImage(file);
+    if (file) {
+      // 프로필 사진 변경 시
+      updateUserState("profileImage", file);
+      updateUserState("imageUrl", undefined);
+    } else {
+      // 프로필 사진 삭제 시
+      updateUserState("profileImage", undefined);
+      updateUserState("imageUrl", undefined);
+    }
   };
+
+  const displayImage = uploadedImage
+    ? URL.createObjectURL(uploadedImage)
+    : profileData.imageUrl || defaultImg;
+
+  const propsImageFile = uploadedImage ? profileData.profileImage : null;
+  const propsImageUrl = uploadedImage ? undefined : profileData.imageUrl;
 
   useEffect(() => {
     ProfileForm()
@@ -52,7 +65,7 @@ const SignUp = () => {
       .catch((error) => {
         console.error("Failed to fetch profile data", error);
       });
-  }, []); // 빈 배열을 넣어서 컴포넌트 마운트 시에만 호출되도록 함
+  }, []);
 
   return (
     <div className="pt-14">
@@ -60,11 +73,7 @@ const SignUp = () => {
         <div className="relative flex justify-center items-center w-36 h-36 rounded-full border-[1px] border-gray-200 shadow-md">
           <img
             className="w-32 h-32 rounded-full object-cover"
-            src={
-              uploadedImage
-                ? URL.createObjectURL(uploadedImage)
-                : profileData.profileImage
-            }
+            src={displayImage}
             alt="프로필 사진"
           />
           <button className="absolute bottom-2 right-3" onClick={toggleModal}>
@@ -76,13 +85,21 @@ const SignUp = () => {
         <div className="modal">
           <div className="modal-content">
             <ProfileImageModal
-              profileImage={profileData.profileImage}
+              propsImage={displayImage}
               onClose={closeModal}
               onImageUpload={handleImageUpload}
             />
           </div>
         </div>
       )}
+      <div className="center">
+        <button
+          onClick={() => handleImageUpload(null)}
+          className=" mt-5 mb-8 text-gray-400 text-xs"
+        >
+          프로필 사진 삭제
+        </button>
+      </div>
       <div className="flex justify-center mt-14">
         <NicknameCheck
           nickname={profileData.nickname}
@@ -95,17 +112,17 @@ const SignUp = () => {
       <div className="flex justify-center mt-14">
         <PhoneCheck
           phoneNumber={profileData.phoneNumber}
+          updatePhoneNumber={(newPhoneNumber) =>
+            updateUserState("phoneNumber", newPhoneNumber)
+          }
           headerText={headerText}
         />
       </div>
       <div className="center my-14">
         <ProfileUpdateButton
           nickname={profileData.nickname}
-          profileImage={
-            uploadedImage
-              ? URL.createObjectURL(uploadedImage)
-              : profileData.profileImage
-          }
+          profileImage={propsImageFile}
+          imageUrl={propsImageUrl}
           phoneNumber={profileData.phoneNumber}
           buttonText={buttonText}
         />
