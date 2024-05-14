@@ -3,6 +3,7 @@ package com.todayeat.backend._common.util;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
@@ -11,6 +12,9 @@ import java.util.Optional;
 
 @Component
 public class CookieUtil {
+
+    @Value("${BASE_URL}")
+    private String baseURL;
 
     public Optional<Cookie> getCookie(HttpServletRequest request, String name) {
 
@@ -33,6 +37,7 @@ public class CookieUtil {
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setMaxAge(maxAge);
+        cookie.setDomain(baseURL);
         response.addCookie(cookie);
     }
 
@@ -42,6 +47,7 @@ public class CookieUtil {
         cookie.setPath("/");
         cookie.setSecure(true);
         cookie.setMaxAge(maxAge);
+        cookie.setDomain(baseURL);
         response.addCookie(cookie);
     }
 
