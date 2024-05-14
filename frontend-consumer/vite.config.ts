@@ -23,36 +23,36 @@ export default defineConfig({
         theme_color: "#FFAF38",
         icons: [
           {
-            src: "./public/icons/main-icon-16.png",
+            src: "/icons/main-icon-16.png",
             sizes: "16x16",
           },
           {
-            src: "./public/icons/main-icon-48.png",
+            src: "/icons/main-icon-48.png",
             sizes: "48x48",
           },
           {
-            src: "./public/icons/main-icon-72.png",
+            src: "/icons/main-icon-72.png",
             sizes: "72x72",
           },
           {
-            src: "./public/icons/main-icon-128.png",
+            src: "/icons/main-icon-128.png",
             sizes: "128x128",
           },
           {
-            src: "./public/icons/main-icon-144.png",
+            src: "/icons/main-icon-144.png",
             sizes: "144x144",
           },
           {
-            src: "./public/icons/main-icon-152.png",
+            src: "/icons/main-icon-152.png",
             sizes: "152x152",
           },
           {
-            src: "./public/icons/main-icon-192.png",
+            src: "/icons/main-icon-192.png",
             sizes: "192x192",
             purpose: "maskable",
           },
           {
-            src: "./public/icons/main-icon-512.png",
+            src: "/icons/main-icon-512.png",
             sizes: "512x512",
             purpose: "maskable",
           },
