@@ -3,6 +3,8 @@ import FavoriteList from "../../components/favorite/FavoriteList";
 import FavoriteGetForm from "../../services/favorites/FavoriteGetService";
 import { FavoriteResponse, FavoriteState } from "../../types/FavoriteType";
 
+import logo from "../../../public/windows11/LargeTile.scale-100.png";
+
 const Favorite = () => {
   const [favoriteState, setFavoriteState] = useState<FavoriteState>({
     favorites: [],
@@ -87,22 +89,27 @@ const Favorite = () => {
   }, [favoriteState.loading, favoriteState.hasNext]);
 
   return (
-    <div className="pt-12 bg-gray-100">
-      <div className="flex items-center border-2 border-gray-200">
+    <div className="pt-12 ">
+      <div className="fixed flex w-full items-center border-2 bg-gray-100 border-gray-200">
         <p className="p-2 pt-4 text-sm font-bold">내가 찜한 맛집</p>
         <p className="pt-2 text-xs font-bold text-gray-500">
           {favoriteState.totalCnt}개
         </p>
       </div>
-      <div className="bg-white pb-14">
+      <div className="pb-14 pt-12">
         {/* 찜 리스트 */}
         {favoriteState.favorites.length > 0 ? (
           <FavoriteList favorites={favoriteState.favorites} />
         ) : (
           <div className="h-screen pb-40 center">
-            <h2 className="text-lg font-bold">
-              자주 찾는 가게를 <span className="text-4xl font-serif">찜</span>해보세요
-            </h2>
+            <div className="justify-center items-center">
+              <img className="rounded-full" src={logo} alt="로고" />
+              <h2 className="text-lg font-bold center">
+                자주 찾는 가게를
+                <span className="mx-2 text-4xl font-serif">찜</span>
+                해보세요
+              </h2>
+            </div>
           </div>
         )}
       </div>
