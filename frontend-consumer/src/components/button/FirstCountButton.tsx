@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import minusBtn from "../../assets/btn/minusBtn.png"
 import plusBtn from "../../assets/btn/plusBtn.png"
 
@@ -26,6 +27,12 @@ const FirstCountButton = ({ menu, quantity, setQuantity }: CartInfoProps) => {
       setQuantity(1);
     }
   };
+
+  useEffect(() => {
+    if (menu.restStock == 0) {
+      setQuantity(0)
+    }
+  })
 
   return (
     <div className="between px-3 border-gray-200 border-2 rounded-xl w-[80px] font-bold text-sm py-1 ">
