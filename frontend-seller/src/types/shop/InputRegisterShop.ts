@@ -18,5 +18,5 @@ export type InputRegisterShop = {
     onResetShopStore?: () => void;
     onRegisterShop?: () => void;
 
-    categoryList: CategoryIdType[]
+    categoryList?: CategoryIdType[]
 }

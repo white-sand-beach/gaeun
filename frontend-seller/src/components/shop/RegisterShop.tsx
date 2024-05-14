@@ -19,7 +19,7 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
   );
 
   useEffect(() => {
-    console.log(categoryId);
+    console.log("useEffect 카테고리: ", categoryId);
   }, [categoryId]);
 
   // input type file로 가게 사진 받아올 때
@@ -73,16 +73,20 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
   const handleCategoryId = (cateId: number) => {
     // 카테고리 id 리스트에 이미 있는경우는 제외
     if (categoryId.includes(cateId)) {
-      setCategoryId((prevCategory) =>
-        prevCategory.filter((id) => id !== cateId)
-      );
-      props.onUpdateShopStore("shopCategoryId", categoryId);
+      const updateId = categoryId.filter(id => id !== cateId)
+      setCategoryId(updateId);
+      console.log("업데이트 id", updateId)
+      console.log("store관리: ", props.shopCategoryId)
     }
     // 없으면 추가
     else {
-      setCategoryId((prevCategory) => [...prevCategory, cateId]);
-      props.onUpdateShopStore("shopCategoryId", categoryId)
+      const updateId = [...categoryId, cateId]
+      setCategoryId(updateId);
+      console.log("업데이트 id", updateId)
+      console.log("store관리: ", props.shopCategoryId)
     }
+    props.onUpdateShopStore("shopCategoryId", categoryId)
+    console.log(categoryId)
   };
 
   return (
@@ -115,15 +119,15 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
         <div className="flex flex-col gap-2">
           <p className="mt-10 text-xl font-bold">카테고리</p>
           <div className="grid grid-cols-2">
-            {props.categoryList.map((category) => (
+            {props.categoryList?.map((category) => (
               <div
-                key={category.id}
-                className={`grid grid-cols-2 gap-4 m-1 border-2 p-2 rounded-[15px] ${categoryId.includes(category.id!) ? "bg-orange-300" : ""}`}
-                onClick={() => handleCategoryId(category.id!)}
+                key={category.categoryId}
+                className={`grid grid-cols-2 gap-4 m-1 border-2 p-2 rounded-[15px] ${categoryId.includes(category.categoryId!) ? "bg-orange-300" : ""}`}
+                onClick={() => handleCategoryId(category.categoryId!)}
               >
                 {category.name}
                 <img
-                  src={category.imageUrl}
+                  src={category.imageURL}
                   alt="카테고리 이미지"
                   className="w-[30px]"
                 />

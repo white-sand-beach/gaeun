@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Logo from "/icons/size-192.png"
+import Logo from "/icons/main-icon-192.png"
 import TotalButton from "../../components/ui/TotalButton.tsx";
 import LoginAPI from "../../service/user/LogInAPI.ts";
 import { useState } from "react";
