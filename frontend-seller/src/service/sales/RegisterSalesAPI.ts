@@ -10,6 +10,7 @@ const RegisterSalesAPI = () => {
             storeId,
             saleList,
         }, {
+            withCredentials: true,
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }

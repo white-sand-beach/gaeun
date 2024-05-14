@@ -17,6 +17,7 @@ const PutMenuAPI = () => {
     formData.append("sellPrice", sellPrice.toString())
     formData.append("storeId", storeId!.toString())
     axios.put(import.meta.env.VITE_BASE_URL + `/api/menus/${menuId}`, formData, {
+      withCredentials: true,
       headers: {
         Authorization: `Bearer ${accessToken}`
       }

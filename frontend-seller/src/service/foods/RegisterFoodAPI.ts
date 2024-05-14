@@ -18,6 +18,7 @@ const RegisterFoodAPI = () => {
     formData.append("sellPrice", sellPrice.toString())
     formData.append("storeId", storeId.toString())
     axios.post(import.meta.env.VITE_BASE_URL + '/api/menus', formData, {
+      withCredentials: true,
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
