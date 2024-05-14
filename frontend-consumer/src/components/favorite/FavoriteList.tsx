@@ -6,6 +6,8 @@ import ShoptFavoriteDeleteForm from "../../services/favorites/ShopFavoriteDelete
 
 import { FavoriteItem } from "../../types/FavoriteType";
 
+import logo from "../../../public/windows11/LargeTile.scale-100.png";
+
 interface FavoriteListProps {
   favorites: FavoriteItem[];
 }
@@ -41,10 +43,6 @@ const FavoriteListItem = ({ favorite }: { favorite: FavoriteItem }) => {
     } catch (error) {
       // 에러 처리
       console.error(error);
-      console.log(
-        "이 부분 잘봐라",
-        favorite.storeId, "이 부분 잘봐라 안현성",  favorite.favoriteId, "잘봐라 안현성"
-      );
     }
   };
 
@@ -59,7 +57,7 @@ const FavoriteListItem = ({ favorite }: { favorite: FavoriteItem }) => {
           <div className="flex items-center">
             <img
               className="w-20 h-20 object-cover rounded-lg"
-              src={favorite.storeImageUrl}
+              src={favorite.storeImageUrl || logo}
               alt={favorite.storeName}
             />
             <div>

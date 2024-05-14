@@ -6,13 +6,13 @@ import OrderDeleteButton from "../../components/button/OrderDeleteButton";
 
 const OrderDetail = () => {
   return (
-    <div className="flex justify-center pt-14 mb-10">
-      <div>
+    <div className="flex justify-center pt-14">
+      <div className="w-screen">
         {/* 가게명 및 주문 정보 */}
         <OrderDetailInfo />
         {/* 주문 내역 */}
-        <div className="center">
-          <div className="w-[300px] border-[1px] border-gray-300 rounded-lg text-xs font-bold mx-6 p-2">
+        <div className="between mx-4">
+          <div className="w-full border-[1px] border-gray-300 rounded-lg text-xs font-bold mx- p-2">
             <h1 className="ml-2">주문 내역</h1>
             <hr className="my-2" />
             <div className="between mx-2">
@@ -28,11 +28,11 @@ const OrderDetail = () => {
         </div>
 
         {/* 재주문 및 리뷰 작성 버튼 */}
-        <div className="between mt-4 mx-7">
+        <div className="between mt-4 mx-4">
           <ReorderButton />
           <ReviewButton />
         </div>
-        <div className="center">
+        <div className="center mt-4 mx-4">
           <OrderDeleteButton />
         </div>
       </div>

@@ -21,6 +21,7 @@ const hideFooterLayoutPaths = [
   "/address-search-registration",
   "/my-review",
   "/address-correction",
+  "/profile",
   "/profile-setting",
 ];
 

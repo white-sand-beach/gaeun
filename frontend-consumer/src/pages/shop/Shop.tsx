@@ -12,6 +12,8 @@ import { ShopInfo } from "../../types/ShopInfoType";
 import FavoritePostForm from "../../services/favorites/FavoritePostService";
 import ShoptFavoriteDeleteForm from "../../services/favorites/ShopFavoriteDeleteService";
 
+import logo from "../../../public/windows11/LargeTile.scale-100.png"
+
 const mapHeight = "105px"; // 예시 높이값
 const updateCounter = 0;
 
@@ -93,7 +95,7 @@ const Shop = () => {
       {/* Header image container */}
       <div className="h-[150px] center mb-8 ">
         <img
-          src={shopInfo.imageURL}
+          src={shopInfo.imageURL || logo}
           alt="가게 대표 이미지"
           className="object-cover w-full h-[150px]"
         />

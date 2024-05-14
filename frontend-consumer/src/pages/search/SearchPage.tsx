@@ -19,7 +19,7 @@ const SearchPage = () => {
       </div>
       <hr className="border-4 border-gray-100" />
 
-      <div className="center pt-4">
+      <div className="center pt-4 pb-16">
         <RealTimeTrendingSearch />
       </div>
     </div>

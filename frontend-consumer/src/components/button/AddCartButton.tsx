@@ -27,7 +27,7 @@ const AddCartButton = ({ menu, quantity, storeId }: CartInfoProps) => {
   }
 
   return (
-    <div className="py-4 fixed bottom-10">
+    <div className="py-4 fixed bottom-10 w-[300px]">
       <div className="text-gray-400 text-xxs mb-2">
         <p>메뉴 사진과 실제 조리된 음식은 상이할 수 있습니다.</p>
         <p>음식에 문제가 있다면 바로 말씀해주세요.</p>
