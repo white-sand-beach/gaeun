@@ -3,6 +3,7 @@ package com.todayeat.backend.order.controller;
 import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.order.dto.request.CreateOrderRequest;
+import com.todayeat.backend.order.dto.request.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
 import com.todayeat.backend.order.dto.response.CreateOrderResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,4 +65,32 @@ public interface OrderControllerDocs {
     @PutMapping("/{order-info-id}/validation")
     SuccessResponse<Void> validation(@PathVariable("order-info-id") Long orderInfoId,
                                     @RequestBody @Valid ValidateOrderRequest request);
+
+    @Operation(summary = "주문 상태 변경 (사장님)",
+            description = """
+                          `ROLE_SELLER` \n
+                          Path Variable, Request Body 넣어주세요. \n
+                          - 현재 주문이 UNPAID / CANCEL / DENIED / FINISHED 상태 -> 변경 불가능
+                          - 현재 주문이 PAID 상태 -> DENIED(거절) / IN_PROGRESS(수락) 가능
+                          - 현재 주문이 IN_PROGRESS 상태 -> PREPARED(준비 완료) / CANCEL(취소) 가능
+                          - 현재 주문이 PREPARED 상태 -> FINISHED(수령 완료) 가능 \n
+                          ** IN_PROGRESS 상태로 변경할 때는 takenTime 도 함께 보내주셔야 합니다. 그 외에는 takenTime 값 안 보내주시면 됩니다. \n
+                          ** 자세한건 request body 스키마 확인해주세요! \n
+                          ** 취소 또는 거절로 상태를 변경할 때는 결제가 취소됩니다. \n
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @ApiResponse(responseCode = "400",
+            description = "상태 수정이 불가능한 경우 / takenTime 안 맞는 경우 ",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "가게 접근 권한이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "주문이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('SELLER')")
+    @PutMapping("/{order-info-id}/status/seller")
+    SuccessResponse<Void> updateStatusBySeller(@PathVariable("order-info-id") Long orderInfoId,
+                                              @RequestBody @Valid UpdateStatusSellerRequest request);
 }

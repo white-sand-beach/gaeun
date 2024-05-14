@@ -82,4 +82,8 @@ public class OrderInfo extends BaseTime {
     public void updateStatus(OrderInfoStatus status) {
         this.status = status;
     }
+
+    public void updateTakenTime(Integer takenTime) {
+        this.takenTime = takenTime;
+    }
 }
