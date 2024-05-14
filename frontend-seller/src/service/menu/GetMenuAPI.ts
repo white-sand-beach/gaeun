@@ -8,7 +8,7 @@ const GetMenuAPI = () => {
   const getMenu = (setMenuInfo:(menus: MenuInfoType[]) => void) => {
     axios.get(import.meta.env.VITE_BASE_URL + '/api/menus', {
       params: {
-        "store-id": 37,
+        "store-id": 12,
       },
       headers: {
         Authorization: `Bearer ${accessToken}`
