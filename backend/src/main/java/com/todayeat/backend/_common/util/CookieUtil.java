@@ -16,9 +16,6 @@ public class CookieUtil {
     @Value("${COOKIE_SERVER_URL}")
     private String serverURL;
 
-    @Value("${COOKIE_CLIENT_URL}")
-    private String clientURL;
-
     public Optional<Cookie> getCookie(HttpServletRequest request, String name) {
 
         Cookie[] cookies = request.getCookies();
@@ -41,7 +38,6 @@ public class CookieUtil {
         cookie.setHttpOnly(true);
         cookie.setMaxAge(maxAge);
         cookie.setDomain(serverURL);
-        cookie.setDomain(clientURL);
         response.addCookie(cookie);
     }
 
@@ -52,7 +48,6 @@ public class CookieUtil {
         cookie.setSecure(true);
         cookie.setMaxAge(maxAge);
         cookie.setDomain(serverURL);
-        cookie.setDomain(clientURL);
         response.addCookie(cookie);
     }
 
