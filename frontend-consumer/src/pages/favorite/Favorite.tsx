@@ -101,7 +101,7 @@ const Favorite = () => {
         ) : (
           <div className="h-screen pb-40 center">
             <h2 className="text-lg font-bold">
-              자주 찾는 가게를 <span className="text-4xl font-serif">찜</span>해보세요.
+              자주 찾는 가게를 <span className="text-4xl font-serif">찜</span>해보세요
             </h2>
           </div>
         )}
