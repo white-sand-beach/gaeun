@@ -13,6 +13,8 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
     boolean existsByConsumerAndStoreAndDeletedAtIsNull(Consumer consumer, Store store);
 
+    boolean existsByConsumerAndStoreIdAndDeletedAtIsNull(Consumer consumer, Long storeId);
+
     Optional<Favorite> findByIdAndDeletedAtIsNull(Long favoriteId);
 
     Page<Favorite> findAllByConsumerAndDeletedAtIsNull(Consumer consumer, Pageable pageable);

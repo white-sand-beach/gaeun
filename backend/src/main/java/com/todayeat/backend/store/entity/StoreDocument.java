@@ -69,5 +69,5 @@ public class StoreDocument {
     private int favoriteCnt;
 
     @Field(type = FieldType.Nested)
-    private List<CategoryInfo> categoryInfoList = new ArrayList<>();
+    private List<CategoryInfo> categoryList = new ArrayList<>();
 }

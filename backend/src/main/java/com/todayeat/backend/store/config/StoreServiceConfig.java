@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class StoreServiceConfig {
 
-    private final StoreCategoryRepository storeCategoryRepository;
     private final StoreDocumentRepository storeDocumentRepository;
+    private final StoreCategoryRepository storeCategoryRepository;
     private final FavoriteRepository favoriteRepository;
     private final CategoryRepository categoryRepository;
     private final SellerRepository sellerRepository;
@@ -33,7 +33,7 @@ public class StoreServiceConfig {
         //return new StoreServiceQueryDSLImpl(storeCategoryRepository, favoriteRepository, categoryRepository,
         //        sellerRepository, storeRepository, securityUtil, s3Util);
 
-        return new StoreServiceElasticsearchImpl(storeCategoryRepository, storeDocumentRepository, favoriteRepository, categoryRepository,
+        return new StoreServiceElasticsearchImpl(storeDocumentRepository, storeCategoryRepository, favoriteRepository, categoryRepository,
                 sellerRepository, storeRepository, securityUtil, s3Util);
     }
 }

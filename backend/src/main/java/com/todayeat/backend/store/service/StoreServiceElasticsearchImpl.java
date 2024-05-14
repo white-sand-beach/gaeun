@@ -1,6 +1,5 @@
 package com.todayeat.backend.store.service;
 
-import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.S3Util;
 import com.todayeat.backend._common.util.SecurityUtil;
@@ -20,6 +19,7 @@ import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.*;
 import com.todayeat.backend.store.entity.Store;
+import com.todayeat.backend.store.entity.StoreDocument;
 import com.todayeat.backend.store.mapper.StoreMapper;
 import com.todayeat.backend.store.repository.StoreDocumentRepository;
 import com.todayeat.backend.store.repository.StoreRepository;
@@ -46,8 +46,8 @@ import static com.todayeat.backend._common.response.error.ErrorType.*;
 @RequiredArgsConstructor
 public class StoreServiceElasticsearchImpl implements StoreService {
 
-    private final StoreCategoryRepository storeCategoryRepository;
     private final StoreDocumentRepository storeDocumentRepository;
+    private final StoreCategoryRepository storeCategoryRepository;
     private final FavoriteRepository favoriteRepository;
     private final CategoryRepository categoryRepository;
     private final SellerRepository sellerRepository;
@@ -112,17 +112,8 @@ public class StoreServiceElasticsearchImpl implements StoreService {
             throw new BusinessException(STORE_NOT_FOUND);
         }
 
-        store = storeRepository.findByIdAndDeletedAtIsNull(store.getId())
-                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
-
-        GetSellerStoreResponse getSellerStoreResponse = StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store);
-
-        getSellerStoreResponse.setCategoryList(
-                categoryRepository.findAll().stream()
-                        .map(CategoryMapper.INSTANCE::categoryToCategoryInfo)
-                        .collect(Collectors.toList()));
-
-        return getSellerStoreResponse;
+        return StoreMapper.INSTANCE.storeDocumentToGetSellerStoreResponse(
+                validateAndGetStoreDocument(storeId));
     }
 
     @Override
@@ -130,18 +121,18 @@ public class StoreServiceElasticsearchImpl implements StoreService {
 
         Consumer consumer = securityUtil.getConsumer();
 
-        Store store = validateAndGetStore(storeId);
+        StoreDocument storeDocument = validateAndGetStoreDocument(storeId);
 
-        boolean isFavorite = favoriteRepository.existsByConsumerAndStoreAndDeletedAtIsNull(consumer, store);
+        boolean isFavorite = favoriteRepository.existsByConsumerAndStoreIdAndDeletedAtIsNull(consumer, storeDocument.getId());
 
-        return StoreMapper.INSTANCE.storeToGetConsumerStoreResponse(store, isFavorite);
+        return StoreMapper.INSTANCE.storeDocumentToGetConsumerInfoStoreResponse(storeDocument, isFavorite);
     }
 
     @Override
     public GetConsumerDetailStoreResponse getConsumerDetailStore(Long storeId) {
 
-        return StoreMapper.INSTANCE.storeToGetConsumerDetailStoreResponse(
-                validateAndGetStore(storeId));
+        return StoreMapper.INSTANCE.storeDocumentToGetConsumerDetailStoreResponse(
+                validateAndGetStoreDocument(storeId));
     }
 
     @Override
@@ -213,8 +204,8 @@ public class StoreServiceElasticsearchImpl implements StoreService {
         return s3Util.uploadImageIfPresent(image, SELLER_STORE_IMAGE, securityUtil.getSeller().getId());
     }
 
-    private Store validateAndGetStore(Long storeId) {
-        return storeRepository.findByIdAndDeletedAtIsNull(storeId)
+    private StoreDocument validateAndGetStoreDocument(Long storeId) {
+        return storeDocumentRepository.findById(storeId)
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
     }
 }

@@ -40,5 +40,16 @@ public interface StoreMapper {
     @Mapping(target = "location", source = "location")
     void updateStoreRequestToStore(UpdateStoreRequest updateStoreRequest, String imageURL, Location location, @MappingTarget Store store);
 
-    StoreDocument storeToStoreDocument(Store store, List<CategoryInfo> categoryInfoList);
+    StoreDocument storeToStoreDocument(Store store, List<CategoryInfo> categoryList);
+
+    @Mapping(target = "latitude", source = "storeDocument.location.lat")
+    @Mapping(target = "longitude", source = "storeDocument.location.lon")
+    GetSellerStoreResponse storeDocumentToGetSellerStoreResponse(StoreDocument storeDocument);
+
+    @Mapping(target = "latitude", source = "storeDocument.location.lat")
+    @Mapping(target = "longitude", source = "storeDocument.location.lon")
+    GetConsumerInfoStoreResponse storeDocumentToGetConsumerInfoStoreResponse(StoreDocument storeDocument, boolean isFavorite);
+
+    GetConsumerDetailStoreResponse storeDocumentToGetConsumerDetailStoreResponse(StoreDocument storeDocument);
+
 }
