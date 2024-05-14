@@ -4,6 +4,7 @@ import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.S3Util;
 import com.todayeat.backend._common.util.SecurityUtil;
+import com.todayeat.backend.category.dto.CategoryInfo;
 import com.todayeat.backend.category.entity.StoreCategory;
 import com.todayeat.backend.category.mapper.CategoryMapper;
 import com.todayeat.backend.category.mapper.StoreCategoryMapper;
@@ -31,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -101,14 +103,13 @@ public class StoreService {
         store = storeRepository.findByIdAndDeletedAtIsNull(store.getId())
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
 
-        GetSellerStoreResponse getSellerStoreResponse = StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store);
+        List<CategoryInfo> categoryList = store.getStoreCategoryList().stream()
+                .map(storeCategory -> categoryRepository.findById(storeCategory.getCategory().getId()))
+                .flatMap(Optional::stream)
+                .map(CategoryMapper.INSTANCE::categoryToCategoryInfo)
+                .toList();
 
-        getSellerStoreResponse.setCategoryList(
-                categoryRepository.findAll().stream()
-                        .map(CategoryMapper.INSTANCE::categoryToCategoryInfo)
-                        .collect(Collectors.toList()));
-
-        return getSellerStoreResponse;
+        return StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store, categoryList);
     }
 
     public GetConsumerInfoStoreResponse getConsumerInfoStore(Long storeId) {
