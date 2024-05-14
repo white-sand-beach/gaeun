@@ -43,7 +43,7 @@ export default defineConfig({
             sizes: "144x144",
           },
           {
-            src: "/public/icons/main-icon-512.png",
+            src: "/public/icons/main-icon-152.png",
             sizes: "152x152",
           },
           {
