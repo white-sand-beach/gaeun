@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FavoriteButton from "../button/FavoriteButton";
 import FavoritePostForm from "../../services/favorites/FavoritePostService";
-import FavoriteDeleteForm from "../../services/favorites/FavoriteDeleteService";
+import ShoptFavoriteDeleteForm from "../../services/favorites/ShopFavoriteDeleteService";
 
 import { FavoriteItem } from "../../types/FavoriteType";
 
@@ -30,10 +30,12 @@ const FavoriteListItem = ({ favorite }: { favorite: FavoriteItem }) => {
         // 찜 등록 API 호출
         await FavoritePostForm({ storeId: favorite.storeId });
         setFavoriteCount((prev) => prev + 1);
+        console.log("찜 성공")
       } else {
         // 찜 삭제 API 호출
-        await FavoriteDeleteForm({ favoriteId: favorite.favoriteId });
+        await ShoptFavoriteDeleteForm({ storeId: favorite.storeId });
         setFavoriteCount((prev) => prev - 1);
+        console.log("찜 삭제")
       }
       setIsFavorite(newIsFavorite);
     } catch (error) {
