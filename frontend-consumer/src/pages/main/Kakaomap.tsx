@@ -3,6 +3,7 @@ import useUserLocation from "../../store/UserLocation";
 import firefighter from "../../assets/maker/firefighter.png";
 import { StoreList } from "../../types/StoreList";
 import { useNavigate } from "react-router-dom";
+import logo from "../../../public/icons/main-icon-512.png";
 
 // 전역(window) 객체의 타입 확장
 declare global {
@@ -121,7 +122,47 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
           });
 
           const infoWindowContent = document.createElement("div");
-          infoWindowContent.innerHTML = `<div style="padding:5px; cursor: pointer;">${item.name}</div>`;
+          infoWindowContent.innerHTML = `
+          <div>
+              <div style="
+                  padding: 2px;
+                  border-radius: 4px;
+                  border: 3px solid orange;
+                  background-color: #fff;
+                  color: #333;
+                  font-size: 14px;
+                  text-align: center;
+                  width: 200px;
+                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+              ">
+                  <div style="margin-bottom: 4px; width: 100%; display: flex; justify-content: center; align-items: center;"> <!-- 로고와 가게명 중앙 정렬 -->
+                      <div style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center;">
+                          <img
+                              src="${logo}"
+                              alt="로고이미지"
+                              style="width: 100%; height: 100%; object-fit: cover;"
+                          />
+                      </div>
+                      <div>${item.name}</div>
+                  </div>
+                  <div style="margin: 0px 10px 5px 10px; background-color: #dcdcdc; border-radius: 10px; padding: 10px;">
+                  <div style="
+                      text-align: left; /* 중앙 정렬 */
+                      width: 100%; /* 부모 컨테이너 크기에 맞춤 */
+                  ">거리 : ${item.distance}m</div>
+                  <div style="
+                      text-align: left; /* 중앙 정렬 */
+                      width: 100%; /* 부모 컨테이너 크기에 맞춤 */
+                  ">영업시간 : ${item.operatingTime}</div>
+                  </div>
+                  <div>클릭시 이동합니다!</div>
+              </div>
+          </div>
+      `;
           infoWindowContent.addEventListener("click", () => {
             navigate(`/shop/${item.storeId}`); // 가게 상세 페이지로 이동
           });
