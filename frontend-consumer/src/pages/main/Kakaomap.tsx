@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useUserLocation from "../../store/UserLocation";
 import firefighter from "../../assets/maker/firefighter.png";
 import { StoreList } from "../../types/StoreList";
+import { useNavigate } from "react-router-dom";
 
 // 전역(window) 객체의 타입 확장
 declare global {
@@ -29,7 +30,9 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const markerRef = useRef<any>(null);
+  const infoWindowRef = useRef<any>(null);
   const [currentPosition, setCurrentPosition] = useState({ lat, lng });
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   const update = useUserLocation.getState().updateUserState; // 스토어의 상태 업데이트 함수를 가져옵니다.
 
@@ -103,7 +106,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
         );
 
         // 일반 마커를 생성합니다.
-        let marker;
+        let marker: any;
         if (item.categoryList && item.categoryList[0]?.imageURL) {
           // 카테고리에 이미지 URL이 있는 경우 해당 이미지를 사용하여 마커를 생성합니다.
           const markerImage = new window.kakao.maps.MarkerImage(
@@ -116,6 +119,28 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
             map: map,
             image: markerImage,
           });
+
+          const infoWindowContent = document.createElement("div");
+          infoWindowContent.innerHTML = `<div style="padding:5px; cursor: pointer;">${item.name}</div>`;
+          infoWindowContent.addEventListener("click", () => {
+            navigate(`/shop/${item.storeId}`); // 가게 상세 페이지로 이동
+          });
+
+          const infoWindow = new window.kakao.maps.InfoWindow({
+            content: infoWindowContent,
+          });
+
+          window.kakao.maps.event.addListener(marker, "click", () => {
+            if (infoWindowRef.current) {
+              infoWindowRef.current.close();
+            }
+            infoWindow.open(map, marker);
+            infoWindowRef.current = infoWindow;
+          });
+          // // 마커 클릭 이벤트 추가
+          // window.kakao.maps.event.addListener(marker, "click", () => {
+          //   navigate(`/shop/${item.storeId}`); // 가게 상세 페이지로 라우팅
+          // });
         } else {
           // 이미지 URL이 없는 경우 기본 마커를 생성합니다.
           marker = new window.kakao.maps.Marker({
