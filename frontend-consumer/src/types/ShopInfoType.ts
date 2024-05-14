@@ -10,4 +10,5 @@ export interface ShopInfo {
   reviewCnt: number;
   favoriteCnt: number;
   opened: boolean;
+  favorite: boolean;
 }

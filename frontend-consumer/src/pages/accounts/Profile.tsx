@@ -6,6 +6,9 @@ import order from "../../assets/profile/order.png";
 import review from "../../assets/profile/review.png";
 import ProfileForm from "../../services/accounts/ProfileInformation";
 import UserState from "../../types/UserState";
+import sudal from "../../assets/profile/sudal.gif";
+import sudalbg from "../../assets/profile/sudalbg.png";
+import ServiceBanner from "../../components/navbar/ServiceBanner";
 
 const ProfileCard: React.FC = () => {
   const [profileData, setProfileData] = useState<UserState>({
@@ -28,7 +31,7 @@ const ProfileCard: React.FC = () => {
   }, []); // 빈 배열을 넣어서 컴포넌트 마운트 시에만 호출되도록 함
 
   return (
-    <div className="w-full h-screen bg-white border border-black">
+    <div className="w-full h-screen bg-white border">
       <div className="flex items-center justify-center w-11/12 pt-20 m-auto">
         <div className="relative w-full h-56 p-6 m-auto bg-white border border-gray-500 rounded-lg shadow-lg">
           {/* 설정 아이콘 */}
@@ -68,25 +71,29 @@ const ProfileCard: React.FC = () => {
         </div>
       </div>
       <div className="w-11/12 mx-auto mt-5">
-        <div className="p-4 mb-5 text-center bg-white border border-gray-500 rounded-lg shadow-lg">
-          <span className="text-sm text-gray-800">
-            음식을 지키고 식물을 키워주세요!!
-          </span>
+        <div className="mb-5 text-center bg-white border border-gray-500 rounded-lg shadow-lg">
+          <ServiceBanner />
         </div>
         <div className="relative h-64 p-4 bg-white border border-gray-500 rounded-lg shadow-lg">
+          {/* 배경 이미지 */}
+          <div className="absolute inset-0 z-0 opacity-50">
+            <img
+              src={sudalbg}
+              alt="배경 이미지"
+              className="object-cover w-full h-full"
+            />
+          </div>
           {/* 왼쪽 상단 문구 */}
-          <span className="absolute text-sm text-gray-800 top-4 left-4">
-            {profileData.nickname}님이 지금까지 지킨 음식은?
+          <span className="absolute z-10 text-lg font-bold text-black top-4 left-4">
+            {profileData.nickname}님, 수달을 지켜주세요!!
           </span>
           {/* 중앙 아래 식물 이미지 */}
-          <div className="absolute transform -translate-x-1/2 bottom-4 left-1/2">
-            <div className="inline-block p-2 bg-green-100 rounded-full">
-              {/* 아이콘 또는 이미지 */}
-              <span className="text-green-800">식물</span>
-            </div>
+          <div className="absolute z-10 transform -translate-x-1/2 bottom-4 left-1/2">
+            {/* 아이콘 또는 이미지 */}
+            <img src={sudal} alt="수달키우기" />
           </div>
           {/* 오른쪽 하단 금액 */}
-          <span className="absolute text-lg text-blue-600 bottom-4 right-4">
+          <span className="absolute text-lg font-bold text-black bottom-4 right-4">
             10,000원
           </span>
         </div>
