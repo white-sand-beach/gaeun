@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import ShopInfoGetForm from "../../services/shops/ShopInfoGetService";
 import { ShopInfo } from "../../types/ShopInfoType";
 import FavoritePostForm from "../../services/favorites/FavoritePostService";
-import FavoriteDeleteForm from "../../services/favorites/FavoriteDeleteService";
+import ShoptFavoriteDeleteForm from "../../services/favorites/ShopFavoriteDeleteService";
 
 const mapHeight = "105px"; // 예시 높이값
 const updateCounter = 0;
@@ -50,10 +50,12 @@ const Shop = () => {
         // 찜 등록 API 호출
         await FavoritePostForm({ storeId: Number(Id) });
         setFavoriteCount((prev) => prev + 1); // 찜 수 증가
+        console.log("찜 등록 완료");
       } else {
         // 찜 삭제 API 호출
-        await FavoriteDeleteForm({ favoriteId: Number(Id) });
+        await ShoptFavoriteDeleteForm({ storeId: Number(Id) });
         setFavoriteCount((prev) => prev - 1); // 찜 수 감소
+        console.log("찜 등록 취소");
       }
       setIsFavorite(newIsFavorite);
     } catch (error) {
@@ -62,6 +64,12 @@ const Shop = () => {
     }
   };
 
+  // shopInfo.favorite 값이 변경될 때마다 isFavorite 상태 업데이트
+  useEffect(() => {
+    setIsFavorite(shopInfo.favorite);
+  }, [shopInfo.favorite]);
+
+  // shopInfo.favoriteCnt 값이 변경될 때마다 favoriteCount 상태 업데이트
   useEffect(() => {
     setFavoriteCount(shopInfo.favoriteCnt);
   }, [shopInfo.favoriteCnt]);
