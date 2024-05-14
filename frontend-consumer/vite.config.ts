@@ -23,13 +23,13 @@ export default defineConfig({
         theme_color: "#FFAF38",
         icons: [
           {
-            src: "/icons/main-icon-192.png",
+            src: "/public/icons/main-icon-192.png",
             type: "image/png",
             sizes: "192x192",
             purpose: "maskable",
           },
           {
-            src: "/icons/main-icon-512.png",
+            src: "/public/icons/main-icon-512.png",
             type: "image/png",
             sizes: "512x512",
             purpose: "maskable",
