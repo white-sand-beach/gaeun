@@ -52,4 +52,8 @@ public interface StoreMapper {
 
     GetConsumerDetailStoreResponse storeDocumentToGetConsumerDetailStoreResponse(StoreDocument storeDocument);
 
+
+    @Mapping(target = "location.lat", source = "updateStoreRequest.latitude")
+    @Mapping(target = "location.lon", source = "updateStoreRequest.longitude")
+    StoreDocument updateStoreRequestToStoreDocument(Long id, UpdateStoreRequest updateStoreRequest, String imageURL, int reviewCnt, int favoriteCnt, List<CategoryInfo> categoryList);
 }

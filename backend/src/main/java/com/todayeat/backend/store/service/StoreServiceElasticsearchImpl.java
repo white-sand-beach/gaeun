@@ -149,7 +149,7 @@ public class StoreServiceElasticsearchImpl implements StoreService {
 
         Store store = sellerRepository.findById(securityUtil.getSeller().getId())
                 .map(Seller::getStore)
-                .filter(s -> s != null && Objects.equals(s.getId(), storeId))
+                .filter(s -> Objects.equals(s.getId(), storeId))
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
 
         String imageURL = imageToURL(updateStoreRequest.getImage());
@@ -180,6 +180,21 @@ public class StoreServiceElasticsearchImpl implements StoreService {
             s3Util.deleteImageIfPresent(imageURL);
             throw new RuntimeException(e);
         }
+
+        List<CategoryInfo> categoryInfoList = updateStoreRequest.getCategoryIdList().stream()
+                .map(categoryId -> categoryRepository.findById(categoryId)
+                        .orElseThrow(() -> new BusinessException(CATEGORY_NOT_FOUND))).toList().stream()
+                .map(CategoryMapper.INSTANCE::categoryToCategoryInfo).toList();
+
+        storeDocumentRepository.save(
+                StoreMapper.INSTANCE.updateStoreRequestToStoreDocument(
+                        storeId,
+                        updateStoreRequest,
+                        imageURL,
+                        store.getReviewCnt(),
+                        store.getFavoriteCnt(),
+                        categoryInfoList)
+        );
     }
 
     @Override
@@ -188,13 +203,8 @@ public class StoreServiceElasticsearchImpl implements StoreService {
 
         Store store = sellerRepository.findById(securityUtil.getSeller().getId())
                 .map(Seller::getStore)
-                .filter(s -> s != null && Objects.equals(s.getId(), storeId))
+                .filter(s -> Objects.equals(s.getId(), storeId))
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
-
-        if (store == null || !Objects.equals(store.getId(), storeId)) {
-
-            throw new BusinessException(STORE_NOT_FOUND);
-        }
 
         store.updateIsOpened();
     }
