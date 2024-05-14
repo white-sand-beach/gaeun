@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-
+import logo from "../../../public/windows11/LargeTile.scale-100.png";
 import CartAllDeleteService from "../../services/carts/CartAllDeleteService";
 
 import CheckOrder from "../../components/cart/CheckOrder";
@@ -86,8 +86,15 @@ const Cart = () => {
       </div>
     ) : (
       <div className="h-screen pb-40 center">
-        <h2 className="text-xl font-semibold">장바구니가 텅~ 비어있습니다.</h2>
-      </div>
+            <div className="justify-center items-center">
+              <img className="rounded-full" src={logo} alt="로고" />
+              <h2 className="text-lg font-bold center">
+                장바구니가
+                <span className="mx-2 text-3xl font-serif">텅~</span>
+                비었습니다
+              </h2>
+            </div>
+          </div>
     )}
   </div>
 );

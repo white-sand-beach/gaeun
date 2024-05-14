@@ -45,7 +45,7 @@ const FavoriteListItem = ({ favorite }: { favorite: FavoriteItem }) => {
         <Link to={`/shop/${favorite.storeId}`}>
           <div className="flex items-center">
             <img
-              className="w-20 h-2w-20 rounded-lg"
+              className="w-20 h-20 object-cover rounded-lg"
               src={favorite.storeImageUrl}
               alt={favorite.storeName}
             />
@@ -54,7 +54,7 @@ const FavoriteListItem = ({ favorite }: { favorite: FavoriteItem }) => {
               <div className="ml-2 text-gray-500 text-xs font-bold">
                 <span>찜수 {favorite.storeFavoriteCnt}</span>
                 <span className="mx-1">·</span>
-                <span>리뷰수 {favorite.storeReviewCnt}</span>
+                <span>편지 수 {favorite.storeReviewCnt}</span>
               </div>
             </div>
           </div>

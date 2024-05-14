@@ -1,6 +1,7 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
 import ReissueService from "./ReissueService"; 
+// import { useNavigate } from "react-router-dom";
 
 const cookies = new Cookies();
 const axiosInstance = axios.create({
@@ -10,9 +11,12 @@ const axiosInstance = axios.create({
 
 // 요청 인터셉터
 axiosInstance.interceptors.request.use((config) => {
+  // const navigate = useNavigate();
   const accessToken = cookies.get("accessToken");
   if (accessToken) {
     config.headers["Authorization"] = `Bearer ${accessToken}`; // 모든 요청에 accessToken을 헤더에 추가
+  } else {
+    // navigate("/login")
   }
   return config;
 }, (error) => {
