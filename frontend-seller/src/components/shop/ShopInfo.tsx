@@ -4,10 +4,21 @@ import { getShopInfoType } from "../../types/shop/getShopInfoType"
 import reviewImg from "../../assets/mypage-review.png"
 import updateInfoImg from "../../assets/mypage-change-info.png"
 import updateMenuImg from "../../assets/mypage-change-menu.png"
+import OpenShopAPI from "../../service/shop/OpenShopAPI"
+import Cookies from "universal-cookie"
+// import TotalButton from "../ui/TotalButton"
 
 const ShopInfo:React.FC<getShopInfoType> = (props) => {
+    const cookies = new Cookies()
+    const { putShopOpened } = OpenShopAPI();
+    const handleOpened = () => {
+        putShopOpened();
+        console.log(cookies.get("storeId"))
+    };
+    
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-3">
+            <button className="common-btn" onClick={handleOpened}>가게 영업 할까말까</button>
             <img src={props.imageURL} alt="가게 대표 이미지" className="w-full h-[300px]"/>
             <h1>가게명 : {props.name}</h1>
             <h1>가게번호 : {props.tel}</h1>
