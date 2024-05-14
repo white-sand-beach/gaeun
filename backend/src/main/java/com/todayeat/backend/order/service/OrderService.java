@@ -124,6 +124,9 @@ public class OrderService {
         // 주문 확인
         OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);
 
+        // 권한 검사
+        validateOrderInfoAndConsumer(orderInfo, securityUtil.getConsumer());
+
         // 결제 완료된 주문일 경우 throw
         if (orderInfo.getStatus() != UNPAID) {
             throw new BusinessException(ORDER_ALREADY_PAID);
@@ -236,6 +239,24 @@ public class OrderService {
         throw new BusinessException(ORDER_STATUS_CANT_UPDATE);
     }
 
+    @Transactional
+    public void updateStatusConsumer(Long orderInfoId) {
+
+        OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);
+
+        // 권한 검사
+        validateOrderInfoAndConsumer(orderInfo, securityUtil.getConsumer());
+
+        // 상태 수정 불가능한 상태
+        if (orderInfo.getStatus() != UNPAID && orderInfo.getStatus() != PAID) {
+            throw new BusinessException(ORDER_STATUS_CANT_UPDATE);
+        }
+
+        // 주문 상태 변경 및 결제 취소
+        orderInfo.updateStatus(CANCEL);
+        cancelPayment(orderInfo.getPaymentId());
+    }
+
     private Sale findSaleOrElseThrow(Cart cart) {
 
         return saleRepository.findByIdAndIsFinishedIsFalseAndDeletedAtIsNull(cart.getSaleId())
@@ -279,8 +300,16 @@ public class OrderService {
     }
 
     private void cancelPayment(String paymentId) {
+
         iamportRequestClient.cancelPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
                 paymentId,
                 CancelPaymentRequest.of("invalid value"));
+    }
+
+    private void validateOrderInfoAndConsumer(OrderInfo orderInfo, Consumer consumer) {
+
+        if (orderInfo.getConsumer().equals(consumer)) {
+            throw new BusinessException(ORDER_FORBIDDEN);
+        }
     }
 }

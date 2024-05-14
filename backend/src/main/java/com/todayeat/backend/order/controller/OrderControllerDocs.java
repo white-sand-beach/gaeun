@@ -66,7 +66,7 @@ public interface OrderControllerDocs {
     SuccessResponse<Void> validation(@PathVariable("order-info-id") Long orderInfoId,
                                     @RequestBody @Valid ValidateOrderRequest request);
 
-    @Operation(summary = "주문 상태 변경 (사장님)",
+    @Operation(summary = "주문 상태 변경 (판매자)",
             description = """
                           `ROLE_SELLER` \n
                           Path Variable, Request Body 넣어주세요. \n
@@ -93,4 +93,16 @@ public interface OrderControllerDocs {
     @PutMapping("/{order-info-id}/status/seller")
     SuccessResponse<Void> updateStatusBySeller(@PathVariable("order-info-id") Long orderInfoId,
                                               @RequestBody @Valid UpdateStatusSellerRequest request);
+
+    @Operation(summary = "주문 상태 변경 (소비자)",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          주문을 취소합니다. 현재 주문 상태가 UNPAID, PAID 상태일 때만 가능합니다.
+                          Path Variable 넣어주세요.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @PreAuthorize("hasRole('CONSUMER')")
+    @PutMapping("/{order-info-id}/status/consumer")
+    SuccessResponse<Void> updateStatusByConsumer(@PathVariable("order-info-id") Long orderInfoId);
 }

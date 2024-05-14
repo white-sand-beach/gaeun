@@ -38,4 +38,11 @@ public class OrderController implements OrderControllerDocs {
         orderService.updateStatusSeller(orderInfoId, request);
         return SuccessResponse.of(UPDATE_ORDER_SELLER_SUCCESS);
     }
+
+    @Override
+    public SuccessResponse<Void> updateStatusByConsumer(Long orderInfoId) {
+
+        orderService.updateStatusConsumer(orderInfoId);
+        return SuccessResponse.of(UPDATE_ORDER_CONSUMER_SUCCESS);
+    }
 }

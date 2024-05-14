@@ -51,6 +51,7 @@ public enum ErrorType {
     ORDER_STATUS_CANT_UPDATE(HttpStatus.BAD_REQUEST, "주문 상태를 변경할 수 없습니다."),
     ORDER_TAKEN_TIME_NOT_BLANK(HttpStatus.BAD_REQUEST, "takenTime: 빈 값이 아니어야 합니다."),
     ORDER_TAKEN_TIME_BLANK(HttpStatus.BAD_REQUEST, "takenTime: 빈 값이어야 합니다."),
+    ORDER_FORBIDDEN(HttpStatus.FORBIDDEN, "해당 주문에 접근 권한이 없습니다."),
 
     // seller
     SELLER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 판매자를 찾을 수 없습니다."),
