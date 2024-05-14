@@ -106,14 +106,14 @@ const Shop = () => {
         {/* Icons and details */}
         <div className="flex items-center justify-center mt-2 space-x-3">
           <div onClick={handlePhoneClick} className="flex items-center">
-            <img src={phoneIcon} alt="Phone" className="w-5 h-5 mr-1" />
-            <span className="text-sm">전화</span>
+            <img src={phoneIcon} alt="Phone" className="w-3 h-3 mr-1" />
+            <span className="text-xxs">전화</span>
           </div>
 
           <div className="flex items-center">
             {/* 토글 버튼 */}
             <FavoriteButton isFavorite={isFavorite} onToggle={handleToggle} />
-            <span className="text-sm">{favoriteCount}</span>
+            <span className="text-sm pl-2 font-bold">{favoriteCount}</span>
           </div>
         </div>
 

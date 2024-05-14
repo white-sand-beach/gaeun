@@ -2,7 +2,6 @@ import axiosInstance from "../authentication/AxiosSet";
 import MainMapData from "../../types/MainMapDataType";
 
 const MapListForm = async (mainData: MainMapData): Promise<any> => {
-  try {
     const response = await axiosInstance.get(
       `${import.meta.env.VITE_API_URL}/api/stores`,
       {
@@ -18,8 +17,5 @@ const MapListForm = async (mainData: MainMapData): Promise<any> => {
       }
     );
     return response.data.data;
-  } catch (error: any) {
-    console.error("주소리스트 에러", error); // 에러 로깅 개선
-  }
 };
 export default MapListForm;
