@@ -2,8 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="manifest" href="/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <link rel="icon" type="image/png" href="/ios/16.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script
@@ -11,17 +10,9 @@
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%VITE_KAKAO_JAVASCRIPT_API_KEY%&libraries=services,clusterer&autoload=true"
     ></script>
     <title>가은</title>
-    
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("/pwabuilder-sw.js");
-        });
-      }
-    </script>
   </body>
 </html>
