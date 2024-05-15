@@ -8,7 +8,6 @@ import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.order.api.dto.request.CancelPaymentRequest;
 import com.todayeat.backend.order.api.dto.response.GetPaymentResponse;
 import com.todayeat.backend.order.api.client.IamportRequestClient;
-import com.todayeat.backend.order.dto.request.consumer.CreateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.response.consumer.*;
@@ -62,41 +61,29 @@ public class OrderService {
     private String PORTONE_PREFIX = "PortOne ";
 
     @Transactional
-    public CreateOrderResponse create(CreateOrderConsumerRequest createOrderConsumerRequest) {
-
-        List<String> cartIdList = createOrderConsumerRequest.getCartIdList();
-
-        // 첫 번째 장바구니 확인
-        // 1. cart 유효성 검사
-        // 2. store 유효성 검사
-        Store firstStore = findStoreOrElseThrow
-                            (findCartOrElseThrow
-                                (cartIdList.getFirst()).getStoreId());
-
-        // 3. store 열려 있는지 확인
-        if (!firstStore.getIsOpened()) {
-            throw new BusinessException(STORE_NOT_OPEN);
-        }
+    public CreateOrderResponse create() {
 
         Consumer consumer = securityUtil.getConsumer();
+
+        // 장바구니 목록 조회
+        List<Cart> carts =  cartRepository.findAllByConsumerId(consumer.getId());
+
+        // 장바구니가 없을 경우
+        if (carts.isEmpty()) {
+            throw new BusinessException(CART_NOT_FOUND);
+        }
+
+        // 첫 번째 장바구니 확인
+        Store firstStore = findStoreOrElseThrow(carts.get(0).getStoreId()); // store 유효성 검사
+        if (!firstStore.getIsOpened()) { // store 열려 있는지 확인
+            throw new BusinessException(STORE_NOT_OPEN);
+        }
 
         int originalPrice = 0;
         int paymentPrice = 0;
 
-        // 주문 요청된 장바구니 목록 확인
-        for (String cartId: cartIdList) {
-
-            Cart cart = findCartOrElseThrow(cartId);
-
-            // 같은 가게가 아닌 경우
-            if (!cart.getStoreId().equals(firstStore.getId())) {
-                throw new BusinessException(CART_CONFLICT_STORE);
-            }
-
-            // 해당 소비자가 아닌 경우
-            if (!cart.getConsumerId().equals(consumer.getId())) {
-                throw new BusinessException(CART_FORBIDDEN);
-            }
+        // 장바구니 목록 확인
+        for (Cart cart: carts) {
 
             Sale sale = findSaleOrElseThrow(cart);
 
@@ -118,13 +105,9 @@ public class OrderService {
         orderInfoRepository.save(orderInfo);
 
         // 주문 아이템 정보 저장
-        cartIdList.iterator().forEachRemaining(
-            cartId -> {
-                Cart cart = findCartOrElseThrow(cartId);
-                orderInfoItemRepository.save(
-                        OrderInfoItem.of(findSaleOrElseThrow(cart), cart.getQuantity(), orderInfo)
-                );
-            }
+        carts.iterator().forEachRemaining(
+            cart -> orderInfoItemRepository.save(
+                        OrderInfoItem.of(findSaleOrElseThrow(cart), cart.getQuantity(), orderInfo))
         );
 
         return CreateOrderResponse.of(orderInfo.getId());
@@ -326,12 +309,6 @@ public class OrderService {
 
         return saleRepository.findByIdAndIsFinishedIsFalseAndDeletedAtIsNull(cart.getSaleId())
                 .orElseThrow(() -> new BusinessException(SALE_NOT_SELLING));
-    }
-
-    private Cart findCartOrElseThrow(String cartId) {
-
-        return cartRepository.findById(cartId)
-                .orElseThrow(() -> new BusinessException(CART_NOT_FOUND));
     }
 
     private Store findStoreOrElseThrow(Long storeId) {

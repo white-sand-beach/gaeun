@@ -1,7 +1,6 @@
 package com.todayeat.backend.order.controller;
 
 import com.todayeat.backend._common.response.success.SuccessResponse;
-import com.todayeat.backend.order.dto.request.consumer.CreateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
@@ -25,9 +24,9 @@ public class OrderController implements OrderControllerDocs {
     private final OrderService orderService;
 
     @Override
-    public SuccessResponse<CreateOrderResponse> create(CreateOrderConsumerRequest request) {
+    public SuccessResponse<CreateOrderResponse> create() {
 
-        return SuccessResponse.of(orderService.create(request), CREATE_ORDER_SUCCESS);
+        return SuccessResponse.of(orderService.create(), CREATE_ORDER_SUCCESS);
     }
 
     @Override
