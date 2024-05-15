@@ -63,6 +63,8 @@ public class SaleService {
         }
 
         saleRepository.saveAll(saleList);
+
+        store.updateIsOpened(true);
     }
 
     public GetSaleListConsumerResponse getListToConsumer(Long storeId) {
@@ -128,6 +130,19 @@ public class SaleService {
         if(!sale.update(request.getContent(), request.getIsFinished(), request.getStock())) {
             throw new BusinessException(ErrorType.SALE_STOCK_UPDATE_FAIL);
         }
+    }
+
+    @Transactional
+    public void updateIsFinishedAll(UpdateSaleIsFinishedAllRequest request) {
+
+        Seller seller = securityUtil.getSeller();
+
+        // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
+        Store store = validateStoreAndSeller(seller, request.getStoreId());
+
+        saleRepository.updateAllSalesAsFinishedForStore(store);
+
+        store.updateIsOpened(false);
     }
 
     // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
