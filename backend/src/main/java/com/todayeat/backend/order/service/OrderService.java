@@ -58,6 +58,9 @@ public class OrderService {
     @Value("${IAMPORT_API_SECRET_V2}")
     private String IAMPORT_API_SECRET_V2;
 
+    @Value("${IAMPORT_STORE_ID}")
+    private String IAMPORT_STORE_ID;
+
     private String PORTONE_PREFIX = "PortOne ";
 
     @Transactional
@@ -134,7 +137,8 @@ public class OrderService {
         // 아임포트 결제 조회
         GetPaymentResponse getPaymentResponse =
                 iamportRequestClient.getPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
-                                                request.getPaymentId());
+                                                request.getPaymentId(),
+                                                IAMPORT_STORE_ID);
 
         // 결제 완료 상태가 아니거나 주문 금액과 실제 결제 금액이 다를 경우
         if (!getPaymentResponse.getStatus().equals("PAID")
