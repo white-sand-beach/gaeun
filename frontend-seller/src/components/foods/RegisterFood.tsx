@@ -1,26 +1,36 @@
 import logo from "/icons/main-icon-192.png";
 import camera from "../../assets/addphoto.png";
-import React, { useRef } from "react";
+import React from "react";
 import { InputFoodType } from "../../types/foods/InputFoodType.ts";
 import TotalButton from "../ui/TotalButton.tsx";
 
 const RegisterFood: React.FC<InputFoodType> = (props) => {
-    const imgRef = useRef<HTMLInputElement>(null);
-    const handleImage = () => {
-        imgRef.current && imgRef.current.click();
+
+  const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      props.onChangeImg(event.target.files[0])
     }
+  };
+
   return (
     <div className="no-footer top-[100px] gap-3">
       {/* 음식 이미지 추가 */}
-      <div onClick={handleImage}>
-        <img src={logo} alt="음식사진" className="w-[120px]" />
-        <img
-          src={camera}
-          alt="사진 추가"
-          className="w-[35px] relative z-10 -top-6 left-[90px]"
-        />
-      </div>
-      <input type="file" className="hidden" ref={imgRef}/>
+      {!props.image ?
+        <>
+          <div>
+            <label htmlFor="input-file">
+              <img src={logo} alt="음식사진" className="w-[120px]" />
+              <img
+                src={camera}
+                alt="사진 추가"
+                className="w-[35px] relative z-10 -top-6 left-[90px]"
+              />
+            </label>
+          </div>
+          <input name="image" id="input-file" type="file" accept="image/*" className="hidden" onChange={handleImage} />
+        </> :
+        <img src={URL.createObjectURL(props.image)} alt="음식사진" className="w-[200px] h-[200px]" />
+      }
 
       {/* 음식명 입력칸 */}
       <input
