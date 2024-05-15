@@ -9,6 +9,7 @@ import com.todayeat.backend.store.dto.response.GetConsumerDetailStoreResponse;
 import com.todayeat.backend.store.dto.response.GetConsumerInfoStoreResponse;
 import com.todayeat.backend.store.dto.response.GetSellerStoreResponse;
 import com.todayeat.backend.store.entity.Store;
+import com.todayeat.backend.store.entity.StoreDocument;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -38,4 +39,21 @@ public interface StoreMapper {
 
     @Mapping(target = "location", source = "location")
     void updateStoreRequestToStore(UpdateStoreRequest updateStoreRequest, String imageURL, Location location, @MappingTarget Store store);
+
+    StoreDocument storeToStoreDocument(Store store, List<CategoryInfo> categoryList);
+
+    @Mapping(target = "latitude", source = "storeDocument.location.lat")
+    @Mapping(target = "longitude", source = "storeDocument.location.lon")
+    GetSellerStoreResponse storeDocumentToGetSellerStoreResponse(StoreDocument storeDocument);
+
+    @Mapping(target = "latitude", source = "storeDocument.location.lat")
+    @Mapping(target = "longitude", source = "storeDocument.location.lon")
+    GetConsumerInfoStoreResponse storeDocumentToGetConsumerInfoStoreResponse(StoreDocument storeDocument, boolean isFavorite);
+
+    GetConsumerDetailStoreResponse storeDocumentToGetConsumerDetailStoreResponse(StoreDocument storeDocument);
+
+
+    @Mapping(target = "location.lat", source = "updateStoreRequest.latitude")
+    @Mapping(target = "location.lon", source = "updateStoreRequest.longitude")
+    StoreDocument updateStoreRequestToStoreDocument(Long id, UpdateStoreRequest updateStoreRequest, String imageURL, int reviewCnt, int favoriteCnt, List<CategoryInfo> categoryList);
 }
