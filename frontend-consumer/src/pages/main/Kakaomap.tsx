@@ -204,6 +204,12 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
             infoWindow.open(map, marker);
             infoWindowRef.current = infoWindow;
           });
+          // 지도에 클릭 이벤트 추가하여 정보 창 닫기
+          window.kakao.maps.event.addListener(map, "click", () => {
+            if (infoWindowRef.current) {
+              infoWindowRef.current.close();
+            }
+          });
         } else {
           // 이미지 URL이 없는 경우 기본 마커를 생성합니다.
           marker = new window.kakao.maps.Marker({
