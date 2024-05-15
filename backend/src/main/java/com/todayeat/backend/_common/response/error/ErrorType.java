@@ -13,7 +13,6 @@ public enum ErrorType {
     URL_NOT_FOUND(HttpStatus.BAD_REQUEST, "잘못된 URL 입니다."),
     PATH_VARIABLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "Path Variable이 없습니다."),
     REQUEST_PARAM_NOT_FOUND(HttpStatus.BAD_REQUEST, "Request Param이 없습니다."),
-    REQUEST_FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 
     /**
      * CUSTOM ERROR
@@ -83,8 +82,6 @@ public enum ErrorType {
     MENU_UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "메뉴 수정에 실패했습니다."),
     MENU_IMAGE_DUPLICATE(HttpStatus.BAD_REQUEST, "이미지 URL(기존 이미지)과 이미지 파일(신규 이미지) 중 하나를 요청해야 합니다."),
     MENU_IMAGE_URL_BAD_REQUEST(HttpStatus.BAD_REQUEST, "기존 이미지 URL이 맞지 않습니다."),
-
-    // store
 
     // mail
     MAIL_INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "메일 전송에 실패했습니다."),
