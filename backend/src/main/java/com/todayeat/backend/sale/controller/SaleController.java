@@ -51,5 +51,13 @@ public class SaleController implements SaleControllerDocs {
 
         return SuccessResponse.of(SuccessType.UPDATE_SALE_SUCCESS);
     }
+
+    @Override
+    public SuccessResponse<Void> updateIsFinishedAll(UpdateSaleIsFinishedAllRequest request) {
+
+        saleService.updateIsFinishedAll(request);
+
+        return SuccessResponse.of(SuccessType.UPDATE_SALE_IS_FINISHED_ALL_SUCCESS);
+    }
 }
 

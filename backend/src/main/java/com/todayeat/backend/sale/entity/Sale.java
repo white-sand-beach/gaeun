@@ -78,21 +78,21 @@ public class Sale extends BaseTime {
 
     public boolean update(String content, Boolean isFinished, Integer stock) {
 
-        this.content = content;
-
-        this.isFinished = isFinished;
-
         // todo 주문 접수 건수도 고려하기
 
         if (this.totalQuantity > stock) {
             return false;
         }
 
+        this.stock = stock;
+
+        this.content = content;
+
+        this.isFinished = isFinished;
+
         if(Objects.equals(this.totalQuantity, stock)) {
             this.isFinished = true;
         }
-
-        this.stock = stock;
 
         return true;
     }
