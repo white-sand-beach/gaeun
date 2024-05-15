@@ -9,9 +9,10 @@ import { CartItem } from "../../types/CartType";
 
 interface CheckOrderProps {
   menuData: CartItem;
+  onDelete: (cartId: string) => void;
 }
 
-const CountButton = ({ menuData }: CheckOrderProps) => {
+const CountButton = ({ menuData, onDelete }: CheckOrderProps) => {
   const [quantity, setQuantity] = useState<number>(menuData.quantity);
   const [showBtn, setShowBtn] = useState<boolean>(true);
 
@@ -27,7 +28,7 @@ const CountButton = ({ menuData }: CheckOrderProps) => {
         cartId: menuData.cartId,
       });
       setQuantity(newQuantity);
-      setShowBtn(true);
+      newQuantity == 1 ? setShowBtn(false) : setShowBtn(true);
       console.log("수량 변경 응답:", response);
     } catch (error) {
       console.error(newQuantity, "수량 변경 오류:", error);
@@ -60,6 +61,7 @@ const CountButton = ({ menuData }: CheckOrderProps) => {
     try {
       // Cart를 삭제하는 요청을 보내고 응답을 받음
       const response = await CartDeleteService(menuData.cartId);
+      onDelete(menuData.cartId);
       console.log("Cart 삭제 응답:", response);
     } catch (error) {
       console.error("Cart 삭제 오류:", error);
@@ -70,7 +72,7 @@ const CountButton = ({ menuData }: CheckOrderProps) => {
     <div className="between px-3 border-gray-200 border-2 rounded-xl w-[80px] font-bold text-sm py-1 ">
       {!showBtn && (
         <img
-          className="w-3 h-4 cursor-pointer"
+          className="w-3 h-[14px] cursor-pointer"
           src={deleteBtn}
           alt="삭제 버튼"
           onClick={handleDeleteClick}

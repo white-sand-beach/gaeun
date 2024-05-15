@@ -5,9 +5,10 @@ import { CartItem } from "../../types/CartType"
 
 interface CheckOrderProps {
   menuData: CartItem;
+  onDelete: (cartId: string) => void;
 }
 
-const CheckOrder = ({ menuData }: CheckOrderProps) => {
+const CheckOrder = ({ menuData, onDelete }: CheckOrderProps) => {
   const formattedOriginalPrice = new Intl.NumberFormat('ko-KR').format(menuData.originalPrice * menuData.quantity);
   const formattedSellPrice = new Intl.NumberFormat('ko-KR').format(menuData.sellPrice * menuData.quantity);
 
@@ -16,7 +17,7 @@ const CheckOrder = ({ menuData }: CheckOrderProps) => {
       <div className="flex items-center">
         {/* 음식 이미지 */}
         <img
-          className="w-16 h-16 rounded-md"
+          className="w-16 h-16 rounded-md object-cover"
           src={menuData.imageUrl}
           alt="메뉴 사진"
         />
@@ -38,7 +39,7 @@ const CheckOrder = ({ menuData }: CheckOrderProps) => {
         </div>
       </div>
       <div className="flex justify-end ">
-        <CountButton menuData={menuData}/>
+        <CountButton menuData={menuData} onDelete={onDelete}/>
       </div>
     </div>
   );

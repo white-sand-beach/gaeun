@@ -11,7 +11,7 @@ import { MenuItem } from "../../types/ShopMenuType";
 
 const AddCart = () => {
   const location = useLocation();
-  const { saleId, storeId } = location.state as { saleId: String; storeId: number; };
+  const { saleId, storeId } = location.state as { saleId: number; storeId: number; };
   const [quantity, setQuantity] = useState<number>(1);
   const [menu, setMenu] = useState<MenuItem>({
     saleId: 0,

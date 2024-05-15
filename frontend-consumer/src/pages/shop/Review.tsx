@@ -1,4 +1,5 @@
 import ReviewDeleteButton from "../../components/button/ReviewDeleteButton";
+import user1 from "../../assets/foods/food1.png"
 
 const Review = () => {
   return (
@@ -8,11 +9,11 @@ const Review = () => {
         <div className="my-2 space-x-2 between">
           {/* 사용자 프로필 사진 - 실제 이미지로 교체 필요 */}
           <div className="center">
-            {/* <img
+            <img
               src={user1}
               alt="user"
               className="object-cover w-6 h-6 rounded-full"
-            /> */}
+            />
             <p className="ml-2 text-base font-semibold">userName</p>
           </div>
           <p className="text-xs font-bold text-gray-500">2024.05.03</p>
@@ -33,7 +34,7 @@ const Review = () => {
 
         <div className="flex gap-2 mt-2">
           {/* 각 이미지 컨테이너 */}
-          {/* <img src={food1} alt="food1" className="object-cover w-full h-full" /> */}
+          <img src={user1} alt="food1" className="object-cover w-full h-full" />
         </div>
 
         {/* 음식명 */}

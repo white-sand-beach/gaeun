@@ -7,7 +7,6 @@ import review from "../../assets/profile/review.png";
 import ProfileForm from "../../services/accounts/ProfileInformation";
 import UserState from "../../types/UserState";
 
-
 import defaultImg from "../../assets/profile/defaultImg.png";
 import sudal from "../../assets/profile/sudal.gif";
 import sudalbg from "../../assets/profile/sudalbg.png";
@@ -56,7 +55,7 @@ const ProfileCard: React.FC = () => {
               />
             </div>
             <div className="pl-4 pt-8 text-sm">
-              <p className="font-serif">궁서체로 텍스트 넣고싶음</p>
+              <p className="font-serif">나누면 더 따뜻한 세상</p>
               <p className="font-bold"> {profileData.nickname}</p>
               <p className="text-gray-400">{profileData.email}</p>
             </div>
@@ -64,36 +63,42 @@ const ProfileCard: React.FC = () => {
 
           <div className="between text-xxs mx-1 pt-6 font-bold">
             <div className="flex w-24 justify-center">
-              <button className="justify-center items-center rounded-lg">
-                <img
-                  className="w-12 h-12 bg-white rounded-full"
-                  src={order}
-                  alt="주문 내역"
-                />
-                <p className="pt-1">주문 내역</p>
-              </button>
+              <Link to="/order-list">
+                <button className="justify-center items-center rounded-lg">
+                  <img
+                    className="w-12 h-12 bg-white rounded-full"
+                    src={order}
+                    alt="주문 내역"
+                  />
+                  <p className="pt-1">주문 내역</p>
+                </button>
+              </Link>
             </div>
 
             <div className="flex w-24 justify-center">
-              <button className="justify-center items-center rounded-lg">
-                <img
-                  className="w-12 h-12 bg-white rounded-full"
-                  src={heart}
-                  alt="찜 목록"
-                />
-                <p className="pt-1">찜 목록</p>
-              </button>
+              <Link to="/favorite">
+                <button className="justify-center items-center rounded-lg">
+                  <img
+                    className="w-12 h-12 bg-white rounded-full"
+                    src={heart}
+                    alt="찜 목록"
+                  />
+                  <p className="pt-1">찜 목록</p>
+                </button>
+              </Link>
             </div>
 
             <div className="flex w-24 justify-center">
-              <button className="justify-center items-center rounded-lg">
-                <img
-                  className="w-12 h-12 bg-white rounded-full"
-                  src={review}
-                  alt="리뷰 목록"
-                />
-                <p className="pt-1">내 리뷰</p>
-              </button>
+              <Link to="/my-review">
+                <button className="justify-center items-center rounded-lg">
+                  <img
+                    className="w-12 h-12 bg-white rounded-full"
+                    src={review}
+                    alt="리뷰 목록"
+                  />
+                  <p className="pt-1">내 리뷰</p>
+                </button>
+              </Link>
             </div>
           </div>
         </div>
