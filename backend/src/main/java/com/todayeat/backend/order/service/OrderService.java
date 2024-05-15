@@ -132,13 +132,16 @@ public class OrderService {
             throw new BusinessException(ORDER_ALREADY_PAID);
         }
 
-        // TODO: 통신 에러 처리하기
+        GetPaymentResponse getPaymentResponse;
 
         // 아임포트 결제 조회
-        GetPaymentResponse getPaymentResponse =
-                iamportRequestClient.getPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
-                                                request.getPaymentId(),
-                                                IAMPORT_STORE_ID);
+        try {
+            getPaymentResponse = iamportRequestClient.getPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
+                                    request.getPaymentId(),
+                                    IAMPORT_STORE_ID);
+        } catch (Exception e) {
+            throw new BusinessException(ORDER_PAYMENT_FAIL);
+        }
 
         // 결제 완료 상태가 아니거나 주문 금액과 실제 결제 금액이 다를 경우
         if (!getPaymentResponse.getStatus().equals("PAID")
@@ -353,6 +356,8 @@ public class OrderService {
     }
 
     private void cancelPayment(String paymentId) {
+
+        // TODO: 통신 에러 처리하기
 
         iamportRequestClient.cancelPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
                 paymentId,
