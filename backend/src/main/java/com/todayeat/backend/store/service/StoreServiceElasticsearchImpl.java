@@ -204,7 +204,7 @@ public class StoreServiceElasticsearchImpl implements StoreService {
                 .filter(s -> Objects.equals(s.getId(), storeId))
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
 
-        store.updateIsOpened();
+        //store.updateIsOpened();
     }
 
     private String imageToURL(MultipartFile image) {

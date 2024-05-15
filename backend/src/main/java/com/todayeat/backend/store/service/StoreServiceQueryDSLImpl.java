@@ -103,12 +103,9 @@ public class StoreServiceQueryDSLImpl implements StoreService{
         store = storeRepository.findByIdAndDeletedAtIsNull(store.getId())
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
 
-        GetSellerStoreResponse getSellerStoreResponse = StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store);
-
-        getSellerStoreResponse.setCategoryList(
-                categoryRepository.findAll().stream()
-                        .map(CategoryMapper.INSTANCE::categoryToCategoryInfo)
-                        .collect(Collectors.toList()));
+        GetSellerStoreResponse getSellerStoreResponse = StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store, categoryRepository.findAll().stream()
+                .map(CategoryMapper.INSTANCE::categoryToCategoryInfo)
+                .collect(Collectors.toList()));
 
         return getSellerStoreResponse;
     }
@@ -193,7 +190,7 @@ public class StoreServiceQueryDSLImpl implements StoreService{
             throw new BusinessException(STORE_NOT_FOUND);
         }
 
-        store.updateIsOpened();
+        //store.updateIsOpened();
     }
 
     private String imageToURL(MultipartFile image) {
