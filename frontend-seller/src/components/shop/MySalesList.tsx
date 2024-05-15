@@ -6,10 +6,9 @@ import { UpdateSales } from "../../types/sales/UpdateSales";
 
 const MySalesList: React.FC<SalesListInfoType> = (props) => {
   const { putSales } = UpdateSalesAPI();
-  const handleEditSales = ({ saleId, storeId, menuId, content, isFinished, stock }: UpdateSales) => {
+  const handleEditSales = ({ saleId, menuId, content, isFinished, stock }: UpdateSales) => {
     putSales({
       "saleId": saleId,
-      "storeId": storeId,
       "menuId": menuId,
       "content": content,
       "isFinished": isFinished,
@@ -36,7 +35,7 @@ const MySalesList: React.FC<SalesListInfoType> = (props) => {
             <p>남은 재고 : {list.restStock}</p>
             <p>설명 : {list.content}</p>
             <p>판매상태 : {!list.isFinished ? "판매가능" : "판매종료"}</p>
-            <TotalButton title="수정하기" onClick={() => handleEditSales({ "saleId": list.saleId, "storeId": 29, "menuId": list.menuId, "content": list.content, "isFinished": list.isFinished, "stock": list.restStock })} />
+            <TotalButton title="수정하기" onClick={() => handleEditSales({ "saleId": list.saleId, "menuId": list.menuId, "content": list.content, "isFinished": list.isFinished, "stock": list.restStock })} />
           </div>
         </div>
       ))}

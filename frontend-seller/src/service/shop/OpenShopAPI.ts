@@ -6,7 +6,7 @@ const OpenShopAPI = () => {
     const accessToken = cookies.get("accessToken")
     const storeId = 29
     const putFinishAll = () => {
-        axios.put(import.meta.env.VITE_BASE_URL + "/api/stores/finish-all", {
+        axios.put(import.meta.env.VITE_BASE_URL + "/api/sales/finish-all", {
             "storeId": storeId
         }, {
             headers: {
