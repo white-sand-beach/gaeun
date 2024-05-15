@@ -15,7 +15,7 @@ public class Cart implements Serializable {
     @Id
     private String id;
 
-    private Integer quantity; //담은 수량
+    private Integer quantity; // 담은 수량
 
     @Indexed
     private Long consumerId;

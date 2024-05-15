@@ -35,6 +35,15 @@ public enum SuccessType {
 
 
     // order
+    CREATE_ORDER_SUCCESS("주문 등록에 성공하였습니다."),
+    VALIDATE_ORDER_SUCCESS("결제 인증에 성공하였습니다."),
+    UPDATE_ORDER_SELLER_SUCCESS("판매자 주문 상태 수정에 성공하였습니다."),
+    UPDATE_ORDER_CONSUMER_SUCCESS("소비자 주문 상태 수정에 성공하였습니다."),
+    GET_ORDER_LIST_CONSUMER_SUCCESS("소비자 주문 목록 조회에 성공하였습니다."),
+    GET_ORDER_IN_PROGRESS_LIST_SELLER_SUCCESS("판매자 진행 중인 주문 목록 조회에 성공하였습니다."),
+    GET_ORDER_FINISHED_LIST_SELLER_SUCCESS("판매자 종료된 주문 목록 조회에 성공하였습니다."),
+    GET_ORDER_DETAIL_CONSUMER_SUCCESS("소비자 주문 상세 조회에 성공하였습니다."),
+    GET_ORDER_DETAIL_SELLER_SUCCESS("판매자 주문 상세 조회에 성공하였습니다."),
 
     // seller
     CREATE_SELLER_SUCCESS("판매자 회원가입에 성공하였습니다."),
