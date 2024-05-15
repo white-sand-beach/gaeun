@@ -26,6 +26,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.document.Document;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +49,7 @@ import static com.todayeat.backend._common.response.error.ErrorType.*;
 @RequiredArgsConstructor
 public class StoreServiceElasticsearchImpl implements StoreService {
 
+    private final ElasticsearchOperations elasticsearchOperations;
     private final StoreDocumentRepository storeDocumentRepository;
     private final StoreCategoryRepository storeCategoryRepository;
     private final FavoriteRepository favoriteRepository;
@@ -197,14 +202,50 @@ public class StoreServiceElasticsearchImpl implements StoreService {
 
     @Override
     @Transactional
-    public void updateIsOpened(Long storeId) {
+    public void updateIsOpened(Store store, Boolean isOpened) {
 
-        Store store = sellerRepository.findById(securityUtil.getSeller().getId())
-                .map(Seller::getStore)
-                .filter(s -> Objects.equals(s.getId(), storeId))
-                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
+        store.updateIsOpened(isOpened);
 
-        //store.updateIsOpened();
+        Document document = Document.create();
+        document.put("isOpened", isOpened);
+
+        UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
+                .withDocument(document)
+                .build();
+
+        elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
+    }
+
+    @Override
+    @Transactional
+    public void updateReviewCnt(Store store, int value) {
+
+        store.updateReviewCnt(value);
+
+        Document document = Document.create();
+        document.put("reviewCnt", store.getReviewCnt() + value);
+
+        UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
+                .withDocument(document)
+                .build();
+
+        elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
+    }
+
+    @Override
+    @Transactional
+    public void updateFavoriteCnt(Store store, int value) {
+
+        store.updateFavoriteCnt(value);
+
+        Document document = Document.create();
+        document.put("favoriteCnt", store.getFavoriteCnt() + value);
+
+        UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
+                .withDocument(document)
+                .build();
+
+        elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
     }
 
     private String imageToURL(MultipartFile image) {

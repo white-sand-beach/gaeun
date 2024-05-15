@@ -13,11 +13,13 @@ import com.todayeat.backend.store.service.StoreServiceElasticsearchImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 
 @Configuration
 @RequiredArgsConstructor
 public class StoreServiceConfig {
 
+    private final ElasticsearchOperations elasticsearchOperations;
     private final StoreDocumentRepository storeDocumentRepository;
     private final StoreCategoryRepository storeCategoryRepository;
     private final FavoriteRepository favoriteRepository;
@@ -33,7 +35,7 @@ public class StoreServiceConfig {
         //return new StoreServiceQueryDSLImpl(storeCategoryRepository, favoriteRepository, categoryRepository,
         //        sellerRepository, storeRepository, securityUtil, s3Util);
 
-        return new StoreServiceElasticsearchImpl(storeDocumentRepository, storeCategoryRepository, favoriteRepository, categoryRepository,
+        return new StoreServiceElasticsearchImpl(elasticsearchOperations, storeDocumentRepository, storeCategoryRepository, favoriteRepository, categoryRepository,
                 sellerRepository, storeRepository, securityUtil, s3Util);
     }
 }
