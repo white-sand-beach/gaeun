@@ -66,7 +66,7 @@ public class OrderService {
         Consumer consumer = securityUtil.getConsumer();
 
         // 장바구니 목록 조회
-        List<Cart> carts =  cartRepository.findAllByConsumerId(consumer.getId());
+        List<Cart> carts = cartRepository.findAllByConsumerId(consumer.getId());
 
         // 장바구니가 없을 경우
         if (carts.isEmpty()) {
@@ -116,11 +116,13 @@ public class OrderService {
     @Transactional
     public void validate(Long orderInfoId, ValidateOrderConsumerRequest request) {
 
+        Consumer consumer = securityUtil.getConsumer();
+
         // 주문 확인
         OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);
 
         // 권한 검사
-        validateOrderInfoAndConsumer(orderInfo, securityUtil.getConsumer());
+        validateOrderInfoAndConsumer(orderInfo, consumer);
 
         // 결제 완료된 주문일 경우 throw
         if (orderInfo.getStatus() != UNPAID) {
@@ -154,6 +156,10 @@ public class OrderService {
         // 결제 정보 및 주문 상태 업데이트
         orderInfo.updatePaymentId(request.getPaymentId());
         orderInfo.updateStatus(PAID);
+
+        // 장바구니 삭제
+        cartRepository.findAllByConsumerId(consumer.getId())
+                .iterator().forEachRemaining(cartRepository::delete);
     }
 
     @Transactional
