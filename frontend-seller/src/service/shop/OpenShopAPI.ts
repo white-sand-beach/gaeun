@@ -5,27 +5,25 @@ const OpenShopAPI = () => {
     const cookies = new Cookies()
     const accessToken = cookies.get("accessToken")
     const storeId = 29
-    const putShopOpened = () => {
-        axios.put(import.meta.env.VITE_BASE_URL + `/api/stores/${storeId}/is-opened`, {}, {
-            withCredentials: true,
-            params: {
-                "store-id": storeId
-            },
+    const putFinishAll = () => {
+        axios.put(import.meta.env.VITE_BASE_URL + "/api/stores/finish-all", {
+            "storeId": storeId
+        }, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             },
         })
         .then(res => {
             console.log(res);
-            console.log("가게 영업 여부 수정 성공");
+            console.log("전체 판매 종료 성공");
         })
         .catch(err => {
             console.error(err);
-            console.log("가게 영업 여부 수정 실패");
+            console.log("전체 판매 종료 실패");
         });
     };
     return {
-        putShopOpened,
+        putFinishAll,
     };
 };
 
