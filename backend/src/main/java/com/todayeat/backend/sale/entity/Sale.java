@@ -80,7 +80,7 @@ public class Sale extends BaseTime {
 
         this.content = content;
 
-        this.isFinished = !isFinished;
+        this.isFinished = isFinished;
 
         // todo 주문 접수 건수도 고려하기
 
