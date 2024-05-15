@@ -123,49 +123,75 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
 
           const infoWindowContent = document.createElement("div");
           infoWindowContent.innerHTML = `
-          <div>
               <div style="
-                  padding: 2px;
+                  padding: 3px;
                   border-radius: 4px;
                   border: 3px solid orange;
                   background-color: #fff;
                   color: #333;
                   font-size: 14px;
-                  text-align: center;
-                  width: 200px;
+                  min-width: 150px; /* 최소 너비 설정 */
                   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
+                  display: flex; /* 메인 컨테이너를 flex로 설정 */
+                  align-items: center; /* 내용을 세로 중앙 정렬 */
+                  align-items: stretch; /* Stretch items to fill the container */
               ">
-                  <div style="margin-bottom: 4px; width: 100%; display: flex; justify-content: center; align-items: center;"> <!-- 로고와 가게명 중앙 정렬 -->
-                      <div style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center;">
-                          <img
-                              src="${logo}"
-                              alt="로고이미지"
-                              style="width: 100%; height: 100%; object-fit: cover;"
-                          />
+                  <div style="
+                      flex-grow: 1; /* 좌측 내용 영역을 자동으로 확장 */
+                      padding-right: 10px; /* 버튼과의 간격 */
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: center;
+                      align-items: flex-start; /* 왼쪽 정렬 */
+                  ">
+                      <div style="
+                          display: flex;
+                          justify-content: center;
+                          align-items: center;
+                          margin-bottom: 4px;
+                          margin : auto;
+                      ">
+                          <div style="
+                              width: 30px;
+                              height: 30px;
+                              display: flex;
+                              justify-content: center;
+                              align-items: center;
+                          ">
+                              <img src="${logo}" alt="로고 이미지" style="width: 100%; height: 100%; object-fit: cover;"/>
+                          </div>
+                          <div style="margin-left: 5px; white-space: nowrap;">${item.name}</div> <!-- 로고 옆에 텍스트 추가 -->
                       </div>
-                      <div>${item.name}</div>
+      
                   </div>
-                  <div style="margin: 0px 10px 5px 10px; background-color: #dcdcdc; border-radius: 10px; padding: 10px;">
-                  <div style="
-                      text-align: left; /* 중앙 정렬 */
-                      width: 100%; /* 부모 컨테이너 크기에 맞춤 */
-                  ">거리 : ${item.distance}m</div>
-                  <div style="
-                      text-align: left; /* 중앙 정렬 */
-                      width: 100%; /* 부모 컨테이너 크기에 맞춤 */
-                  ">영업시간 : ${item.operatingTime}</div>
-                  </div>
-                  <div>클릭시 이동합니다!</div>
+                  <!-- 오른쪽 빨간 버튼 -->
+                  <button style="
+                      padding: 8px; /* 패딩 조정 */
+                      background-color: red;
+                      color: white;
+                      cursor: pointer;
+                      border: none;
+                      border-radius: 4px;
+                      font-size: 16px; /* 폰트 크기 조정 */
+                      font-weight: bold; /* 글자 굵게 */
+                  ">
+                      &gt; <!-- HTML 엔티티 사용 -->
+                  </button>
               </div>
-          </div>
-      `;
-          infoWindowContent.addEventListener("click", () => {
-            navigate(`/shop/${item.storeId}`); // 가게 상세 페이지로 이동
-          });
+          `;
+
+          // button 요소 선택
+          const button = infoWindowContent.querySelector("button");
+          // 버튼에 이벤트 리스너 추가
+
+          // button 요소가 존재하는 경우에만 이벤트 리스너 추가
+          if (button) {
+            button.addEventListener("click", () => {
+              navigate(`/shop/${item.storeId}`);
+            });
+          } else {
+            console.log("버튼이 DOM에 존재하지 않습니다.");
+          }
 
           const infoWindow = new window.kakao.maps.InfoWindow({
             content: infoWindowContent,
@@ -178,10 +204,6 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
             infoWindow.open(map, marker);
             infoWindowRef.current = infoWindow;
           });
-          // // 마커 클릭 이벤트 추가
-          // window.kakao.maps.event.addListener(marker, "click", () => {
-          //   navigate(`/shop/${item.storeId}`); // 가게 상세 페이지로 라우팅
-          // });
         } else {
           // 이미지 URL이 없는 경우 기본 마커를 생성합니다.
           marker = new window.kakao.maps.Marker({
