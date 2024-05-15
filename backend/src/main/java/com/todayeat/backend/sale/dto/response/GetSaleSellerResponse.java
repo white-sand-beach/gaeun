@@ -11,6 +11,9 @@ public class GetSaleSellerResponse {
     @Schema(description = "판매 ID", example = "1")
     private Long saleId;
 
+    @Schema(description = "메뉴 ID", example = "1")
+    private Long menuId;
+
     @Schema(description = "판매 이미지 url", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/uuid.png")
     private String imageUrl;
 
@@ -36,8 +39,9 @@ public class GetSaleSellerResponse {
     private Boolean isFinished;
 
     @Builder
-    private GetSaleSellerResponse(Long saleId, String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer restStock, Boolean isFinished) {
+    private GetSaleSellerResponse(Long saleId, Long menuId, String imageUrl, String name, Integer originalPrice, Integer sellPrice, Integer discountRate, String content, Integer restStock, Boolean isFinished) {
         this.saleId = saleId;
+        this.menuId = menuId;
         this.imageUrl = imageUrl;
         this.name = name;
         this.originalPrice = originalPrice;

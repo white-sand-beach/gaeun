@@ -28,5 +28,6 @@ public interface SaleMapper {
     GetSaleDetailConsumerResponse getSaleDetailConsumerResponse(Sale sale, Integer restStock);
 
     @Mapping(source = "sale.id", target = "saleId")
+    @Mapping(source = "sale.menu.id", target = "menuId")
     GetSaleSellerResponse getSaleSellerResponse(Sale sale, Integer restStock);
 }
