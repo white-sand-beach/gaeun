@@ -187,7 +187,8 @@ public class StoreService {
             throw new BusinessException(STORE_NOT_FOUND);
         }
 
-        store.updateIsOpened();
+        // Todo 변경 사항에 맞게 수정하기
+//        store.updateIsOpened();
     }
 
     private String imageToURL(MultipartFile image) {
