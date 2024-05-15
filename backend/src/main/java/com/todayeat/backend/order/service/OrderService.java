@@ -11,10 +11,7 @@ import com.todayeat.backend.order.api.client.IamportRequestClient;
 import com.todayeat.backend.order.dto.request.consumer.CreateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
-import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
-import com.todayeat.backend.order.dto.response.consumer.GetOrderConsumerResponse;
-import com.todayeat.backend.order.dto.response.consumer.GetOrderDetailConsumerResponse;
-import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
+import com.todayeat.backend.order.dto.response.consumer.*;
 import com.todayeat.backend.order.dto.response.seller.GetOrderFinishedSellerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderInProgressSellerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
@@ -311,6 +308,18 @@ public class OrderService {
 
         // 반환
         return GetOrderDetailConsumerResponse.from(orderInfo);
+    }
+
+    public GetOrderDetailSellerResponse getOrderDetailSeller(Long orderInfoId) {
+
+        // 주문
+        OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);
+
+        // 권한 검사
+        validateStoreAndSeller(orderInfo.getStore().getId(), securityUtil.getSeller());
+
+        // 반환
+        return GetOrderDetailSellerResponse.from(orderInfo);
     }
 
     private Sale findSaleOrElseThrow(Cart cart) {
