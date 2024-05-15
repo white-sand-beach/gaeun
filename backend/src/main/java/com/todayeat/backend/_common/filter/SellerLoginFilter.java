@@ -79,8 +79,6 @@ public class SellerLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         refreshTokenService.create(refreshToken, jwtUtil.getExpiration(accessToken), sellerCustomUserDetails.getId(), "SELLER");
 
-        response.setHeader(HttpHeaders.AUTHORIZATION, accessToken); // 액세스 토큰 담기
-
         cookieUtil.addHttpOnlyCookie(response, "RefreshToken", refreshToken, REFRESH_TOKEN_EXPIRED_TIME); // 리프레시 토큰 담기
 
         String storeId = String.valueOf(sellerRepository.findById(sellerCustomUserDetails.getId())
@@ -91,6 +89,8 @@ public class SellerLoginFilter extends UsernamePasswordAuthenticationFilter {
         log.info("storeId {}", storeId);
 
         cookieUtil.addNonHttpOnlyCookie(response, "storeId", storeId, REFRESH_TOKEN_EXPIRED_TIME);
+
+        response.setHeader(HttpHeaders.AUTHORIZATION, accessToken); // 액세스 토큰 담기
     }
 
     @Override
