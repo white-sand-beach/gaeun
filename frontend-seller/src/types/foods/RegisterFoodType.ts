@@ -1,7 +1,7 @@
 export type RegisterFoodType = {
-  image: string;
+  image: File | null;
   name: string;
   originalPrice: number;
   sellPrice: number;
-  storeId: number;
+  storeId?: number;
 }
