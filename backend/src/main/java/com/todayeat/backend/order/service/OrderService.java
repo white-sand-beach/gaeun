@@ -11,9 +11,7 @@ import com.todayeat.backend.order.api.client.IamportRequestClient;
 import com.todayeat.backend.order.dto.request.CreateOrderRequest;
 import com.todayeat.backend.order.dto.request.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
-import com.todayeat.backend.order.dto.response.CreateOrderResponse;
-import com.todayeat.backend.order.dto.response.GetOrderConsumerResponse;
-import com.todayeat.backend.order.dto.response.GetOrderListConsumerResponse;
+import com.todayeat.backend.order.dto.response.*;
 import com.todayeat.backend.order.entity.OrderInfo;
 import com.todayeat.backend.order.entity.OrderInfoItem;
 import com.todayeat.backend.order.entity.OrderInfoStatus;
@@ -260,13 +258,35 @@ public class OrderService {
         cancelPayment(orderInfo.getPaymentId());
     }
 
-    public GetOrderListConsumerResponse getList() {
+    public GetOrderListConsumerResponse getListConsumer() {
 
         Consumer consumer = securityUtil.getConsumer();
 
         return GetOrderListConsumerResponse.of(
-                orderInfoRepository.findAllByConsumerIdAndDeletedAtIsNull(consumer.getId())
+                orderInfoRepository.findAllByConsumerIdAndDeletedAtIsNullOrderByCreatedAtDesc(consumer.getId())
                 .stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()));
+    }
+
+    public GetOrderListSellerResponse getListSeller(Long storeId, Boolean isFinished) {
+
+        Seller seller = securityUtil.getSeller();
+
+        // 권한이 없는 경우
+        if (!seller.getStore().getId().equals(storeId)) {
+            throw new BusinessException(STORE_FORBIDDEN);
+        }
+
+        // 종료된 주문 목록
+        if (isFinished) {
+            return GetOrderListSellerResponse.of(
+                    orderInfoRepository.findAllByStoreIdAndStatusIsFinishedAndDeletedAtIsNullOrderByCreatedAtDesc(storeId)
+                            .stream().map(GetOrderSellerResponse::from).collect(Collectors.toList()));
+        }
+
+        // 종료되지 않은 주문 목록
+        return GetOrderListSellerResponse.of(
+                orderInfoRepository.findAllByStoreIdAndStatusIsNotFinishedAndDeletedAtIsNullOrderByCreatedAtDesc(storeId)
+                        .stream().map(GetOrderSellerResponse::from).collect(Collectors.toList()));
     }
 
     private Sale findSaleOrElseThrow(Cart cart) {

@@ -6,6 +6,7 @@ import com.todayeat.backend.order.dto.request.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
 import com.todayeat.backend.order.dto.response.CreateOrderResponse;
 import com.todayeat.backend.order.dto.response.GetOrderListConsumerResponse;
+import com.todayeat.backend.order.dto.response.GetOrderListSellerResponse;
 import com.todayeat.backend.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,8 +49,14 @@ public class OrderController implements OrderControllerDocs {
     }
 
     @Override
-    public SuccessResponse<GetOrderListConsumerResponse> getList() {
+    public SuccessResponse<GetOrderListConsumerResponse> getListConsumer() {
 
-        return SuccessResponse.of(orderService.getList(), GET_ORDER_LIST_SUCCESS);
+        return SuccessResponse.of(orderService.getListConsumer(), GET_ORDER_LIST_CONSUMER_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<GetOrderListSellerResponse> getListSeller(Long storeId, Boolean isFinished) {
+
+        return SuccessResponse.of(orderService.getListSeller(storeId, isFinished), GET_ORDER_LIST_SELLER_SUCCESS);
     }
 }

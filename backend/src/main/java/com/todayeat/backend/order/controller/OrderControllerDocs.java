@@ -7,6 +7,7 @@ import com.todayeat.backend.order.dto.request.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
 import com.todayeat.backend.order.dto.response.CreateOrderResponse;
 import com.todayeat.backend.order.dto.response.GetOrderListConsumerResponse;
+import com.todayeat.backend.order.dto.response.GetOrderListSellerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -116,6 +117,27 @@ public interface OrderControllerDocs {
             description = "성공",
             content = @Content(schema = @Schema(implementation = GetOrderListConsumerResponse.class)))
     @PreAuthorize("hasRole('CONSUMER')")
-    @GetMapping
-    SuccessResponse<GetOrderListConsumerResponse> getList();
+    @GetMapping("/consumer")
+    SuccessResponse<GetOrderListConsumerResponse> getListConsumer();
+
+    @Operation(summary = "주문 목록 조회 (판매자)",
+            description = """
+                          `ROLE_SELLER` \n
+                          해당 가게의 주문 목록을 조회합니다. \n
+                          is-finished == true 이면 종료된 주문 목록(판매 내역)을 조회하고 is-finished == false 이면 진행 중인 주문 목록(주문 현황)을 조회합니다.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderListSellerResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "권한이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping("/seller")
+    SuccessResponse<GetOrderListSellerResponse> getListSeller(@RequestParam(value = "store-id", required = true)
+                                                              @Schema(description = "가게 고유번호", example = "1")
+                                                              Long storeId,
+                                                              @RequestParam(value = "is-finished", required = true)
+                                                              @Schema(description = "종료 여부", example = "true")
+                                                              Boolean isFinished);
 }
