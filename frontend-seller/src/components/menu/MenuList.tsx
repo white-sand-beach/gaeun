@@ -79,7 +79,7 @@ const MenuList: React.FC<MenuListType> = (props) => {
               title="판매 등록"
               onClick={() =>
                 postSales({
-                  storeId: 12,
+                  storeId: 29,
                   saleList: [
                     {
                       sellPrice: menu.sellPrice,

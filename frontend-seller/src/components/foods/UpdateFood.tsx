@@ -69,7 +69,7 @@ const UpdateFood = () => {
       image: updateMenuInfo.image,
       originalPrice: updateMenuInfo.originalPrice,
       sellPrice: updateMenuInfo.sellPrice,
-      storeId: 12
+      storeId: 29
     })
   };
 
