@@ -124,13 +124,14 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
           const infoWindowContent = document.createElement("div");
           infoWindowContent.innerHTML = `
               <div style="
-                  padding: 3px;
+                  padding: 3.5px 8px;
                   border-radius: 4px;
                   border: 3px solid orange;
                   background-color: #fff;
                   color: #333;
-                  font-size: 14px;
-                  min-width: 150px; /* 최소 너비 설정 */
+                  font-size: 16px;
+                  font-weight: bold; /* 글자 굵게 *
+                  min-width: 180px; /* 최소 너비 설정 */
                   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
                   display: flex; /* 메인 컨테이너를 flex로 설정 */
                   align-items: center; /* 내용을 세로 중앙 정렬 */
@@ -143,6 +144,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
                       flex-direction: column;
                       justify-content: center;
                       align-items: flex-start; /* 왼쪽 정렬 */
+                      margin : auto;
                   ">
                       <div style="
                           display: flex;
@@ -152,8 +154,8 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
                           margin : auto;
                       ">
                           <div style="
-                              width: 30px;
-                              height: 30px;
+                              width: 40px;
+                              height: 40px;
                               display: flex;
                               justify-content: center;
                               align-items: center;
