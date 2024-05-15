@@ -1,20 +1,21 @@
 import { useState } from "react";
 import RegisterFood from "../../components/foods/RegisterFood.tsx";
 import RegisterFoodAPI from "../../service/foods/RegisterFoodAPI.ts";
-import Cookies from "universal-cookie";
-// import Cookies from "universal-cookie";
 
+type foodInfo = {
+    image: File | null;
+    name: string;
+    originalPrice: number;
+    sellPrice: number;
+}
 const RegisterFoodPage = () => {
-    const cookies = new Cookies()
     // 등록할 음식에 대한 기본 정보
-    const [foodInfo, setFoodInfo] = useState({
-        image: "",
+    const [foodInfo, setFoodInfo] = useState<foodInfo>({
+        image: null,
         name: "",
         originalPrice: 0,
         sellPrice: 0,
     });
-
-    // const cookies = new Cookies()
 
     const handleChangeInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = event.target;
@@ -24,6 +25,13 @@ const RegisterFoodPage = () => {
         });
         console.log(`${name} : ${value}`)
     };
+
+    const handleChangeImg = (image: File|null) => {
+        setFoodInfo({
+            ...foodInfo,
+            image: image
+        })
+    }
 
     // 메뉴 등록을 위한 api import
     const { postRegisterFood } = RegisterFoodAPI();
@@ -35,7 +43,7 @@ const RegisterFoodPage = () => {
             name: foodInfo.name,
             originalPrice: foodInfo.originalPrice,
             sellPrice: foodInfo.sellPrice,
-            storeId: cookies.get("storeId")
+            storeId: 29
         });
     };
 
@@ -47,6 +55,7 @@ const RegisterFoodPage = () => {
             originalPrice={foodInfo.originalPrice}
             sellPrice={foodInfo.sellPrice}
             onChangeInput={handleChangeInfo}
+            onChangeImg={handleChangeImg}
             onRegisterFood={handleRegisterMenu}
             />
         </div>

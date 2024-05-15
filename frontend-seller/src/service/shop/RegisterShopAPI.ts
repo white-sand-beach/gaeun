@@ -47,7 +47,8 @@ const RegisterShopAPI = () => {
                 Authorization: `Bearer ${accessToken}`
             }
         })
-            .then(() => {
+            .then(res => {
+                console.log(res)
                 window.alert("가게 등록 성공")
                 navigate("/")
             })

@@ -21,10 +21,34 @@ export default defineConfig({
         theme_color: "#FFAF38",
         icons: [
           {
+            src: "/icons/size-16.png",
+            type: "image/png",
+            sizes: "16x16",
+          },
+          {
+            src: "/icons/size-48.png",
+            type: "image/png",
+            sizes: "48x48",
+          },
+          {
+            src: "/icons/size-72.png",
+            type: "image/png",
+            sizes: "72x72",
+          },
+          {
+            src: "/icons/size-128.png",
+            type: "image/png",
+            sizes: "128x128",
+          },
+          {
             src: "/icons/main-icon-144.png",
             type: "image/png",
             sizes: "144x144",
-            purpose: "any maskable"
+          },
+          {
+            src: "/icons/size-152.png",
+            type: "image/png",
+            sizes: "152x152",
           },
           {
             src: "/icons/main-icon-192.png",

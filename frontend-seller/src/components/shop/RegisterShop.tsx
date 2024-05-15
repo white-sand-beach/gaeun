@@ -67,25 +67,41 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
     setIsOpen(false);
   };
 
-  // 카테고리 id 할당
+  // // 카테고리 id 할당
+  // const handleCategoryId = (cateId: number) => {
+  //   // 카테고리 id 리스트에 이미 있는경우는 제외
+  //   if (categoryId.includes(cateId)) {
+  //     const updateId = categoryId.filter((id) => id !== cateId);
+  //     setCategoryId(updateId);
+  //     console.log("업데이트 id", updateId);
+  //     console.log("store관리: ", props.shopCategoryId);
+  //   }
+  //   // 없으면 추가
+  //   else {
+  //     const updateId = [...categoryId, cateId];
+  //     setCategoryId(updateId);
+  //     console.log("업데이트 id", updateId);
+  //     console.log("store관리: ", props.shopCategoryId);
+  //   }
+  //   props.onUpdateShopStore("shopCategoryId", categoryId);
+  //   console.log(categoryId);
+  // };
+  // 상태 업데이트 로직 내부
   const handleCategoryId = (cateId: number) => {
-    // 카테고리 id 리스트에 이미 있는경우는 제외
     if (categoryId.includes(cateId)) {
-      const updateId = categoryId.filter(id => id !== cateId)
+      const updateId = categoryId.filter((id) => id !== cateId);
       setCategoryId(updateId);
-      console.log("업데이트 id", updateId)
-      console.log("store관리: ", props.shopCategoryId)
-    }
-    // 없으면 추가
-    else {
-      const updateId = [...categoryId, cateId]
+    } else {
+      const updateId = [...categoryId, cateId];
       setCategoryId(updateId);
-      console.log("업데이트 id", updateId)
-      console.log("store관리: ", props.shopCategoryId)
     }
-    props.onUpdateShopStore("shopCategoryId", categoryId)
-    console.log(categoryId)
   };
+
+  // categoryId 상태가 변경될 때마다 실행될 useEffect
+  useEffect(() => {
+    // 여기서는 최신의 categoryId를 사용할 수 있습니다.
+    props.onUpdateShopStore("shopCategoryId", categoryId);
+  }, [categoryId]); // categoryId가 변경될 때마다 이 효과를 재실행합니다.
 
   return (
     <div className="flex flex-col items-center w-screen h-full gap-3">
