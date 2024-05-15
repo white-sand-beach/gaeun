@@ -91,7 +91,7 @@ public class CartService {
         Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
         String storeName = store.getName();
-        Boolean isOpened = store.isOpened();
+        Boolean isOpened = store.getIsOpened();
 
         List<GetCartResponse> cartResponseList = new ArrayList<>();
 
