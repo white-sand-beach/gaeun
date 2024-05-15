@@ -10,7 +10,6 @@ import com.todayeat.backend.category.mapper.CategoryMapper;
 import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
-import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
 import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.seller.entity.Seller;
@@ -119,13 +118,11 @@ public class StoreServiceElasticsearchImpl implements StoreService {
     @Override
     public GetConsumerInfoStoreResponse getConsumerInfoStore(Long storeId) {
 
-        Consumer consumer = securityUtil.getConsumer();
-
-        StoreDocument storeDocument = validateAndGetStoreDocument(storeId);
-
-        boolean isFavorite = favoriteRepository.existsByConsumerAndStoreIdAndDeletedAtIsNull(consumer, storeDocument.getId());
-
-        return StoreMapper.INSTANCE.storeDocumentToGetConsumerInfoStoreResponse(storeDocument, isFavorite);
+        return StoreMapper.INSTANCE.storeDocumentToGetConsumerInfoStoreResponse(
+                validateAndGetStoreDocument(storeId),
+                favoriteRepository.existsByConsumerAndStoreIdAndDeletedAtIsNull(
+                        securityUtil.getConsumer(),
+                        storeId));
     }
 
     @Override
@@ -175,26 +172,27 @@ public class StoreServiceElasticsearchImpl implements StoreService {
                     .filter(id -> !existingCategoryIds.contains(id))
                     .forEach(id -> storeCategoryRepository.save(
                             StoreCategoryMapper.INSTANCE.toStoreCategory(store, categoryRepository.findById(id).get())));
+
+            // 엘라스틱 서치 저장
+            List<CategoryInfo> categoryInfoList = updateStoreRequest.getCategoryIdList().stream()
+                    .map(categoryId -> categoryRepository.findById(categoryId)
+                            .orElseThrow(() -> new BusinessException(CATEGORY_NOT_FOUND))).toList().stream()
+                    .map(CategoryMapper.INSTANCE::categoryToCategoryInfo).toList();
+
+            storeDocumentRepository.save(
+                    StoreMapper.INSTANCE.updateStoreRequestToStoreDocument(
+                            storeId,
+                            updateStoreRequest,
+                            imageURL,
+                            store.getReviewCnt(),
+                            store.getFavoriteCnt(),
+                            categoryInfoList)
+            );
         } catch (RuntimeException e) {
 
             s3Util.deleteImageIfPresent(imageURL);
             throw new RuntimeException(e);
         }
-
-        List<CategoryInfo> categoryInfoList = updateStoreRequest.getCategoryIdList().stream()
-                .map(categoryId -> categoryRepository.findById(categoryId)
-                        .orElseThrow(() -> new BusinessException(CATEGORY_NOT_FOUND))).toList().stream()
-                .map(CategoryMapper.INSTANCE::categoryToCategoryInfo).toList();
-
-        storeDocumentRepository.save(
-                StoreMapper.INSTANCE.updateStoreRequestToStoreDocument(
-                        storeId,
-                        updateStoreRequest,
-                        imageURL,
-                        store.getReviewCnt(),
-                        store.getFavoriteCnt(),
-                        categoryInfoList)
-        );
     }
 
     @Override
