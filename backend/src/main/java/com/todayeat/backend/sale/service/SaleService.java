@@ -130,6 +130,19 @@ public class SaleService {
         }
     }
 
+    @Transactional
+    public void updateIsFinishedAll(UpdateSaleIsFinishedAllRequest request) {
+
+        Seller seller = securityUtil.getSeller();
+
+        // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
+        Store store = validateStoreAndSeller(seller, request.getStoreId());
+
+        saleRepository.updateAllSalesAsFinishedForStore(store);
+
+        store.updateIsOpened(false);
+    }
+
     // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
     private Store validateStoreAndSeller(Seller seller, Long storeId) {
 
