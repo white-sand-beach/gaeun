@@ -41,7 +41,7 @@ import static com.todayeat.backend._common.response.error.ErrorType.*;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class StoreServiceQueryDSLImpl implements StoreService{
+public class StoreServiceQueryDSLImpl implements StoreService {
 
     private final StoreCategoryRepository storeCategoryRepository;
     private final FavoriteRepository favoriteRepository;
@@ -100,17 +100,11 @@ public class StoreServiceQueryDSLImpl implements StoreService{
             throw new BusinessException(STORE_NOT_FOUND);
         }
 
-        store = storeRepository.findByIdAndDeletedAtIsNull(store.getId())
-                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
-
-        GetSellerStoreResponse getSellerStoreResponse = StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store);
-
-        getSellerStoreResponse.setCategoryList(
+        return StoreMapper.INSTANCE.storeToGetSellerStoreResponse(
+                validateAndGetStore(storeId),
                 categoryRepository.findAll().stream()
                         .map(CategoryMapper.INSTANCE::categoryToCategoryInfo)
                         .collect(Collectors.toList()));
-
-        return getSellerStoreResponse;
     }
 
     @Override
