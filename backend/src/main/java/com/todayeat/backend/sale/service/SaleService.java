@@ -93,8 +93,10 @@ public class SaleService {
 
     public GetSaleListSellerResponse getListToSeller(Long storeId) {
 
-        Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
+        Seller seller = securityUtil.getSeller();
+
+        // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
+        Store store = validateStoreAndSeller(seller, storeId);
 
         List<GetSaleSellerResponse> getSaleToSellerResponseList = saleRepository.findAllByStoreAndDeletedAtIsNull(store)
                 .stream()
