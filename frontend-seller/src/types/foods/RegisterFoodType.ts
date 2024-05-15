@@ -3,5 +3,5 @@ export type RegisterFoodType = {
   name: string;
   originalPrice: number;
   sellPrice: number;
-  storeId?: number;
+  storeId: number;
 }
