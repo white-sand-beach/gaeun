@@ -63,6 +63,9 @@ public class SaleService {
         }
 
         saleRepository.saveAll(saleList);
+
+        // 가게 영업 시작
+        store.updateIsOpened();
     }
 
     public GetSaleListConsumerResponse getListToConsumer(Long storeId) {
