@@ -1,7 +1,9 @@
 package com.todayeat.backend.order.entity;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum OrderInfoStatus {
     UNPAID("결제 전"),

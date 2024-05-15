@@ -6,6 +6,7 @@ import com.todayeat.backend.order.dto.request.CreateOrderRequest;
 import com.todayeat.backend.order.dto.request.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
 import com.todayeat.backend.order.dto.response.CreateOrderResponse;
+import com.todayeat.backend.order.dto.response.GetOrderListConsumerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/orders")
 public interface OrderControllerDocs {
 
-    @Operation(summary = "주문 등록",
+    @Operation(summary = "주문 등록 (소비자)",
             description = """
                           `ROLE_CONSUMER` \n
                           request body 넣어주세요. \n
@@ -44,7 +45,7 @@ public interface OrderControllerDocs {
     @PostMapping
     SuccessResponse<CreateOrderResponse> create(@RequestBody @Valid CreateOrderRequest request);
 
-    @Operation(summary = "주문 검증",
+    @Operation(summary = "주문 검증 (소비자)",
             description = """
                           `ROLE_CONSUMER` \n
                           path variable, request body 넣어주세요. \n
@@ -105,4 +106,16 @@ public interface OrderControllerDocs {
     @PreAuthorize("hasRole('CONSUMER')")
     @PutMapping("/{order-info-id}/status/consumer")
     SuccessResponse<Void> updateStatusByConsumer(@PathVariable("order-info-id") Long orderInfoId);
+
+    @Operation(summary = "주문 목록 조회 (소비자)",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          주문 목록을 조회합니다.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderListConsumerResponse.class)))
+    @PreAuthorize("hasRole('CONSUMER')")
+    @GetMapping
+    SuccessResponse<GetOrderListConsumerResponse> getList();
 }

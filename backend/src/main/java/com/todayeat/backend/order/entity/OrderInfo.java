@@ -13,6 +13,9 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 @DynamicInsert
@@ -53,6 +56,9 @@ public class OrderInfo extends BaseTime {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
     private Review review;
+
+    @OneToMany(mappedBy = "orderInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderInfoItem> orderInfoItemList = new ArrayList<>();
 
     @Builder
     private OrderInfo(String paymentId, String orderNo, Integer totalPrice, OrderInfoStatus status, Integer takenTime, Consumer consumer, Store store, Review review) {

@@ -5,6 +5,7 @@ import com.todayeat.backend.order.dto.request.CreateOrderRequest;
 import com.todayeat.backend.order.dto.request.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
 import com.todayeat.backend.order.dto.response.CreateOrderResponse;
+import com.todayeat.backend.order.dto.response.GetOrderListConsumerResponse;
 import com.todayeat.backend.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,5 +45,11 @@ public class OrderController implements OrderControllerDocs {
 
         orderService.updateStatusConsumer(orderInfoId);
         return SuccessResponse.of(UPDATE_ORDER_CONSUMER_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<GetOrderListConsumerResponse> getList() {
+
+        return SuccessResponse.of(orderService.getList(), GET_ORDER_LIST_SUCCESS);
     }
 }

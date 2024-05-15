@@ -12,6 +12,8 @@ import com.todayeat.backend.order.dto.request.CreateOrderRequest;
 import com.todayeat.backend.order.dto.request.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
 import com.todayeat.backend.order.dto.response.CreateOrderResponse;
+import com.todayeat.backend.order.dto.response.GetOrderConsumerResponse;
+import com.todayeat.backend.order.dto.response.GetOrderListConsumerResponse;
 import com.todayeat.backend.order.entity.OrderInfo;
 import com.todayeat.backend.order.entity.OrderInfoItem;
 import com.todayeat.backend.order.entity.OrderInfoStatus;
@@ -31,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.todayeat.backend._common.response.error.ErrorType.*;
 import static com.todayeat.backend.order.entity.OrderInfoStatus.*;
@@ -255,6 +258,15 @@ public class OrderService {
         // 주문 상태 변경 및 결제 취소
         orderInfo.updateStatus(CANCEL);
         cancelPayment(orderInfo.getPaymentId());
+    }
+
+    public GetOrderListConsumerResponse getList() {
+
+        Consumer consumer = securityUtil.getConsumer();
+
+        return GetOrderListConsumerResponse.of(
+                orderInfoRepository.findAllByConsumerIdAndDeletedAtIsNull(consumer.getId())
+                .stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()));
     }
 
     private Sale findSaleOrElseThrow(Cart cart) {

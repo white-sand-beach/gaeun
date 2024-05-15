@@ -39,6 +39,7 @@ public enum SuccessType {
     VALIDATE_ORDER_SUCCESS("결제 인증에 성공하였습니다."),
     UPDATE_ORDER_SELLER_SUCCESS("판매자 주문 상태 수정에 성공하였습니다."),
     UPDATE_ORDER_CONSUMER_SUCCESS("소비자 주문 상태 수정에 성공하였습니다."),
+    GET_ORDER_LIST_SUCCESS("소비자 주문 목록 조회에 성공하였습니다."),
 
     // seller
     CREATE_SELLER_SUCCESS("판매자 회원가입에 성공하였습니다."),
