@@ -2,7 +2,6 @@ package com.todayeat.backend.sale.controller;
 
 import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
-import com.todayeat.backend.menu.dto.response.GetMenuListResponse;
 import com.todayeat.backend.sale.dto.request.*;
 import com.todayeat.backend.sale.dto.response.GetSaleDetailConsumerResponse;
 import com.todayeat.backend.sale.dto.response.GetSaleListConsumerResponse;
@@ -118,4 +117,22 @@ public interface SaleControllerDocs {
                                        @RequestBody
                                        @Valid
                                        UpdateSaleRequest request);
+
+    @Operation(summary = "모든 판매 종료",
+            description = """
+                    `ROLE_SELLER` \n
+                    request body 넣어주세요.
+                    """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @ApiResponse(responseCode = "404",
+            description = """ 
+                    판매자의 가게가 맞는지 확인, 가게 존재 여부 확인 \n
+                    """,
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PutMapping(value = "/finish-all")
+    @PreAuthorize("hasRole('SELLER')")
+    SuccessResponse<Void> updateIsFinishedAll(@RequestBody
+                                              @Valid
+                                              UpdateSaleIsFinishedAllRequest request);
 }
