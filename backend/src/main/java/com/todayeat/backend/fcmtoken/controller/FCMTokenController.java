@@ -3,6 +3,7 @@ package com.todayeat.backend.fcmtoken.controller;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend._common.response.success.SuccessType;
 import com.todayeat.backend.fcmtoken.dto.request.CreateFCMTokenRequest;
+import com.todayeat.backend.fcmtoken.dto.request.DeleteFCMTokenRequest;
 import com.todayeat.backend.fcmtoken.service.FCMTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,5 +22,13 @@ public class FCMTokenController implements FCMTokenControllerDocs{
         fcmTokenService.create(request);
 
         return SuccessResponse.of(SuccessType.CREATE_FCM_TOKEN_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<Void> delete(DeleteFCMTokenRequest request) {
+
+        fcmTokenService.delete(request);
+
+        return SuccessResponse.of(SuccessType.DELETE_FCM_TOKEN_SUCCESS);
     }
 }

@@ -87,6 +87,7 @@ public enum SuccessType {
 
     // fcm token
     CREATE_FCM_TOKEN_SUCCESS("fcm 토큰 등록에 성공하였습니다."),
+    DELETE_FCM_TOKEN_SUCCESS("fcm 토큰 삭제에 성공하였습니다."),
     ;
 
     private final String msg;

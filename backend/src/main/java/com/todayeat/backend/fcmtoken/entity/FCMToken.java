@@ -11,7 +11,7 @@ import org.springframework.data.redis.core.index.Indexed;
 public class FCMToken {
 
     @Id
-    private String id;
+    private String id; // fcm token
 
     @Indexed
     private Long memberId;

@@ -4,6 +4,7 @@ import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.fcmtoken.dto.request.CreateFCMTokenRequest;
+import com.todayeat.backend.fcmtoken.dto.request.DeleteFCMTokenRequest;
 import com.todayeat.backend.fcmtoken.mapper.FCMTokenMapper;
 import com.todayeat.backend.fcmtoken.repository.FCMTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,12 @@ public class FCMTokenService {
 
         fcmTokenRepository.save(FCMTokenMapper
                 .INSTANCE.createFCMToken(request, memberId, securityUtil.getPrincipalClassSimpleName()));
+    }
+
+    @Transactional
+    public void delete(DeleteFCMTokenRequest request) {
+
+        fcmTokenRepository.deleteById(request.getToken());
     }
 
     private Long getMemberId(String role) {

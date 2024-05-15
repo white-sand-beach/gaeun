@@ -3,12 +3,14 @@ package com.todayeat.backend.fcmtoken.controller;
 import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.fcmtoken.dto.request.CreateFCMTokenRequest;
+import com.todayeat.backend.fcmtoken.dto.request.DeleteFCMTokenRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,4 +28,11 @@ public interface FCMTokenControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping
     SuccessResponse<Void> create(@RequestBody @Valid CreateFCMTokenRequest request);
+
+    @Operation(summary = "fcm 토큰 삭제",
+            description = "request body 넣어주세요.")
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @DeleteMapping
+    SuccessResponse<Void> delete(@RequestBody @Valid DeleteFCMTokenRequest request);
 }
