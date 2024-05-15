@@ -8,9 +8,9 @@ import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.order.api.dto.request.CancelPaymentRequest;
 import com.todayeat.backend.order.api.dto.response.GetPaymentResponse;
 import com.todayeat.backend.order.api.client.IamportRequestClient;
-import com.todayeat.backend.order.dto.request.CreateOrderRequest;
-import com.todayeat.backend.order.dto.request.UpdateStatusSellerRequest;
-import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
+import com.todayeat.backend.order.dto.request.consumer.CreateOrderConsumerRequest;
+import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
+import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderConsumerResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
@@ -64,9 +64,9 @@ public class OrderService {
     private String PORTONE_PREFIX = "PortOne ";
 
     @Transactional
-    public CreateOrderResponse create(CreateOrderRequest createOrderRequest) {
+    public CreateOrderResponse create(CreateOrderConsumerRequest createOrderConsumerRequest) {
 
-        List<String> cartIdList = createOrderRequest.getCartIdList();
+        List<String> cartIdList = createOrderConsumerRequest.getCartIdList();
 
         // 첫 번째 장바구니 확인
         // 1. cart 유효성 검사
@@ -126,7 +126,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void validate(Long orderInfoId, ValidateOrderRequest request) {
+    public void validate(Long orderInfoId, ValidateOrderConsumerRequest request) {
 
         // 주문 확인
         OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);

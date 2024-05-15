@@ -2,9 +2,9 @@ package com.todayeat.backend.order.controller;
 
 import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
-import com.todayeat.backend.order.dto.request.CreateOrderRequest;
-import com.todayeat.backend.order.dto.request.UpdateStatusSellerRequest;
-import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
+import com.todayeat.backend.order.dto.request.consumer.CreateOrderConsumerRequest;
+import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
+import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
@@ -45,7 +45,7 @@ public interface OrderControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PreAuthorize("hasRole('CONSUMER')")
     @PostMapping
-    SuccessResponse<CreateOrderResponse> create(@RequestBody @Valid CreateOrderRequest request);
+    SuccessResponse<CreateOrderResponse> create(@RequestBody @Valid CreateOrderConsumerRequest request);
 
     @Operation(summary = "주문 검증 (소비자)",
             description = """
@@ -67,7 +67,7 @@ public interface OrderControllerDocs {
     @PreAuthorize("hasRole('CONSUMER')")
     @PutMapping("/{order-info-id}/validation")
     SuccessResponse<Void> validation(@PathVariable("order-info-id") Long orderInfoId,
-                                    @RequestBody @Valid ValidateOrderRequest request);
+                                    @RequestBody @Valid ValidateOrderConsumerRequest request);
 
     @Operation(summary = "주문 상태 변경 (판매자)",
             description = """
