@@ -63,6 +63,8 @@ public class SaleService {
         }
 
         saleRepository.saveAll(saleList);
+
+        store.updateIsOpened(true);
     }
 
     public GetSaleListConsumerResponse getListToConsumer(Long storeId) {
