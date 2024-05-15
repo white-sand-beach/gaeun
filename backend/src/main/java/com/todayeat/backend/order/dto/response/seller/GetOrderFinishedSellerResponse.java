@@ -1,4 +1,4 @@
-package com.todayeat.backend.order.dto.response;
+package com.todayeat.backend.order.dto.response.seller;
 
 import com.todayeat.backend.order.entity.OrderInfo;
 import com.todayeat.backend.order.entity.OrderInfoItem;
@@ -10,8 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
-@Schema(name = "GetOrderSellerResponse", description = "판매자 주문 조회 응답")
-public class GetOrderSellerResponse {
+@Schema(name = "GetOrderFinishedSellerResponse", description = "판매자 주문 조회 응답")
+public class GetOrderFinishedSellerResponse {
 
     @Schema(description = "주문 고유번호", example = "1")
     private Long orderInfoId;
@@ -29,7 +29,7 @@ public class GetOrderSellerResponse {
     private String orderDate;
 
     @Builder
-    private GetOrderSellerResponse(Long orderInfoId, String orderContents, Integer orderPrice, String orderStatus, String orderDate) {
+    private GetOrderFinishedSellerResponse(Long orderInfoId, String orderContents, Integer orderPrice, String orderStatus, String orderDate, String consumerPhoneNumber) {
         this.orderInfoId = orderInfoId;
         this.orderContents = orderContents;
         this.orderPrice = orderPrice;
@@ -37,7 +37,7 @@ public class GetOrderSellerResponse {
         this.orderDate = orderDate;
     }
 
-    public static GetOrderSellerResponse from(OrderInfo orderInfo) {
+    public static GetOrderFinishedSellerResponse from(OrderInfo orderInfo) {
 
         return builder()
                 .orderInfoId(orderInfo.getId())

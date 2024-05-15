@@ -1,8 +1,7 @@
-package com.todayeat.backend.order.dto.response;
+package com.todayeat.backend.order.dto.response.seller;
 
 import com.todayeat.backend.order.entity.OrderInfo;
 import com.todayeat.backend.order.entity.OrderInfoItem;
-import com.todayeat.backend.store.entity.Store;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
-@Schema(name = "GetOrderConsumerResponse", description = "소비자 주문 조회 응답")
-public class GetOrderConsumerResponse {
+@Schema(name = "GetOrderInProgressSellerResponse", description = "판매자 주문 조회 응답")
+public class GetOrderInProgressSellerResponse {
 
     @Schema(description = "주문 고유번호", example = "1")
     private Long orderInfoId;
@@ -29,30 +28,20 @@ public class GetOrderConsumerResponse {
     @Schema(description = "주문 시간", example = "2024-05-14 17:06:23")
     private String orderDate;
 
-    @Schema(description = "가게 고유번호", example = "1")
-    private Long storeId;
-
-    @Schema(description = "가게 이름", example = "마라조아")
-    private String storeName;
-
-    @Schema(description = "가게 전화번호", example = "01012345678")
-    private String storeTel;
+    @Schema(description = "소비자 연락처", example = "01011112222")
+    private String consumerPhoneNumber;
 
     @Builder
-    private GetOrderConsumerResponse(Long orderInfoId, String orderContents, Integer orderPrice, String orderStatus, String orderDate, Long storeId, String storeName, String storeTel) {
+    private GetOrderInProgressSellerResponse(Long orderInfoId, String orderContents, Integer orderPrice, String orderStatus, String orderDate, String consumerPhoneNumber) {
         this.orderInfoId = orderInfoId;
         this.orderContents = orderContents;
         this.orderPrice = orderPrice;
         this.orderStatus = orderStatus;
         this.orderDate = orderDate;
-        this.storeId = storeId;
-        this.storeName = storeName;
-        this.storeTel = storeTel;
+        this.consumerPhoneNumber = consumerPhoneNumber;
     }
 
-    public static GetOrderConsumerResponse from(OrderInfo orderInfo) {
-
-        Store store = orderInfo.getStore();
+    public static GetOrderInProgressSellerResponse from(OrderInfo orderInfo) {
 
         return builder()
                 .orderInfoId(orderInfo.getId())
@@ -60,9 +49,7 @@ public class GetOrderConsumerResponse {
                 .orderPrice(orderInfo.getTotalPrice())
                 .orderStatus(orderInfo.getStatus().getDescription())
                 .orderDate(orderInfo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .storeId(store.getId())
-                .storeName(store.getName())
-                .storeTel(store.getTel())
+                .consumerPhoneNumber(orderInfo.getConsumer().getPhoneNumber())
                 .build();
     }
 

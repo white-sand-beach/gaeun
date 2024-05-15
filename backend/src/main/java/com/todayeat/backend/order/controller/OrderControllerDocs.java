@@ -5,9 +5,10 @@ import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.order.dto.request.CreateOrderRequest;
 import com.todayeat.backend.order.dto.request.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
-import com.todayeat.backend.order.dto.response.CreateOrderResponse;
-import com.todayeat.backend.order.dto.response.GetOrderListConsumerResponse;
-import com.todayeat.backend.order.dto.response.GetOrderListSellerResponse;
+import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderListInProgressSellerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -117,27 +118,40 @@ public interface OrderControllerDocs {
             description = "성공",
             content = @Content(schema = @Schema(implementation = GetOrderListConsumerResponse.class)))
     @PreAuthorize("hasRole('CONSUMER')")
-    @GetMapping("/consumer")
+    @GetMapping
     SuccessResponse<GetOrderListConsumerResponse> getListConsumer();
 
-    @Operation(summary = "주문 목록 조회 (판매자)",
+    @Operation(summary = "진행중인 주문 목록 조회 (판매자)",
             description = """
                           `ROLE_SELLER` \n
-                          해당 가게의 주문 목록을 조회합니다. \n
-                          is-finished == true 이면 종료된 주문 목록(판매 내역)을 조회하고 is-finished == false 이면 진행 중인 주문 목록(주문 현황)을 조회합니다.
+                          해당 가게의 진행중인 주문 목록을 조회합니다. \n
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
-            content = @Content(schema = @Schema(implementation = GetOrderListSellerResponse.class)))
+            content = @Content(schema = @Schema(implementation = GetOrderListInProgressSellerResponse.class)))
     @ApiResponse(responseCode = "403",
             description = "권한이 없는 경우",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PreAuthorize("hasRole('SELLER')")
-    @GetMapping("/seller")
-    SuccessResponse<GetOrderListSellerResponse> getListSeller(@RequestParam(value = "store-id", required = true)
-                                                              @Schema(description = "가게 고유번호", example = "1")
-                                                              Long storeId,
-                                                              @RequestParam(value = "is-finished", required = true)
-                                                              @Schema(description = "종료 여부", example = "true")
-                                                              Boolean isFinished);
+    @GetMapping("/in-progress")
+    SuccessResponse<GetOrderListInProgressSellerResponse> getInProgressListSeller(@RequestParam(value = "store-id", required = true)
+                                                                                  @Schema(description = "가게 고유번호", example = "1")
+                                                                                  Long storeId);
+
+    @Operation(summary = "종료된 주문 목록 조회 (판매자)",
+            description = """
+                          `ROLE_SELLER` \n
+                          해당 가게의 종료된 주문 목록을 조회합니다. \n
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderListFinishedSellerResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "권한이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping("/finished")
+    SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(@RequestParam(value = "store-id", required = true)
+                                                                                @Schema(description = "가게 고유번호", example = "1")
+                                                                                Long storeId);
 }

@@ -4,9 +4,10 @@ import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.order.dto.request.CreateOrderRequest;
 import com.todayeat.backend.order.dto.request.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
-import com.todayeat.backend.order.dto.response.CreateOrderResponse;
-import com.todayeat.backend.order.dto.response.GetOrderListConsumerResponse;
-import com.todayeat.backend.order.dto.response.GetOrderListSellerResponse;
+import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderListInProgressSellerResponse;
 import com.todayeat.backend.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,8 +56,14 @@ public class OrderController implements OrderControllerDocs {
     }
 
     @Override
-    public SuccessResponse<GetOrderListSellerResponse> getListSeller(Long storeId, Boolean isFinished) {
+    public SuccessResponse<GetOrderListInProgressSellerResponse> getInProgressListSeller(Long storeId) {
 
-        return SuccessResponse.of(orderService.getListSeller(storeId, isFinished), GET_ORDER_LIST_SELLER_SUCCESS);
+        return SuccessResponse.of(orderService.getInProgressListSeller(storeId), GET_ORDER_IN_PROGRESS_LIST_SELLER_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(Long storeId) {
+
+        return SuccessResponse.of(orderService.getFinishedListSeller(storeId), GET_ORDER_FINISHED_LIST_SELLER_SUCCESS);
     }
 }

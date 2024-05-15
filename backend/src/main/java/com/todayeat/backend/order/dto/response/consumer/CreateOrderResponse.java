@@ -1,4 +1,4 @@
-package com.todayeat.backend.order.dto.response;
+package com.todayeat.backend.order.dto.response.consumer;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

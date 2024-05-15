@@ -11,7 +11,13 @@ import com.todayeat.backend.order.api.client.IamportRequestClient;
 import com.todayeat.backend.order.dto.request.CreateOrderRequest;
 import com.todayeat.backend.order.dto.request.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.ValidateOrderRequest;
-import com.todayeat.backend.order.dto.response.*;
+import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderConsumerResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderFinishedSellerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderInProgressSellerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderListInProgressSellerResponse;
 import com.todayeat.backend.order.entity.OrderInfo;
 import com.todayeat.backend.order.entity.OrderInfoItem;
 import com.todayeat.backend.order.entity.OrderInfoStatus;
@@ -267,26 +273,24 @@ public class OrderService {
                 .stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()));
     }
 
-    public GetOrderListSellerResponse getListSeller(Long storeId, Boolean isFinished) {
+    public GetOrderListInProgressSellerResponse getInProgressListSeller(Long storeId) {
 
-        Seller seller = securityUtil.getSeller();
-
-        // 권한이 없는 경우
-        if (!seller.getStore().getId().equals(storeId)) {
-            throw new BusinessException(STORE_FORBIDDEN);
-        }
-
-        // 종료된 주문 목록
-        if (isFinished) {
-            return GetOrderListSellerResponse.of(
-                    orderInfoRepository.findAllByStoreIdAndStatusIsFinishedAndDeletedAtIsNullOrderByCreatedAtDesc(storeId)
-                            .stream().map(GetOrderSellerResponse::from).collect(Collectors.toList()));
-        }
+        validateStoreAndSeller(storeId, securityUtil.getSeller());
 
         // 종료되지 않은 주문 목록
-        return GetOrderListSellerResponse.of(
+        return GetOrderListInProgressSellerResponse.of(
                 orderInfoRepository.findAllByStoreIdAndStatusIsNotFinishedAndDeletedAtIsNullOrderByCreatedAtDesc(storeId)
-                        .stream().map(GetOrderSellerResponse::from).collect(Collectors.toList()));
+                        .stream().map(GetOrderInProgressSellerResponse::from).collect(Collectors.toList()));
+    }
+
+    public GetOrderListFinishedSellerResponse getFinishedListSeller(Long storeId) {
+
+        validateStoreAndSeller(storeId, securityUtil.getSeller());
+
+        // 종료된 주문 목록
+        return GetOrderListFinishedSellerResponse.of(
+                orderInfoRepository.findAllByStoreIdAndStatusIsFinishedAndDeletedAtIsNullOrderByCreatedAtDesc(storeId)
+                        .stream().map(GetOrderFinishedSellerResponse::from).collect(Collectors.toList()));
     }
 
     private Sale findSaleOrElseThrow(Cart cart) {
@@ -314,6 +318,7 @@ public class OrderService {
     }
 
     private void validateQuantity(Sale sale, Cart cart) {
+
         Integer stock = sale.getStock() - sale.getTotalQuantity();
 
         // 실제 남은 수량과 장바구니 수량을 비교
@@ -340,8 +345,15 @@ public class OrderService {
 
     private void validateOrderInfoAndConsumer(OrderInfo orderInfo, Consumer consumer) {
 
-        if (orderInfo.getConsumer().equals(consumer)) {
+        if (!orderInfo.getConsumer().equals(consumer)) {
             throw new BusinessException(ORDER_FORBIDDEN);
+        }
+    }
+
+    private void validateStoreAndSeller(Long storeId, Seller seller) {
+
+        if (!seller.getStore().getId().equals(storeId)) {
+            throw new BusinessException(STORE_FORBIDDEN);
         }
     }
 }
