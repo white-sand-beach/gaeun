@@ -10,7 +10,7 @@ public enum OrderInfoStatus {
     PAID("결제 완료"),
     CANCEL("취소됨"),
     DENIED("거절됨"),
-    IN_PROGRESS("진행중"),
+    IN_PROGRESS("진행 중"),
     PREPARED("준비 완료"),
     FINISHED("수령 완료"),
     ;
