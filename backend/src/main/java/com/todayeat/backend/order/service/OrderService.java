@@ -13,6 +13,7 @@ import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderConsumerResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderDetailConsumerResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderFinishedSellerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderInProgressSellerResponse;
@@ -82,7 +83,8 @@ public class OrderService {
 
         Consumer consumer = securityUtil.getConsumer();
 
-        int totalPrice = 0;
+        int originalPrice = 0;
+        int paymentPrice = 0;
 
         // 주문 요청된 장바구니 목록 확인
         for (String cartId: cartIdList) {
@@ -104,12 +106,18 @@ public class OrderService {
             // 수량 유효성 검사
             validateQuantity(sale, cart);
 
-            // 결제 금액 증가
-            totalPrice += cart.getQuantity() * sale.getSellPrice();
+            // 금액 증가
+            originalPrice += cart.getQuantity() * sale.getOriginalPrice();
+            paymentPrice += cart.getQuantity() * sale.getSellPrice();
         }
 
         // 주문 정보 저장
-        OrderInfo orderInfo = OrderInfo.of(UUID.randomUUID().toString(), totalPrice, consumer, firstStore);
+        OrderInfo orderInfo = OrderInfo.of(UUID.randomUUID().toString(),
+                                            originalPrice,
+                                            originalPrice - paymentPrice, // discountPrice
+                                            paymentPrice,
+                                            consumer,
+                                            firstStore);
         orderInfoRepository.save(orderInfo);
 
         // 주문 아이템 정보 저장
@@ -148,7 +156,7 @@ public class OrderService {
 
         // 결제 완료 상태가 아니거나 주문 금액과 실제 결제 금액이 다를 경우
         if (!getPaymentResponse.getStatus().equals("PAID")
-                || !Objects.equals(getPaymentResponse.getAmount().getTotal(), orderInfo.getTotalPrice())) {
+                || !Objects.equals(getPaymentResponse.getAmount().getTotal(), orderInfo.getPaymentPrice())) {
 
             // 아임 포트 결제 취소
             cancelPayment(request.getPaymentId());
@@ -197,7 +205,7 @@ public class OrderService {
             // 수락
             if (orderInfoStatus == IN_PROGRESS) {
                 orderInfo.updateStatus(orderInfoStatus);
-                orderInfo.updateTakenTime(request.getTakenTime());
+                orderInfo.updateTakenTimeAndApprovedAt(request.getTakenTime());
                 return;
             }
 
@@ -293,6 +301,18 @@ public class OrderService {
                         .stream().map(GetOrderFinishedSellerResponse::from).collect(Collectors.toList()));
     }
 
+    public GetOrderDetailConsumerResponse getOrderDetailConsumer(Long orderInfoId) {
+
+        // 주문
+        OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);
+
+        // 권한 검사
+        validateOrderInfoAndConsumer(orderInfo, securityUtil.getConsumer());
+
+        // 반환
+        return GetOrderDetailConsumerResponse.from(orderInfo);
+    }
+
     private Sale findSaleOrElseThrow(Cart cart) {
 
         return saleRepository.findByIdAndIsFinishedIsFalseAndDeletedAtIsNull(cart.getSaleId())
@@ -345,7 +365,7 @@ public class OrderService {
 
     private void validateOrderInfoAndConsumer(OrderInfo orderInfo, Consumer consumer) {
 
-        if (!orderInfo.getConsumer().equals(consumer)) {
+        if (!orderInfo.getConsumer().getId().equals(consumer.getId())) {
             throw new BusinessException(ORDER_FORBIDDEN);
         }
     }

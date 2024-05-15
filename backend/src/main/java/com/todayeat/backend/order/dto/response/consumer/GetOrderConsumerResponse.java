@@ -62,7 +62,7 @@ public class GetOrderConsumerResponse {
                 .orderInfoId(orderInfo.getId())
                 .orderNo(orderInfo.getOrderNo())
                 .orderContents(getContents(orderInfo.getOrderInfoItemList()))
-                .orderPrice(orderInfo.getTotalPrice())
+                .orderPrice(orderInfo.getPaymentPrice())
                 .orderStatus(orderInfo.getStatus().getDescription())
                 .orderDate(orderInfo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .storeId(store.getId())

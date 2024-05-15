@@ -5,6 +5,7 @@ import com.todayeat.backend.order.dto.request.consumer.CreateOrderConsumerReques
 import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderDetailConsumerResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListInProgressSellerResponse;
@@ -65,5 +66,11 @@ public class OrderController implements OrderControllerDocs {
     public SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(Long storeId) {
 
         return SuccessResponse.of(orderService.getFinishedListSeller(storeId), GET_ORDER_FINISHED_LIST_SELLER_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<GetOrderDetailConsumerResponse> getOrderDetailConsumer(Long orderInfoId) {
+
+        return SuccessResponse.of(orderService.getOrderDetailConsumer(orderInfoId), GET_ORDER_DETAIL_CONSUMER_SUCCESS);
     }
 }

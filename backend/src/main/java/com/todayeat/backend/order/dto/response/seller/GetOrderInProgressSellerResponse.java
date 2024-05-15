@@ -46,7 +46,7 @@ public class GetOrderInProgressSellerResponse {
         return builder()
                 .orderInfoId(orderInfo.getId())
                 .orderContents(getContents(orderInfo.getOrderInfoItemList()))
-                .orderPrice(orderInfo.getTotalPrice())
+                .orderPrice(orderInfo.getPaymentPrice())
                 .orderStatus(orderInfo.getStatus().getDescription())
                 .orderDate(orderInfo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .consumerPhoneNumber(orderInfo.getConsumer().getPhoneNumber())

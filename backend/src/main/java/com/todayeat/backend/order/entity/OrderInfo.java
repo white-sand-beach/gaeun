@@ -13,6 +13,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,13 @@ public class OrderInfo extends BaseTime {
     private String orderNo;
 
     @Column(nullable = false)
-    private Integer totalPrice;
+    private Integer originalPrice;
+
+    @Column(nullable = false)
+    private Integer discountPrice;
+
+    @Column(nullable = false)
+    private Integer paymentPrice;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -44,6 +51,9 @@ public class OrderInfo extends BaseTime {
 
     @Column(nullable = true)
     private Integer takenTime;
+
+    @Column(nullable = true)
+    private LocalDateTime approvedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consumer_id", referencedColumnName = "consumer_id")
@@ -61,21 +71,26 @@ public class OrderInfo extends BaseTime {
     private List<OrderInfoItem> orderInfoItemList = new ArrayList<>();
 
     @Builder
-    private OrderInfo(String paymentId, String orderNo, Integer totalPrice, OrderInfoStatus status, Integer takenTime, Consumer consumer, Store store, Review review) {
+    private OrderInfo(String paymentId, String orderNo, Integer originalPrice, Integer discountPrice, Integer paymentPrice, OrderInfoStatus status, Integer takenTime, LocalDateTime approvedAt, Consumer consumer, Store store, Review review) {
         this.paymentId = paymentId;
         this.orderNo = orderNo;
-        this.totalPrice = totalPrice;
+        this.originalPrice = originalPrice;
+        this.discountPrice = discountPrice;
+        this.paymentPrice = paymentPrice;
         this.status = status;
         this.takenTime = takenTime;
+        this.approvedAt = approvedAt;
         this.consumer = consumer;
         this.store = store;
         this.review = review;
     }
 
-    public static OrderInfo of(String orderNo, Integer totalPrice, Consumer consumer, Store store) {
+    public static OrderInfo of(String orderNo, Integer originalPrice, Integer discountPrice, Integer paymentPrice, Consumer consumer, Store store) {
         return builder()
                 .orderNo(orderNo)
-                .totalPrice(totalPrice)
+                .originalPrice(originalPrice)
+                .discountPrice(discountPrice)
+                .paymentPrice(paymentPrice)
                 .consumer(consumer)
                 .store(store)
                 .build();
@@ -89,7 +104,8 @@ public class OrderInfo extends BaseTime {
         this.status = status;
     }
 
-    public void updateTakenTime(Integer takenTime) {
+    public void updateTakenTimeAndApprovedAt(Integer takenTime) {
         this.takenTime = takenTime;
+        this.approvedAt = LocalDateTime.now();
     }
 }

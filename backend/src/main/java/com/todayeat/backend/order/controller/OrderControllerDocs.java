@@ -6,6 +6,7 @@ import com.todayeat.backend.order.dto.request.consumer.CreateOrderConsumerReques
 import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderDetailConsumerResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListInProgressSellerResponse;
@@ -66,8 +67,12 @@ public interface OrderControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PreAuthorize("hasRole('CONSUMER')")
     @PutMapping("/{order-info-id}/validation")
-    SuccessResponse<Void> validation(@PathVariable("order-info-id") Long orderInfoId,
-                                    @RequestBody @Valid ValidateOrderConsumerRequest request);
+    SuccessResponse<Void> validation(@PathVariable(value = "order-info-id", required = true)
+                                     @Schema(description = "주문 고유번호", example = "1")
+                                     Long orderInfoId,
+                                     @RequestBody
+                                     @Valid
+                                     ValidateOrderConsumerRequest request);
 
     @Operation(summary = "주문 상태 변경 (판매자)",
             description = """
@@ -94,8 +99,12 @@ public interface OrderControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PreAuthorize("hasRole('SELLER')")
     @PutMapping("/{order-info-id}/status/seller")
-    SuccessResponse<Void> updateStatusBySeller(@PathVariable("order-info-id") Long orderInfoId,
-                                              @RequestBody @Valid UpdateStatusSellerRequest request);
+    SuccessResponse<Void> updateStatusBySeller(@PathVariable(value = "order-info-id", required = true)
+                                               @Schema(description = "주문 고유번호", example = "1")
+                                               Long orderInfoId,
+                                               @RequestBody
+                                               @Valid
+                                               UpdateStatusSellerRequest request);
 
     @Operation(summary = "주문 상태 변경 (소비자)",
             description = """
@@ -107,7 +116,9 @@ public interface OrderControllerDocs {
             description = "성공")
     @PreAuthorize("hasRole('CONSUMER')")
     @PutMapping("/{order-info-id}/status/consumer")
-    SuccessResponse<Void> updateStatusByConsumer(@PathVariable("order-info-id") Long orderInfoId);
+    SuccessResponse<Void> updateStatusByConsumer(@PathVariable(value = "order-info-id", required = true)
+                                                @Schema(description = "주문 고유번호", example = "1")
+                                                Long orderInfoId);
 
     @Operation(summary = "주문 목록 조회 (소비자)",
             description = """
@@ -154,4 +165,21 @@ public interface OrderControllerDocs {
     SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(@RequestParam(value = "store-id", required = true)
                                                                                 @Schema(description = "가게 고유번호", example = "1")
                                                                                 Long storeId);
+
+    @Operation(summary = "주문 상세 조회 (소비자)",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          Path Variable로 order-info-id 넣어주세요.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderDetailConsumerResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "권한이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('CONSUMER')")
+    @GetMapping("/{order-info-id}/consumer")
+    SuccessResponse<GetOrderDetailConsumerResponse> getOrderDetailConsumer(@PathVariable(value = "order-info-id", required = true)
+                                                                          @Schema(description = "주문 고유번호", example = "1")
+                                                                          Long orderInfoId);
 }
