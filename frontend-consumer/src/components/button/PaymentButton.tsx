@@ -38,6 +38,7 @@ const PaymentButton = ({ cartInfo }: CheckPaymentProps) => {
   useEffect(() => {
     const processPayment = async () => {
       if (orderInfoId !== 0) {
+        console.log(orderInfoId)
         alert("결제 화면으로 이동합니다.");
         try {
           const paymentId = `payment-${generateRandomId(30)}`;
@@ -52,7 +53,7 @@ const PaymentButton = ({ cartInfo }: CheckPaymentProps) => {
             payMethod: "CARD",
             redirectUrl: redirectUrl,
             customer: {
-              fullName: "김대영",
+              fullName: "가은",
               email: "an@an.an",
               phoneNumber: "010-1234-1234",
             },
