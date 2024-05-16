@@ -36,7 +36,7 @@ public class GetOrderDetailConsumerResponse {
     @Schema(description = "가게 전화번호", example = "20000")
     private String storeTel;
 
-    @Schema(description = "주문 상태", example = "진행중")
+    @Schema(description = "주문 상태", example = "진행 중")
     private String orderStatus;
 
     @Schema(description = "주문 시간", example = "2024-05-14 17:06:23")

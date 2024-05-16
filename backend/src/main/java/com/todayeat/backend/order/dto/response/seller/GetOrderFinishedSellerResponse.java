@@ -25,7 +25,7 @@ public class GetOrderFinishedSellerResponse {
     @Schema(description = "주문 가격", example = "10000")
     private Integer orderPrice;
 
-    @Schema(description = "주문 상태", example = "진행중")
+    @Schema(description = "주문 상태", example = "진행 중")
     private String orderStatus;
 
     @Schema(description = "주문 날짜", example = "2024.05.14(목)")
