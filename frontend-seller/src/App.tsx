@@ -4,7 +4,7 @@ import LogIn from "./pages/user/LogInPage.tsx"
 import SignUp from "./pages/user/SignupPage.tsx";
 import MainLayout from "./components/ui/MainLayout.tsx";
 
-import OrderListPage from "./pages/order/OrderlistPage.tsx";
+import InprogressListPage from "./pages/order/InprogressListPage.tsx";
 // import OrderdetailPage from "./pages/order/OrderdetailPage.tsx";
 import OrderDetail from "./components/order/OrderDetail.tsx";
 import NotificationPage from "./pages/notification/NotificationPage.tsx";
@@ -12,7 +12,6 @@ import RegisterShopPage from "./pages/shop/RegisterShopPage.tsx";
 import RegisterFoodPage from "./pages/foods/RegisterFoodPage.tsx";
 import SaleslistPage from "./pages/sales/SaleslistPage.tsx";
 import ReviewPage from "./pages/review/ReviewPage.tsx";
-// import MyPage from "./pages/user/MyPage.tsx";
 import ShopInfoPage from "./pages/shop/ShopInfoPage.tsx";
 import MenuListPage from "./pages/menu/MenuListPage.tsx";
 import Cookies from "universal-cookie";
@@ -39,7 +38,7 @@ const App = () => {
           <Route path="/register-shop" element={<RegisterShopPage />} />
           <Route path="/register-food" element={<RegisterFoodPage />} />
           <Route path="/update/food/:menuId" element={<UpdateFoodPage />} />
-          <Route path="/order" element={<OrderListPage />} />
+          <Route path="/order" element={<InprogressListPage />} />
           <Route path="/order/:orderNum" element={<OrderDetail />} />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/menus" element={<MenuListPage />} />
