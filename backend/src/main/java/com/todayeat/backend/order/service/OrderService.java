@@ -28,6 +28,9 @@ import com.todayeat.backend.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -265,13 +268,29 @@ public class OrderService {
         cancelPayment(orderInfo.getPaymentId());
     }
 
-    public GetOrderListConsumerResponse getListConsumer() {
+    public GetOrderListConsumerResponse getListConsumer(Integer page, Integer size, String keyword) {
 
+        Pageable pageable = PageRequest.of(page, size);
         Consumer consumer = securityUtil.getConsumer();
 
+        // 검색어 없는 경우
+        if (keyword == null || keyword.isEmpty()) {
+
+            Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByConsumerIdAndStatusIsNotUnpaidAndDeletedAtIsNullOrderByCreatedAtDesc(consumer.getId(), pageable);
+
+            return GetOrderListConsumerResponse.of(
+                    orderInfos.getContent().stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()),
+                    orderInfos.getNumber(),
+                    orderInfos.hasNext());
+        }
+
+        // 검색어 있는 경우
+        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByConsumerIdAndStatusIsNotUnpaidAndKeywordDeletedAtIsNullOrderByCreatedAtDesc(consumer.getId(), keyword, pageable);
+
         return GetOrderListConsumerResponse.of(
-                orderInfoRepository.findAllByConsumerIdAndDeletedAtIsNullOrderByCreatedAtDesc(consumer.getId())
-                .stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()));
+                orderInfos.getContent().stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()),
+                orderInfos.getNumber(),
+                orderInfos.hasNext());
     }
 
     public GetOrderListInProgressSellerResponse getInProgressListSeller(Long storeId) {
