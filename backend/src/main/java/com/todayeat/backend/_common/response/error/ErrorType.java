@@ -100,7 +100,10 @@ public enum ErrorType {
     SALE_STATUS_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 상태 변경에 실패했습니다."),
     SALE_CONTENT_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 내용 변경에 실패했습니다."),
     SALE_STOCK_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 재고 변경에 실패했습니다."),
-    SALE_NOT_SELLING(HttpStatus.BAD_REQUEST, "판매하고 있지 않습니다.")
+    SALE_NOT_SELLING(HttpStatus.BAD_REQUEST, "판매하고 있지 않습니다."),
+
+    // notification
+    NOTIFICATION_SEND_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "FCM 알림 전송에 실패했습니다."),
     ;
 
     private HttpStatus httpStatus;
