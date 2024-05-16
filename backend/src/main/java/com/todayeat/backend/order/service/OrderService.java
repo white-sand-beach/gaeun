@@ -1,5 +1,6 @@
 package com.todayeat.backend.order.service;
 
+import com.todayeat.backend._common.annotation.DistributedLock;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.cart.entity.Cart;
@@ -87,6 +88,12 @@ public class OrderService {
             throw new BusinessException(STORE_NOT_OPEN);
         }
 
+        return createOrder(consumer, carts, firstStore);
+    }
+
+    @DistributedLock(key = "#order")
+    private CreateOrderResponse createOrder(Consumer consumer, List<Cart> carts, Store firstStore) {
+
         int originalPrice = 0;
         int paymentPrice = 0;
 
@@ -101,10 +108,14 @@ public class OrderService {
             // 금액 증가
             originalPrice += cart.getQuantity() * sale.getOriginalPrice();
             paymentPrice += cart.getQuantity() * sale.getSellPrice();
+
+            // 판매량 증가
+            sale.updateTotalQuantity(+1);
         }
 
         // 주문 정보 저장
-        OrderInfo orderInfo = OrderInfo.of(UUID.randomUUID().toString(),
+        OrderInfo orderInfo = OrderInfo.of(
+                UUID.randomUUID().toString(),
                 originalPrice,
                 originalPrice - paymentPrice, // discountPrice
                 paymentPrice,
