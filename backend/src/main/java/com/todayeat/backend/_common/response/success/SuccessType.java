@@ -17,6 +17,8 @@ public enum SuccessType {
     GET_FAVORITES_SUCCESS("찜 목록 조회에 성공하였습니다."),
 
     // review
+    CREATE_REVIEW_SUCCESS("리뷰 등록에 성공하였습니다."),
+
 
     // location
     CREATE_LOCATION_SUCCESS("위치 등록에 성공하였습니다."),
