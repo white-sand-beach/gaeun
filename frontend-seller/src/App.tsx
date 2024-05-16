@@ -4,7 +4,7 @@ import LogIn from "./pages/user/LogInPage.tsx"
 import SignUp from "./pages/user/SignupPage.tsx";
 import MainLayout from "./components/ui/MainLayout.tsx";
 
-import OrderListPage from "./pages/order/OrderlistPage.tsx";
+import OrderListPage from "./pages/order/InprogressListPage.tsx";
 // import OrderdetailPage from "./pages/order/OrderdetailPage.tsx";
 import OrderDetail from "./components/order/OrderDetail.tsx";
 import NotificationPage from "./pages/notification/NotificationPage.tsx";
