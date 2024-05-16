@@ -101,7 +101,8 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
                     ))
                     .from(storeCategory)
                     .join(storeCategory.category, category)
-                    .where(storeCategory.store.id.eq(info.getStoreId()))
+                    .where(storeCategory.store.id.eq(info.getStoreId())
+                            .and(storeCategory.deletedAt.isNull()))
                     .fetch();
 
             info.setCategoryList(categories);
@@ -112,7 +113,9 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
                             sale.imageUrl.as("imageURL")
                     ))
                     .from(sale)
-                    .where(sale.store.id.eq(info.getStoreId()))
+                    .where(sale.store.id.eq(info.getStoreId())
+                            .and(sale.isFinished.eq(false))
+                            .and(sale.deletedAt.isNull()))
                     .fetch();
 
             info.setSaleImageURLList(saleImageURLs);
