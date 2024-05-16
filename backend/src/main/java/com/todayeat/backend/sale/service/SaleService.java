@@ -8,7 +8,10 @@ import com.todayeat.backend.cart.repository.CartRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.repository.MenuRepository;
-import com.todayeat.backend.sale.dto.request.*;
+import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
+import com.todayeat.backend.sale.dto.request.CreateSaleRequest;
+import com.todayeat.backend.sale.dto.request.UpdateSaleIsFinishedAllRequest;
+import com.todayeat.backend.sale.dto.request.UpdateSaleRequest;
 import com.todayeat.backend.sale.dto.response.*;
 import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.sale.mapper.SaleMapper;
@@ -17,6 +20,7 @@ import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.repository.StoreRepository;
+import com.todayeat.backend.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,6 +43,7 @@ public class SaleService {
     private final SaleRepository saleRepository;
     private final StoreRepository storeRepository;
     private final CartRepository cartRepository;
+    private final StoreService storeService;
 
     @Transactional
     public void create(CreateSaleListRequest request) {
@@ -50,7 +55,7 @@ public class SaleService {
 
         List<Sale> saleList = new ArrayList<>();
 
-        for(CreateSaleRequest createSaleRequest : request.getSaleList()) {
+        for (CreateSaleRequest createSaleRequest : request.getSaleList()) {
             // 해당 메뉴의 존재 여부 확인 및 가게에 있는 메뉴인지 확인
             Menu menu = validateMenuAndStore(createSaleRequest.getMenuId(), store);
 
@@ -64,7 +69,7 @@ public class SaleService {
 
         saleRepository.saveAll(saleList);
 
-        store.updateIsOpened(true);
+        storeService.updateIsOpened(store, true);
     }
 
     public GetSaleListConsumerResponse getListToConsumer(Long storeId) {
@@ -127,7 +132,7 @@ public class SaleService {
                 .orElseThrow(() -> new BusinessException(ErrorType.SALE_CONTENT_UPDATE_FAIL));
 
         // 재고 검증 및 업데이트. 총 판매량보다 재고가 작은 경우 예외
-        if(!sale.update(request.getContent(), request.getIsFinished(), request.getStock())) {
+        if (!sale.update(request.getContent(), request.getIsFinished(), request.getStock())) {
             throw new BusinessException(ErrorType.SALE_STOCK_UPDATE_FAIL);
         }
     }
@@ -163,7 +168,7 @@ public class SaleService {
     private Integer getDiscountRate(Integer originalPrice, Integer sellPrice) {
 
         // 판매가가 원가보다 큰 경우 예외
-        if(originalPrice < sellPrice) {
+        if (originalPrice < sellPrice) {
             throw new BusinessException(ErrorType.MENU_CREATE_FAIL);
         }
 

@@ -54,11 +54,4 @@ public class StoreController implements StoreControllerDocs {
         storeService.update(storeId, updateStoreRequest);
         return SuccessResponse.of(UPDATE_STORE_SUCCESS);
     }
-
-    @Override
-    public SuccessResponse<Void> updateIsOpened(Long storeId) {
-
-        storeService.updateIsOpened(storeId);
-        return SuccessResponse.of(UPDATE_STORE_SUCCESS);
-    }
 }

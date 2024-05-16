@@ -85,4 +85,8 @@ public class Store extends BaseTime {
     public void updateFavoriteCnt(int value) {
         this.favoriteCnt += value;
     }
+
+    public void updateReviewCnt(int value) {
+        this.reviewCnt += value;
+    }
 }
