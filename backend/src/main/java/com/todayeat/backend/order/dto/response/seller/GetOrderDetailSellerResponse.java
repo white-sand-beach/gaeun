@@ -1,4 +1,4 @@
-package com.todayeat.backend.order.dto.response.consumer;
+package com.todayeat.backend.order.dto.response.seller;
 
 import com.todayeat.backend.order.dto.response.GetOrderInfoItemResponse;
 import com.todayeat.backend.order.entity.OrderInfo;
@@ -26,7 +26,7 @@ public class GetOrderDetailSellerResponse {
     @Schema(description = "주문 번호", example = "UUID")
     private String orderNo;
 
-    @Schema(description = "주문 상태", example = "진행중")
+    @Schema(description = "주문 상태", example = "진행 중")
     private String orderStatus;
 
     @Schema(description = "주문 시간", example = "2024-05-14 17:06:23")
@@ -83,10 +83,13 @@ public class GetOrderDetailSellerResponse {
         // 진행중
         if (status == IN_PROGRESS) {
             // 최초 주문 시간으로부터 현재 시간까지 흐른 시간
-            Integer time = Math.toIntExact(Duration.between(LocalDateTime.now(), approvedAt).getSeconds() / 60);
+            Integer time = Math.toIntExact(Duration.between(approvedAt, LocalDateTime.now()).getSeconds() / 60);
 
             // 예상 소요 시간 - time
-            return takenTime - time;
+            Integer restTime = takenTime - time;
+
+            // 반환
+            return restTime >= 0? restTime: 0;
         }
 
         // 준비 완료

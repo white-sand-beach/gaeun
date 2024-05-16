@@ -6,8 +6,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 @Getter
 @Schema(name = "GetOrderInProgressSellerResponse", description = "판매자 주문 조회 응답")
@@ -22,10 +25,10 @@ public class GetOrderInProgressSellerResponse {
     @Schema(description = "주문 가격", example = "10000")
     private Integer orderPrice;
 
-    @Schema(description = "주문 상태", example = "진행중")
+    @Schema(description = "주문 상태", example = "진행 중")
     private String orderStatus;
 
-    @Schema(description = "주문 시간", example = "2024-05-14 17:06:23")
+    @Schema(description = "주문 날짜", example = "2024.05.14(목)")
     private String orderDate;
 
     @Schema(description = "소비자 연락처", example = "01011112222")
@@ -48,7 +51,7 @@ public class GetOrderInProgressSellerResponse {
                 .orderContents(getContents(orderInfo.getOrderInfoItemList()))
                 .orderPrice(orderInfo.getPaymentPrice())
                 .orderStatus(orderInfo.getStatus().getDescription())
-                .orderDate(orderInfo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .orderDate(getDate(orderInfo.getCreatedAt()))
                 .consumerPhoneNumber(orderInfo.getConsumer().getPhoneNumber())
                 .build();
     }
@@ -65,6 +68,17 @@ public class GetOrderInProgressSellerResponse {
         }
 
         sb.append(" 외 ").append(orderInfoItems.size() - 1).append("건");
+        return sb.toString();
+    }
+
+    private static String getDate(LocalDateTime localDateTime) {
+
+        StringBuilder sb =  new StringBuilder();
+
+        String date = localDateTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        String dayOfWeek = localDateTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN);
+
+        sb.append(date).append("(").append(dayOfWeek).append(")");
         return sb.toString();
     }
 }

@@ -5,7 +5,7 @@ import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderDetailConsumerResponse;
-import com.todayeat.backend.order.dto.response.consumer.GetOrderDetailSellerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderDetailSellerResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListInProgressSellerResponse;
@@ -51,21 +51,21 @@ public class OrderController implements OrderControllerDocs {
     }
 
     @Override
-    public SuccessResponse<GetOrderListConsumerResponse> getListConsumer() {
+    public SuccessResponse<GetOrderListConsumerResponse> getListConsumer(Integer page, Integer size, String keyword) {
 
-        return SuccessResponse.of(orderService.getListConsumer(), GET_ORDER_LIST_CONSUMER_SUCCESS);
+        return SuccessResponse.of(orderService.getListConsumer(page, size, keyword), GET_ORDER_LIST_CONSUMER_SUCCESS);
     }
 
     @Override
-    public SuccessResponse<GetOrderListInProgressSellerResponse> getInProgressListSeller(Long storeId) {
+    public SuccessResponse<GetOrderListInProgressSellerResponse> getInProgressListSeller(Long storeId, Integer page, Integer size) {
 
-        return SuccessResponse.of(orderService.getInProgressListSeller(storeId), GET_ORDER_IN_PROGRESS_LIST_SELLER_SUCCESS);
+        return SuccessResponse.of(orderService.getInProgressListSeller(storeId, page, size), GET_ORDER_IN_PROGRESS_LIST_SELLER_SUCCESS);
     }
 
     @Override
-    public SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(Long storeId) {
+    public SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(Long storeId, Integer page, Integer size, String orderNo) {
 
-        return SuccessResponse.of(orderService.getFinishedListSeller(storeId), GET_ORDER_FINISHED_LIST_SELLER_SUCCESS);
+        return SuccessResponse.of(orderService.getFinishedListSeller(storeId, page, size, orderNo), GET_ORDER_FINISHED_LIST_SELLER_SUCCESS);
     }
 
     @Override
