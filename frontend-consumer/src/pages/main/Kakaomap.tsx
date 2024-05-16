@@ -37,18 +37,13 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   const update = useUserLocation.getState().updateUserState; // 스토어의 상태 업데이트 함수를 가져옵니다.
+  const { lati, lngi } = useUserLocation((state) => ({
+    lati: state.latitude,
+    lngi: state.longitude,
+  })); // 스토어에서 위치 데이터 가져오기
 
   useEffect(() => {
-    if (
-      currentPosition.lat !== undefined &&
-      currentPosition.lng !== undefined
-    ) {
-      initMap(currentPosition.lat, currentPosition.lng);
-    }
-  }, [currentPosition, updateCounter, storeList]); // currentPosition의 변경을 감지합니다.
-
-  useEffect(() => {
-    if (!lat || !lng) {
+    if (!lati || !lngi) {
       getCurrentLocation();
     } else {
       setCurrentPosition({ lat, lng });
@@ -60,6 +55,15 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
       }
     }
   }, [lat, lng]); // lat, lng props의 변경을 감지합니다.
+
+  useEffect(() => {
+    if (
+      currentPosition.lat !== undefined &&
+      currentPosition.lng !== undefined
+    ) {
+      initMap(currentPosition.lat, currentPosition.lng);
+    }
+  }, [currentPosition, updateCounter, storeList]); // currentPosition의 변경을 감지합니다.
 
   const initMap = (latitude: number, longitude: number) => {
     const container = mapRef.current;

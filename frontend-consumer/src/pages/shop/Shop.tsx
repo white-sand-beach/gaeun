@@ -12,7 +12,7 @@ import { ShopInfo } from "../../types/ShopInfoType";
 import FavoritePostForm from "../../services/favorites/FavoritePostService";
 import ShoptFavoriteDeleteForm from "../../services/favorites/ShopFavoriteDeleteService";
 
-import logo from "../../../public/windows11/LargeTile.scale-100.png"
+import logo from "../../../public/windows11/LargeTile.scale-100.png";
 
 const mapHeight = "105px"; // 예시 높이값
 const updateCounter = 0;
@@ -115,7 +115,7 @@ const Shop = () => {
           <div className="flex items-center">
             {/* 토글 버튼 */}
             <FavoriteButton isFavorite={isFavorite} onToggle={handleToggle} />
-            <span className="text-sm pl-2 font-bold">{favoriteCount}</span>
+            <span className="pl-2 text-sm font-bold">{favoriteCount}</span>
           </div>
         </div>
 
