@@ -5,7 +5,7 @@ import { SalesInfoType } from "../../types/shop/SalesInfoType";
 const GetMySalesListAPI = () => {
     const cookies = new Cookies()
     const accessToken = cookies.get("accessToken")
-    const storeId = 29
+    const storeId = 11;
     const getSalesSeller = (setFunc:(saleList:SalesInfoType[]) => void) => {
         axios.get(import.meta.env.VITE_BASE_URL + "/api/sales/seller", {
             withCredentials: true,

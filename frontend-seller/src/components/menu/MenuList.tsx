@@ -48,7 +48,7 @@ const MenuList: React.FC<MenuListType> = (props) => {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <button className="common-btn" onClick={() => navigate("/register/food")}>
+      <button className="common-btn" onClick={() => navigate("/register-food")}>
         메뉴 등록
       </button>
       <h1>메뉴 보여줄 페이지 입니다.</h1>
@@ -79,7 +79,7 @@ const MenuList: React.FC<MenuListType> = (props) => {
               title="판매 등록"
               onClick={() =>
                 postSales({
-                  storeId: 29,
+                  storeId: 11,
                   saleList: [
                     {
                       sellPrice: menu.sellPrice,

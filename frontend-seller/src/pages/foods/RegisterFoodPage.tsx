@@ -43,7 +43,7 @@ const RegisterFoodPage = () => {
             name: foodInfo.name,
             originalPrice: foodInfo.originalPrice,
             sellPrice: foodInfo.sellPrice,
-            storeId: 29
+            storeId: 11
         });
     };
 
