@@ -7,8 +7,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 @Getter
 @Schema(name = "GetOrderConsumerResponse", description = "소비자 주문 조회 응답")
@@ -16,9 +20,6 @@ public class GetOrderConsumerResponse {
 
     @Schema(description = "주문 고유번호", example = "1")
     private Long orderInfoId;
-
-    @Schema(description = "주문 번호", example = "UUID")
-    private String orderNo;
 
     @Schema(description = "주문 내용", example = "마라샹궈 1개 외 2건")
     private String orderContents;
@@ -29,7 +30,7 @@ public class GetOrderConsumerResponse {
     @Schema(description = "주문 상태", example = "진행중")
     private String orderStatus;
 
-    @Schema(description = "주문 시간", example = "2024-05-14 17:06:23")
+    @Schema(description = "주문 시간", example = "2024.05.14(화)")
     private String orderDate;
 
     @Schema(description = "가게 고유번호", example = "1")
@@ -42,9 +43,8 @@ public class GetOrderConsumerResponse {
     private String storeTel;
 
     @Builder
-    private GetOrderConsumerResponse(Long orderInfoId, String orderNo, String orderContents, Integer orderPrice, String orderStatus, String orderDate, Long storeId, String storeName, String storeTel) {
+    private GetOrderConsumerResponse(Long orderInfoId, String orderContents, Integer orderPrice, String orderStatus, String orderDate, Long storeId, String storeName, String storeTel) {
         this.orderInfoId = orderInfoId;
-        this.orderNo = orderNo;
         this.orderContents = orderContents;
         this.orderPrice = orderPrice;
         this.orderStatus = orderStatus;
@@ -60,11 +60,10 @@ public class GetOrderConsumerResponse {
 
         return builder()
                 .orderInfoId(orderInfo.getId())
-                .orderNo(orderInfo.getOrderNo())
                 .orderContents(getContents(orderInfo.getOrderInfoItemList()))
                 .orderPrice(orderInfo.getPaymentPrice())
                 .orderStatus(orderInfo.getStatus().getDescription())
-                .orderDate(orderInfo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .orderDate(getDate(orderInfo.getCreatedAt()))
                 .storeId(store.getId())
                 .storeName(store.getName())
                 .storeTel(store.getTel())
@@ -83,6 +82,17 @@ public class GetOrderConsumerResponse {
         }
 
         sb.append(" 외 ").append(orderInfoItems.size() - 1).append("건");
+        return sb.toString();
+    }
+
+    private static String getDate(LocalDateTime localDateTime) {
+
+        StringBuilder sb =  new StringBuilder();
+
+        String date = localDateTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        String dayOfWeek = localDateTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN);
+
+        sb.append(date).append("(").append(dayOfWeek).append(")");
         return sb.toString();
     }
 }
