@@ -2,7 +2,6 @@ import OrderDetailInfo from "../../components/order/OrderDetailInfo";
 import PaymentHistory from "../../components/order/PaymentHistory";
 import ReorderButton from "../../components/button/ReorderButton";
 import ReviewButton from "../../components/button/ReviewButton";
-import OrderDeleteButton from "../../components/button/OrderDeleteButton";
 
 const OrderDetail = () => {
   return (
@@ -31,9 +30,6 @@ const OrderDetail = () => {
         <div className="between mt-4 mx-4">
           <ReorderButton />
           <ReviewButton />
-        </div>
-        <div className="center mt-4 mx-4">
-          <OrderDeleteButton />
         </div>
       </div>
     </div>

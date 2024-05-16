@@ -59,6 +59,7 @@ const PaymentButton = ({ cartInfo }: CheckPaymentProps) => {
             },
           });
           console.log(response)
+          window.location.href = redirectUrl
         } catch (error) {
           console.error(error);
         }

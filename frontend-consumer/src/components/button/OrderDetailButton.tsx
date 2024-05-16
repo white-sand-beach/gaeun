@@ -1,12 +1,18 @@
-import { Link } from "react-router-dom";
+import { OrderInfo } from "../../types/OrderType";
 
-const OrderDetailButton = () => {
+// interface orderInfoProps {
+//   orderInfoId:
+// }
+
+const OrderDetailButton = ({ orderInfoId }: OrderInfo) => {
+  const handleDetailSubmit = async () => {
+
+  };
   return (
-    <>
-      <Link to="/order-detail">
-        <button className="order-detail-button">{`상세내역 보러가기 >`}</button>
-      </Link>
-    </>
+    <button
+      onClick={handleDetailSubmit}
+      className="order-detail-button"
+    >{`상세내역 보러가기 >`}</button>
   );
 };
 
