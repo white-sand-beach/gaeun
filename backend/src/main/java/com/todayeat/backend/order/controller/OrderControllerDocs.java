@@ -235,7 +235,7 @@ public interface OrderControllerDocs {
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
-            content = @Content(schema = @Schema(implementation = GetOrderDetailSellerResponse.class)))
+            content = @Content(schema = @Schema(implementation = GetOrderInProgressConsumerResponse.class)))
     @ApiResponse(responseCode = "400",
             description = "진행 중인 주문이 아닌 경우",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
