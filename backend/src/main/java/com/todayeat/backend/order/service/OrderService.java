@@ -5,11 +5,11 @@ import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.cart.entity.Cart;
 import com.todayeat.backend.cart.repository.CartRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
+import com.todayeat.backend.order.api.client.IamportRequestClient;
 import com.todayeat.backend.order.api.dto.request.CancelPaymentRequest;
 import com.todayeat.backend.order.api.dto.response.GetPaymentResponse;
-import com.todayeat.backend.order.api.client.IamportRequestClient;
-import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
+import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.response.consumer.*;
 import com.todayeat.backend.order.dto.response.seller.GetOrderFinishedSellerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderInProgressSellerResponse;
@@ -25,6 +25,7 @@ import com.todayeat.backend.sale.repository.SaleRepository;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.repository.StoreRepository;
+import com.todayeat.backend.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,11 +46,13 @@ import static com.todayeat.backend.order.entity.OrderInfoStatus.*;
 @Transactional(readOnly = true)
 public class OrderService {
 
-    private final OrderInfoRepository orderInfoRepository;
     private final OrderInfoItemRepository orderInfoItemRepository;
-    private final CartRepository cartRepository;
+    private final OrderInfoRepository orderInfoRepository;
     private final StoreRepository storeRepository;
     private final SaleRepository saleRepository;
+    private final CartRepository cartRepository;
+
+    private final StoreService storeService;
 
     private final SecurityUtil securityUtil;
 
@@ -83,7 +86,7 @@ public class OrderService {
         int paymentPrice = 0;
 
         // 장바구니 목록 확인
-        for (Cart cart: carts) {
+        for (Cart cart : carts) {
 
             Sale sale = findSaleOrElseThrow(cart);
 
@@ -97,16 +100,16 @@ public class OrderService {
 
         // 주문 정보 저장
         OrderInfo orderInfo = OrderInfo.of(UUID.randomUUID().toString(),
-                                            originalPrice,
-                                            originalPrice - paymentPrice, // discountPrice
-                                            paymentPrice,
-                                            consumer,
-                                            firstStore);
+                originalPrice,
+                originalPrice - paymentPrice, // discountPrice
+                paymentPrice,
+                consumer,
+                firstStore);
         orderInfoRepository.save(orderInfo);
 
         // 주문 아이템 정보 저장
         carts.iterator().forEachRemaining(
-            cart -> orderInfoItemRepository.save(
+                cart -> orderInfoItemRepository.save(
                         OrderInfoItem.of(findSaleOrElseThrow(cart), cart.getQuantity(), orderInfo))
         );
 
@@ -134,7 +137,7 @@ public class OrderService {
         // 아임포트 결제 조회
         GetPaymentResponse getPaymentResponse =
                 iamportRequestClient.getPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
-                                                request.getPaymentId());
+                        request.getPaymentId());
 
         // 결제 완료 상태가 아니거나 주문 금액과 실제 결제 금액이 다를 경우
         if (!getPaymentResponse.getStatus().equals("PAID")
@@ -232,6 +235,9 @@ public class OrderService {
             // 수령 완료
             if (orderInfoStatus == FINISHED) {
                 orderInfo.updateStatus(orderInfoStatus);
+
+                storeService.updateSaleCnt(storeRepository.findByIdAndDeletedAtIsNull(seller.getStore().getId())
+                        .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
                 return;
             }
         }
@@ -264,7 +270,7 @@ public class OrderService {
 
         return GetOrderListConsumerResponse.of(
                 orderInfoRepository.findAllByConsumerIdAndDeletedAtIsNullOrderByCreatedAtDesc(consumer.getId())
-                .stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()));
+                        .stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()));
     }
 
     public GetOrderListInProgressSellerResponse getInProgressListSeller(Long storeId) {
