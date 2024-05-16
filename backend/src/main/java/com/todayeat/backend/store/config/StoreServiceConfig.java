@@ -10,6 +10,7 @@ import com.todayeat.backend.store.repository.StoreDocumentRepository;
 import com.todayeat.backend.store.repository.StoreRepository;
 import com.todayeat.backend.store.service.StoreService;
 import com.todayeat.backend.store.service.StoreServiceElasticsearchImpl;
+import com.todayeat.backend.store.service.StoreServiceQueryDSLImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,10 +33,10 @@ public class StoreServiceConfig {
     @Bean
     public StoreService storeService() {
 
-        //return new StoreServiceQueryDSLImpl(storeCategoryRepository, favoriteRepository, categoryRepository,
-        //        sellerRepository, storeRepository, securityUtil, s3Util);
-
-        return new StoreServiceElasticsearchImpl(elasticsearchOperations, storeDocumentRepository, storeCategoryRepository, favoriteRepository, categoryRepository,
+        return new StoreServiceQueryDSLImpl(storeCategoryRepository, favoriteRepository, categoryRepository,
                 sellerRepository, storeRepository, securityUtil, s3Util);
+
+        //return new StoreServiceElasticsearchImpl(storeDocumentRepository, storeCategoryRepository, favoriteRepository, categoryRepository,
+        //        sellerRepository, storeRepository, securityUtil, s3Util);
     }
 }

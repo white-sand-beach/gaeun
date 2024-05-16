@@ -11,10 +11,7 @@ import com.todayeat.backend.order.api.client.IamportRequestClient;
 import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.response.consumer.*;
-import com.todayeat.backend.order.dto.response.seller.GetOrderFinishedSellerResponse;
-import com.todayeat.backend.order.dto.response.seller.GetOrderInProgressSellerResponse;
-import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
-import com.todayeat.backend.order.dto.response.seller.GetOrderListInProgressSellerResponse;
+import com.todayeat.backend.order.dto.response.seller.*;
 import com.todayeat.backend.order.entity.OrderInfo;
 import com.todayeat.backend.order.entity.OrderInfoItem;
 import com.todayeat.backend.order.entity.OrderInfoStatus;
@@ -28,12 +25,14 @@ import com.todayeat.backend.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.todayeat.backend._common.response.error.ErrorType.*;
@@ -57,6 +56,9 @@ public class OrderService {
 
     @Value("${IAMPORT_API_SECRET_V2}")
     private String IAMPORT_API_SECRET_V2;
+
+    @Value("${IAMPORT_STORE_ID}")
+    private String IAMPORT_STORE_ID;
 
     private String PORTONE_PREFIX = "PortOne ";
 
@@ -129,12 +131,16 @@ public class OrderService {
             throw new BusinessException(ORDER_ALREADY_PAID);
         }
 
-        // TODO: 통신 에러 처리하기
+        GetPaymentResponse getPaymentResponse;
 
         // 아임포트 결제 조회
-        GetPaymentResponse getPaymentResponse =
-                iamportRequestClient.getPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
-                                                request.getPaymentId());
+        try {
+            getPaymentResponse = iamportRequestClient.getPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
+                                    request.getPaymentId(),
+                                    IAMPORT_STORE_ID);
+        } catch (Exception e) {
+            throw new BusinessException(ORDER_PAYMENT_FAIL);
+        }
 
         // 결제 완료 상태가 아니거나 주문 금액과 실제 결제 금액이 다를 경우
         if (!getPaymentResponse.getStatus().equals("PAID")
@@ -258,33 +264,70 @@ public class OrderService {
         cancelPayment(orderInfo.getPaymentId());
     }
 
-    public GetOrderListConsumerResponse getListConsumer() {
+    public GetOrderListConsumerResponse getListConsumer(Integer page, Integer size, String keyword) {
 
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Consumer consumer = securityUtil.getConsumer();
 
+        // 검색어 없는 경우
+        if (keyword == null || keyword.isEmpty()) {
+
+            Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByConsumerIdAndStatusIsNotUnpaidAndDeletedAtIsNull(consumer.getId(), pageable);
+
+            return GetOrderListConsumerResponse.of(
+                    orderInfos.getContent().stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()),
+                    orderInfos.getNumber(),
+                    orderInfos.hasNext());
+        }
+
+        // 검색어 있는 경우
+        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByConsumerIdAndStatusIsNotUnpaidAndKeywordDeletedAtIsNull(consumer.getId(), keyword, pageable);
+
         return GetOrderListConsumerResponse.of(
-                orderInfoRepository.findAllByConsumerIdAndDeletedAtIsNullOrderByCreatedAtDesc(consumer.getId())
-                .stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()));
+                orderInfos.getContent().stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()),
+                orderInfos.getNumber(),
+                orderInfos.hasNext());
     }
 
-    public GetOrderListInProgressSellerResponse getInProgressListSeller(Long storeId) {
+    public GetOrderListInProgressSellerResponse getInProgressListSeller(Long storeId, Integer page, Integer size) {
 
         validateStoreAndSeller(storeId, securityUtil.getSeller());
 
-        // 종료되지 않은 주문 목록
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending()); // 페이징
+        List<OrderInfoStatus> statusList = Arrays.asList(PAID, IN_PROGRESS, PREPARED); // 진행중인 상태
+
+        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByStoreIdAndStatusAndDeletedAtIsNull(storeId, statusList, pageable);
+
         return GetOrderListInProgressSellerResponse.of(
-                orderInfoRepository.findAllByStoreIdAndStatusIsNotFinishedAndDeletedAtIsNullOrderByCreatedAtDesc(storeId)
-                        .stream().map(GetOrderInProgressSellerResponse::from).collect(Collectors.toList()));
+                orderInfos.stream().map(GetOrderInProgressSellerResponse::from).collect(Collectors.toList()),
+                orderInfos.getNumber(),
+                orderInfos.hasNext());
     }
 
-    public GetOrderListFinishedSellerResponse getFinishedListSeller(Long storeId) {
+    public GetOrderListFinishedSellerResponse getFinishedListSeller(Long storeId, Integer page, Integer size, String orderNo) {
 
         validateStoreAndSeller(storeId, securityUtil.getSeller());
 
-        // 종료된 주문 목록
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending()); // 페이징
+        List<OrderInfoStatus> statusList = Arrays.asList(CANCEL, DENIED, FINISHED); // 종료된 상태
+
+        // 주문번호 검색 없는 경우
+        if (orderNo == null || orderNo.isEmpty()) {
+            Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByStoreIdAndStatusAndDeletedAtIsNull(storeId, statusList, pageable);
+
+            return GetOrderListFinishedSellerResponse.of(
+                    orderInfos.stream().map(GetOrderFinishedSellerResponse::from).collect(Collectors.toList()),
+                    orderInfos.getNumber(),
+                    orderInfos.hasNext());
+        }
+
+        // 주문번호 검색 있는 경우
+        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByStoreIdAndStatusAndOrderNoAndDeletedAtIsNull(storeId, statusList, orderNo, pageable);
+
         return GetOrderListFinishedSellerResponse.of(
-                orderInfoRepository.findAllByStoreIdAndStatusIsFinishedAndDeletedAtIsNullOrderByCreatedAtDesc(storeId)
-                        .stream().map(GetOrderFinishedSellerResponse::from).collect(Collectors.toList()));
+                orderInfos.stream().map(GetOrderFinishedSellerResponse::from).collect(Collectors.toList()),
+                orderInfos.getNumber(),
+                orderInfos.hasNext());
     }
 
     public GetOrderDetailConsumerResponse getOrderDetailConsumer(Long orderInfoId) {
@@ -349,6 +392,8 @@ public class OrderService {
     }
 
     private void cancelPayment(String paymentId) {
+
+        // TODO: 통신 에러 처리하기
 
         iamportRequestClient.cancelPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
                 paymentId,

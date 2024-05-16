@@ -13,7 +13,8 @@ public interface IamportRequestClient {
 
     @GetMapping(value = "/payments/{paymentId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     GetPaymentResponse getPayment(@RequestHeader(HttpHeaders.AUTHORIZATION) String apiSecret,
-                                  @PathVariable String paymentId);
+                                  @PathVariable String paymentId,
+                                  @RequestParam String storeId);
 
     @PostMapping(value = "/payments/{paymentId}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE)
     CancelPaymentResponse cancelPayment(@RequestHeader(HttpHeaders.AUTHORIZATION) String apiSecret,
