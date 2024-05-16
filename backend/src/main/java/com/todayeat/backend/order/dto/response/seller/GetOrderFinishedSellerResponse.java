@@ -19,6 +19,9 @@ public class GetOrderFinishedSellerResponse {
     @Schema(description = "주문 고유번호", example = "1")
     private Long orderInfoId;
 
+    @Schema(description = "주문 번호", example = "UUID")
+    private String orderNo;
+
     @Schema(description = "주문 내용", example = "마라샹궈 1개 외 2건")
     private String orderContents;
 
@@ -32,8 +35,9 @@ public class GetOrderFinishedSellerResponse {
     private String orderDate;
 
     @Builder
-    private GetOrderFinishedSellerResponse(Long orderInfoId, String orderContents, Integer orderPrice, String orderStatus, String orderDate, String consumerPhoneNumber) {
+    private GetOrderFinishedSellerResponse(Long orderInfoId, String orderNo, String orderContents, Integer orderPrice, String orderStatus, String orderDate, String consumerPhoneNumber) {
         this.orderInfoId = orderInfoId;
+        this.orderNo = orderNo;
         this.orderContents = orderContents;
         this.orderPrice = orderPrice;
         this.orderStatus = orderStatus;
@@ -44,6 +48,7 @@ public class GetOrderFinishedSellerResponse {
 
         return builder()
                 .orderInfoId(orderInfo.getId())
+                .orderNo(orderInfo.getOrderNo())
                 .orderContents(getContents(orderInfo.getOrderInfoItemList()))
                 .orderPrice(orderInfo.getPaymentPrice())
                 .orderStatus(orderInfo.getStatus().getDescription())
