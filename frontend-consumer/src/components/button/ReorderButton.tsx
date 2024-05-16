@@ -11,7 +11,7 @@ const ReorderButton = ({ storeId }: StoreId) => {
   }
   return (
     <button onClick={handleSubmit} className="orange-hover-button w-[140px] border-[1px] py-3">
-      재방문
+      가게 재방문
     </button>
   );
 };

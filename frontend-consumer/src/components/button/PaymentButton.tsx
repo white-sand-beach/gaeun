@@ -39,7 +39,7 @@ const PaymentButton = ({ cartInfo }: CheckPaymentProps) => {
     const processPayment = async () => {
       if (orderInfoId !== 0) {
         console.log(orderInfoId)
-        alert("결제 화면으로 이동합니다.");
+        alert("결제 후 마감 시간 전까지 매장 방문을 하지 않으시면 결제 금액은 사회에 환원됩니다.");
         try {
           const paymentId = `payment-${generateRandomId(30)}`;
           const redirectUrl = `${window.location.origin}/consumer/payment-callback?orderInfoId=${orderInfoId}&paymentId=${paymentId}`;

@@ -5,6 +5,7 @@ import { OrderItem, OrderDetailType } from "../../types/OrderType";
 import PaymentHistory from "../../components/order/PaymentHistory";
 import ReorderButton from "../../components/button/ReorderButton";
 import ReviewButton from "../../components/button/ReviewButton";
+import BannerSlider from "../../components/navbar/ServiceBanner";
 
 const OrderDetail = () => {
   const location = useLocation();
@@ -15,8 +16,8 @@ const OrderDetail = () => {
   });
 
   return (
-    <div className="flex justify-center pt-14">
-      <div className="w-screen">
+    <div className="center w-screen h-screen">
+      <div className="">
         {/* 가게명 및 주문 정보 */}
         <div className="pt-2 mx-6 mb-2">
           <h1 className="font-bold text-2xl">{orderDetail.storeName}</h1>
@@ -53,9 +54,11 @@ const OrderDetail = () => {
         <div className="center">
           <PaymentHistory orderDetail={orderDetail} />
         </div>
-
+        <div className="w-11/12 mx-auto mt-6 mb-4 border-2 border-orange-400 center h-14 rounded-xl">
+          <BannerSlider />
+        </div>
         {/* 재주문 및 리뷰 작성 버튼 */}
-        <div className="between mt-4 mx-4">
+        <div className="between mt-8 mx-4">
           <ReorderButton storeId={orderDetail.storeId} />
           <ReviewButton />
         </div>
