@@ -5,8 +5,6 @@ import SignUp from "./pages/user/SignupPage.tsx";
 import MainLayout from "./components/ui/MainLayout.tsx";
 
 import InprogressListPage from "./pages/order/InprogressListPage.tsx";
-// import OrderdetailPage from "./pages/order/OrderdetailPage.tsx";
-import OrderDetail from "./components/order/OrderDetail.tsx";
 import NotificationPage from "./pages/notification/NotificationPage.tsx";
 import RegisterShopPage from "./pages/shop/RegisterShopPage.tsx";
 import RegisterFoodPage from "./pages/foods/RegisterFoodPage.tsx";
@@ -16,6 +14,7 @@ import ShopInfoPage from "./pages/shop/ShopInfoPage.tsx";
 import MenuListPage from "./pages/menu/MenuListPage.tsx";
 import Cookies from "universal-cookie";
 import UpdateFoodPage from "./pages/foods/UpdateFoodPage.tsx";
+import OrderDetailPage from "./pages/order/OrderInfoPage.tsx";
 
 
 const App = () => {
@@ -27,7 +26,7 @@ const App = () => {
     localStorage.clear()
     cookies.remove("accessToken")
   })
-  
+
   return (
     <BrowserRouter basename="/seller">
       <MainLayout />
@@ -39,7 +38,7 @@ const App = () => {
           <Route path="/register-food" element={<RegisterFoodPage />} />
           <Route path="/update/food/:menuId" element={<UpdateFoodPage />} />
           <Route path="/order" element={<InprogressListPage />} />
-          <Route path="/order/:orderNum" element={<OrderDetail />} />
+          <Route path="/order/:orderInfoId" element={<OrderDetailPage />} />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/menus" element={<MenuListPage />} />
           <Route path="/sales" element={<SaleslistPage />} />
