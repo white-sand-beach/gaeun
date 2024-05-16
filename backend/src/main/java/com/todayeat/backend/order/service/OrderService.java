@@ -129,7 +129,7 @@ public class OrderService {
                         OrderInfoItem.of(findSaleOrElseThrow(cart), cart.getQuantity(), orderInfo))
         );
 
-        return CreateOrderResponse.of(orderInfo.getId());
+        return CreateOrderResponse.of(orderInfo.getId(), consumer);
     }
 
     @Transactional
