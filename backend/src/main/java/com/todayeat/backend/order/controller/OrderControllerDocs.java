@@ -148,9 +148,15 @@ public interface OrderControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PreAuthorize("hasRole('SELLER')")
     @GetMapping("/in-progress")
-    SuccessResponse<GetOrderListInProgressSellerResponse> getInProgressListSeller(@RequestParam(value = "store-id", required = true)
+    SuccessResponse<GetOrderListInProgressSellerResponse> getInProgressListSeller(@RequestParam(value = "store-id")
                                                                                   @Schema(description = "가게 고유번호", example = "1")
-                                                                                  Long storeId);
+                                                                                  Long storeId,
+                                                                                  @Schema(description = "페이지 번호, 0부터 시작", example = "0")
+                                                                                  @RequestParam
+                                                                                  Integer page,
+                                                                                  @Schema(description = "데이터 개수", example = "10")
+                                                                                  @RequestParam
+                                                                                  Integer size);
 
     @Operation(summary = "종료된 주문 목록 조회 (판매자)",
             description = """
@@ -165,9 +171,15 @@ public interface OrderControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PreAuthorize("hasRole('SELLER')")
     @GetMapping("/finished")
-    SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(@RequestParam(value = "store-id", required = true)
-                                                                                @Schema(description = "가게 고유번호", example = "1")
-                                                                                Long storeId);
+    SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(@RequestParam(value = "store-id")
+                                                                              @Schema(description = "가게 고유번호", example = "1")
+                                                                              Long storeId,
+                                                                              @Schema(description = "페이지 번호, 0부터 시작", example = "0")
+                                                                              @RequestParam
+                                                                              Integer page,
+                                                                              @Schema(description = "데이터 개수", example = "10")
+                                                                              @RequestParam
+                                                                              Integer size);
 
     @Operation(summary = "주문 상세 조회 (소비자)",
             description = """
@@ -183,8 +195,8 @@ public interface OrderControllerDocs {
     @PreAuthorize("hasRole('CONSUMER')")
     @GetMapping("/{order-info-id}/consumer")
     SuccessResponse<GetOrderDetailConsumerResponse> getOrderDetailConsumer(@PathVariable(value = "order-info-id", required = true)
-                                                                          @Schema(description = "주문 고유번호", example = "1")
-                                                                          Long orderInfoId);
+                                                                           @Schema(description = "주문 고유번호", example = "1")
+                                                                           Long orderInfoId);
 
     @Operation(summary = "주문 상세 조회 (판매자)",
             description = """
@@ -200,6 +212,6 @@ public interface OrderControllerDocs {
     @PreAuthorize("hasRole('SELLER')")
     @GetMapping("/{order-info-id}/seller")
     SuccessResponse<GetOrderDetailSellerResponse> getOrderDetailSeller(@PathVariable(value = "order-info-id", required = true)
-                                                                           @Schema(description = "주문 고유번호", example = "1")
-                                                                           Long orderInfoId);
+                                                                       @Schema(description = "주문 고유번호", example = "1")
+                                                                       Long orderInfoId);
 }

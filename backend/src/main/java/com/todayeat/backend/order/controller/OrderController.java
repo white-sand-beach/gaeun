@@ -57,15 +57,15 @@ public class OrderController implements OrderControllerDocs {
     }
 
     @Override
-    public SuccessResponse<GetOrderListInProgressSellerResponse> getInProgressListSeller(Long storeId) {
+    public SuccessResponse<GetOrderListInProgressSellerResponse> getInProgressListSeller(Long storeId, Integer page, Integer size) {
 
-        return SuccessResponse.of(orderService.getInProgressListSeller(storeId), GET_ORDER_IN_PROGRESS_LIST_SELLER_SUCCESS);
+        return SuccessResponse.of(orderService.getInProgressListSeller(storeId, page, size), GET_ORDER_IN_PROGRESS_LIST_SELLER_SUCCESS);
     }
 
     @Override
-    public SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(Long storeId) {
+    public SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(Long storeId, Integer page, Integer size) {
 
-        return SuccessResponse.of(orderService.getFinishedListSeller(storeId), GET_ORDER_FINISHED_LIST_SELLER_SUCCESS);
+        return SuccessResponse.of(orderService.getFinishedListSeller(storeId, page, size), GET_ORDER_FINISHED_LIST_SELLER_SUCCESS);
     }
 
     @Override

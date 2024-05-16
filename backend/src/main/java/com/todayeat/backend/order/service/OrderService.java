@@ -31,12 +31,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.todayeat.backend._common.response.error.ErrorType.*;
@@ -270,13 +269,13 @@ public class OrderService {
 
     public GetOrderListConsumerResponse getListConsumer(Integer page, Integer size, String keyword) {
 
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Consumer consumer = securityUtil.getConsumer();
 
         // 검색어 없는 경우
         if (keyword == null || keyword.isEmpty()) {
 
-            Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByConsumerIdAndStatusIsNotUnpaidAndDeletedAtIsNullOrderByCreatedAtDesc(consumer.getId(), pageable);
+            Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByConsumerIdAndStatusIsNotUnpaidAndDeletedAtIsNull(consumer.getId(), pageable);
 
             return GetOrderListConsumerResponse.of(
                     orderInfos.getContent().stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()),
@@ -285,7 +284,7 @@ public class OrderService {
         }
 
         // 검색어 있는 경우
-        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByConsumerIdAndStatusIsNotUnpaidAndKeywordDeletedAtIsNullOrderByCreatedAtDesc(consumer.getId(), keyword, pageable);
+        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByConsumerIdAndStatusIsNotUnpaidAndKeywordDeletedAtIsNull(consumer.getId(), keyword, pageable);
 
         return GetOrderListConsumerResponse.of(
                 orderInfos.getContent().stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()),
@@ -293,24 +292,36 @@ public class OrderService {
                 orderInfos.hasNext());
     }
 
-    public GetOrderListInProgressSellerResponse getInProgressListSeller(Long storeId) {
+    public GetOrderListInProgressSellerResponse getInProgressListSeller(Long storeId, Integer page, Integer size) {
 
         validateStoreAndSeller(storeId, securityUtil.getSeller());
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending()); // 페이징
+        List<OrderInfoStatus> statusList = Arrays.asList(PAID, IN_PROGRESS, PREPARED); // 진행중인 상태
 
         // 종료되지 않은 주문 목록
+        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByStoreIdAndStatusAndDeletedAtIsNull(storeId, statusList, pageable);
+
         return GetOrderListInProgressSellerResponse.of(
-                orderInfoRepository.findAllByStoreIdAndStatusIsNotFinishedAndDeletedAtIsNullOrderByCreatedAtDesc(storeId)
-                        .stream().map(GetOrderInProgressSellerResponse::from).collect(Collectors.toList()));
+                orderInfos.stream().map(GetOrderInProgressSellerResponse::from).collect(Collectors.toList()),
+                orderInfos.getNumber(),
+                orderInfos.hasNext());
     }
 
-    public GetOrderListFinishedSellerResponse getFinishedListSeller(Long storeId) {
+    public GetOrderListFinishedSellerResponse getFinishedListSeller(Long storeId, Integer page, Integer size) {
 
         validateStoreAndSeller(storeId, securityUtil.getSeller());
 
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending()); // 페이징
+        List<OrderInfoStatus> statusList = Arrays.asList(CANCEL, DENIED, FINISHED); // 종료된 상태
+
         // 종료된 주문 목록
+        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByStoreIdAndStatusAndDeletedAtIsNull(storeId, statusList, pageable);
+
         return GetOrderListFinishedSellerResponse.of(
-                orderInfoRepository.findAllByStoreIdAndStatusIsFinishedAndDeletedAtIsNullOrderByCreatedAtDesc(storeId)
-                        .stream().map(GetOrderFinishedSellerResponse::from).collect(Collectors.toList()));
+                orderInfos.stream().map(GetOrderFinishedSellerResponse::from).collect(Collectors.toList()),
+                orderInfos.getNumber(),
+                orderInfos.hasNext());
     }
 
     public GetOrderDetailConsumerResponse getOrderDetailConsumer(Long orderInfoId) {
