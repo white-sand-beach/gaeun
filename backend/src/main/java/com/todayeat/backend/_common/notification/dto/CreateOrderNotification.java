@@ -1,7 +1,6 @@
 package com.todayeat.backend._common.notification.dto;
 
 import com.todayeat.backend.order.entity.OrderInfo;
-import com.todayeat.backend.seller.entity.Seller;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,39 +8,41 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class CreateSellerOrderNotification {
+public class CreateOrderNotification {
 
     private Long orderInfoId;
 
     private String orderNo;
 
-    private LocalDateTime paidAt;
+    private String storeName;
+
+    private LocalDateTime notifiedAt;
+
+    private String orderStatus;
 
     private Integer paymentPrice;
 
-    private List<CreateSellerOrderItemNotification> sellerOrderItemNotificationList;
-
-    private Long sellerId;
+    private List<CreateOrderItemNotification> orderItemNotificationList;
 
     @Builder
-    private CreateSellerOrderNotification(Long orderInfoId, String orderNo, LocalDateTime paidAt, Integer paymentPrice, List<CreateSellerOrderItemNotification> sellerOrderItemNotificationList, Long sellerId) {
+    public CreateOrderNotification(Long orderInfoId, String orderNo, String storeName, LocalDateTime notifiedAt, String orderStatus, Integer paymentPrice, List<CreateOrderItemNotification> orderItemNotificationList) {
         this.orderInfoId = orderInfoId;
         this.orderNo = orderNo;
-        this.paidAt = paidAt;
+        this.storeName = storeName;
+        this.notifiedAt = notifiedAt;
+        this.orderStatus = orderStatus;
         this.paymentPrice = paymentPrice;
-        this.sellerOrderItemNotificationList = sellerOrderItemNotificationList;
-        this.sellerId = sellerId;
+        this.orderItemNotificationList = orderItemNotificationList;
     }
 
-    public static CreateSellerOrderNotification from(OrderInfo orderInfo,List<CreateSellerOrderItemNotification> sellerOrderItemNotificationList, Long sellerId) {
+    public static CreateOrderNotification of(OrderInfo orderInfo, List<CreateOrderItemNotification> orderItemNotificationList) {
 
         return builder()
                 .orderInfoId(orderInfo.getId())
                 .orderNo(orderInfo.getOrderNo())
-                .paidAt(orderInfo.getUpdatedAt())
+                .notifiedAt(orderInfo.getUpdatedAt())
                 .paymentPrice(orderInfo.getPaymentPrice())
-                .sellerOrderItemNotificationList(sellerOrderItemNotificationList)
-                .sellerId(sellerId)
+                .orderItemNotificationList(orderItemNotificationList)
                 .build();
     }
 
@@ -59,15 +60,17 @@ public class CreateSellerOrderNotification {
         StringBuilder sb = new StringBuilder();
 
         sb.append(orderNo).append(",")
-                .append(paidAt).append(",")
+                .append(storeName).append(",")
+                .append(notifiedAt).append(",")
+                .append(orderStatus).append(",")
                 .append(paymentPrice).append(",");
 
-        for(CreateSellerOrderItemNotification oin : sellerOrderItemNotificationList) {
+        for(CreateOrderItemNotification oin : orderItemNotificationList) {
             sb.append(oin.getName()).append(",")
                     .append(oin.getQuantity()).append(",");
         }
 
-        return sb.toString();
+        return sb.deleteCharAt(sb.length() - 1).toString();
     }
 
     public String getTitle() {
@@ -79,7 +82,7 @@ public class CreateSellerOrderNotification {
 
         StringBuilder sb = new StringBuilder();
 
-        for(CreateSellerOrderItemNotification oin : sellerOrderItemNotificationList) {
+        for(CreateOrderItemNotification oin : orderItemNotificationList) {
             sb.append(oin.getName()).append(": ")
                     .append(oin.getQuantity()).append(", ");
         }
