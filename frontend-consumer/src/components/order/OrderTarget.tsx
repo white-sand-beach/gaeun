@@ -22,7 +22,7 @@ const Ordertarget = ({orderData}: OrderInfoProps) => {
           </div>
         </div>
         <div className="between mx-4 mb-2">
-          <CallButton />
+          <CallButton storeTel={String(orderData.storeTel)} />
           <OrderDetailButton orderInfoId={orderData.orderInfoId}/>
         </div>
       </div>
