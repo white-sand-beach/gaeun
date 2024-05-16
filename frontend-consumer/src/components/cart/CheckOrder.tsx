@@ -1,5 +1,6 @@
 import CountButton from "../button/CountButton";
 import right from "../../assets/store/right.png";
+import logo from "../../../public/windows11/LargeTile.scale-100.png"
 
 import { CartItem } from "../../types/CartType"
 
@@ -18,7 +19,11 @@ const CheckOrder = ({ menuData, onDelete }: CheckOrderProps) => {
         {/* 음식 이미지 */}
         <img
           className="w-16 h-16 rounded-md object-cover"
-          src={menuData.imageUrl}
+          src={menuData.imageUrl ? (
+            menuData.imageUrl 
+            ) : (
+              logo
+            )}
           alt="메뉴 사진"
         />
         {/* 음식 정보 */}
