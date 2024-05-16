@@ -10,9 +10,10 @@ import { CartItem } from "../../types/CartType";
 interface CheckOrderProps {
   menuData: CartItem;
   onDelete: (cartId: string) => void;
+  setIsQuantityChange: (value: React.SetStateAction<boolean>) => void;
 }
 
-const CountButton = ({ menuData, onDelete }: CheckOrderProps) => {
+const CountButton = ({ menuData, onDelete, setIsQuantityChange }: CheckOrderProps) => {
   const [quantity, setQuantity] = useState<number>(menuData.quantity);
   const [showBtn, setShowBtn] = useState<boolean>(true);
 
@@ -30,6 +31,7 @@ const CountButton = ({ menuData, onDelete }: CheckOrderProps) => {
       setQuantity(newQuantity);
       newQuantity == 1 ? setShowBtn(false) : setShowBtn(true);
       console.log("수량 변경 응답:", response);
+      setIsQuantityChange(true)
     } catch (error) {
       console.error(newQuantity, "수량 변경 오류:", error);
     }
@@ -46,6 +48,7 @@ const CountButton = ({ menuData, onDelete }: CheckOrderProps) => {
       setQuantity(newQuantity);
       newQuantity == 1 ? setShowBtn(false) : setShowBtn(true);
       console.log("수량 변경 응답:", response);
+      setIsQuantityChange(true)
     } catch (error) {
       console.error(newQuantity, "수량 변경 오류:", error);
     }
