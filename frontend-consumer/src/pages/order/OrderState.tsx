@@ -1,7 +1,11 @@
+import { useLocation } from "react-router-dom";
 import CallButton from "../../components/button/CallButton";
-// import OrderDetailButton from "../../components/button/OrderDetailButton";
+import OrderDetailButton from "../../components/button/OrderDetailButton";
 
 const OrderState = () => {
+  const location = useLocation();
+  const { orderInfoId } = location.state as { orderInfoId: number };
+
   return (
     <div className="pt-16">
       <header className="between mx-4 mt-2">
@@ -24,7 +28,7 @@ const OrderState = () => {
             <div className="flex items-center mt-1">
               <CallButton />
             </div>
-            {/* <OrderDetailButton /> */}
+            <OrderDetailButton orderInfoId={orderInfoId}/>
           </div>
         </div>
       </div>

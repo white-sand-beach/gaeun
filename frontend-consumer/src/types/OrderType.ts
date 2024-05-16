@@ -8,7 +8,7 @@ export interface OrderItem {
 export interface OrderDetailType {
   orderInfoId?: number;
   orderNo?: string;
-  storeId?: number;
+  storeId: number;
   storeName?: string;
   storeTel?: string;
   orderStatus?: string;

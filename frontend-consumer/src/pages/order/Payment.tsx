@@ -17,7 +17,7 @@ const Payment = () => {
           // 비동기 API 호출을 await로 처리
           const validationResponse = await OrderValidationService(String(orderInfoId), paymentId);
           console.log("Validation successful", validationResponse);
-          navigate("/order-state");  // 검증 성공 시 리다이렉트
+          navigate("/order-state", { state: { orderInfoId: orderInfoId }});  // 검증 성공 시 리다이렉트
         } catch (error) {
           console.error("Validation failed", error);
           console.log("paymentId", paymentId)
