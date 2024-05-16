@@ -35,4 +35,13 @@ public interface OrderInfoRepository extends JpaRepository<OrderInfo, Long> {
             "and o.status in :statusList " +
             "and o.deletedAt is null")
     Slice<OrderInfo> findAllByStoreIdAndStatusAndDeletedAtIsNull(Long storeId, List<OrderInfoStatus> statusList, Pageable pageable);
+
+    @Query("select o from OrderInfo o " +
+            "join fetch o.store s " +
+            "where o.store.id = :storeId " +
+            "and o.status in :statusList " +
+            "and o.orderNo like %:orderNo% " +
+            "and o.deletedAt is null")
+    Slice<OrderInfo> findAllByStoreIdAndStatusAndOrderNoAndDeletedAtIsNull(Long storeId, List<OrderInfoStatus> statusList, String orderNo, Pageable pageable);
+
 }

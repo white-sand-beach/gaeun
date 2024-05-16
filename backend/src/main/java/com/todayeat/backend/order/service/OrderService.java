@@ -299,7 +299,6 @@ public class OrderService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending()); // 페이징
         List<OrderInfoStatus> statusList = Arrays.asList(PAID, IN_PROGRESS, PREPARED); // 진행중인 상태
 
-        // 종료되지 않은 주문 목록
         Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByStoreIdAndStatusAndDeletedAtIsNull(storeId, statusList, pageable);
 
         return GetOrderListInProgressSellerResponse.of(
@@ -308,15 +307,25 @@ public class OrderService {
                 orderInfos.hasNext());
     }
 
-    public GetOrderListFinishedSellerResponse getFinishedListSeller(Long storeId, Integer page, Integer size) {
+    public GetOrderListFinishedSellerResponse getFinishedListSeller(Long storeId, Integer page, Integer size, String orderNo) {
 
         validateStoreAndSeller(storeId, securityUtil.getSeller());
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending()); // 페이징
         List<OrderInfoStatus> statusList = Arrays.asList(CANCEL, DENIED, FINISHED); // 종료된 상태
 
-        // 종료된 주문 목록
-        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByStoreIdAndStatusAndDeletedAtIsNull(storeId, statusList, pageable);
+        // 주문번호 검색 없는 경우
+        if (orderNo == null || orderNo.isEmpty()) {
+            Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByStoreIdAndStatusAndDeletedAtIsNull(storeId, statusList, pageable);
+
+            return GetOrderListFinishedSellerResponse.of(
+                    orderInfos.stream().map(GetOrderFinishedSellerResponse::from).collect(Collectors.toList()),
+                    orderInfos.getNumber(),
+                    orderInfos.hasNext());
+        }
+
+        // 주문번호 검색 있는 경우
+        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByStoreIdAndStatusAndOrderNoAndDeletedAtIsNull(storeId, statusList, orderNo, pageable);
 
         return GetOrderListFinishedSellerResponse.of(
                 orderInfos.stream().map(GetOrderFinishedSellerResponse::from).collect(Collectors.toList()),

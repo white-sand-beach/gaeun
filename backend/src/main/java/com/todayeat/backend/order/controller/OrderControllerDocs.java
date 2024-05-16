@@ -139,6 +139,7 @@ public interface OrderControllerDocs {
             description = """
                           `ROLE_SELLER` \n
                           해당 가게의 진행중인 주문 목록을 조회합니다. \n
+                          request param으로 page, size 넣어주세요.
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
@@ -162,6 +163,8 @@ public interface OrderControllerDocs {
             description = """
                           `ROLE_SELLER` \n
                           해당 가게의 종료된 주문 목록을 조회합니다. \n
+                          request param으로 page, size, order-no 넣어주세요. \n
+                          주문 번호가 없으면 전체 데이터를 검색하고, 주문 번호가 있으면 해당 번호가 포함된 주문 데이터를 검색합니다.
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
@@ -179,7 +182,10 @@ public interface OrderControllerDocs {
                                                                               Integer page,
                                                                               @Schema(description = "데이터 개수", example = "10")
                                                                               @RequestParam
-                                                                              Integer size);
+                                                                              Integer size,
+                                                                              @Schema(description = "주문 번호", example = "UUID")
+                                                                              @RequestParam(required = false, value = "order-no")
+                                                                              String orderNo);
 
     @Operation(summary = "주문 상세 조회 (소비자)",
             description = """

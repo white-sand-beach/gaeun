@@ -63,9 +63,9 @@ public class OrderController implements OrderControllerDocs {
     }
 
     @Override
-    public SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(Long storeId, Integer page, Integer size) {
+    public SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(Long storeId, Integer page, Integer size, String orderNo) {
 
-        return SuccessResponse.of(orderService.getFinishedListSeller(storeId, page, size), GET_ORDER_FINISHED_LIST_SELLER_SUCCESS);
+        return SuccessResponse.of(orderService.getFinishedListSeller(storeId, page, size, orderNo), GET_ORDER_FINISHED_LIST_SELLER_SUCCESS);
     }
 
     @Override
