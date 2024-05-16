@@ -11,6 +11,7 @@ import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
+import com.todayeat.backend.sale.repository.SaleRepository;
 import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
@@ -18,6 +19,7 @@ import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.*;
 import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse.StoreInfo;
+import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse.StoreInfo.SaleImageURL;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.entity.StoreDocument;
 import com.todayeat.backend.store.mapper.StoreMapper;
@@ -62,6 +64,7 @@ public class StoreServiceElasticsearchImpl implements StoreService {
     private final CategoryRepository categoryRepository;
     private final SellerRepository sellerRepository;
     private final StoreRepository storeRepository;
+    private final SaleRepository saleRepository;
 
     private final SecurityUtil securityUtil;
     private final S3Util s3Util;
@@ -193,8 +196,11 @@ public class StoreServiceElasticsearchImpl implements StoreService {
                             latitude.doubleValue(), longitude.doubleValue(),
                             document.getLocation().getLat().doubleValue(), document.getLocation().getLon().doubleValue());
 
+                    List<SaleImageURL> saleImageURLList = saleRepository.findAllByStoreIdAndIsFinishedIsFalseAndDeletedAtIsNull(document.getId()).stream()
+                            .map(StoreMapper.INSTANCE::saleToSaleImageURL)
+                            .toList();
 
-                    return StoreMapper.INSTANCE.storeDocumentToStoreInfo(document, distance);
+                    return StoreMapper.INSTANCE.storeDocumentToStoreInfo(document, distance, saleImageURLList);
                 })
                 .collect(Collectors.toList());
 

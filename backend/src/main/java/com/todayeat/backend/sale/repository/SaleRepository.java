@@ -24,6 +24,8 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
     List<Sale> findAllByStoreAndIsFinishedIsFalseAndDeletedAtIsNull(Store store);
 
+    List<Sale> findAllByStoreIdAndIsFinishedIsFalseAndDeletedAtIsNull(Long storeId);
+
     @Modifying
     @Query("UPDATE Sale s SET s.isFinished = true WHERE s.store = :store AND s.isFinished = false AND s.deletedAt IS NULL")
     void updateAllSalesAsFinishedForStore(@Param("store") Store store);
