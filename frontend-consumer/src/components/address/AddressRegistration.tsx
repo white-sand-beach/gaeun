@@ -8,6 +8,7 @@ import company from "../../assets/search/company.png";
 import home from "../../assets/search/home.png";
 import point_white from "../../assets/search/point_white.png";
 import AddressRegistrationForm from "../../services/searchs/AddressRegistrationService";
+import useUserLocation from "../../store/UserLocation";
 
 const AddressRegistration = () => {
   const location = useLocation();
@@ -17,7 +18,7 @@ const AddressRegistration = () => {
   const [alias, setAlias] = useState("");
   const { address, latitude, longitude, roadAddress } = location.state;
   const [activeAlias, setActiveAlias] = useState(alias);
-
+  const update = useUserLocation.getState().updateUserState; // 스토어의 상태 업데이트 함수를 가져옵니다.
   const navigate = useNavigate();
 
   const goAddressSearchPage = () => {
@@ -73,17 +74,24 @@ const AddressRegistration = () => {
       roadAddress: roadAddress,
     };
 
-    AddressRegistrationForm(
-      locationsData,
-      () => {
-        alert("위치 등록이 완료되었습니다.");
-        goAddressSearchPage();
-      },
-      (error) => {
-        console.error("위치 등록 중 오류 발생:", error);
-        alert("위치 등록 중 오류가 발생했습니다.");
-      }
-    );
+    // update 함수가 정의되어 있을 때만 호출
+    if (update) {
+      AddressRegistrationForm(
+        locationsData,
+        () => {
+          update("latitude", latitude);
+          update("longitude", longitude);
+          alert("위치 등록이 완료되었습니다.");
+          goAddressSearchPage();
+        },
+        (error) => {
+          console.error("위치 등록 중 오류 발생:", error);
+          alert("위치 등록 중 오류가 발생했습니다.");
+        }
+      );
+    } else {
+      console.error("update 함수가 정의되지 않았습니다.");
+    }
   };
 
   return (
