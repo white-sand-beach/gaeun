@@ -64,10 +64,6 @@ const OrderDetail: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col w-full font-extrabold">
-          <div className="flex flex-row justify-between p-2 text-gray-500">
-            <p>결제방식</p>
-            <p>카카오페이</p>
-          </div>
           <div className="flex flex-row justify-between p-2">
             <p>총 결제금액</p>
             <p>{detailInfo?.paymentPrice}원</p>

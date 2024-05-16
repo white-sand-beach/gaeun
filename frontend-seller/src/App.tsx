@@ -14,7 +14,7 @@ import ShopInfoPage from "./pages/shop/ShopInfoPage.tsx";
 import MenuListPage from "./pages/menu/MenuListPage.tsx";
 import Cookies from "universal-cookie";
 import UpdateFoodPage from "./pages/foods/UpdateFoodPage.tsx";
-import OrderDetailPage from "./pages/order/OrderDetailPage.tsx";
+import OrderDetailPage from "./pages/order/OrderInfoPage.tsx";
 
 
 const App = () => {
