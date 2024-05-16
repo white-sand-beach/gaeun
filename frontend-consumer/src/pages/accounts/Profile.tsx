@@ -10,7 +10,7 @@ import UserState from "../../types/UserState";
 import defaultImg from "../../assets/profile/defaultImg.png";
 import sudal from "../../assets/profile/sudal.gif";
 import sudalbg from "../../assets/profile/sudalbg.png";
-import ServiceBanner from "../../components/navbar/ServiceBanner";
+import BannerSlider from "../../components/navbar/ServiceBanner";
 
 const ProfileCard: React.FC = () => {
   const [profileData, setProfileData] = useState<UserState>({
@@ -34,7 +34,7 @@ const ProfileCard: React.FC = () => {
   return (
     <div className="w-full h-screen">
       <div className="flex items-center justify-center w-11/12 pt-20 m-auto">
-        <div className="relative w-full h-56 pt-2 px-2 m-auto bg-white border border-gray-500 rounded-lg shadow-lg">
+        <div className="relative w-full h-56 px-2 pt-2 m-auto bg-white border border-gray-500 rounded-lg shadow-lg">
           {/* 설정 아이콘 */}
           <div className="absolute right-2 top-2">
             <Link to="/profile-setting">
@@ -45,7 +45,7 @@ const ProfileCard: React.FC = () => {
           <div className="flex">
             <div className="relative flex justify-center items-center w-24 h-24 rounded-full border-[1px] border-gray-200 shadow-md">
               <img
-                className="w-20 h-20 rounded-full object-cover"
+                className="object-cover w-20 h-20 rounded-full"
                 src={
                   profileData.profileImage
                     ? profileData.profileImage
@@ -54,17 +54,17 @@ const ProfileCard: React.FC = () => {
                 alt="프로필 이미지"
               />
             </div>
-            <div className="pl-4 pt-8 text-sm">
+            <div className="pt-8 pl-4 text-sm">
               <p className="font-serif">나누면 더 따뜻한 세상</p>
               <p className="font-bold"> {profileData.nickname}</p>
               <p className="text-gray-400">{profileData.email}</p>
             </div>
           </div>
 
-          <div className="between text-xxs mx-1 pt-6 font-bold">
-            <div className="flex w-24 justify-center">
+          <div className="pt-6 mx-1 font-bold between text-xxs">
+            <div className="flex justify-center w-24">
               <Link to="/order-list">
-                <button className="justify-center items-center rounded-lg">
+                <button className="items-center justify-center rounded-lg">
                   <img
                     className="w-12 h-12 bg-white rounded-full"
                     src={order}
@@ -75,9 +75,9 @@ const ProfileCard: React.FC = () => {
               </Link>
             </div>
 
-            <div className="flex w-24 justify-center">
+            <div className="flex justify-center w-24">
               <Link to="/favorite">
-                <button className="justify-center items-center rounded-lg">
+                <button className="items-center justify-center rounded-lg">
                   <img
                     className="w-12 h-12 bg-white rounded-full"
                     src={heart}
@@ -88,9 +88,9 @@ const ProfileCard: React.FC = () => {
               </Link>
             </div>
 
-            <div className="flex w-24 justify-center">
+            <div className="flex justify-center w-24">
               <Link to="/my-review">
-                <button className="justify-center items-center rounded-lg">
+                <button className="items-center justify-center rounded-lg">
                   <img
                     className="w-12 h-12 bg-white rounded-full"
                     src={review}
@@ -105,8 +105,8 @@ const ProfileCard: React.FC = () => {
       </div>
 
       <div className="w-11/12 mx-auto">
-        <div className="center my-5 w-full m-auto border-2 border-orange-400 h-14 rounded-xl">
-          <ServiceBanner />
+        <div className="w-full m-auto my-5 border-2 border-orange-400 center h-14 rounded-xl">
+          <BannerSlider />
         </div>
         <div className="relative h-64 p-4 bg-white border border-gray-500 rounded-lg shadow-lg">
           {/* 배경 이미지 */}

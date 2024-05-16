@@ -185,7 +185,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
                           ">
                               <img src="${logo}" alt="로고 이미지" style="width: 100%; height: 100%; object-fit: cover;"/>
                           </div>
-                          <div style="margin-left: 5px; white-space: nowrap;">${item.name}</div> <!-- 로고 옆에 텍스트 추가 -->
+                          <div style="margin-left: 1px; white-space: nowrap;">${item.name}</div> <!-- 로고 옆에 텍스트 추가 -->
                       </div>
       
                   </div>
