@@ -13,14 +13,24 @@ public class GetOrderListConsumerResponse {
     @Schema(description = "주문 정보")
     private List<GetOrderConsumerResponse> orderInfoList;
 
+    @Schema(description = "현재 페이지", example = "0")
+    private Integer page;
+
+    @Schema(description = "다음 페이지 존재 여부", example = "true")
+    private Boolean hasNext;
+
     @Builder
-    private GetOrderListConsumerResponse(List<GetOrderConsumerResponse> orderInfoList) {
+    private GetOrderListConsumerResponse(List<GetOrderConsumerResponse> orderInfoList, Integer page, Boolean hasNext) {
         this.orderInfoList = orderInfoList;
+        this.page = page;
+        this.hasNext = hasNext;
     }
 
-    public static GetOrderListConsumerResponse of(List<GetOrderConsumerResponse> orderInfoList) {
+    public static GetOrderListConsumerResponse of(List<GetOrderConsumerResponse> orderInfoList, Integer page, Boolean hasNext) {
         return builder()
                 .orderInfoList(orderInfoList)
+                .page(page)
+                .hasNext(hasNext)
                 .build();
     }
 }

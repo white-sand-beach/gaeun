@@ -51,9 +51,9 @@ public class OrderController implements OrderControllerDocs {
     }
 
     @Override
-    public SuccessResponse<GetOrderListConsumerResponse> getListConsumer() {
+    public SuccessResponse<GetOrderListConsumerResponse> getListConsumer(Integer page, Integer size, String keyword) {
 
-        return SuccessResponse.of(orderService.getListConsumer(), GET_ORDER_LIST_CONSUMER_SUCCESS);
+        return SuccessResponse.of(orderService.getListConsumer(page, size, keyword), GET_ORDER_LIST_CONSUMER_SUCCESS);
     }
 
     @Override

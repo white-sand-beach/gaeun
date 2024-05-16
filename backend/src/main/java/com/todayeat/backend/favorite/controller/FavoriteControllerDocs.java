@@ -61,12 +61,16 @@ public interface FavoriteControllerDocs {
     @Operation(summary = "찜 목록 조회",
             description = """
                           `ROLE_CONSUMER` \n
-                          query string으로 page, size 넣어주세요. \n
+                          request param으로 page, size 넣어주세요. \n
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema(implementation = GetFavoriteListResponse.class)))
     @GetMapping
-    SuccessResponse<GetFavoriteListResponse> getList(@Schema(description = "0부터 시작") @RequestParam Integer page,
-                                                     @RequestParam Integer size);
+    SuccessResponse<GetFavoriteListResponse> getList(@Schema(description = "페이지 번호, 0부터 시작", example = "0")
+                                                     @RequestParam
+                                                     Integer page,
+                                                     @Schema(description = "데이터 개수", example = "10")
+                                                     @RequestParam
+                                                     Integer size);
 }

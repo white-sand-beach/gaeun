@@ -116,14 +116,24 @@ public interface OrderControllerDocs {
     @Operation(summary = "주문 목록 조회 (소비자)",
             description = """
                           `ROLE_CONSUMER` \n
-                          주문 목록을 조회합니다.
+                          주문 목록을 조회합니다. \n
+                          request param으로 page, size, keyword 넣어주세요. \n
+                          키워드가 없으면 전체 데이터를 검색하고, 키워드가 있으면 해당 키워드가 포함된 가게의 데이터를 검색합니다.
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema(implementation = GetOrderListConsumerResponse.class)))
     @PreAuthorize("hasRole('CONSUMER')")
     @GetMapping
-    SuccessResponse<GetOrderListConsumerResponse> getListConsumer();
+    SuccessResponse<GetOrderListConsumerResponse> getListConsumer(@Schema(description = "페이지 번호, 0부터 시작", example = "0")
+                                                                  @RequestParam
+                                                                  Integer page,
+                                                                  @Schema(description = "데이터 개수", example = "10")
+                                                                  @RequestParam
+                                                                  Integer size,
+                                                                  @Schema(description = "검색어", example = "마라")
+                                                                  @RequestParam(required = false)
+                                                                  String keyword);
 
     @Operation(summary = "진행중인 주문 목록 조회 (판매자)",
             description = """
