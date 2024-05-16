@@ -5,6 +5,11 @@ WORKDIR /app
 COPY build.gradle settings.gradle /app/
 COPY src /app/src
 
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -y tzdata
+
+RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+
 # 빌드 수행
 RUN gradle build -x test --parallel --continue
 
@@ -15,8 +20,3 @@ EXPOSE 8081
 COPY --from=builder /app/build/libs/*.jar /app/app.jar
 
 CMD ["java", "-jar", "/app/app.jar"]
-
-ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get install -y tzdata
-
-RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
