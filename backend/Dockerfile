@@ -5,7 +5,10 @@ WORKDIR /app
 COPY build.gradle settings.gradle /app/
 COPY src /app/src
 
-ENV TZ Asia/Seoul
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -y tzdata
+
+RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
 # 빌드 수행
 RUN gradle build -x test --parallel --continue

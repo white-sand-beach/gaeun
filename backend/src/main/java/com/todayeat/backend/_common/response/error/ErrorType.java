@@ -18,6 +18,7 @@ public enum ErrorType {
      * CUSTOM ERROR
      */
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버에서 에러가 발생하였습니다."),
+    REQUEST_FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 
     // consumer
     CONSUMER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 소비자를 찾을 수 없습니다."),
@@ -98,7 +99,10 @@ public enum ErrorType {
     SALE_STATUS_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 상태 변경에 실패했습니다."),
     SALE_CONTENT_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 내용 변경에 실패했습니다."),
     SALE_STOCK_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 재고 변경에 실패했습니다."),
-    SALE_NOT_SELLING(HttpStatus.BAD_REQUEST, "판매하고 있지 않습니다.")
+    SALE_NOT_SELLING(HttpStatus.BAD_REQUEST, "판매하고 있지 않습니다."),
+
+    // notification
+    NOTIFICATION_SEND_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "FCM 알림 전송에 실패했습니다."),
     ;
 
     private HttpStatus httpStatus;
