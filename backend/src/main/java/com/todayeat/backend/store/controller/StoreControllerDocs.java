@@ -115,6 +115,7 @@ public interface StoreControllerDocs {
                                                                        @Schema(description = """
                                                                                정렬 조건
                                                                                - distance: 가까운 순
+                                                                               - saleCnt: 판매 많은 순
                                                                                - reviewCnt: 리뷰 많은 순
                                                                                - favoriteCnt: 찜 많은 순
                                                                                """, example = "distance")

@@ -78,11 +78,10 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
         for (Sort.Order order : pageable.getSort()) {
             PathBuilder<Store> entityPath = new PathBuilder<>(Store.class, "store");
             OrderSpecifier<?> orderSpecifier = switch (order.getProperty()) {
-                case "distance" -> getIntegerNumberTemplate(location, store)
-                        .asc();
+                case "distance" -> getIntegerNumberTemplate(location, store).asc();
+                case "saleCnt" -> new OrderSpecifier<>(Order.DESC, entityPath.getNumber("saleCnt", Integer.class));
                 case "reviewCnt" -> new OrderSpecifier<>(Order.DESC, entityPath.getNumber("reviewCnt", Integer.class));
-                case "favoriteCnt" ->
-                        new OrderSpecifier<>(Order.DESC, entityPath.getNumber("favoriteCnt", Integer.class));
+                case "favoriteCnt" -> new OrderSpecifier<>(Order.DESC, entityPath.getNumber("favoriteCnt", Integer.class));
                 default -> throw new IllegalArgumentException("Invalid property for sorting: " + order.getProperty());
             };
 
