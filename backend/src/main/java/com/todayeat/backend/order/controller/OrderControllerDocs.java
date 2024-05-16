@@ -6,6 +6,7 @@ import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderDetailConsumerResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderInProgressConsumerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderDetailSellerResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
@@ -198,6 +199,9 @@ public interface OrderControllerDocs {
     @ApiResponse(responseCode = "403",
             description = "권한이 없는 경우",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "주문이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PreAuthorize("hasRole('CONSUMER')")
     @GetMapping("/{order-info-id}/consumer")
     SuccessResponse<GetOrderDetailConsumerResponse> getOrderDetailConsumer(@PathVariable(value = "order-info-id", required = true)
@@ -215,9 +219,35 @@ public interface OrderControllerDocs {
     @ApiResponse(responseCode = "403",
             description = "권한이 없는 경우",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "주문이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PreAuthorize("hasRole('SELLER')")
     @GetMapping("/{order-info-id}/seller")
     SuccessResponse<GetOrderDetailSellerResponse> getOrderDetailSeller(@PathVariable(value = "order-info-id", required = true)
                                                                        @Schema(description = "주문 고유번호", example = "1")
                                                                        Long orderInfoId);
+
+    @Operation(summary = "주문 현황 조회 (소비자)",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          Path Variable로 order-info-id 넣어주세요.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderDetailSellerResponse.class)))
+    @ApiResponse(responseCode = "400",
+            description = "진행 중인 주문이 아닌 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "권한이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "주문이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('CONSUMER')")
+    @GetMapping("/{order-info-id}/in-progress")
+    SuccessResponse<GetOrderInProgressConsumerResponse> getOrderInProgressConsumer(@PathVariable(value = "order-info-id")
+                                                                                   @Schema(description = "주문 고유번호", example = "1")
+                                                                                   Long orderInfoId);
 }

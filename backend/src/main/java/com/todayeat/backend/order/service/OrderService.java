@@ -354,6 +354,26 @@ public class OrderService {
         return GetOrderDetailSellerResponse.from(orderInfo);
     }
 
+    public GetOrderInProgressConsumerResponse getOrderInProgressConsumer(Long orderInfoId) {
+
+        // 주문
+        OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);
+
+        // 권한 검사
+        validateOrderInfoAndConsumer(orderInfo, securityUtil.getConsumer());
+
+        // 상태
+        OrderInfoStatus status = orderInfo.getStatus();
+
+        // 진행 중 여부 확인
+        if (status != PAID && status != IN_PROGRESS && status != PREPARED) {
+            throw new BusinessException(ORDER_NOT_IN_PROGRESS);
+        }
+
+        // 반환
+        return GetOrderInProgressConsumerResponse.from(orderInfo);
+    }
+
     private Sale findSaleOrElseThrow(Cart cart) {
 
         return saleRepository.findByIdAndIsFinishedIsFalseAndDeletedAtIsNull(cart.getSaleId())
