@@ -264,6 +264,22 @@ public class StoreServiceElasticsearchImpl implements StoreService {
 
     @Override
     @Transactional
+    public  void updateSaleCnt(Store store) {
+
+        store.updateSaleCnt();
+
+        Document document = Document.create();
+        document.put("saleCnt", store.getSaleCnt());
+
+        UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
+                .withDocument(document)
+                .build();
+
+        elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
+    }
+
+    @Override
+    @Transactional
     public void updateReviewCnt(Store store, int value) {
 
         store.updateReviewCnt(value);

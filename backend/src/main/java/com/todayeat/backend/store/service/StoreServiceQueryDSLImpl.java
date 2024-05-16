@@ -185,6 +185,13 @@ public class StoreServiceQueryDSLImpl implements StoreService {
 
     @Override
     @Transactional
+    public  void updateSaleCnt(Store store) {
+
+        store.updateSaleCnt();
+    }
+
+    @Override
+    @Transactional
     public void updateReviewCnt(Store store, int value) {
 
         store.updateReviewCnt(value);
