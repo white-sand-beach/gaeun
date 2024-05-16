@@ -83,7 +83,9 @@ public interface SaleControllerDocs {
             description = "성공",
             content = @Content(schema = @Schema(implementation = GetSaleListSellerResponse.class)))
     @ApiResponse(responseCode = "404",
-            description = "가게 존재 여부 확인",
+            description = """ 
+                    판매자의 가게가 맞는지 확인, 가게 존재 여부 확인 \n
+                    """,
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/seller")
     @PreAuthorize("hasRole('SELLER')")
