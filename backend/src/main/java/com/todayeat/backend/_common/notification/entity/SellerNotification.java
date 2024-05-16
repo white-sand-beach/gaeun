@@ -13,12 +13,12 @@ import org.hibernate.annotations.SQLDelete;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE seller_notification SET deleted_at = CONVERT_TZ(NOW(), '+00:00', '+09:00') WHERE consumer_notification_id = ?")
+@SQLDelete(sql = "UPDATE seller_notification SET deleted_at = CONVERT_TZ(NOW(), '+00:00', '+09:00') WHERE seller_notification_id = ?")
 public class SellerNotification extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "consumer_notification_id")
+    @Column(name = "seller_notification_id")
     private Long id;
 
     @Column(nullable = false, length = 20)

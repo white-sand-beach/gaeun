@@ -43,10 +43,8 @@ public class SaleService {
     @Transactional
     public void create(CreateSaleListRequest request) {
 
-        Seller seller = securityUtil.getSeller();
-
         // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
-        Store store = validateStoreAndSeller(seller, request.getStoreId());
+        Store store = validateStoreAndSeller(request.getStoreId());
 
         List<Sale> saleList = new ArrayList<>();
 
@@ -93,10 +91,8 @@ public class SaleService {
 
     public GetSaleListSellerResponse getListToSeller(Long storeId) {
 
-        Seller seller = securityUtil.getSeller();
-
         // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
-        Store store = validateStoreAndSeller(seller, storeId);
+        Store store = validateStoreAndSeller(storeId);
 
         List<GetSaleSellerResponse> getSaleToSellerResponseList = saleRepository.findAllByStoreAndDeletedAtIsNull(store)
                 .stream()
@@ -109,12 +105,10 @@ public class SaleService {
     @Transactional
     public void update(Long saleId, UpdateSaleRequest request) {
 
-        Seller seller = securityUtil.getSeller();
-
         // todo 쿼리 세개 나가는데 성능 리펙토링 해보기
 
         // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
-        Store store = validateStoreAndSeller(seller, request.getStoreId());
+        Store store = validateStoreAndSeller(request.getStoreId());
 
         // 해당 메뉴의 존재 여부 확인 및 가게에 있는 메뉴인지 확인
         Menu menu = validateMenuAndStore(request.getMenuId(), store);
@@ -137,10 +131,8 @@ public class SaleService {
     @Transactional
     public void updateIsFinishedAll(UpdateSaleIsFinishedAllRequest request) {
 
-        Seller seller = securityUtil.getSeller();
-
         // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
-        Store store = validateStoreAndSeller(seller, request.getStoreId());
+        Store store = validateStoreAndSeller(request.getStoreId());
 
         saleRepository.updateAllSalesAsFinishedForStore(store);
 
@@ -148,7 +140,9 @@ public class SaleService {
     }
 
     // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
-    private Store validateStoreAndSeller(Seller seller, Long storeId) {
+    private Store validateStoreAndSeller(Long storeId) {
+
+        Seller seller = securityUtil.getSeller();
 
         return sellerRepository.findByIdAndStoreIdAndDeletedAtIsNullAndStoreDeletedAtIsNull(seller.getId(), storeId)
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND)).getStore();

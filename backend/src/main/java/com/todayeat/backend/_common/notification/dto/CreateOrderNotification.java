@@ -25,7 +25,7 @@ public class CreateOrderNotification {
     private List<CreateOrderItemNotification> orderItemNotificationList;
 
     @Builder
-    public CreateOrderNotification(Long orderInfoId, String orderNo, String storeName, LocalDateTime notifiedAt, String orderStatus, Integer paymentPrice, List<CreateOrderItemNotification> orderItemNotificationList) {
+    private CreateOrderNotification(Long orderInfoId, String orderNo, String storeName, LocalDateTime notifiedAt, String orderStatus, Integer paymentPrice, List<CreateOrderItemNotification> orderItemNotificationList) {
         this.orderInfoId = orderInfoId;
         this.orderNo = orderNo;
         this.storeName = storeName;
