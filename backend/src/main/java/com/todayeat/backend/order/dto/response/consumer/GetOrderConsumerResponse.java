@@ -30,7 +30,7 @@ public class GetOrderConsumerResponse {
     @Schema(description = "주문 상태", example = "진행중")
     private String orderStatus;
 
-    @Schema(description = "주문 시간", example = "2024.05.14(화)")
+    @Schema(description = "주문 날짜", example = "2024.05.14(화)")
     private String orderDate;
 
     @Schema(description = "가게 고유번호", example = "1")
