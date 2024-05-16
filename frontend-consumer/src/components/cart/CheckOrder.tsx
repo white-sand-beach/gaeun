@@ -1,24 +1,30 @@
 import CountButton from "../button/CountButton";
 import right from "../../assets/store/right.png";
+import logo from "../../../public/windows11/LargeTile.scale-100.png"
 
 import { CartItem } from "../../types/CartType"
 
 interface CheckOrderProps {
   menuData: CartItem;
   onDelete: (cartId: string) => void;
+  setIsQuantityChange: (value: React.SetStateAction<boolean>) => void;
 }
 
-const CheckOrder = ({ menuData, onDelete }: CheckOrderProps) => {
+const CheckOrder = ({ menuData, onDelete, setIsQuantityChange }: CheckOrderProps) => {
   const formattedOriginalPrice = new Intl.NumberFormat('ko-KR').format(menuData.originalPrice * menuData.quantity);
   const formattedSellPrice = new Intl.NumberFormat('ko-KR').format(menuData.sellPrice * menuData.quantity);
 
   return (
-    <div className={`p-2 ${menuData.isFinished ? 'bg-gray-100' : ""}`}>
+    <div className={`px-2 pt-2 ${menuData.isFinished ? 'bg-gray-100' : ""}`}>
       <div className="flex items-center">
         {/* 음식 이미지 */}
         <img
           className="w-16 h-16 rounded-md object-cover"
-          src={menuData.imageUrl}
+          src={menuData.imageUrl ? (
+            menuData.imageUrl 
+            ) : (
+              logo
+            )}
           alt="메뉴 사진"
         />
         {/* 음식 정보 */}
@@ -39,8 +45,9 @@ const CheckOrder = ({ menuData, onDelete }: CheckOrderProps) => {
         </div>
       </div>
       <div className="flex justify-end ">
-        <CountButton menuData={menuData} onDelete={onDelete} />
+        <CountButton menuData={menuData} onDelete={onDelete} setIsQuantityChange={setIsQuantityChange} />
       </div>
+      <hr className="mt-4"/>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { MenuItem } from "../../types/ShopMenuType";
 
 import right from "../../assets/store/right.png";
 import sale from "../../assets/store/sale.png";
+import logo from "../../../public/windows11/LargeTile.scale-100.png"
 
 const ShopMenu = ({ menu }: { menu: MenuItem }) => {
   const navigate = useNavigate();
@@ -50,7 +51,11 @@ const ShopMenu = ({ menu }: { menu: MenuItem }) => {
             </div>
             <div className="w-[112px] h-[112px] rounded-lg">
               <img
-                src={menu.imageUrl}
+                src={menu.imageUrl ? (
+                  menu.imageUrl
+                ) : (
+                  logo
+                )}
                 className="object-cover w-full h-full"
                 alt="음식이미지"
               />

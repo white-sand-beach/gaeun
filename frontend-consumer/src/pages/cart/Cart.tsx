@@ -21,20 +21,24 @@ const Cart = () => {
     sellTotalPrice: 0,
   });
   const [cartData, setCartData] = useState<CartItem[]>([]);
+  const [isQuantityChange, setIsQuantityChange] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchCartInfo = async () => {
-      try {
-        const response = await CartGetService();
-        setCartInfo(response);
-        setCartData(response.cartResponseList);
-        console.log("요청성공")
-      } catch (error) {
-        console.log("장바구니 비어있거나 실패", error);
-      }
-    };
-    fetchCartInfo();
-  }, []);
+    if (isQuantityChange) {
+      const fetchCartInfo = async () => {
+        try {
+          const response = await CartGetService();
+          setCartInfo(response);
+          setCartData(response.cartResponseList);
+          console.log("요청성공");
+        } catch (error) {
+          console.log("장바구니 비어있거나 실패", error);
+        }
+      };
+      fetchCartInfo();
+      setIsQuantityChange(false)
+    }
+  }, [isQuantityChange]);
 
   const handleAllDelete = async () => {
     try {
@@ -47,7 +51,9 @@ const Cart = () => {
   };
 
   const handleDeleteItem = (cartId: string) => {
-    setCartData((prevData) => prevData.filter((item) => item.cartId !== cartId));
+    setCartData((prevData) =>
+      prevData.filter((item) => item.cartId !== cartId)
+    );
   };
 
   return (
@@ -76,12 +82,16 @@ const Cart = () => {
               <hr />
 
               {cartData.map((menuData) => (
-                <CheckOrder key={menuData.cartId} menuData={menuData} onDelete={handleDeleteItem} />
+                <CheckOrder
+                  key={menuData.cartId}
+                  menuData={menuData}
+                  onDelete={handleDeleteItem}
+                  setIsQuantityChange={setIsQuantityChange}
+                />
               ))}
-              <hr />
               <Link to={`/shop/${cartInfo.storeId}`}>
-                <div className="flex items-center justify-center p-2">
-                  <div className="text-xs font-extrabold">+ 메뉴추가</div>
+                <div className="center p-2">
+                  <div className="text-xs font-extrabold pb-">+ 메뉴추가</div>
                 </div>
               </Link>
             </div>
