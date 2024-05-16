@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import ServiceBanner from "../../components/navbar/ServiceBanner";
+import BannerSlider from "../../components/navbar/ServiceBanner";
 import Review from "./Review";
 
 const ShopReview = () => {
@@ -13,7 +13,7 @@ const ShopReview = () => {
   return (
     <div className="w-full bg-white">
       <div className="py-2">
-        <ServiceBanner />
+        <BannerSlider />
       </div>
       <hr className="w-full" />
       <hr className="border-4 border-gray-100" />

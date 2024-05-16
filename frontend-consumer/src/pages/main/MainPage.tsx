@@ -3,7 +3,7 @@ import list from "../../assets/map/list.png";
 import gps from "../../assets/map/gps.png";
 import KakaoMap from "./Kakaomap";
 import Shops from "./Shops";
-import ServiceBanner from "../../components/navbar/ServiceBanner";
+import BannerSlider from "../../components/navbar/ServiceBanner";
 import useUserLocation from "../../store/UserLocation";
 import MainMapData from "../../types/MainMapDataType";
 import MapListForm from "../../services/maps/MapMainService";
@@ -291,8 +291,8 @@ const Main: React.FC = () => {
           {/* 슬라이드 업되는 패널 내용 */}
           <div className="pt-2 bg-white rounded-t-lg shadow h-svh">
             {/* 여기에 지도 아래 정보를 렌더링합니다. */}
-            <div className="flex items-center justify-center w-full m-auto my-1 border border-orange-400 h-14 rounded-xl">
-              <ServiceBanner />
+            <div className="flex items-center justify-center w-auto mx-3 mb-2 border-2 border-orange-400 h-14 rounded-xl">
+              <BannerSlider />
             </div>
             <hr className="w-full my-2" />
 
