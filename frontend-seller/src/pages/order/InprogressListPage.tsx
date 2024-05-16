@@ -7,31 +7,25 @@ type InprogressState = {
   orderInfo: OrderInfoType[];
   page: number;
   hasNext: boolean;
-  loading: boolean;
-  scrollPosition: number;
 };
 
 const InprogressListPage = () => {
-  const [inprogressOrderInfo, setInprogressOrderInfo] = useState<InprogressState>({
-    orderInfo: [],
-    page: 0,
-    hasNext: false,
-    loading: false,
-    scrollPosition: 0
-  });
+  const [inprogressOrderInfo, setInprogressOrderInfo] =
+    useState<InprogressState>({
+      orderInfo: [],
+      page: 0,
+      hasNext: false,
+    });
 
   const { getOrderInprogress } = InprogressOrderListAPI();
   useEffect(() => {
-    const getMyInfo = async () => {
-       await getOrderInprogress(inprogressOrderInfo.page.toString(), 10, (data) => {
-        setInprogressOrderInfo((prevState) => ({
-          ...prevState,
-          orderInfo: [...prevState.orderInfo, ...data.orderInfo],
-          hasNext: data.hasNext
-        }))
-      })
-    }
-    getMyInfo()
+    getOrderInprogress(inprogressOrderInfo.page.toString(), 3, (data) => {
+      setInprogressOrderInfo((prevState) => ({
+        ...prevState,
+        orderInfo: [...prevState.orderInfo, ...data.orderInfo],
+        hasNext: data.hasNext,
+      }));
+    });
   }, [inprogressOrderInfo.page]);
 
   useEffect(() => {
@@ -40,7 +34,7 @@ const InprogressListPage = () => {
       const scrollT = document.documentElement.scrollTop;
       const clientH = document.documentElement.clientHeight;
 
-      if (!inprogressOrderInfo.loading && scrollT + clientH >= scrollH && inprogressOrderInfo.hasNext) {
+      if (scrollT + clientH >= scrollH && inprogressOrderInfo.hasNext) {
         setInprogressOrderInfo((prevState) => ({
           ...prevState,
           page: prevState.page + 1,
@@ -48,15 +42,13 @@ const InprogressListPage = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [inprogressOrderInfo.hasNext, inprogressOrderInfo.loading])
-
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [inprogressOrderInfo.hasNext]);
 
   return (
-    <div className="gap-3 overflow-y-scroll yes-footer top-[70px]">
-      <InprogressList
-        inprogressOrderInfo={inprogressOrderInfo.orderInfo} />
+    <div className="gap-3 yes-footer top-[70px]">
+      <InprogressList inprogressOrderInfo={inprogressOrderInfo.orderInfo} />
     </div>
   );
 };
