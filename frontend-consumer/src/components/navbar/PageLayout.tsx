@@ -8,6 +8,7 @@ const hideNavBarLayoutPaths = [
   "/address-search",
   "/address-search-registration",
   "/address-correction",
+  "/loading",
 ];
 // 하단바를 숨기고 싶은 경로 목록
 const hideFooterLayoutPaths = [
@@ -23,6 +24,7 @@ const hideFooterLayoutPaths = [
   "/address-correction",
   "/profile",
   "/profile-setting",
+  "/loading",
 ];
 
 const PageLayout = () => {

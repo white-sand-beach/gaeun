@@ -1,5 +1,3 @@
-
-
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const KakaoUnlinkButton = () => {
@@ -11,11 +9,7 @@ const KakaoUnlinkButton = () => {
     window.location.href = loginUrl;
   };
 
-  return (
-  <button onClick={handleKakaoUnlink}>
-    회원탈퇴
-  </button>
-  )
+  return <button onClick={handleKakaoUnlink}>회원탈퇴</button>;
 };
 
 export default KakaoUnlinkButton;

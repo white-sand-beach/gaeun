@@ -66,23 +66,23 @@ const Favorite = () => {
 
   return (
     <div className="pt-12 ">
-      <div className="fixed flex w-full items-center border-2 bg-gray-100 border-gray-200">
+      <div className="fixed flex items-center w-full bg-gray-100 border-2 border-gray-200">
         <p className="p-2 pt-4 text-sm font-bold">내가 찜한 맛집</p>
         <p className="pt-2 text-xs font-bold text-gray-500">
           {favoriteState.totalCnt}개
         </p>
       </div>
-      <div className="pb-14 pt-12">
+      <div className="pt-12 pb-14">
         {/* 찜 리스트 */}
         {favoriteState.favorites.length > 0 ? (
           <FavoriteList favorites={favoriteState.favorites} />
         ) : (
           <div className="h-screen pb-40 center">
-            <div className="justify-center items-center">
+            <div className="items-center justify-center">
               <img className="rounded-full" src={logo} alt="로고" />
               <h2 className="text-lg font-bold center">
                 자주 찾는 가게를
-                <span className="mx-2 text-4xl font-serif">찜</span>
+                <span className="mx-2 font-serif text-4xl">찜</span>
                 해보세요
               </h2>
             </div>
