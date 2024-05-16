@@ -132,7 +132,7 @@ const Shop = () => {
           <p className="text-sm font-semibold whitespace-nowrap ">위치안내</p>
         </div>
         <div>
-          <p className="text-xs text-gray-600">{shopInfo.roadAddress}</p>
+          <p className="pt-0.5 text-xs text-gray-600">{shopInfo.roadAddress}</p>
         </div>
       </div>
       {/* 지도 정보 */}
