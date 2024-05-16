@@ -19,6 +19,9 @@ public class GetOrderInProgressSellerResponse {
     @Schema(description = "주문 고유번호", example = "1")
     private Long orderInfoId;
 
+    @Schema(description = "주문 번호", example = "UUID")
+    private String orderNo;
+
     @Schema(description = "주문 내용", example = "마라샹궈 1개 외 2건")
     private String orderContents;
 
@@ -28,15 +31,16 @@ public class GetOrderInProgressSellerResponse {
     @Schema(description = "주문 상태", example = "진행 중")
     private String orderStatus;
 
-    @Schema(description = "주문 날짜", example = "2024.05.14(목)")
+    @Schema(description = "주문 시간", example = "2024-05-14 17:06:23")
     private String orderDate;
 
     @Schema(description = "소비자 연락처", example = "01011112222")
     private String consumerPhoneNumber;
 
     @Builder
-    private GetOrderInProgressSellerResponse(Long orderInfoId, String orderContents, Integer orderPrice, String orderStatus, String orderDate, String consumerPhoneNumber) {
+    private GetOrderInProgressSellerResponse(Long orderInfoId, String orderNo, String orderContents, Integer orderPrice, String orderStatus, String orderDate, String consumerPhoneNumber) {
         this.orderInfoId = orderInfoId;
+        this.orderNo = orderNo;
         this.orderContents = orderContents;
         this.orderPrice = orderPrice;
         this.orderStatus = orderStatus;
@@ -48,10 +52,11 @@ public class GetOrderInProgressSellerResponse {
 
         return builder()
                 .orderInfoId(orderInfo.getId())
+                .orderNo(orderInfo.getOrderNo())
                 .orderContents(getContents(orderInfo.getOrderInfoItemList()))
                 .orderPrice(orderInfo.getPaymentPrice())
                 .orderStatus(orderInfo.getStatus().getDescription())
-                .orderDate(getDate(orderInfo.getCreatedAt()))
+                .orderDate(orderInfo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .consumerPhoneNumber(orderInfo.getConsumer().getPhoneNumber())
                 .build();
     }
@@ -68,17 +73,6 @@ public class GetOrderInProgressSellerResponse {
         }
 
         sb.append(" 외 ").append(orderInfoItems.size() - 1).append("건");
-        return sb.toString();
-    }
-
-    private static String getDate(LocalDateTime localDateTime) {
-
-        StringBuilder sb =  new StringBuilder();
-
-        String date = localDateTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-        String dayOfWeek = localDateTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN);
-
-        sb.append(date).append("(").append(dayOfWeek).append(")");
         return sb.toString();
     }
 }
