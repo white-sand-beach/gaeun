@@ -91,11 +91,17 @@ pipeline {
             }
         }
 
-        stage("secret.yml download") {
+        stage("secret.yml, fcm-certification download") {
             steps {
                 withCredentials([file(credentialsId: 'application-secret', variable: 'configFile')]) {
                     script {
                         sh 'cp -rf $configFile ./backend/src/main/resources/application-secret.yml'
+                    }
+                }
+
+                withCredentials([file(credentialsId: 'fcm-certification', variable: 'configFile')]) {
+                    script {
+                        sh 'cp -rf $configFile ./backend/src/main/resources/fcm-certification.json'
                     }
                 }
             }
