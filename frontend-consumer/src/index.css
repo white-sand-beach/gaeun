@@ -20,7 +20,7 @@
   }
 
   .footer-button {
-    @apply w-full rounded-lg bg-myColor text-white text-sm font-semibold py-3;
+    @apply w-full py-3 text-sm font-semibold text-white rounded-lg bg-myColor;
   }
 
   .center {
@@ -36,7 +36,7 @@
   }
 
   .orange-hover-button {
-    @apply border-myColor rounded-lg text-myColor text-xs font-extrabold hover:bg-myColor hover:text-white;
+    @apply text-xs font-extrabold rounded-lg border-myColor text-myColor hover:bg-myColor hover:text-white;
   }
 
   .text-xxxs {
@@ -48,7 +48,7 @@
   }
 
   .menu-name {
-    @apply w-auto px-2 py-1 text-xs font-bold bg-white border border-gray-300 rounded-full shadow-xl max-w-max
+    @apply w-auto px-2 py-1 text-xs font-bold bg-white border border-gray-300 rounded-full shadow-xl max-w-max;
   }
 }
 
