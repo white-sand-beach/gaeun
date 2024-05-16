@@ -6,10 +6,12 @@ const InprogressOrderListAPI = () => {
     const cookies = new Cookies()
     const accessToken = cookies.get("accessToken")
     const storeId = 11;
-    const getOrderInprogress = (setList:(orderInfo: InprogressOrderType[]) => void) => {
+    const getOrderInprogress = (page: string, size: number, setInfo: (data:InprogressOrderType) => void) => {
         axios.get(import.meta.env.VITE_BASE_URL + "/api/orders/in-progress", {
             params: {
-                "store-id": storeId
+                "store-id": storeId,
+                "page": page,
+                "size": size.toString(),
             },
             headers: {
                 Authorization: `Bearer ${accessToken}`
@@ -17,7 +19,7 @@ const InprogressOrderListAPI = () => {
         })
         .then(res => {
             console.log(res)
-            setList(res.data.data.orderInfo)
+            setInfo(res.data.data)
             console.log("진행중 주문목록 조회 성공")
         })
         .catch(err => {

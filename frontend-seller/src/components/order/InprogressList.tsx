@@ -1,20 +1,16 @@
 import React from "react";
-import { InprogressOrderType } from "../../types/order/InprogressOrderType";
+import { OrderInfoType } from "../../types/order/OrderInfoType";
 
-type OrderListType = {
-    inprogressOrderInfo: InprogressOrderType[]
+type inprogressProps = {
+    inprogressOrderInfo: OrderInfoType[]
 }
-const InprogressList: React.FC<OrderListType> = (props) => {
+const InprogressList: React.FC<inprogressProps> = (props) => {
     return (
         <div className="flex flex-col w-full gap-3">
             {props.inprogressOrderInfo.map((inprogress) => (
-                <div key={inprogress.orderInfoId} className="flex flex-col w-full p-3 border-2 border-black rounded-lg">
-                    <p>주문번호 : {inprogress.orderInfoId}</p>
-                    <p>메뉴명 : {inprogress.orderContents}</p>
-                    <p>가격 : {inprogress.orderPrice}</p>
-                    <p>주문상태 : {inprogress.orderStatus}</p>
-                    <p>주문날짜 : {inprogress.orderDate}</p>
-                    <p>손님번호 : {inprogress.consumerPhoneNumber}</p>
+                <div key={inprogress.orderInfoId} className="w-full h-[400px]">
+                    <p>{inprogress.orderDate}</p>
+                    <p>{inprogress.orderInfoId}</p>
                 </div>
             ))}
         </div>

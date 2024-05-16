@@ -1,8 +1,7 @@
+import { OrderInfoType } from "./OrderInfoType";
+
 export interface InprogressOrderType {
-    orderInfoId: number;
-    orderContents: string;
-    orderPrice: number;
-    orderStatus: string;
-    orderDate: string;
-    consumerPhoneNumber: string;
+    orderInfo: OrderInfoType[];
+    page: number;
+    hasNext: boolean;
 }
