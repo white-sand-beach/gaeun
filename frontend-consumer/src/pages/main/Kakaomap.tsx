@@ -4,6 +4,7 @@ import firefighter from "../../assets/maker/firefighter.png";
 import { StoreList } from "../../types/StoreList";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../public/icons/main-icon-512.png";
+import shopmaker from "../../assets/maker/shopmaker.png";
 
 // 전역(window) 객체의 타입 확장
 declare global {
@@ -96,6 +97,24 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
       map: map,
       image: markerImage, // 커스텀 이미지 사용
     });
+
+    // 가게일 때는 가게 이모티콘을 사용합니다.
+    if (isShop) {
+      // 가게 이모티콘 이미지 설정
+      const shopMarkerImage = new window.kakao.maps.MarkerImage(
+        shopmaker, // 가게 이모티콘 이미지 주소
+        new window.kakao.maps.Size(32, 32) // 이미지 크기
+      );
+
+      // 가게 마커 이미지 적용
+      marker.setImage(shopMarkerImage);
+    }
+
+    // 마커 클릭 시 이벤트 처리 등 추가 작업...
+
+    // 일반 마커에 대한 참조를 설정합니다.
+    markerRef.current = marker;
+    map.setCenter(markerPosition);
 
     // 일반 마커 생성
     if (storeList) {
