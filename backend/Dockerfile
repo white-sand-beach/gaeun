@@ -11,12 +11,12 @@ RUN gradle build -x test --parallel --continue
 FROM openjdk:21
 EXPOSE 8081
 
-ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get install -y tzdata
-
-RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
-
 # 이미지 생성 시 파일 복사
 COPY --from=builder /app/build/libs/*.jar /app/app.jar
 
 CMD ["java", "-jar", "/app/app.jar"]
+
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -y tzdata
+
+RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
