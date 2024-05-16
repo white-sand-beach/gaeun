@@ -1,6 +1,6 @@
 import TotalButton from "../../components/ui/TotalButton.tsx";
 
-const OrderListPage = () => {
+const InprogressListPage = () => {
   
 
   return (
@@ -14,4 +14,4 @@ const OrderListPage = () => {
   );
 };
 
-export default OrderListPage;
+export default InprogressListPage;
