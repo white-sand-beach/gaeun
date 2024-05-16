@@ -1,4 +1,7 @@
+import { useParams } from "react-router-dom";
+
 const OrderDetail = () => {
+  const { orderInfoId } = useParams()
   return (
     <div className="no-footer items-start px-4 gap-2 top-[80px]">
       <h1>음식명(메뉴이름)</h1>

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { OrderInfoType } from "../../types/order/OrderInfoType";
+import { useNavigate } from "react-router-dom";
 
 type inprogressProps = {
   inprogressOrderInfo: OrderInfoType[];
 };
 
 const InprogressList: React.FC<inprogressProps> = (props) => {
+  const navigate = useNavigate();
   const [searchOrderNo, setSearchOrderNo] = useState<string>("");
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchOrderNo(e.target.value);
@@ -38,7 +40,10 @@ const InprogressList: React.FC<inprogressProps> = (props) => {
           </div>
           <p>{inprogress.orderContents}</p>
           <p>{inprogress.consumerPhoneNumber}</p>
-          <button className="border-2 border-black rounded-[10px] flex flex-row justify-center items-center p-2">
+          <button
+            className="border-2 border-black rounded-[10px] flex flex-row justify-center items-center p-2"
+            onClick={() => navigate(`/order/${inprogress.orderInfoId}`)}
+          >
             상세내역 보러가기
           </button>
         </div>
