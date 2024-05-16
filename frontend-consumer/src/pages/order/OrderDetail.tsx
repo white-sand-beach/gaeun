@@ -24,12 +24,16 @@ const OrderDetail = () => {
           <p className="mt-2 text-sm font-bold">주문 정보</p>
           <div className="mt-2 text-xs text-gray-400 ">
             <div className="between">
+              <p>주문 상태</p>
+              <p>{orderDetail.orderStatus}</p>
+            </div>
+            <div className="between">
               <p>주문 시간</p>
               <p>{orderDetail.orderDate}</p>
             </div>
             <div className="between">
               <p>주문 번호</p>
-              <p>{orderDetail.orderNo}</p>
+              <p className="text-xxs">{orderDetail.orderNo}</p>
             </div>
           </div>
         </div>

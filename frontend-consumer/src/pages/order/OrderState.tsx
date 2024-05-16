@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import CallButton from "../../components/button/CallButton";
 import OrderDetailButton from "../../components/button/OrderDetailButton";
 import OrderCurrentGetForm from "../../services/orders/OrderCurrentGetService";
@@ -10,6 +10,7 @@ import OrderDeleteForm from "../../services/orders/OrderDeleteService";
 
 const OrderState = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { orderInfoId } = location.state as { orderInfoId: string };
   const [orderCurrent, setOrderCurrent] = useState<OrderCurrentState>({
     orderInfoId: 0,
@@ -42,34 +43,44 @@ const OrderState = () => {
 
   const handleDeleteSubmit = async () => {
     const userConfirmed = confirm("주문을 정말 취소하시겠습니까?");
-  if (userConfirmed) {
-    try {
-      await OrderDeleteForm(String(50));
-      console.log("주문 취소 성공");
-    } catch (error) {
-      console.error("주문 취소 실패", error);
+    if (userConfirmed) {
+      try {
+        await OrderDeleteForm(String(orderCurrent.orderInfoId));
+        console.log("주문 취소 성공");
+        alert("주문이 취소되었습니다.");
+        navigate("/order-list");
+      } catch (error) {
+        console.error("주문 취소 실패", error);
+      }
+    } else {
+      console.log("주문 취소를 취소함.");
     }
-  } else {
-    console.log("주문 취소를 취소함.");
-  }
   };
 
   return (
     <div className="pt-16">
       <header className="between mx-4 mt-2">
         <p className="text- font-bold ml-1">{orderCurrent.orderStatus}</p>
-        {orderCurrent.orderContents == null ? (
-          <div className="p-2 text-xxs text-white rounded-lg bg-myColor font- bold">
-            {orderCurrent.orderRestTime}
-          </div>
-        ) : (
+        {orderCurrent.orderStatus === "결제 완료" ? (
           <button
             onClick={handleDeleteSubmit}
-            className="p-2 text-xxs text-white rounded-lg bg-myColor font- bold"
+            className="p-2 text-xs text-white rounded-lg bg-myColor font- bold"
           >
             주문 취소
           </button>
-        )}
+        ) : orderCurrent.orderStatus === "진행 중" ? (
+          <div className="p-2 text-xs text-white rounded-lg bg-myColor font- bold">
+            {orderCurrent.orderRestTime !== 0 ? (
+              <div>{orderCurrent.orderRestTime}분 남음</div>
+            ) : (
+              <div>잠시만 기다려주세요</div>
+            )}
+          </div>
+        ) : orderCurrent.orderStatus === "준비 완료" ? (
+          <div className="p-2 text-xs text-white rounded-lg bg-myColor font- bold">
+            음식이 준비되었습니다.
+          </div>
+        ) : null}
       </header>
 
       <div className="center my-2">
@@ -80,7 +91,12 @@ const OrderState = () => {
           </div>
           <hr className="mb-2" />
           <div className="text-xl text-black">
-            <p>{orderCurrent.storeName}</p>
+            <Link to={`/shop/${orderCurrent.storeId}`}>
+              <p>
+                {orderCurrent.storeName}
+                {" >"}
+              </p>
+            </Link>
             <p className="text-sm">{orderCurrent.orderContents}</p>
           </div>
           <p className="my-2 font-normal text-xs">
