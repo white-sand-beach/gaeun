@@ -25,7 +25,7 @@ const Footer = () => {
         <p>통계</p>
       </button>
 
-      <button className="flex flex-col items-center justify-center" onClick={() => handleIconClick("/sales")}>
+      <button className="flex flex-col items-center justify-center" onClick={() => handleIconClick("/order-finished")}>
         <img src={SellListIcon} alt="판매내역" />
         <p>판매내역</p>
       </button>
