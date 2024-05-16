@@ -6,7 +6,7 @@ import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderDetailConsumerResponse;
-import com.todayeat.backend.order.dto.response.consumer.GetOrderDetailSellerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderDetailSellerResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListInProgressSellerResponse;
