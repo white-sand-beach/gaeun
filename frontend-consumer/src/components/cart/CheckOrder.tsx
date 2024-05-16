@@ -39,7 +39,7 @@ const CheckOrder = ({ menuData, onDelete }: CheckOrderProps) => {
         </div>
       </div>
       <div className="flex justify-end ">
-        <CountButton menuData={menuData} onDelete={onDelete}/>
+        <CountButton menuData={menuData} onDelete={onDelete} />
       </div>
     </div>
   );

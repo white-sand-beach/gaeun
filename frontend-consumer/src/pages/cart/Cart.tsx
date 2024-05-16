@@ -36,9 +36,9 @@ const Cart = () => {
     fetchCartInfo();
   }, []);
 
-  const handleAllDelete = () => {
+  const handleAllDelete = async () => {
     try {
-      CartAllDeleteService();
+      await CartAllDeleteService();
       setCartData([]);
       console.log("전체 삭제 성공");
     } catch {

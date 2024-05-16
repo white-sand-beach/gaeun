@@ -23,6 +23,7 @@ import MyReview from "./pages/shop/MyReview";
 import LoginCallbaak from "./components/auth_login/LoginCallback";
 import AddressCorrection from "./components/address/AddressCorrection";
 import LoadingPage from "./components/loading/LoadingPage";
+import Payment from "./pages/order/Payment";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />
           <Route path="/login-callback" element={<LoginCallbaak />} />
+          <Route path="payment-callback" element={<Payment />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/loading" element={<LoadingPage />} />
           <Route path="/notification" element={<Notification />} />
