@@ -4,6 +4,7 @@ import OrderDetailButton from "../../components/button/OrderDetailButton";
 import OrderCurrentGetForm from "../../services/orders/OrderCurrentGetService";
 import { useEffect, useState } from "react";
 import { OrderCurrentState } from "../../types/OrderType";
+import KakaoMap from "../main/Kakaomap";
 
 const OrderState = () => {
   const location = useLocation();
@@ -23,6 +24,8 @@ const OrderState = () => {
     storeLongitude: 0,
   });
 
+  const mapHeight = "300px";
+  const updateCounter = 0;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,7 +50,7 @@ const OrderState = () => {
       </header>
 
       <div className="center my-4">
-        <div className="w-[300px] border-2 rounded-lg text-xxs text-gray-400 font-bold p-4">
+        <div className="w-full mx-4 border-2 rounded-lg text-xxs text-gray-400 font-bold p-4">
           <div>
             <p className="text-lg text-black">{orderCurrent.storeName}</p>
           </div>
@@ -63,7 +66,15 @@ const OrderState = () => {
           </div>
         </div>
       </div>
-      {/* 지도 자리 */}
+      <div className="">
+        <KakaoMap
+          lat={orderCurrent.storeLatitude}
+          lng={orderCurrent.storeLongitude}
+          updateCounter={updateCounter}
+          height={mapHeight}
+          isShop={true}
+        />
+      </div>
     </div>
   );
 };
