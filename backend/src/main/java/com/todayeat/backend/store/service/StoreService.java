@@ -23,7 +23,9 @@ public interface StoreService {
 
     void updateIsOpened(Store store, Boolean isOpened);
 
-    void updateFavoriteCnt(Store store, int value);
+    void updateSaleCnt(Store store);
 
     void updateReviewCnt(Store store, int value);
+
+    void updateFavoriteCnt(Store store, int value);
 }

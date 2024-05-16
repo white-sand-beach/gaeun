@@ -1,7 +1,6 @@
 package com.todayeat.backend.store.entity;
 
 import com.todayeat.backend._common.entity.BaseTime;
-import com.todayeat.backend.category.entity.StoreCategory;
 import com.todayeat.backend.seller.entity.Location;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,9 +9,6 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -69,24 +65,33 @@ public class Store extends BaseTime {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int reviewCnt;
+    private Integer saleCnt;
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int favoriteCnt;
+    private Integer reviewCnt;
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    private List<StoreCategory> storeCategoryList = new ArrayList<>();
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer favoriteCnt;
 
     public void updateIsOpened(Boolean isOpened) {
+
         this.isOpened = isOpened;
     }
 
-    public void updateFavoriteCnt(int value) {
-        this.favoriteCnt += value;
+    public void updateSaleCnt() {
+
+        this.saleCnt++;
     }
 
     public void updateReviewCnt(int value) {
+
         this.reviewCnt += value;
+    }
+
+    public void updateFavoriteCnt(int value) {
+
+        this.favoriteCnt += value;
     }
 }

@@ -11,6 +11,7 @@ import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
+import com.todayeat.backend.sale.repository.SaleRepository;
 import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
@@ -18,6 +19,7 @@ import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.*;
 import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse.StoreInfo;
+import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse.StoreInfo.SaleImageURL;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.entity.StoreDocument;
 import com.todayeat.backend.store.mapper.StoreMapper;
@@ -62,6 +64,7 @@ public class StoreServiceElasticsearchImpl implements StoreService {
     private final CategoryRepository categoryRepository;
     private final SellerRepository sellerRepository;
     private final StoreRepository storeRepository;
+    private final SaleRepository saleRepository;
 
     private final SecurityUtil securityUtil;
     private final S3Util s3Util;
@@ -159,18 +162,27 @@ public class StoreServiceElasticsearchImpl implements StoreService {
         PageRequest pageRequest = PageRequest.of(page, size, by);
 
         Query query = NativeQuery.builder()
-                .withQuery(q -> q
-                        .bool(b -> b
-                                .must(m -> m.multiMatch(mm -> mm.query(keyword).fields("name", "categoryList.name", "introduction")))
-                                .must(m -> m.geoDistance(g -> g
-                                        .field("location")
-                                        .distance(radius + "km")
-                                        .location(l -> l.latlon(ll -> ll.lat(latitude.doubleValue()).lon(longitude.doubleValue())))))
-                                .must(m -> m.term(t -> t.field("categoryList.categoryId").value(categoryId)))
-                                .must(m -> m.term(t -> t.field("isOpened").value(false)))
-                                .mustNot(mn -> mn.exists(e -> e.field("deletedAt")))
-                        )
-                )
+                .withQuery(q -> q.bool(b -> {
+                    if (keyword != null && !keyword.isEmpty()) {
+                        b.must(m -> m.multiMatch(mm -> mm
+                                .query(keyword)
+                                .fields("name", "categoryList.name", "introduction")));
+                    }
+                    b.must(m -> m.geoDistance(g -> g
+                            .field("location")
+                            .distance(radius + "km")
+                            .location(l -> l.latlon(ll -> ll.lat(latitude.doubleValue()).lon(longitude.doubleValue())))));
+                    if (categoryId != null) {
+                        b.must(m -> m.term(t -> t
+                                .field("categoryList.categoryId")
+                                .value(categoryId)));
+                    }
+                    b.must(m -> m.term(t -> t
+                            .field("isOpened")
+                            .value(true)));
+                    b.mustNot(mn -> mn.exists(e -> e.field("deletedAt")));
+                    return b;
+                }))
                 .withPageable(pageRequest)
                 .build();
 
@@ -179,10 +191,16 @@ public class StoreServiceElasticsearchImpl implements StoreService {
         List<StoreInfo> storeInfoList = searchHits.getSearchHits().stream()
                 .map(hit -> {
                     StoreDocument document = hit.getContent();
-                    GeoPoint docLocation = new GeoPoint(document.getLocation().getLat().doubleValue(), document.getLocation().getLon().doubleValue());
-                    int distance = calculateDistance(latitude.doubleValue(), longitude.doubleValue(), docLocation.getLat(), docLocation.getLon());
 
-                    return StoreMapper.INSTANCE.storeDocumentToStoreInfo(document, distance);
+                    int distance = calculateDistance(
+                            latitude.doubleValue(), longitude.doubleValue(),
+                            document.getLocation().getLat().doubleValue(), document.getLocation().getLon().doubleValue());
+
+                    List<SaleImageURL> saleImageURLList = saleRepository.findAllByStoreIdAndIsFinishedIsFalseAndDeletedAtIsNull(document.getId()).stream()
+                            .map(StoreMapper.INSTANCE::saleToSaleImageURL)
+                            .toList();
+
+                    return StoreMapper.INSTANCE.storeDocumentToStoreInfo(document, distance, saleImageURLList);
                 })
                 .collect(Collectors.toList());
 
@@ -254,6 +272,22 @@ public class StoreServiceElasticsearchImpl implements StoreService {
 
         Document document = Document.create();
         document.put("isOpened", isOpened);
+
+        UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
+                .withDocument(document)
+                .build();
+
+        elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
+    }
+
+    @Override
+    @Transactional
+    public void updateSaleCnt(Store store) {
+
+        store.updateSaleCnt();
+
+        Document document = Document.create();
+        document.put("saleCnt", store.getSaleCnt());
 
         UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
                 .withDocument(document)
