@@ -8,7 +8,7 @@ COPY src /app/src
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y tzdata
 
-RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+ENV TZ Asia/Seoul
 
 # 빌드 수행
 RUN gradle build -x test --parallel --continue
