@@ -11,12 +11,15 @@ import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
+import com.todayeat.backend.sale.repository.SaleRepository;
 import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.*;
+import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse.StoreInfo;
+import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse.StoreInfo.SaleImageURL;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.entity.StoreDocument;
 import com.todayeat.backend.store.mapper.StoreMapper;
@@ -26,6 +29,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.document.Document;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.GeoDistanceOrder;
+import org.springframework.data.elasticsearch.core.query.Query;
+import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,12 +57,14 @@ import static com.todayeat.backend._common.response.error.ErrorType.*;
 @RequiredArgsConstructor
 public class StoreServiceElasticsearchImpl implements StoreService {
 
+    private final ElasticsearchOperations elasticsearchOperations;
     private final StoreDocumentRepository storeDocumentRepository;
     private final StoreCategoryRepository storeCategoryRepository;
     private final FavoriteRepository favoriteRepository;
     private final CategoryRepository categoryRepository;
     private final SellerRepository sellerRepository;
     private final StoreRepository storeRepository;
+    private final SaleRepository saleRepository;
 
     private final SecurityUtil securityUtil;
     private final S3Util s3Util;
@@ -135,9 +149,64 @@ public class StoreServiceElasticsearchImpl implements StoreService {
     @Override
     public GetConsumerListStoreResponse getConsumerListStore(BigDecimal latitude, BigDecimal longitude, Integer radius, String keyword, Long categoryId, Integer page, Integer size, String sort) {
 
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sort));
+        Sort by;
 
-        return storeRepository.findStoreList(Location.of(latitude, longitude), radius * 1000, keyword, categoryId, pageRequest);
+        if ("distance".equals(sort)) {
+
+            by = Sort.by(new GeoDistanceOrder("location", new GeoPoint(latitude.doubleValue(), longitude.doubleValue())));
+        } else {
+
+            by = Sort.by(Sort.Order.desc(sort));
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, size, by);
+
+        Query query = NativeQuery.builder()
+                .withQuery(q -> q.bool(b -> {
+                    if (keyword != null && !keyword.isEmpty()) {
+                        b.must(m -> m.multiMatch(mm -> mm
+                                .query(keyword)
+                                .fields("name", "categoryList.name", "introduction")));
+                    }
+                    b.must(m -> m.geoDistance(g -> g
+                            .field("location")
+                            .distance(radius + "km")
+                            .location(l -> l.latlon(ll -> ll.lat(latitude.doubleValue()).lon(longitude.doubleValue())))));
+                    if (categoryId != null) {
+                        b.must(m -> m.term(t -> t
+                                .field("categoryList.categoryId")
+                                .value(categoryId)));
+                    }
+                    b.must(m -> m.term(t -> t
+                            .field("isOpened")
+                            .value(true)));
+                    b.mustNot(mn -> mn.exists(e -> e.field("deletedAt")));
+                    return b;
+                }))
+                .withPageable(pageRequest)
+                .build();
+
+        SearchHits<StoreDocument> searchHits = elasticsearchOperations.search(query, StoreDocument.class, IndexCoordinates.of("store"));
+
+        List<StoreInfo> storeInfoList = searchHits.getSearchHits().stream()
+                .map(hit -> {
+                    StoreDocument document = hit.getContent();
+
+                    int distance = calculateDistance(
+                            latitude.doubleValue(), longitude.doubleValue(),
+                            document.getLocation().getLat().doubleValue(), document.getLocation().getLon().doubleValue());
+
+                    List<SaleImageURL> saleImageURLList = saleRepository.findAllByStoreIdAndIsFinishedIsFalseAndDeletedAtIsNull(document.getId()).stream()
+                            .map(StoreMapper.INSTANCE::saleToSaleImageURL)
+                            .toList();
+
+                    return StoreMapper.INSTANCE.storeDocumentToStoreInfo(document, distance, saleImageURLList);
+                })
+                .collect(Collectors.toList());
+
+        boolean hasNext = pageRequest.getPageNumber() + 1 < (searchHits.getTotalHits() / pageRequest.getPageSize()) + 1;
+
+        return GetConsumerListStoreResponse.of(storeInfoList, page, hasNext);
     }
 
     @Override
@@ -197,14 +266,67 @@ public class StoreServiceElasticsearchImpl implements StoreService {
 
     @Override
     @Transactional
-    public void updateIsOpened(Long storeId) {
+    public void updateIsOpened(Store store, Boolean isOpened) {
 
-        Store store = sellerRepository.findById(securityUtil.getSeller().getId())
-                .map(Seller::getStore)
-                .filter(s -> Objects.equals(s.getId(), storeId))
-                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
+        store.updateIsOpened(isOpened);
 
-        //store.updateIsOpened();
+        Document document = Document.create();
+        document.put("isOpened", isOpened);
+
+        UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
+                .withDocument(document)
+                .build();
+
+        elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
+    }
+
+    @Override
+    @Transactional
+    public void updateSaleCnt(Store store) {
+
+        store.updateSaleCnt();
+
+        Document document = Document.create();
+        document.put("saleCnt", store.getSaleCnt());
+
+        UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
+                .withDocument(document)
+                .build();
+
+        elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
+    }
+
+    @Override
+    @Transactional
+    public void updateReviewCnt(Store store, int value) {
+
+        store.updateReviewCnt(value);
+
+        Document document = Document.create();
+        document.put("reviewCnt", store.getReviewCnt());
+
+        UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
+                .withDocument(document)
+                .build();
+
+        elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
+    }
+
+    @Override
+    @Transactional
+    public void updateFavoriteCnt(Store store, int value) {
+
+        store.updateFavoriteCnt(value);
+
+        Document document = Document.create();
+
+        document.put("favoriteCnt", store.getFavoriteCnt());
+
+        UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
+                .withDocument(document)
+                .build();
+
+        elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
     }
 
     private String imageToURL(MultipartFile image) {
@@ -215,5 +337,20 @@ public class StoreServiceElasticsearchImpl implements StoreService {
     private StoreDocument validateAndGetStoreDocument(Long storeId) {
         return storeDocumentRepository.findById(storeId)
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
+    }
+
+    private int calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371;
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return (int) (R * c * 1000);
     }
 }

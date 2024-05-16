@@ -100,3 +100,6 @@ secret:
 
 oauth2:
   callback-uri: ${OAUTH2_CALLBACK_URI}
+
+fcm:
+  certification: ${FCM_CERTIFICATION}

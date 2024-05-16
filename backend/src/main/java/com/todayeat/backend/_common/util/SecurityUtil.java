@@ -20,8 +20,8 @@ public class SecurityUtil {
         return (Seller) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    public Class<?> getPrincipalClass() {
+    public String getPrincipalClassSimpleName() {
 
-        return SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass();
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass().getSimpleName();
     }
 }

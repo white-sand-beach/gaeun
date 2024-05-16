@@ -41,7 +41,7 @@ import static com.todayeat.backend._common.response.error.ErrorType.*;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class StoreServiceQueryDSLImpl implements StoreService{
+public class StoreServiceQueryDSLImpl implements StoreService {
 
     private final StoreCategoryRepository storeCategoryRepository;
     private final FavoriteRepository favoriteRepository;
@@ -178,19 +178,30 @@ public class StoreServiceQueryDSLImpl implements StoreService{
 
     @Override
     @Transactional
-    public void updateIsOpened(Long storeId) {
+    public void updateIsOpened(Store store, Boolean isOpened) {
 
-        Store store = sellerRepository.findById(securityUtil.getSeller().getId())
-                .map(Seller::getStore)
-                .filter(s -> s != null && Objects.equals(s.getId(), storeId))
-                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
+        store.updateIsOpened(isOpened);
+    }
 
-        if (store == null || !Objects.equals(store.getId(), storeId)) {
+    @Override
+    @Transactional
+    public  void updateSaleCnt(Store store) {
 
-            throw new BusinessException(STORE_NOT_FOUND);
-        }
+        store.updateSaleCnt();
+    }
 
-        //store.updateIsOpened();
+    @Override
+    @Transactional
+    public void updateReviewCnt(Store store, int value) {
+
+        store.updateReviewCnt(value);
+    }
+
+    @Override
+    @Transactional
+    public void updateFavoriteCnt(Store store, int value) {
+
+        store.updateFavoriteCnt(value);
     }
 
     private String imageToURL(MultipartFile image) {

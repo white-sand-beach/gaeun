@@ -6,8 +6,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 @Getter
 @Schema(name = "GetOrderInProgressSellerResponse", description = "판매자 주문 조회 응답")
@@ -16,13 +19,16 @@ public class GetOrderInProgressSellerResponse {
     @Schema(description = "주문 고유번호", example = "1")
     private Long orderInfoId;
 
+    @Schema(description = "주문 번호", example = "UUID")
+    private String orderNo;
+
     @Schema(description = "주문 내용", example = "마라샹궈 1개 외 2건")
     private String orderContents;
 
     @Schema(description = "주문 가격", example = "10000")
     private Integer orderPrice;
 
-    @Schema(description = "주문 상태", example = "진행중")
+    @Schema(description = "주문 상태", example = "진행 중")
     private String orderStatus;
 
     @Schema(description = "주문 시간", example = "2024-05-14 17:06:23")
@@ -32,8 +38,9 @@ public class GetOrderInProgressSellerResponse {
     private String consumerPhoneNumber;
 
     @Builder
-    private GetOrderInProgressSellerResponse(Long orderInfoId, String orderContents, Integer orderPrice, String orderStatus, String orderDate, String consumerPhoneNumber) {
+    private GetOrderInProgressSellerResponse(Long orderInfoId, String orderNo, String orderContents, Integer orderPrice, String orderStatus, String orderDate, String consumerPhoneNumber) {
         this.orderInfoId = orderInfoId;
+        this.orderNo = orderNo;
         this.orderContents = orderContents;
         this.orderPrice = orderPrice;
         this.orderStatus = orderStatus;
@@ -45,6 +52,7 @@ public class GetOrderInProgressSellerResponse {
 
         return builder()
                 .orderInfoId(orderInfo.getId())
+                .orderNo(orderInfo.getOrderNo())
                 .orderContents(getContents(orderInfo.getOrderInfoItemList()))
                 .orderPrice(orderInfo.getPaymentPrice())
                 .orderStatus(orderInfo.getStatus().getDescription())

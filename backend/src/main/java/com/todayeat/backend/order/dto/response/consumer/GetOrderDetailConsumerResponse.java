@@ -36,7 +36,7 @@ public class GetOrderDetailConsumerResponse {
     @Schema(description = "가게 전화번호", example = "20000")
     private String storeTel;
 
-    @Schema(description = "주문 상태", example = "진행중")
+    @Schema(description = "주문 상태", example = "진행 중")
     private String orderStatus;
 
     @Schema(description = "주문 시간", example = "2024-05-14 17:06:23")
@@ -101,10 +101,13 @@ public class GetOrderDetailConsumerResponse {
         // 진행중
         if (status == IN_PROGRESS) {
             // 최초 주문 시간으로부터 현재 시간까지 흐른 시간
-            Integer time = Math.toIntExact(Duration.between(LocalDateTime.now(), approvedAt).getSeconds() / 60);
+            Integer time = Math.toIntExact(Duration.between(approvedAt, LocalDateTime.now()).getSeconds() / 60);
 
             // 예상 소요 시간 - time
-            return takenTime - time;
+            Integer restTime = takenTime - time;
+
+            // 반환
+            return restTime >= 0? restTime: 0;
         }
 
         // 준비 완료

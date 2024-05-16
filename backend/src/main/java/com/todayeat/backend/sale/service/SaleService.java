@@ -8,7 +8,10 @@ import com.todayeat.backend.cart.repository.CartRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.repository.MenuRepository;
-import com.todayeat.backend.sale.dto.request.*;
+import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
+import com.todayeat.backend.sale.dto.request.CreateSaleRequest;
+import com.todayeat.backend.sale.dto.request.UpdateSaleIsFinishedAllRequest;
+import com.todayeat.backend.sale.dto.request.UpdateSaleRequest;
 import com.todayeat.backend.sale.dto.response.*;
 import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.sale.mapper.SaleMapper;
@@ -17,6 +20,7 @@ import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.repository.StoreRepository;
+import com.todayeat.backend.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,18 +43,17 @@ public class SaleService {
     private final SaleRepository saleRepository;
     private final StoreRepository storeRepository;
     private final CartRepository cartRepository;
+    private final StoreService storeService;
 
     @Transactional
     public void create(CreateSaleListRequest request) {
 
-        Seller seller = securityUtil.getSeller();
-
         // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
-        Store store = validateStoreAndSeller(seller, request.getStoreId());
+        Store store = validateStoreAndSeller(request.getStoreId());
 
         List<Sale> saleList = new ArrayList<>();
 
-        for(CreateSaleRequest createSaleRequest : request.getSaleList()) {
+        for (CreateSaleRequest createSaleRequest : request.getSaleList()) {
             // 해당 메뉴의 존재 여부 확인 및 가게에 있는 메뉴인지 확인
             Menu menu = validateMenuAndStore(createSaleRequest.getMenuId(), store);
 
@@ -64,7 +67,7 @@ public class SaleService {
 
         saleRepository.saveAll(saleList);
 
-        store.updateIsOpened(true);
+        storeService.updateIsOpened(store, true);
     }
 
     public GetSaleListConsumerResponse getListToConsumer(Long storeId) {
@@ -93,8 +96,8 @@ public class SaleService {
 
     public GetSaleListSellerResponse getListToSeller(Long storeId) {
 
-        Store store = storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
+        // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
+        Store store = validateStoreAndSeller(storeId);
 
         List<GetSaleSellerResponse> getSaleToSellerResponseList = saleRepository.findAllByStoreAndDeletedAtIsNull(store)
                 .stream()
@@ -107,12 +110,10 @@ public class SaleService {
     @Transactional
     public void update(Long saleId, UpdateSaleRequest request) {
 
-        Seller seller = securityUtil.getSeller();
-
         // todo 쿼리 세개 나가는데 성능 리펙토링 해보기
 
         // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
-        Store store = validateStoreAndSeller(seller, request.getStoreId());
+        Store store = validateStoreAndSeller(request.getStoreId());
 
         // 해당 메뉴의 존재 여부 확인 및 가게에 있는 메뉴인지 확인
         Menu menu = validateMenuAndStore(request.getMenuId(), store);
@@ -127,7 +128,7 @@ public class SaleService {
                 .orElseThrow(() -> new BusinessException(ErrorType.SALE_CONTENT_UPDATE_FAIL));
 
         // 재고 검증 및 업데이트. 총 판매량보다 재고가 작은 경우 예외
-        if(!sale.update(request.getContent(), request.getIsFinished(), request.getStock())) {
+        if (!sale.update(request.getContent(), request.getIsFinished(), request.getStock())) {
             throw new BusinessException(ErrorType.SALE_STOCK_UPDATE_FAIL);
         }
     }
@@ -135,10 +136,8 @@ public class SaleService {
     @Transactional
     public void updateIsFinishedAll(UpdateSaleIsFinishedAllRequest request) {
 
-        Seller seller = securityUtil.getSeller();
-
         // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
-        Store store = validateStoreAndSeller(seller, request.getStoreId());
+        Store store = validateStoreAndSeller(request.getStoreId());
 
         saleRepository.updateAllSalesAsFinishedForStore(store);
 
@@ -146,7 +145,9 @@ public class SaleService {
     }
 
     // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
-    private Store validateStoreAndSeller(Seller seller, Long storeId) {
+    private Store validateStoreAndSeller(Long storeId) {
+
+        Seller seller = securityUtil.getSeller();
 
         return sellerRepository.findByIdAndStoreIdAndDeletedAtIsNullAndStoreDeletedAtIsNull(seller.getId(), storeId)
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND)).getStore();
@@ -163,7 +164,7 @@ public class SaleService {
     private Integer getDiscountRate(Integer originalPrice, Integer sellPrice) {
 
         // 판매가가 원가보다 큰 경우 예외
-        if(originalPrice < sellPrice) {
+        if (originalPrice < sellPrice) {
             throw new BusinessException(ErrorType.MENU_CREATE_FAIL);
         }
 

@@ -39,3 +39,6 @@ out/
 
 ### yml file ###
 application-*.yml
+
+### FCM ###
+fcm-certification.json

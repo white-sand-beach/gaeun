@@ -3,6 +3,7 @@ package com.todayeat.backend.store.service;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.*;
+import com.todayeat.backend.store.entity.Store;
 
 import java.math.BigDecimal;
 
@@ -20,5 +21,11 @@ public interface StoreService {
 
     void update(Long storeId, UpdateStoreRequest updateStoreRequest);
 
-    void updateIsOpened(Long storeId);
+    void updateIsOpened(Store store, Boolean isOpened);
+
+    void updateSaleCnt(Store store);
+
+    void updateReviewCnt(Store store, int value);
+
+    void updateFavoriteCnt(Store store, int value);
 }

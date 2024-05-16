@@ -48,18 +48,27 @@ public class GetConsumerListStoreResponse {
         private String operatingTime;
 
         @Schema(description = "리뷰 수", example = "0")
-        private int reviewCnt;
+        private Integer reviewCnt;
 
         @Schema(description = "찜 수", example = "0")
-        private int favoriteCnt;
+        private Integer favoriteCnt;
 
         @Schema(description = "해당 위치와 거리", example = "1500")
-        private Double distance;
+        private Integer distance;
 
         @Schema(description = "카테고리 목록", example = "{name: 카테고리1, image: https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/store-image/img1.png, name: 카테고리2, image: https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/store-image/img2.png}")
         private List<CategoryInfo> categoryList;
 
-        // todo 메뉴 리스트 추가 해야 함
+        @Schema(description = "판매 이미지 목록", example = "{image: https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/img1.png, image: https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/img2.png}")
+        private List<SaleImageURL> saleImageURLList;
+
+        @Getter
+        @Setter
+        public static class SaleImageURL {
+
+            @Schema(description = "판매 이미지", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/img1.png")
+            private String imageURL;
+        }
     }
 
     @Builder

@@ -5,16 +5,13 @@ import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.cart.entity.Cart;
 import com.todayeat.backend.cart.repository.CartRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
+import com.todayeat.backend.order.api.client.IamportRequestClient;
 import com.todayeat.backend.order.api.dto.request.CancelPaymentRequest;
 import com.todayeat.backend.order.api.dto.response.GetPaymentResponse;
-import com.todayeat.backend.order.api.client.IamportRequestClient;
-import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
+import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.response.consumer.*;
-import com.todayeat.backend.order.dto.response.seller.GetOrderFinishedSellerResponse;
-import com.todayeat.backend.order.dto.response.seller.GetOrderInProgressSellerResponse;
-import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
-import com.todayeat.backend.order.dto.response.seller.GetOrderListInProgressSellerResponse;
+import com.todayeat.backend.order.dto.response.seller.*;
 import com.todayeat.backend.order.entity.OrderInfo;
 import com.todayeat.backend.order.entity.OrderInfoItem;
 import com.todayeat.backend.order.entity.OrderInfoStatus;
@@ -25,12 +22,18 @@ import com.todayeat.backend.sale.repository.SaleRepository;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.repository.StoreRepository;
+import com.todayeat.backend.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -45,11 +48,13 @@ import static com.todayeat.backend.order.entity.OrderInfoStatus.*;
 @Transactional(readOnly = true)
 public class OrderService {
 
-    private final OrderInfoRepository orderInfoRepository;
     private final OrderInfoItemRepository orderInfoItemRepository;
-    private final CartRepository cartRepository;
+    private final OrderInfoRepository orderInfoRepository;
     private final StoreRepository storeRepository;
     private final SaleRepository saleRepository;
+    private final CartRepository cartRepository;
+
+    private final StoreService storeService;
 
     private final SecurityUtil securityUtil;
 
@@ -77,7 +82,7 @@ public class OrderService {
         }
 
         // 첫 번째 장바구니 확인
-        Store firstStore = findStoreOrElseThrow(carts.get(0).getStoreId()); // store 유효성 검사
+        Store firstStore = findStoreOrElseThrow(carts.getFirst().getStoreId()); // store 유효성 검사
         if (!firstStore.getIsOpened()) { // store 열려 있는지 확인
             throw new BusinessException(STORE_NOT_OPEN);
         }
@@ -86,7 +91,7 @@ public class OrderService {
         int paymentPrice = 0;
 
         // 장바구니 목록 확인
-        for (Cart cart: carts) {
+        for (Cart cart : carts) {
 
             Sale sale = findSaleOrElseThrow(cart);
 
@@ -100,16 +105,16 @@ public class OrderService {
 
         // 주문 정보 저장
         OrderInfo orderInfo = OrderInfo.of(UUID.randomUUID().toString(),
-                                            originalPrice,
-                                            originalPrice - paymentPrice, // discountPrice
-                                            paymentPrice,
-                                            consumer,
-                                            firstStore);
+                originalPrice,
+                originalPrice - paymentPrice, // discountPrice
+                paymentPrice,
+                consumer,
+                firstStore);
         orderInfoRepository.save(orderInfo);
 
         // 주문 아이템 정보 저장
         carts.iterator().forEachRemaining(
-            cart -> orderInfoItemRepository.save(
+                cart -> orderInfoItemRepository.save(
                         OrderInfoItem.of(findSaleOrElseThrow(cart), cart.getQuantity(), orderInfo))
         );
 
@@ -137,8 +142,8 @@ public class OrderService {
         // 아임포트 결제 조회
         try {
             getPaymentResponse = iamportRequestClient.getPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
-                                    request.getPaymentId(),
-                                    IAMPORT_STORE_ID);
+                    request.getPaymentId(),
+                    IAMPORT_STORE_ID);
         } catch (Exception e) {
             throw new BusinessException(ORDER_PAYMENT_FAIL);
         }
@@ -175,10 +180,8 @@ public class OrderService {
         OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);
         Seller seller = securityUtil.getSeller();
 
-        // 가게의 판매자가 아닐 경우
-        if (orderInfo.getStore().equals(seller.getStore())) {
-            throw new BusinessException(STORE_FORBIDDEN);
-        }
+        // 권한 검사
+        validateStoreAndSeller(orderInfo.getStore().getId(), seller);
 
         OrderInfoStatus orderInfoStatus = getOrderInfoStatusOrThrow(request.getStatus());
 
@@ -239,6 +242,9 @@ public class OrderService {
             // 수령 완료
             if (orderInfoStatus == FINISHED) {
                 orderInfo.updateStatus(orderInfoStatus);
+
+                storeService.updateSaleCnt(storeRepository.findByIdAndDeletedAtIsNull(seller.getStore().getId())
+                        .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
                 return;
             }
         }
@@ -265,33 +271,70 @@ public class OrderService {
         cancelPayment(orderInfo.getPaymentId());
     }
 
-    public GetOrderListConsumerResponse getListConsumer() {
+    public GetOrderListConsumerResponse getListConsumer(Integer page, Integer size, String keyword) {
 
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Consumer consumer = securityUtil.getConsumer();
 
+        // 검색어 없는 경우
+        if (keyword == null || keyword.isEmpty()) {
+
+            Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByConsumerIdAndStatusIsNotUnpaidAndDeletedAtIsNull(consumer.getId(), pageable);
+
+            return GetOrderListConsumerResponse.of(
+                    orderInfos.getContent().stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()),
+                    orderInfos.getNumber(),
+                    orderInfos.hasNext());
+        }
+
+        // 검색어 있는 경우
+        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByConsumerIdAndStatusIsNotUnpaidAndKeywordDeletedAtIsNull(consumer.getId(), keyword, pageable);
+
         return GetOrderListConsumerResponse.of(
-                orderInfoRepository.findAllByConsumerIdAndDeletedAtIsNullOrderByCreatedAtDesc(consumer.getId())
-                .stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()));
+                orderInfos.getContent().stream().map(GetOrderConsumerResponse::from).collect(Collectors.toList()),
+                orderInfos.getNumber(),
+                orderInfos.hasNext());
     }
 
-    public GetOrderListInProgressSellerResponse getInProgressListSeller(Long storeId) {
+    public GetOrderListInProgressSellerResponse getInProgressListSeller(Long storeId, Integer page, Integer size) {
 
         validateStoreAndSeller(storeId, securityUtil.getSeller());
 
-        // 종료되지 않은 주문 목록
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending()); // 페이징
+        List<OrderInfoStatus> statusList = Arrays.asList(PAID, IN_PROGRESS, PREPARED); // 진행중인 상태
+
+        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByStoreIdAndStatusAndDeletedAtIsNull(storeId, statusList, pageable);
+
         return GetOrderListInProgressSellerResponse.of(
-                orderInfoRepository.findAllByStoreIdAndStatusIsNotFinishedAndDeletedAtIsNullOrderByCreatedAtDesc(storeId)
-                        .stream().map(GetOrderInProgressSellerResponse::from).collect(Collectors.toList()));
+                orderInfos.stream().map(GetOrderInProgressSellerResponse::from).collect(Collectors.toList()),
+                orderInfos.getNumber(),
+                orderInfos.hasNext());
     }
 
-    public GetOrderListFinishedSellerResponse getFinishedListSeller(Long storeId) {
+    public GetOrderListFinishedSellerResponse getFinishedListSeller(Long storeId, Integer page, Integer size, String orderNo) {
 
         validateStoreAndSeller(storeId, securityUtil.getSeller());
 
-        // 종료된 주문 목록
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending()); // 페이징
+        List<OrderInfoStatus> statusList = Arrays.asList(CANCEL, DENIED, FINISHED); // 종료된 상태
+
+        // 주문번호 검색 없는 경우
+        if (orderNo == null || orderNo.isEmpty()) {
+            Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByStoreIdAndStatusAndDeletedAtIsNull(storeId, statusList, pageable);
+
+            return GetOrderListFinishedSellerResponse.of(
+                    orderInfos.stream().map(GetOrderFinishedSellerResponse::from).collect(Collectors.toList()),
+                    orderInfos.getNumber(),
+                    orderInfos.hasNext());
+        }
+
+        // 주문번호 검색 있는 경우
+        Slice<OrderInfo> orderInfos = orderInfoRepository.findAllByStoreIdAndStatusAndOrderNoAndDeletedAtIsNull(storeId, statusList, orderNo, pageable);
+
         return GetOrderListFinishedSellerResponse.of(
-                orderInfoRepository.findAllByStoreIdAndStatusIsFinishedAndDeletedAtIsNullOrderByCreatedAtDesc(storeId)
-                        .stream().map(GetOrderFinishedSellerResponse::from).collect(Collectors.toList()));
+                orderInfos.stream().map(GetOrderFinishedSellerResponse::from).collect(Collectors.toList()),
+                orderInfos.getNumber(),
+                orderInfos.hasNext());
     }
 
     public GetOrderDetailConsumerResponse getOrderDetailConsumer(Long orderInfoId) {
@@ -316,6 +359,26 @@ public class OrderService {
 
         // 반환
         return GetOrderDetailSellerResponse.from(orderInfo);
+    }
+
+    public GetOrderInProgressConsumerResponse getOrderInProgressConsumer(Long orderInfoId) {
+
+        // 주문
+        OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);
+
+        // 권한 검사
+        validateOrderInfoAndConsumer(orderInfo, securityUtil.getConsumer());
+
+        // 상태
+        OrderInfoStatus status = orderInfo.getStatus();
+
+        // 진행 중 여부 확인
+        if (status != PAID && status != IN_PROGRESS && status != PREPARED) {
+            throw new BusinessException(ORDER_NOT_IN_PROGRESS);
+        }
+
+        // 반환
+        return GetOrderInProgressConsumerResponse.from(orderInfo);
     }
 
     private Sale findSaleOrElseThrow(Cart cart) {

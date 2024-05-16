@@ -1,12 +1,15 @@
 package com.todayeat.backend.store.mapper;
 
 import com.todayeat.backend.category.dto.CategoryInfo;
+import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.CreateStoreResponse;
 import com.todayeat.backend.store.dto.response.GetConsumerDetailStoreResponse;
 import com.todayeat.backend.store.dto.response.GetConsumerInfoStoreResponse;
+import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse.StoreInfo;
+import com.todayeat.backend.store.dto.response.GetConsumerListStoreResponse.StoreInfo.SaleImageURL;
 import com.todayeat.backend.store.dto.response.GetSellerStoreResponse;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.entity.StoreDocument;
@@ -52,8 +55,16 @@ public interface StoreMapper {
 
     GetConsumerDetailStoreResponse storeDocumentToGetConsumerDetailStoreResponse(StoreDocument storeDocument);
 
-
     @Mapping(target = "location.lat", source = "updateStoreRequest.latitude")
     @Mapping(target = "location.lon", source = "updateStoreRequest.longitude")
     StoreDocument updateStoreRequestToStoreDocument(Long id, UpdateStoreRequest updateStoreRequest, String imageURL, int reviewCnt, int favoriteCnt, List<CategoryInfo> categoryList);
+
+
+    @Mapping(target = "storeId", source = "storeDocument.id")
+    @Mapping(target = "latitude", source = "storeDocument.location.lat")
+    @Mapping(target = "longitude", source = "storeDocument.location.lon")
+    StoreInfo storeDocumentToStoreInfo(StoreDocument storeDocument, int distance, List<SaleImageURL> saleImageURLList);
+
+    @Mapping(target = "imageURL", source = "imageUrl")
+    SaleImageURL saleToSaleImageURL(Sale sale);
 }

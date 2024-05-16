@@ -44,6 +44,7 @@ public enum SuccessType {
     GET_ORDER_FINISHED_LIST_SELLER_SUCCESS("판매자 종료된 주문 목록 조회에 성공하였습니다."),
     GET_ORDER_DETAIL_CONSUMER_SUCCESS("소비자 주문 상세 조회에 성공하였습니다."),
     GET_ORDER_DETAIL_SELLER_SUCCESS("판매자 주문 상세 조회에 성공하였습니다."),
+    GET_ORDER_IN_PROGRESS_CONSUMER_SUCCESS("소비자 주문 현황 조회에 성공하였습니다."),
 
     // seller
     CREATE_SELLER_SUCCESS("판매자 회원가입에 성공하였습니다."),
@@ -84,6 +85,10 @@ public enum SuccessType {
     GET_SALE_DETAIL_SUCCESS("판매 상세 조회에 성공하였습니다."),
     UPDATE_SALE_SUCCESS("판매 수정에 성공하였습니다."),
     UPDATE_SALE_IS_FINISHED_ALL_SUCCESS("모든 판매 종료에 성공하였습니다."),
+
+    // fcm token
+    CREATE_FCM_TOKEN_SUCCESS("FCM 토큰 등록에 성공하였습니다."),
+    DELETE_FCM_TOKEN_SUCCESS("FCM 토큰 삭제에 성공하였습니다."),
     ;
 
     private final String msg;

@@ -6,7 +6,8 @@ import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
 import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
 import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderDetailConsumerResponse;
-import com.todayeat.backend.order.dto.response.consumer.GetOrderDetailSellerResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderInProgressConsumerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderDetailSellerResponse;
 import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
 import com.todayeat.backend.order.dto.response.seller.GetOrderListInProgressSellerResponse;
@@ -116,19 +117,30 @@ public interface OrderControllerDocs {
     @Operation(summary = "주문 목록 조회 (소비자)",
             description = """
                           `ROLE_CONSUMER` \n
-                          주문 목록을 조회합니다.
+                          주문 목록을 조회합니다. \n
+                          request param으로 page, size, keyword 넣어주세요. \n
+                          키워드가 없으면 전체 데이터를 검색하고, 키워드가 있으면 해당 키워드가 포함된 가게의 데이터를 검색합니다.
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
             content = @Content(schema = @Schema(implementation = GetOrderListConsumerResponse.class)))
     @PreAuthorize("hasRole('CONSUMER')")
     @GetMapping
-    SuccessResponse<GetOrderListConsumerResponse> getListConsumer();
+    SuccessResponse<GetOrderListConsumerResponse> getListConsumer(@Schema(description = "페이지 번호, 0부터 시작", example = "0")
+                                                                  @RequestParam
+                                                                  Integer page,
+                                                                  @Schema(description = "데이터 개수", example = "10")
+                                                                  @RequestParam
+                                                                  Integer size,
+                                                                  @Schema(description = "검색어", example = "마라")
+                                                                  @RequestParam(required = false)
+                                                                  String keyword);
 
     @Operation(summary = "진행중인 주문 목록 조회 (판매자)",
             description = """
                           `ROLE_SELLER` \n
                           해당 가게의 진행중인 주문 목록을 조회합니다. \n
+                          request param으로 page, size 넣어주세요.
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
@@ -138,14 +150,22 @@ public interface OrderControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PreAuthorize("hasRole('SELLER')")
     @GetMapping("/in-progress")
-    SuccessResponse<GetOrderListInProgressSellerResponse> getInProgressListSeller(@RequestParam(value = "store-id", required = true)
+    SuccessResponse<GetOrderListInProgressSellerResponse> getInProgressListSeller(@RequestParam(value = "store-id")
                                                                                   @Schema(description = "가게 고유번호", example = "1")
-                                                                                  Long storeId);
+                                                                                  Long storeId,
+                                                                                  @Schema(description = "페이지 번호, 0부터 시작", example = "0")
+                                                                                  @RequestParam
+                                                                                  Integer page,
+                                                                                  @Schema(description = "데이터 개수", example = "10")
+                                                                                  @RequestParam
+                                                                                  Integer size);
 
     @Operation(summary = "종료된 주문 목록 조회 (판매자)",
             description = """
                           `ROLE_SELLER` \n
                           해당 가게의 종료된 주문 목록을 조회합니다. \n
+                          request param으로 page, size, order-no 넣어주세요. \n
+                          주문 번호가 없으면 전체 데이터를 검색하고, 주문 번호가 있으면 해당 번호가 포함된 주문 데이터를 검색합니다.
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
@@ -155,9 +175,18 @@ public interface OrderControllerDocs {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PreAuthorize("hasRole('SELLER')")
     @GetMapping("/finished")
-    SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(@RequestParam(value = "store-id", required = true)
-                                                                                @Schema(description = "가게 고유번호", example = "1")
-                                                                                Long storeId);
+    SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(@RequestParam(value = "store-id")
+                                                                              @Schema(description = "가게 고유번호", example = "1")
+                                                                              Long storeId,
+                                                                              @Schema(description = "페이지 번호, 0부터 시작", example = "0")
+                                                                              @RequestParam
+                                                                              Integer page,
+                                                                              @Schema(description = "데이터 개수", example = "10")
+                                                                              @RequestParam
+                                                                              Integer size,
+                                                                              @Schema(description = "주문 번호", example = "UUID")
+                                                                              @RequestParam(required = false, value = "order-no")
+                                                                              String orderNo);
 
     @Operation(summary = "주문 상세 조회 (소비자)",
             description = """
@@ -170,11 +199,14 @@ public interface OrderControllerDocs {
     @ApiResponse(responseCode = "403",
             description = "권한이 없는 경우",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "주문이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PreAuthorize("hasRole('CONSUMER')")
     @GetMapping("/{order-info-id}/consumer")
     SuccessResponse<GetOrderDetailConsumerResponse> getOrderDetailConsumer(@PathVariable(value = "order-info-id", required = true)
-                                                                          @Schema(description = "주문 고유번호", example = "1")
-                                                                          Long orderInfoId);
+                                                                           @Schema(description = "주문 고유번호", example = "1")
+                                                                           Long orderInfoId);
 
     @Operation(summary = "주문 상세 조회 (판매자)",
             description = """
@@ -187,9 +219,35 @@ public interface OrderControllerDocs {
     @ApiResponse(responseCode = "403",
             description = "권한이 없는 경우",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "주문이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PreAuthorize("hasRole('SELLER')")
     @GetMapping("/{order-info-id}/seller")
     SuccessResponse<GetOrderDetailSellerResponse> getOrderDetailSeller(@PathVariable(value = "order-info-id", required = true)
-                                                                           @Schema(description = "주문 고유번호", example = "1")
-                                                                           Long orderInfoId);
+                                                                       @Schema(description = "주문 고유번호", example = "1")
+                                                                       Long orderInfoId);
+
+    @Operation(summary = "주문 현황 조회 (소비자)",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          Path Variable로 order-info-id 넣어주세요.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderInProgressConsumerResponse.class)))
+    @ApiResponse(responseCode = "400",
+            description = "진행 중인 주문이 아닌 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "권한이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "주문이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('CONSUMER')")
+    @GetMapping("/{order-info-id}/in-progress")
+    SuccessResponse<GetOrderInProgressConsumerResponse> getOrderInProgressConsumer(@PathVariable(value = "order-info-id")
+                                                                                   @Schema(description = "주문 고유번호", example = "1")
+                                                                                   Long orderInfoId);
 }
