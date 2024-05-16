@@ -85,7 +85,7 @@ public class OrderService {
         }
 
         // 첫 번째 장바구니 확인
-        Store firstStore = findStoreOrElseThrow(carts.get(0).getStoreId()); // store 유효성 검사
+        Store firstStore = findStoreOrElseThrow(carts.getFirst().getStoreId()); // store 유효성 검사
         if (!firstStore.getIsOpened()) { // store 열려 있는지 확인
             throw new BusinessException(STORE_NOT_OPEN);
         }
@@ -183,10 +183,8 @@ public class OrderService {
         OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);
         Seller seller = securityUtil.getSeller();
 
-        // 가게의 판매자가 아닐 경우
-        if (orderInfo.getStore().equals(seller.getStore())) {
-            throw new BusinessException(STORE_FORBIDDEN);
-        }
+        // 권한 검사
+        validateStoreAndSeller(orderInfo.getStore().getId(), seller);
 
         OrderInfoStatus orderInfoStatus = getOrderInfoStatusOrThrow(request.getStatus());
 
@@ -364,6 +362,26 @@ public class OrderService {
 
         // 반환
         return GetOrderDetailSellerResponse.from(orderInfo);
+    }
+
+    public GetOrderInProgressConsumerResponse getOrderInProgressConsumer(Long orderInfoId) {
+
+        // 주문
+        OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);
+
+        // 권한 검사
+        validateOrderInfoAndConsumer(orderInfo, securityUtil.getConsumer());
+
+        // 상태
+        OrderInfoStatus status = orderInfo.getStatus();
+
+        // 진행 중 여부 확인
+        if (status != PAID && status != IN_PROGRESS && status != PREPARED) {
+            throw new BusinessException(ORDER_NOT_IN_PROGRESS);
+        }
+
+        // 반환
+        return GetOrderInProgressConsumerResponse.from(orderInfo);
     }
 
     private Sale findSaleOrElseThrow(Cart cart) {
