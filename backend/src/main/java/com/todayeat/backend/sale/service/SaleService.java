@@ -63,6 +63,8 @@ public class SaleService {
         }
 
         saleRepository.saveAll(saleList);
+
+        store.updateIsOpened(true);
     }
 
     public GetSaleListConsumerResponse getListToConsumer(Long storeId) {
@@ -103,59 +105,12 @@ public class SaleService {
     }
 
     @Transactional
-    public void updateStatus(Long saleId, UpdateSaleStatusRequest request) {
+    public void update(Long saleId, UpdateSaleRequest request) {
 
         Seller seller = securityUtil.getSeller();
 
         // todo 쿼리 세개 나가는데 성능 리펙토링 해보기
-        // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
-        Store store = validateStoreAndSeller(seller, request.getStoreId());
 
-        // 해당 메뉴의 존재 여부 확인 및 가게에 있는 메뉴인지 확인
-        Menu menu = validateMenuAndStore(request.getMenuId(), store);
-
-        // 해당 가게의 메뉴인 판매가 있는지 확인
-        Sale sale = saleRepository
-                .findByIdAndStoreIdAndMenuIdAndDeletedAtIsNullAndStoreDeletedAtIsNullAndMenuDeletedAtIsNull(
-                        saleId,
-                        store.getId(),
-                        menu.getId()
-                )
-                .orElseThrow(() -> new BusinessException(ErrorType.SALE_STATUS_UPDATE_FAIL));
-
-        sale.updateStatus();
-    }
-
-    @Transactional
-    public void updateContent(Long saleId, UpdateSaleContentRequest request) {
-
-        Seller seller = securityUtil.getSeller();
-
-        // todo 쿼리 세개 나가는데 성능 리펙토링 해보기
-        // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
-        Store store = validateStoreAndSeller(seller, request.getStoreId());
-
-        // 해당 메뉴의 존재 여부 확인 및 가게에 있는 메뉴인지 확인
-        Menu menu = validateMenuAndStore(request.getMenuId(), store);
-
-        // 해당 가게의 메뉴인 판매가 있는지 확인
-        Sale sale = saleRepository
-                .findByIdAndStoreIdAndMenuIdAndDeletedAtIsNullAndStoreDeletedAtIsNullAndMenuDeletedAtIsNull(
-                        saleId,
-                        store.getId(),
-                        menu.getId()
-                )
-                .orElseThrow(() -> new BusinessException(ErrorType.SALE_CONTENT_UPDATE_FAIL));
-
-        sale.updateContent(request.getContent());
-    }
-
-    @Transactional
-    public void updateStock(Long saleId, UpdateSaleStockRequest request) {
-
-        Seller seller = securityUtil.getSeller();
-
-        // todo 쿼리 세개 나가는데 성능 리펙토링 해보기
         // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
         Store store = validateStoreAndSeller(seller, request.getStoreId());
 
@@ -172,9 +127,22 @@ public class SaleService {
                 .orElseThrow(() -> new BusinessException(ErrorType.SALE_CONTENT_UPDATE_FAIL));
 
         // 재고 검증 및 업데이트. 총 판매량보다 재고가 작은 경우 예외
-        if(!sale.updateStock(request.getStock())) {
+        if(!sale.update(request.getContent(), request.getIsFinished(), request.getStock())) {
             throw new BusinessException(ErrorType.SALE_STOCK_UPDATE_FAIL);
         }
+    }
+
+    @Transactional
+    public void updateIsFinishedAll(UpdateSaleIsFinishedAllRequest request) {
+
+        Seller seller = securityUtil.getSeller();
+
+        // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
+        Store store = validateStoreAndSeller(seller, request.getStoreId());
+
+        saleRepository.updateAllSalesAsFinishedForStore(store);
+
+        store.updateIsOpened(false);
     }
 
     // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인

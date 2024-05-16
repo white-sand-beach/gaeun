@@ -66,6 +66,14 @@ spring:
           writetimeout: 5000
     auth-code-expiration-millis: 1800000
 
+  data:
+    elasticsearch:
+      client:
+        rest:
+          uris: ${ELASTICSEARCH_URIS}
+          username: ${ELASTICSEARCH_USERNAME}
+          password: ${ELASTICSEARCH_PASSWORD}
+
 cloud:
   aws:
     s3:

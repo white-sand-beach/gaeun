@@ -65,7 +65,7 @@ public class Store extends BaseTime {
 
     @Column(nullable = false)
     @ColumnDefault("false")
-    private boolean isOpened;
+    private Boolean isOpened;
 
     @Column(nullable = false)
     @ColumnDefault("0")
@@ -78,8 +78,8 @@ public class Store extends BaseTime {
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<StoreCategory> storeCategoryList = new ArrayList<>();
 
-    public void updateIsOpened() {
-        this.isOpened = !this.isOpened;
+    public void updateIsOpened(Boolean isOpened) {
+        this.isOpened = isOpened;
     }
 
     public void updateFavoriteCnt(int value) {

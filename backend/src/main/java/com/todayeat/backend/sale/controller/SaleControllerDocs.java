@@ -2,11 +2,7 @@ package com.todayeat.backend.sale.controller;
 
 import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
-import com.todayeat.backend.menu.dto.response.GetMenuListResponse;
-import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
-import com.todayeat.backend.sale.dto.request.UpdateSaleContentRequest;
-import com.todayeat.backend.sale.dto.request.UpdateSaleStatusRequest;
-import com.todayeat.backend.sale.dto.request.UpdateSaleStockRequest;
+import com.todayeat.backend.sale.dto.request.*;
 import com.todayeat.backend.sale.dto.response.GetSaleDetailConsumerResponse;
 import com.todayeat.backend.sale.dto.response.GetSaleListConsumerResponse;
 import com.todayeat.backend.sale.dto.response.GetSaleListSellerResponse;
@@ -95,59 +91,7 @@ public interface SaleControllerDocs {
                                                                  @NotNull(message = "store-id: 값이 null이 아니어야 합니다.")
                                                                  @Schema(description = "가게 ID", example = "1")
                                                                  Long storeId);
-    @Operation(summary = "판매 상태 변경",
-            description = """
-                    `ROLE_SELLER` \n
-                    path variable로 sale-id 넣어주세요. \n
-                    request body 넣어주세요.
-                    """)
-    @ApiResponse(responseCode = "200",
-            description = "성공")
-    @ApiResponse(responseCode = "404",
-            description = """ 
-                    판매자의 가게가 맞는지 확인, 가게 존재 여부 확인 \n
-                    해당 메뉴의 존재 여부 확인 및 가게에 있는 메뉴인지 확인 \n
-                    """,
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @ApiResponse(responseCode = "400",
-            description = "해당 가게의 메뉴인 판매가 있는지 확인",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PutMapping(value = "/{sale-id}/status")
-    @PreAuthorize("hasRole('SELLER')")
-    SuccessResponse<Void> updateStatus(@PathVariable(name = "sale-id")
-                                       @Schema(description = "판매 ID", example = "1")
-                                       Long saleId,
-                                       @RequestBody
-                                       @Valid
-                                       UpdateSaleStatusRequest request);
-
-    @Operation(summary = "판매 내용 변경",
-            description = """
-                    `ROLE_SELLER` \n
-                    path variable로 sale-id 넣어주세요. \n
-                    request body 넣어주세요.
-                    """)
-    @ApiResponse(responseCode = "200",
-            description = "성공")
-    @ApiResponse(responseCode = "404",
-            description = """ 
-                    판매자의 가게가 맞는지 확인, 가게 존재 여부 확인 \n
-                    해당 메뉴의 존재 여부 확인 및 가게에 있는 메뉴인지 확인 \n
-                    """,
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @ApiResponse(responseCode = "400",
-            description = "해당 가게의 메뉴인 판매가 있는지 확인",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PutMapping(value = "/{sale-id}/content")
-    @PreAuthorize("hasRole('SELLER')")
-    SuccessResponse<Void> updateContent(@PathVariable(name = "sale-id")
-                                       @Schema(description = "판매 ID", example = "1")
-                                       Long saleId,
-                                       @RequestBody
-                                       @Valid
-                                        UpdateSaleContentRequest request);
-
-    @Operation(summary = "판매 재고 변경",
+    @Operation(summary = "판매 수정",
             description = """
                     `ROLE_SELLER` \n
                     path variable로 sale-id 넣어주세요. \n
@@ -165,12 +109,30 @@ public interface SaleControllerDocs {
     @ApiResponse(responseCode = "400",
             description = "해당 가게의 메뉴인 판매가 있는지 확인",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PutMapping(value = "/{sale-id}/stock")
+    @PutMapping(value = "/{sale-id}")
     @PreAuthorize("hasRole('SELLER')")
-    SuccessResponse<Void> updateStock(@PathVariable(name = "sale-id")
-                                        @Schema(description = "판매 ID", example = "1")
-                                        Long saleId,
-                                        @RequestBody
-                                        @Valid
-                                        UpdateSaleStockRequest request);
+    SuccessResponse<Void> update(@PathVariable(name = "sale-id")
+                                       @Schema(description = "판매 ID", example = "1")
+                                       Long saleId,
+                                       @RequestBody
+                                       @Valid
+                                       UpdateSaleRequest request);
+
+    @Operation(summary = "모든 판매 종료",
+            description = """
+                    `ROLE_SELLER` \n
+                    request body 넣어주세요.
+                    """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @ApiResponse(responseCode = "404",
+            description = """ 
+                    판매자의 가게가 맞는지 확인, 가게 존재 여부 확인 \n
+                    """,
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PutMapping(value = "/finish-all")
+    @PreAuthorize("hasRole('SELLER')")
+    SuccessResponse<Void> updateIsFinishedAll(@RequestBody
+                                              @Valid
+                                              UpdateSaleIsFinishedAllRequest request);
 }
