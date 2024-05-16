@@ -12,33 +12,41 @@ const OrderList = () => {
     hasNext: false,
   });
   const [inputText, setInputText] = useState<string>("");
+  const [isSearchInfo, setisSearchInfo] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchOrderList = async () => {
-      try {
-        const response = await OrderGetForm({
-          page: String(order.page),
-          size: "10",
-          keyword: inputText,
-        });
-        if (order.page === 0) {
-          setOrderData(response.orderInfoList);
-        } else {
-          setOrderData((prevOrderData) => [
-            ...prevOrderData,
-            ...response.orderInfoList,
-          ]);
+    if (isSearchInfo) {
+      const fetchOrderList = async () => {
+        try {
+          const response = await OrderGetForm({
+            page: String(order.page),
+            size: "10",
+            keyword: inputText,
+          });
+          if (order.page === 0) {
+            setOrderData(response.orderInfoList);
+          } else {
+            setOrderData((prevOrderData) => [
+              ...prevOrderData,
+              ...response.orderInfoList,
+            ]);
+          }
+          setOrder((prevOrder) => ({
+            ...prevOrder,
+            hasNext: response.hasNext,
+          }));
+          console.log("리스트 불러오기 성공");
+        } catch (error) {
+          console.log("리스트 불러오기 실패", error);
         }
-        setOrder((prevOrder) => ({ ...prevOrder, hasNext: response.hasNext }));
-      } catch (error) {
-        console.log("리스트 불러오기 실패", error);
-      }
-    };
+      };
 
-    fetchOrderList();
-  }, [order.page, inputText]);
+      setisSearchInfo(false);
+      fetchOrderList();
+    }
+  }, [order.page, isSearchInfo]);
 
-  const onUpdateText = (e : any) => {
+  const onUpdateText = (e: any) => {
     setInputText(e.target.value);
   };
 
@@ -48,10 +56,7 @@ const OrderList = () => {
       const scrollTop = document.documentElement.scrollTop;
       const clientHeight = document.documentElement.clientHeight;
 
-      if (
-        scrollTop + clientHeight >= scrollHeight &&
-        order.hasNext
-      ) {
+      if (scrollTop + clientHeight >= scrollHeight && order.hasNext) {
         setOrder((prevState) => ({
           ...prevState,
           page: prevState.page + 1,
@@ -63,6 +68,9 @@ const OrderList = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [order.hasNext]);
 
+  const handleSearchSubmit = () => {
+    setisSearchInfo(true);
+  };
 
   return (
     <div className="py-14">
@@ -76,7 +84,7 @@ const OrderList = () => {
             value={inputText}
             onChange={onUpdateText}
           />
-          <button>
+          <button onClick={handleSearchSubmit}>
             <img className="mr-1" src={searchIcon} alt="검색" />
           </button>
         </div>
