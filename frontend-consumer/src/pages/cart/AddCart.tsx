@@ -6,6 +6,7 @@ import BannerSlider from "../../components/navbar/ServiceBanner";
 import FirstCountButton from "../../components/button/FirstCountButton";
 import AddCartButton from "../../components/button/AddCartButton";
 import MenuDetailGetService from "../../services/carts/MenuDetailGetService";
+import logo from "../../../public/windows11/LargeTile.scale-100.png";
 
 import { MenuItem } from "../../types/ShopMenuType";
 
@@ -45,20 +46,20 @@ const AddCart = () => {
   return (
     <div>
       <div className="h-[150px] center mb-8 ">
-        {menu && (
+        {menu.imageUrl ? (
           <img
             src={menu.imageUrl}
             alt="메뉴 이미지"
             className="object-cover w-full h-[150px]"
           />
+        ) : (
+          <img src={logo} />
         )}
       </div>
       {/* 음식 정보 */}
       <CartInfo menu={menu} />
-      <div className="py-4 border-b-2 center">
-        <div className="w-[330px] border-2 border-green-400 rounded-3xl shadow-lg">
-          <BannerSlider />
-        </div>
+      <div className="w-11/12 mx-auto mt-4 mb-4 border-2 border-orange-400 center h-14 rounded-xl">
+        <BannerSlider />
       </div>
       <hr className="border-4 border-gray-100" />
 

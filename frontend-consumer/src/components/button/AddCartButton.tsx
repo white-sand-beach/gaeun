@@ -19,6 +19,7 @@ const AddCartButton = ({ menu, quantity, storeId }: CartInfoProps) => {
   const handleAddCart = async () => {
     try {
       await CartPostService({ quantity, storeId, saleId: menu.saleId})
+      alert(`${menu.name}을(를) 장바구니에 담았어요!`)
       navigate(-1)
       console.log("카트 담기 성공")
     } catch {
