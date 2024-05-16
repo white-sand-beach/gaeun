@@ -58,8 +58,8 @@ const PaymentButton = ({ cartInfo }: CheckPaymentProps) => {
               phoneNumber: "010-1234-1234",
             },
           });
-          console.log(response)
           window.location.href = redirectUrl
+          console.log(response)
         } catch (error) {
           console.error(error);
         }

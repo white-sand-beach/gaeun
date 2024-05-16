@@ -8,9 +8,6 @@ export interface OrderItem {
 export interface OrderDetailType {
   orderInfoId?: number;
   orderNo?: string;
-  storeId: number;
-  storeName?: string;
-  storeTel?: string;
   orderStatus?: string;
   orderDate?: string;
   restTime?: number;
@@ -18,6 +15,9 @@ export interface OrderDetailType {
   originalPrice?: number;
   discountPrice?: number;
   paymentPrice?: number;
+  storeId: number;
+  storeName?: string;
+  storeTel?: string;
 }
 
 export interface OrderInfo {
@@ -35,4 +35,19 @@ export interface OrderListType {
   orderInfoList?: OrderInfo[];
   page: number;
   hasNext?: boolean;
+}
+
+export interface OrderCurrentState {
+  orderInfoId: number;
+  orderDate: string;
+  orderRestTime: number;
+  orderStatus: string;
+  orderContents: string;
+  storeId: number;
+  storeName: string;
+  storeTel: string;
+  storeAddress: string;
+  storeRoadAddress: string;
+  storeLatitude: number;
+  storeLongitude: number;
 }

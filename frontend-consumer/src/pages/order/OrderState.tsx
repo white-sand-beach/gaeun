@@ -1,10 +1,41 @@
 import { useLocation } from "react-router-dom";
 import CallButton from "../../components/button/CallButton";
 import OrderDetailButton from "../../components/button/OrderDetailButton";
+import OrderCurrentGetForm from "../../services/orders/OrderCurrentGetService";
+import { useEffect, useState } from "react";
+import { OrderCurrentState } from "../../types/OrderType";
 
 const OrderState = () => {
   const location = useLocation();
-  const { orderInfoId } = location.state as { orderInfoId: number };
+  const { orderInfoId } = location.state as { orderInfoId: string };
+  const [orderCurrent, setOrderCurrent] = useState<OrderCurrentState>({
+    orderInfoId: 0,
+    orderDate: "",
+    orderRestTime: 0,
+    orderStatus: "",
+    orderContents: "",
+    storeId: 0,
+    storeName: "",
+    storeTel: "",
+    storeAddress: "",
+    storeRoadAddress: "",
+    storeLatitude: 0,
+    storeLongitude: 0,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await OrderCurrentGetForm(orderInfoId);
+        console.log("현황 조회 성공:", response);
+        setOrderCurrent(response);
+      } catch (error) {
+        console.log("현황 조회 실패:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="pt-16">
@@ -18,7 +49,7 @@ const OrderState = () => {
       <div className="center my-4">
         <div className="w-[300px] border-2 rounded-lg text-xxs text-gray-400 font-bold p-4">
           <div>
-            <p className="text-lg text-black">스진남 진평점</p>
+            <p className="text-lg text-black">{orderCurrent.storeName}</p>
           </div>
 
           <div className="my-2">
@@ -28,7 +59,7 @@ const OrderState = () => {
             <div className="flex items-center mt-1">
               <CallButton />
             </div>
-            <OrderDetailButton orderInfoId={orderInfoId}/>
+            <OrderDetailButton orderInfoId={orderCurrent.orderInfoId} />
           </div>
         </div>
       </div>

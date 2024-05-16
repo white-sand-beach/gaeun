@@ -1,5 +1,5 @@
 import { OrderInfo } from "../../types/OrderType";
-import OrderDetailGetService from "../../services/orders/OrderDetailGetService";
+import OrderDetailGetForm from "../../services/orders/OrderDetailGetService";
 import { useNavigate } from "react-router-dom";
 
 const OrderDetailButton = ({ orderInfoId }: OrderInfo) => {
@@ -7,7 +7,7 @@ const OrderDetailButton = ({ orderInfoId }: OrderInfo) => {
 
   const handleDetailSubmit = async () => {
     try {
-      const response = await OrderDetailGetService(String(orderInfoId));
+      const response = await OrderDetailGetForm(String(orderInfoId));
       console.log("상세 정보 요청 성공", response)
       navigate("/order-detail", { state: { orderDetail: response } });
     } catch (error) {

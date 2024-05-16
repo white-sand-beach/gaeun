@@ -1,6 +1,6 @@
 import axiosInstance from "../authentication/AxiosSet";
 
-const OrderValidationService = async (orderInfoId: string, paymentId: string): Promise<any> => {
+const OrderValidationForm = async (orderInfoId: string, paymentId: string): Promise<any> => {
   const response = await axiosInstance.put(
     `${import.meta.env.VITE_API_URL}/api/orders/${orderInfoId}/validation`,{
     paymentId
@@ -9,4 +9,4 @@ const OrderValidationService = async (orderInfoId: string, paymentId: string): P
   return response.data;
 };
 
-export default OrderValidationService;
+export default OrderValidationForm;
