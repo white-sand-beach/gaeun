@@ -86,7 +86,10 @@ public class GetOrderDetailSellerResponse {
             Integer time = Math.toIntExact(Duration.between(approvedAt, LocalDateTime.now()).getSeconds() / 60);
 
             // 예상 소요 시간 - time
-            return takenTime - time;
+            Integer restTime = takenTime - time;
+
+            // 반환
+            return restTime >= 0? restTime: 0;
         }
 
         // 준비 완료
