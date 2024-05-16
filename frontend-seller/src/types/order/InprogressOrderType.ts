@@ -1,4 +1,4 @@
-export interface InprogressOrder {
+export interface InprogressOrderType {
     orderInfoId: number;
     orderContents: string;
     orderPrice: number;
