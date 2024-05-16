@@ -65,15 +65,15 @@ public class Store extends BaseTime {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int saleCnt;
+    private Integer saleCnt;
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int reviewCnt;
+    private Integer reviewCnt;
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int favoriteCnt;
+    private Integer favoriteCnt;
 
     public void updateIsOpened(Boolean isOpened) {
 
