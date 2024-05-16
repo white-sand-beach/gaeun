@@ -159,18 +159,27 @@ public class StoreServiceElasticsearchImpl implements StoreService {
         PageRequest pageRequest = PageRequest.of(page, size, by);
 
         Query query = NativeQuery.builder()
-                .withQuery(q -> q
-                        .bool(b -> b
-                                .must(m -> m.multiMatch(mm -> mm.query(keyword).fields("name", "categoryList.name", "introduction")))
-                                .must(m -> m.geoDistance(g -> g
-                                        .field("location")
-                                        .distance(radius + "km")
-                                        .location(l -> l.latlon(ll -> ll.lat(latitude.doubleValue()).lon(longitude.doubleValue())))))
-                                .must(m -> m.term(t -> t.field("categoryList.categoryId").value(categoryId)))
-                                .must(m -> m.term(t -> t.field("isOpened").value(false)))
-                                .mustNot(mn -> mn.exists(e -> e.field("deletedAt")))
-                        )
-                )
+                .withQuery(q -> q.bool(b -> {
+                    if (keyword != null && !keyword.isEmpty()) {
+                        b.must(m -> m.multiMatch(mm -> mm
+                                .query(keyword)
+                                .fields("name", "categoryList.name", "introduction")));
+                    }
+                    b.must(m -> m.geoDistance(g -> g
+                            .field("location")
+                            .distance(radius + "km")
+                            .location(l -> l.latlon(ll -> ll.lat(latitude.doubleValue()).lon(longitude.doubleValue())))));
+                    if (categoryId != null) {
+                        b.must(m -> m.term(t -> t
+                                .field("categoryList.categoryId")
+                                .value(categoryId)));
+                    }
+                    b.must(m -> m.term(t -> t
+                            .field("isOpened")
+                            .value(true)));
+                    b.mustNot(mn -> mn.exists(e -> e.field("deletedAt")));
+                    return b;
+                }))
                 .withPageable(pageRequest)
                 .build();
 
@@ -179,8 +188,11 @@ public class StoreServiceElasticsearchImpl implements StoreService {
         List<StoreInfo> storeInfoList = searchHits.getSearchHits().stream()
                 .map(hit -> {
                     StoreDocument document = hit.getContent();
-                    GeoPoint docLocation = new GeoPoint(document.getLocation().getLat().doubleValue(), document.getLocation().getLon().doubleValue());
-                    int distance = calculateDistance(latitude.doubleValue(), longitude.doubleValue(), docLocation.getLat(), docLocation.getLon());
+
+                    int distance = calculateDistance(
+                            latitude.doubleValue(), longitude.doubleValue(),
+                            document.getLocation().getLat().doubleValue(), document.getLocation().getLon().doubleValue());
+
 
                     return StoreMapper.INSTANCE.storeDocumentToStoreInfo(document, distance);
                 })
@@ -264,7 +276,7 @@ public class StoreServiceElasticsearchImpl implements StoreService {
 
     @Override
     @Transactional
-    public  void updateSaleCnt(Store store) {
+    public void updateSaleCnt(Store store) {
 
         store.updateSaleCnt();
 
