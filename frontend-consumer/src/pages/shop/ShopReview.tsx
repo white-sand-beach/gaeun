@@ -12,7 +12,7 @@ const ShopReview = () => {
 
   return (
     <div className="w-full bg-white">
-      <div className="py-2">
+      <div className="w-11/12 mx-auto mt-4 mb-4 border-2 border-orange-400 center h-14 rounded-xl">
         <BannerSlider />
       </div>
       <hr className="w-full" />
