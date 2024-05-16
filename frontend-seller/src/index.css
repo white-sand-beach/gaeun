@@ -30,7 +30,7 @@
   }
 
   .detail-btn {
-    @apply h-[30px] border border-mainColor text-mainColor text-xs rounded-[5px]
+    @apply h-[40px] border border-mainColor text-mainColor text-xs rounded-[5px]
   }
   
   .list-component {
