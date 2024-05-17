@@ -115,7 +115,7 @@ public class CartService {
                     });
         }
 
-        return GetCartListResponse.of(storeId, storeName, isOpened, cartResponseList,
+        return GetCartListResponse.of(storeId, store.getImageURL(), storeName, isOpened, cartResponseList,
                 originalTotalPrice.get(), originalTotalPrice.get() - sellTotalPrice.get(), sellTotalPrice.get());
     }
 
