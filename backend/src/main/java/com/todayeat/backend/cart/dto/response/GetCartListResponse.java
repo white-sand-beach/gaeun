@@ -13,6 +13,9 @@ public class GetCartListResponse {
     @Schema(description = "가게 ID", example = "2")
     private Long storeId;
 
+    @Schema(description = "가게 이미지URL", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/4/store-image/2baa5b3d-0114-4b20-841f-7a3a634b9ee0.jpg")
+    private String imageURL;
+
     @Schema(description = "가게명", example = "옥이네")
     private String storeName;
 
@@ -31,8 +34,9 @@ public class GetCartListResponse {
     private Integer sellTotalPrice;
 
     @Builder
-    private GetCartListResponse (Long storeId, String storeName, Boolean isOpened, List<GetCartResponse> cartResponseList, Integer originalTotalPrice, Integer discountTotalPrice, Integer sellTotalPrice) {
+    private GetCartListResponse (Long storeId, String imageURL, String storeName, Boolean isOpened, List<GetCartResponse> cartResponseList, Integer originalTotalPrice, Integer discountTotalPrice, Integer sellTotalPrice) {
         this.storeId = storeId;
+        this.imageURL = imageURL;
         this.storeName = storeName;
         this.isOpened = isOpened;
         this.cartResponseList = cartResponseList;
@@ -41,10 +45,11 @@ public class GetCartListResponse {
         this.sellTotalPrice = sellTotalPrice;
     }
 
-    public static GetCartListResponse of (Long storeId, String storeName, Boolean isOpened, List<GetCartResponse> cartResponseList, Integer originalTotalPrice, Integer discountTotalPrice, Integer sellTotalPrice) {
+    public static GetCartListResponse of (Long storeId, String imageURL, String storeName, Boolean isOpened, List<GetCartResponse> cartResponseList, Integer originalTotalPrice, Integer discountTotalPrice, Integer sellTotalPrice) {
 
         return builder()
                 .storeId(storeId)
+                .imageURL(imageURL)
                 .storeName(storeName)
                 .isOpened(isOpened)
                 .cartResponseList(cartResponseList)
