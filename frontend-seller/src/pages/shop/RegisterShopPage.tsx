@@ -16,10 +16,12 @@ const RegisterShopPage = () => {
   const {
     shopImage,
     shopName,
+    shopRegisteredName,
     shopOwner,
     shopNumber,
     shopzibunAddr,
     shoproadAddr,
+    shopDetailAddr,
     shopLat,
     shopLon,
     shopIntro,
@@ -35,10 +37,12 @@ const RegisterShopPage = () => {
     postRegisterShop({
       shopImage: shopImage,
       shopName: shopName,
+      shopRegisteredName: shopRegisteredName,
       shopOwner: shopOwner,
       shopNumber: shopNumber,
       shopzibunAddr: shopzibunAddr,
       shoproadAddr: shoproadAddr,
+      shopDetailAddr: shopDetailAddr,
       shopLat: shopLat,
       shopLon: shopLon,
       shopIntro: shopIntro,
@@ -57,10 +61,12 @@ const RegisterShopPage = () => {
       <RegisterShop
         shopImage={shopImage}
         shopName={shopName}
+        shopRegisteredName={shopRegisteredName}
         shopOwner={shopOwner}
         shopNumber={shopNumber}
         shopzibunAddr={shopzibunAddr}
         shoproadAddr={shoproadAddr}
+        shopDetailAddr={shopDetailAddr}
         shopLat={shopLat}
         shopLon={shopLon}
         shopIntro={shopIntro}
