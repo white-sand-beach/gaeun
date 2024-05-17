@@ -42,7 +42,7 @@ const ProfileCard: React.FC = () => {
             </Link>
           </div>
           {/* 프로필 이미지, 이름, 이메일 */}
-          <div className="flex">
+          <div className="flex pl-2">
             <div className="relative flex justify-center items-center w-24 h-24 rounded-full border-[1px] border-gray-200 shadow-md">
               <img
                 className="object-cover w-20 h-20 rounded-full"
@@ -54,9 +54,9 @@ const ProfileCard: React.FC = () => {
                 alt="프로필 이미지"
               />
             </div>
-            <div className="pt-8 pl-4 text-sm">
-              <p className="font-serif">나누면 더 따뜻한 세상</p>
-              <p className="font-bold"> {profileData.nickname}</p>
+            <div className="pt-6 pb-2 pl-4 text-sm">
+              <p>나누면 더 따뜻한 세상</p>
+              <p className="text-lg font-bold"> {profileData.nickname}</p>
               <p className="text-gray-400">{profileData.email}</p>
             </div>
           </div>
@@ -96,7 +96,7 @@ const ProfileCard: React.FC = () => {
                     src={review}
                     alt="리뷰 목록"
                   />
-                  <p className="pt-1">내 리뷰</p>
+                  <p className="pt-1">감사 편지</p>
                 </button>
               </Link>
             </div>

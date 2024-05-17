@@ -6,6 +6,8 @@ interface MainMapData {
   page: number;
   size: number;
   sort?: string;
+  keyword?: string;
+  categoryId?: string;
 }
 
 export default MainMapData;
