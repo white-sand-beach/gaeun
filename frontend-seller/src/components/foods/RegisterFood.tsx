@@ -13,21 +13,21 @@ const RegisterFood: React.FC<InputFoodType> = (props) => {
   };
 
   return (
-    <div className="no-footer top-[100px] gap-3">
+    <div className="gap-3 no-footer">
       {/* 음식 이미지 추가 */}
       {!props.image ?
         <>
           <div>
             <label htmlFor="input-file">
-              <img src={logo} alt="음식사진" className="w-[120px]" />
+              <img src={logo} alt="음식사진" className="w-[200px] h-[200px]" />
               <img
                 src={camera}
                 alt="사진 추가"
-                className="w-[35px] relative z-10 -top-6 left-[90px]"
+                className="w-[35px] relative z-10 -top-10 left-[135px]"
               />
             </label>
+            <input name="image" id="input-file" type="file" accept="image/*" className="hidden" onChange={handleImage} />
           </div>
-          <input name="image" id="input-file" type="file" accept="image/*" className="hidden" onChange={handleImage} />
         </> :
         <img src={URL.createObjectURL(props.image)} alt="음식사진" className="w-[200px] h-[200px]" />
       }
