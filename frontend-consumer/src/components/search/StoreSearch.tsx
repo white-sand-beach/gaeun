@@ -1,53 +1,30 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import searchIcon from "../../assets/search/searchIcon.png";
-import './StoreSearch.css';
 
-const rankList = [
-  "1 메가커피",
-  "2 BHC",
-  "3 피자나라치킨공주",
-  "4 엽기떡볶이",
-  "5 맥도날드",
-  "6 카츠현",
-  "7 돈까스에 빠지다",
-  "8 맘스터치",
-  "9 KFC",
-  "10 BBQ",
-];
+interface StoreSearchProps {
+  onSearch: (keyword: string) => void;
+}
 
-// 연습 삼아 만들었는데 
-// 코드도 난잡하고 성능 최적화도 안되어 있어서
-// 나중에 싹 수정하도록 하겠습니다
-const StoreSearch = () => {
-  const [placeholder, setPlaceholder] = useState<string>('가게 이름 또는 메뉴 검색');
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+const StoreSearch = ({ onSearch }: StoreSearchProps) => {
+  const [searchInput, setSearchInput] = useState("");
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % rankList.length);
-        setIsAnimating(false);
-      }, 530);
-    }, 3000);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
 
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    setPlaceholder(rankList[currentIndex]);
-  }, [currentIndex]);
-
+  const handleSearchClick = () => {
+    onSearch(searchInput);
+  };
 
   return (
     <div className="search">
       <input
-        className={`w-[250px] py-2 text-xs pl-2 rounded-xl ${isAnimating ? 'animate-placeholder' : ''}`}
+        className={`w-[250px] py-2 text-xs pl-2 rounded-md`}
         type="text"
-        placeholder={placeholder}
+        placeholder={`가게 이름 및 메뉴 검색`}
+        onChange={handleInputChange}
       />
-      <button>
+      <button onClick={handleSearchClick}>
         <img className="mr-1" src={searchIcon} alt="검색" />
       </button>
     </div>
