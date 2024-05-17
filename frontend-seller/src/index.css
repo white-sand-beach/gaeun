@@ -72,6 +72,16 @@
   .no-selected-btn {
     @apply bg-white text-mainColor w-full h-[60px] shadow-lg rounded-[5px] border font-bold text-xl
   }
+
+  /* 가게등록 input tag */
+  .register-input-tag {
+    @apply w-[320px] h-[40px] border-b-2 bg-orange-50 rounded-lg p-2
+  }
+
+  /* 가게등록 textarea tag */
+  .register-textarea-tag {
+    @apply border-b-2 bg-orange-50 w-[320px] h-[200px] rounded-lg p-2
+  }
 }
 
 
