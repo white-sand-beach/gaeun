@@ -7,7 +7,7 @@ const ReviewButton = ({ orderStatus }: OrderStatus) => {
 
   return (
     <button
-      className={`mt-3 w-[290px] mx-4 border-[1px] py-3 ${isCompleted ? "orange-hover-button" : ""}`}
+      className={`mt-3 w-[290px] mx-4 border-[1px] py-3 text-white text-lg bg-myColor ${isCompleted ? "orange-hover-button" : ""}`}
       style={{
         visibility: isCompleted ? "visible" : "hidden",
         opacity: isCompleted ? 1 : 0,

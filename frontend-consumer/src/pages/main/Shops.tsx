@@ -36,7 +36,7 @@ const Shops = ({ store }: { store: StoreList }) => {
             </div>
             <p className="text-sm text-gray-500">{store.operatingTime}</p>
             <p className="text-sm">
-              리뷰 {store.reviewCnt} · 가게 찜 {store.favoriteCnt}
+              가게 찜 {store.favoriteCnt} · 편지 수 {store.reviewCnt}
             </p>
           </div>
           {/* 이미지 슬라이더 부분 */}

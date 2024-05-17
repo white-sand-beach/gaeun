@@ -122,7 +122,7 @@ const Shop = () => {
         {/* Other details */}
         <div className="flex flex-col items-center mt-2 ">
           <span className="text-sm text-gray-600">
-            리뷰 수 {shopInfo.reviewCnt} | 마감 시간 {shopInfo.operatingTime}
+            편지 수 {shopInfo.reviewCnt} | 운영 시간 {shopInfo.operatingTime}
           </span>
         </div>
       </div>
@@ -131,8 +131,8 @@ const Shop = () => {
         <div className="mr-5">
           <p className="text-sm font-semibold whitespace-nowrap ">위치안내</p>
         </div>
-        <div>
-          <p className="text-xs text-gray-600">{shopInfo.roadAddress}</p>
+        <div className="my-auto">
+          <p className="text-sm text-gray-600">{shopInfo.roadAddress}</p>
         </div>
       </div>
       {/* 지도 정보 */}
@@ -151,24 +151,24 @@ const Shop = () => {
         </div>
       </div>
       {/* 탭 버튼 */}
-      <div className="flex justify-around w-full mt-5 mb-0.5">
+      <div className="flex justify-around w-full mt-5 mb-0.5 space-x-2">
         <button
-          className={`my-1 py-2 px-10 text-xs ${activeTab === "details" ? "bg-orange-400 text-white" : "bg-gray-200 text-black"}`}
+          className={`my-1 whitespace-nowrap flex-1 py-2 text-xs ${activeTab === "details" ? "bg-orange-400 text-white" : "bg-gray-200 text-black"}`}
           onClick={() => setActiveTab("details")}
         >
           메뉴
         </button>
         <button
-          className={`my-1 py-2 px-10 text-xs ${activeTab === "menu" ? "bg-orange-400 text-white" : "bg-gray-200 text-black"}`}
+          className={`my-1 whitespace-nowrap flex-1 py-2 text-xs ${activeTab === "menu" ? "bg-orange-400 text-white" : "bg-gray-200 text-black"}`}
           onClick={() => setActiveTab("menu")}
         >
           정보ㆍ원산지
         </button>
         <button
-          className={`my-1 py-2 px-10 text-xs ${activeTab === "review" ? "bg-orange-400 text-white" : "bg-gray-200 text-black"}`}
+          className={`my-1 whitespace-nowrap flex-1 py-2 text-xs ${activeTab === "review" ? "bg-orange-400 text-white" : "bg-gray-200 text-black"}`}
           onClick={() => setActiveTab("review")}
         >
-          리뷰
+          감사편지
         </button>
       </div>
 
