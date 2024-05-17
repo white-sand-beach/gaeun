@@ -1,6 +1,6 @@
 // Store.ts
 import { Category } from "./Category";
-import { SaleImageURLType } from "./saleImageURLListType";
+import { SaleImageURLType } from "./SaleImageURLListType";
 
 export interface StoreList {
   storeId: number;
