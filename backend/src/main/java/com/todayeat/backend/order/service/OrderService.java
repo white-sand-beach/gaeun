@@ -454,11 +454,14 @@ public class OrderService {
 
     private void cancelPayment(String paymentId) {
 
-        // TODO: 통신 에러 처리하기
-
-        iamportRequestClient.cancelPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
-                paymentId,
-                CancelPaymentRequest.of("invalid value"));
+        try {
+            iamportRequestClient.cancelPayment(
+                    PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
+                    paymentId,
+                    CancelPaymentRequest.of("invalid value"));
+        } catch (Exception e) {
+            log.error("[OrderService.cancelPayment] paymentId {} error : {}", paymentId, e.getMessage());
+        }
     }
 
     private void validateOrderInfoAndConsumer(OrderInfo orderInfo, Consumer consumer) {
