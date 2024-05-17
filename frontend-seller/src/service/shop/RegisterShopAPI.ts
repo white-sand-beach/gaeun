@@ -13,6 +13,7 @@ const RegisterShopAPI = () => {
     const postRegisterShop = ({
         shopImage,
         shopName,
+        shopRegisteredName,
         shopOwner,
         shopNumber,
         shopzibunAddr,
@@ -26,7 +27,7 @@ const RegisterShopAPI = () => {
         shopCategoryId,
     }: InputRegisterShop) => {
         const formData = new FormData();
-        formData.append("registeredName", shopName);
+        formData.append("registeredName", shopRegisteredName);
         formData.append("bossName", shopOwner);
         formData.append("address", shopzibunAddr);
         formData.append("roadAddress", shoproadAddr);

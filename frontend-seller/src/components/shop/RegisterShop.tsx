@@ -67,25 +67,6 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
     setIsOpen(false);
   };
 
-  // // 카테고리 id 할당
-  // const handleCategoryId = (cateId: number) => {
-  //   // 카테고리 id 리스트에 이미 있는경우는 제외
-  //   if (categoryId.includes(cateId)) {
-  //     const updateId = categoryId.filter((id) => id !== cateId);
-  //     setCategoryId(updateId);
-  //     console.log("업데이트 id", updateId);
-  //     console.log("store관리: ", props.shopCategoryId);
-  //   }
-  //   // 없으면 추가
-  //   else {
-  //     const updateId = [...categoryId, cateId];
-  //     setCategoryId(updateId);
-  //     console.log("업데이트 id", updateId);
-  //     console.log("store관리: ", props.shopCategoryId);
-  //   }
-  //   props.onUpdateShopStore("shopCategoryId", categoryId);
-  //   console.log(categoryId);
-  // };
   // 상태 업데이트 로직 내부
   const handleCategoryId = (cateId: number) => {
     if (categoryId.includes(cateId)) {
@@ -98,20 +79,19 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
   };
 
   // categoryId 상태가 변경될 때마다 실행될 useEffect
+  // 최신 업데이트된 categoryId 값을 사용
+  // categoryId가 변경될 때마다 이 효과를 재실행
   useEffect(() => {
-    // 여기서는 최신의 categoryId를 사용할 수 있습니다.
     props.onUpdateShopStore("shopCategoryId", categoryId);
-  }, [categoryId]); // categoryId가 변경될 때마다 이 효과를 재실행합니다.
+  }, [categoryId]);
 
   return (
     <div className="flex flex-col items-center w-screen h-full gap-3">
       {/* 사진 등록하기 */}
       {!selectImg ? (
-        <div className="flex flex-col items-center justify-center w-full h-[360px] bg-gray-300">
+        <label htmlFor="input-file" className="text-2xl font-bold flex flex-col items-center justify-center w-full h-[360px] bg-gray-300">
           <img src={camera} alt="" className="m-2" />
-          <label htmlFor="input-file" className="text-2xl font-bold">
-            사진 등록하기
-          </label>
+          사진 등록하기
           <input
             name="shopImage"
             type="file"
@@ -120,7 +100,7 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
             className="hidden"
             onChange={handleChangeImg}
           />
-        </div>
+        </label>
       ) : (
         <img
           src={URL.createObjectURL(selectImg!)}
@@ -150,13 +130,26 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
           </div>
         </div>
 
-        {/* 가게(상호)명 입력하기 */}
+        {/* 가게명 입력하기 */}
         <div className="flex flex-col gap-2">
-          <p className="mt-10 text-xl font-bold">가게(상호명)</p>
+          <p className="mt-10 text-xl font-bold">가게명</p>
           <input
             name="shopName"
             type="text"
-            placeholder="가게(상호)명을 입력해주세요."
+            placeholder="소비자에게 보이는 가게명입니다."
+            className="w-[320px] border-b-2 bg-orange-50"
+            value={props.shopName}
+            onChange={handleChangeInfo}
+          />
+        </div>
+        
+        {/* 상호명 입력하기 */}
+        <div className="flex flex-col gap-2">
+          <p className="mt-10 text-xl font-bold">상호명</p>
+          <input
+            name="shopName"
+            type="text"
+            placeholder="사업자등록증상 상호명입니다."
             className="w-[320px] border-b-2 bg-orange-50"
             value={props.shopName}
             onChange={handleChangeInfo}
@@ -262,7 +255,7 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
         </div>
       </div>
 
-      <TotalButton title="가게 등록하기" onClick={props.onRegisterShop} />
+      <TotalButton title="가게 등록하기" onClick={() => props.onRegisterShop} />
 
       {isOpen && (
         <>

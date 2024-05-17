@@ -9,6 +9,7 @@ const useShopStore = create(
         (set) => ({
             shopImage: null,
             shopName: "",
+            shopRegisteredName: "",
             shopOwner: "",
             shopNumber: "",
             shopzibunAddr: "",
@@ -36,6 +37,7 @@ const useShopStore = create(
                 set({
                     shopImage: null,
                     shopName: "",
+                    shopRegisteredName: "",
                     shopOwner: "",
                     shopNumber: "",
                     shopzibunAddr: "",

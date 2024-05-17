@@ -2,7 +2,8 @@ import { CategoryIdType } from "./CategoryIdType";
 
 export type InputRegisterShop = {
     shopImage?: File | null; // 가게 이미지
-    shopName: string; // 가게(상호명)
+    shopName: string; // 가게명
+    shopRegisteredName: string; // 상호명
     shopOwner: string; // 대표자명
     shopNumber: string; // 가게 전화번호
     shopzibunAddr: string; // 지번 주소
