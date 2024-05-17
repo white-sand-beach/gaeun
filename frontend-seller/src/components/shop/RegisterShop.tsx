@@ -89,7 +89,10 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
     <div className="flex flex-col items-center w-screen h-full gap-3">
       {/* 사진 등록하기 */}
       {!selectImg ? (
-        <label htmlFor="input-file" className="text-2xl font-bold flex flex-col items-center justify-center w-full h-[360px] bg-gray-300">
+        <label
+          htmlFor="input-file"
+          className="text-2xl font-bold flex flex-col items-center justify-center w-full h-[360px] bg-gray-300"
+        >
           <img src={camera} alt="" className="m-2" />
           사진 등록하기
           <input
@@ -151,6 +154,7 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
               <input
                 name="shopRegisteredName"
                 type="text"
+                d
                 placeholder="사업자등록증상 상호명입니다."
                 className="register-input-tag"
                 value={props.shopRegisteredName}
@@ -209,7 +213,14 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
                 onChange={handleChangeInfo}
                 readOnly
               />
-              <input name="shopDetailAddr" type="text" value={props.shopDetailAddr} onChange={handleChangeInfo} placeholder="상세주소를 입력해주세요" className="register-input-tag" />
+              <input
+                name="shopDetailAddr"
+                type="text"
+                value={props.shopDetailAddr}
+                onChange={handleChangeInfo}
+                placeholder="상세주소를 입력해주세요"
+                className="register-input-tag"
+              />
             </div>
           </div>
         </div>
@@ -271,9 +282,11 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
       {isOpen && (
         <>
           <div className="fixed z-10 w-screen h-screen bg-black bg-opacity-50"></div>
-          <div className="fixed z-50 top-[135px] w-[360px] flex flex-col items-center">
-            <DaumPostcodeEmbed onComplete={handleAboutAddr} autoClose />
-            <TotalButton title="닫기" onClick={() => setIsOpen(false)} />
+          <div className="bg-white w-[400px]">
+            <div className="fixed z-50 top-[135px] w-[360px] flex flex-col items-center">
+              <DaumPostcodeEmbed onComplete={handleAboutAddr} autoClose />
+              <TotalButton title="닫기" onClick={() => setIsOpen(false)} />
+            </div>
           </div>
         </>
       )}
