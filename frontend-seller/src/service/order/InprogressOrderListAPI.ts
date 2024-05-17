@@ -5,7 +5,7 @@ import { InprogressOrderType } from "../../types/order/InprogressOrderType";
 const InprogressOrderListAPI = () => {
     const cookies = new Cookies()
     const accessToken = cookies.get("accessToken")
-    const storeId = 3;
+    const storeId = 4;
     const getOrderInprogress = (page: string, size: number, setInfo: (data:InprogressOrderType) => void) => {
         axios.get(import.meta.env.VITE_BASE_URL + "/api/orders/in-progress", {
             params: {

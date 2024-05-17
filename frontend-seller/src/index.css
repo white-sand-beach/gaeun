@@ -60,7 +60,7 @@
 
   /* Footer 있는 경우 */
   .yes-footer {
-    @apply flex flex-col items-center absolute w-full max-h-[calc(100vh-140px)]
+    @apply flex flex-col items-center absolute w-full max-h-[calc(100vh-130px)]
   }
 
   /* 버튼 선택됐을 경우 */

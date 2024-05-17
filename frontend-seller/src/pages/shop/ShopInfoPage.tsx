@@ -49,9 +49,6 @@ const ShopInfoPage = () => {
                 name={shopInfo.name}
                 roadAddress={shopInfo.roadAddress}
                 tel={shopInfo.tel} />
-            <hr />
-            <hr />
-            <hr />
             <h1>등록된 판매 목록</h1>
             {salesLists &&
                 <>
