@@ -27,11 +27,11 @@ const RegisterFood: React.FC<InputFoodType> = (props) => {
           </label>
           <input name="image" id="input-file" type="file" accept="image/*" className="hidden" onChange={handleImage} />
         </div> :
-        <img src={URL.createObjectURL(props.image)} alt="음식사진" className="w-[240px] h-[240px] rounded-lg" />
+        <img src={URL.createObjectURL(props.image)} alt="음식사진" className="w-[290px] h-[240px] rounded-lg" />
       }
 
       {/* 음식명 입력칸 */}
-      <div className="flex flex-col gap-2 mt-4">
+      <div className="flex flex-col gap-2">
         <p className="text-xl font-bold">음식명</p>
         <input
           name="name"
@@ -44,7 +44,7 @@ const RegisterFood: React.FC<InputFoodType> = (props) => {
       </div>
 
       {/* 원가 입력칸 */}
-      <div className="flex flex-col gap-2 mt-6">
+      <div className="flex flex-col gap-2 mt-4">
         <p className="text-xl font-bold">원가</p>
         <div className="flex flex-row">
           <input
@@ -61,7 +61,7 @@ const RegisterFood: React.FC<InputFoodType> = (props) => {
       </div>
 
       {/* 판매가 입력칸 */}
-      <div className="flex flex-col mt-6">
+      <div className="flex flex-col p-2 mt-4">
         <p className="text-xl font-bold">판매가</p>
         <div className="flex flex-row">
           <input
