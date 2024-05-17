@@ -5,7 +5,6 @@ import ShopInfo from "../../components/shop/ShopInfo";
 import MySalesList from "../../components/shop/MySalesList";
 import { SalesInfoType } from "../../types/shop/SalesInfoType";
 import GetMySalesListAPI from "../../service/shop/GetMySalesListAPI";
-import MenuListPage from "../menu/MenuListPage";
 
 const ShopInfoPage = () => {
   // 가게 정보
@@ -44,7 +43,7 @@ const ShopInfoPage = () => {
   }, []);
 
   return (
-    <div className="yes-footer top-[65px] overflow-y-scroll gap-3">
+    <div className="yes-footer top-[70px] overflow-y-scroll gap-3">
       <ShopInfo
         imageURL={shopInfo.imageURL}
         name={shopInfo.name}
@@ -61,7 +60,7 @@ const ShopInfoPage = () => {
         </div>
         <div onClick={() => setListTap(2)} className="w-full">
           <h1
-            className={`border-b-2 w-full flex flex-row justify-center items-center h-[60px] ${listTap === 3 ? "bg-orange-300 border-2" : ""}`}
+            className={`border-b-2 w-full flex flex-row justify-center items-center h-[60px] ${listTap === 2 ? "bg-orange-300 border-2" : ""}`}
           >
             등록된 물품 목록
           </h1>
