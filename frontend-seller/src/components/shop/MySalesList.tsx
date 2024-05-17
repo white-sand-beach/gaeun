@@ -51,7 +51,7 @@ const MySalesList: React.FC<SalesListInfoType> = (props) => {
   const [isEdit, setIsEdit] = useState(false);
 
   return (
-    <div className="flex flex-col gap-3 w-full">
+    <div className="flex flex-col gap-3 w-full overflow-y-scroll">
       {props.salesLists.map((list) => (
         <div
           key={list.saleId}
