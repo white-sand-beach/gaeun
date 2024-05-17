@@ -4,8 +4,10 @@ interface MainMenuProps {
 
 const MainMenu = ({ imageURL }: MainMenuProps) => {
   return (
-    <div className="w-[140px] h-28">
-      <img src={imageURL} alt="menu" className="object-cover w-full h-full" />
+    <div>
+      <div className="w-[140px] h-28 ">
+        <img src={imageURL} alt="menu" className="object-cover w-full h-full" />
+      </div>
     </div>
   );
 };

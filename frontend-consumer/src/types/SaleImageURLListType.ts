@@ -1,3 +1,3 @@
-export interface saleImageURLType {
+export interface SaleImageURLType {
   imageURL: string;
 }
