@@ -1,6 +1,7 @@
 package com.todayeat.backend.seller.repository;
 
 import com.todayeat.backend.seller.entity.Seller;
+import com.todayeat.backend.store.entity.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
     Boolean existsByRegisteredNo(String RegisteredNo);
 
     Optional<Seller> findByIdAndStoreIdAndDeletedAtIsNullAndStoreDeletedAtIsNull(Long id, Long storeId);
+
+    Optional<Seller> findByStoreAndDeletedAtIsNull(Store store);
 }
