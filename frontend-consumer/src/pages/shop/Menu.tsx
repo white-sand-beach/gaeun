@@ -4,7 +4,6 @@ import { MenuItem } from "../../types/ShopMenuType";
 
 import right from "../../assets/store/right.png";
 import sale from "../../assets/store/sale.png";
-import logo from "../../../public/windows11/LargeTile.scale-100.png"
 
 const ShopMenu = ({ menu }: { menu: MenuItem }) => {
   const navigate = useNavigate();
