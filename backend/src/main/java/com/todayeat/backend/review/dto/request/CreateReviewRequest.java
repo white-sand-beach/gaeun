@@ -25,7 +25,7 @@ public class CreateReviewRequest {
     @Schema(description = "가게 ID", example = "1")
     private Long storeId;
 
-    @NotNull(message = "OrderInfoId: 값이 null이 아니어야 합니다.")
+    @NotNull(message = "orderInfoId: 값이 null이 아니어야 합니다.")
     @Schema(description = "주문 ID", example = "1")
-    private Long OrderInfoId;
+    private Long orderInfoId;
 }

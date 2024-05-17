@@ -34,7 +34,7 @@ public class Review extends BaseTime {
     @JoinColumn(name = "consumer_id", referencedColumnName = "consumer_id")
     private Consumer consumer;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", referencedColumnName = "store_id")
     private Store store;
 
