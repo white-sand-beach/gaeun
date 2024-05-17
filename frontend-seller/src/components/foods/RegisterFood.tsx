@@ -48,7 +48,7 @@ const RegisterFood: React.FC<InputFoodType> = (props) => {
                   accept="image/*"
                   className="hidden"
                   onChange={handleImage}
-                />0
+                />
               </div>
             </div>
           </label>
