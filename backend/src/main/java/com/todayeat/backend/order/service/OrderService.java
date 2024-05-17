@@ -110,7 +110,7 @@ public class OrderService {
             paymentPrice += cart.getQuantity() * sale.getSellPrice();
 
             // 판매량 증가
-            sale.updateTotalQuantity(+1);
+            sale.updateTotalQuantity(cart.getQuantity());
         }
 
         // 주문 정보 저장
@@ -148,13 +148,20 @@ public class OrderService {
             throw new BusinessException(ORDER_ALREADY_PAID);
         }
 
+        validateOrder(request.getPaymentId(), orderInfo, consumer);
+    }
+
+    @DistributedLock(key = "#order")
+    private void validateOrder(String paymentId, OrderInfo orderInfo, Consumer consumer) {
+
         GetPaymentResponse getPaymentResponse;
 
         // 아임포트 결제 조회
         try {
-            getPaymentResponse = iamportRequestClient.getPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
-                    request.getPaymentId(),
-                    IAMPORT_STORE_ID);
+            getPaymentResponse = iamportRequestClient.getPayment(
+                PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
+                         paymentId,
+                         IAMPORT_STORE_ID);
         } catch (Exception e) {
             throw new BusinessException(ORDER_PAYMENT_FAIL);
         }
@@ -164,20 +171,28 @@ public class OrderService {
                 || !Objects.equals(getPaymentResponse.getAmount().getTotal(), orderInfo.getPaymentPrice())) {
 
             // 아임 포트 결제 취소
-            cancelPayment(request.getPaymentId());
+            cancelPayment(paymentId);
 
             // 주문 아이템 삭제
             orderInfoItemRepository.deleteAll(
-                    orderInfoItemRepository.findAllByOrderInfoIdAndDeletedAtIsNull(orderInfoId));
+                    orderInfoItemRepository.findAllByOrderInfoIdAndDeletedAtIsNull(orderInfo.getId()));
 
             // 주문 삭제
             orderInfoRepository.delete(orderInfo);
+
+            // 판매량 감소
+            orderInfo.getOrderInfoItemList().stream().iterator().forEachRemaining(
+                    item -> {
+                        Sale sale = item.getSale();
+                        sale.updateTotalQuantity(-item.getQuantity());
+                    }
+            );
 
             throw new BusinessException(ORDER_PAYMENT_FAIL);
         }
 
         // 결제 정보 및 주문 상태 업데이트
-        orderInfo.updatePaymentId(request.getPaymentId());
+        orderInfo.updatePaymentId(paymentId);
         orderInfo.updateStatus(PAID);
 
         // 장바구니 삭제
