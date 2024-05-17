@@ -49,6 +49,7 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
                         store.location.lat.as("latitude"),
                         store.location.lon.as("longitude"),
                         store.name,
+                        store.imageURL,
                         store.operatingTime,
                         store.reviewCnt,
                         store.favoriteCnt,

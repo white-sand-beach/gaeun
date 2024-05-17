@@ -44,6 +44,9 @@ public class GetConsumerListStoreResponse {
         @Schema(description = "가게 명", example = "가게")
         private String name;
 
+        @Schema(description = "대표 이미지", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/store-image/img.png")
+        private String imageURL;
+
         @Schema(description = "영업 시간", example = "00시 ~ 24시")
         private String operatingTime;
 
