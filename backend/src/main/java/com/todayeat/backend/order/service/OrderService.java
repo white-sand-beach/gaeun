@@ -269,8 +269,16 @@ public class OrderService {
             if (orderInfoStatus == FINISHED) {
                 orderInfo.updateStatus(orderInfoStatus);
 
-                storeService.updateSaleCnt(storeRepository.findByIdAndDeletedAtIsNull(seller.getStore().getId())
-                        .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)));
+                int value = orderInfoItemRepository.findAllByOrderInfoIdAndDeletedAtIsNull(orderInfoId).stream()
+                        .mapToInt(OrderInfoItem::getQuantity)
+                        .sum();
+
+                orderInfo.getConsumer().updateOrderCnt(value);
+
+                storeService.updateSaleCnt(
+                        storeRepository.findByIdAndDeletedAtIsNull(seller.getStore().getId())
+                                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)),
+                        value);
                 return;
             }
         }
