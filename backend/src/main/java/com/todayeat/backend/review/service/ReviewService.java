@@ -7,6 +7,7 @@ import com.todayeat.backend._common.util.S3Util;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.order.entity.OrderInfo;
+import com.todayeat.backend.order.entity.OrderInfoStatus;
 import com.todayeat.backend.order.repository.OrderInfoRepository;
 import com.todayeat.backend.review.dto.request.CreateReviewRequest;
 import com.todayeat.backend.review.entity.Review;
@@ -38,13 +39,11 @@ public class ReviewService {
         Store store = storeRepository.findByIdAndDeletedAtIsNull(request.getStoreId())
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
 
-        // 주문 존재 여부 확인
-        OrderInfo orderInfo = orderInfoRepository.findByIdAndDeletedAtIsNull(request.getOrderInfoId())
+        // 주문 존재 여부, 가게의 주문이 맞는지 여부, 내 주문이 맞는지 여부, 주문 상태가 FINISHED 인지, 이미 리뷰 작성했는지 여부
+        OrderInfo orderInfo = orderInfoRepository
+                .findByIdAndStoreAndConsumerAndStatusAndReviewIsNull(request.getOrderInfoId(),
+                        store, consumer, OrderInfoStatus.FINISHED)
                 .orElseThrow(() -> new BusinessException(ErrorType.ORDER_NOT_FOUND));
-
-        // todo 가게의 주문이 맞는지 확인
-        // todo 내 주문이 맞는지 확인
-        // todo 이미 리뷰 작성했는지 확인
 
         // S3에 이미지 저장
         String  imageUrl = s3Util.uploadImageIfPresent(request.getImage(), DirectoryType.CONSUMER_REVIEW_IMAGE, consumer.getId());
