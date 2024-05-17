@@ -80,9 +80,9 @@ public class Store extends BaseTime {
         this.isOpened = isOpened;
     }
 
-    public void updateSaleCnt() {
+    public void updateSaleCnt(int value) {
 
-        this.saleCnt++;
+        this.saleCnt += value;
     }
 
     public void updateReviewCnt(int value) {
