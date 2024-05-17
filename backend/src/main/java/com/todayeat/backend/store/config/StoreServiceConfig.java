@@ -35,10 +35,10 @@ public class StoreServiceConfig {
     @Bean
     public StoreService storeService() {
 
-        return new StoreServiceQueryDSLImpl(storeCategoryRepository, favoriteRepository, categoryRepository,
-                sellerRepository, storeRepository, securityUtil, s3Util);
+        //return new StoreServiceQueryDSLImpl(storeCategoryRepository, favoriteRepository, categoryRepository,
+        //        sellerRepository, storeRepository, securityUtil, s3Util);
 
-        //return new StoreServiceElasticsearchImpl(elasticsearchOperations, storeDocumentRepository, storeCategoryRepository, favoriteRepository, categoryRepository,
-        //        sellerRepository, storeRepository, saleRepository, securityUtil, s3Util);
+        return new StoreServiceElasticsearchImpl(elasticsearchOperations, storeDocumentRepository, storeCategoryRepository, favoriteRepository, categoryRepository,
+                sellerRepository, storeRepository, saleRepository, securityUtil, s3Util);
     }
 }
