@@ -166,7 +166,7 @@ public class StoreServiceElasticsearchImpl implements StoreService {
                     if (keyword != null && !keyword.isEmpty()) {
                         b.must(m -> m.multiMatch(mm -> mm
                                 .query(keyword)
-                                .fields("name", "categoryList.name", "introduction")));
+                                .fields("name", "categoryList.name")));
                     }
                     b.must(m -> m.geoDistance(g -> g
                             .field("location")
