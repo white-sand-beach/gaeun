@@ -154,7 +154,6 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
               <input
                 name="shopRegisteredName"
                 type="text"
-                d
                 placeholder="사업자등록증상 상호명입니다."
                 className="register-input-tag"
                 value={props.shopRegisteredName}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import RegisterFood from "../../components/foods/RegisterFood.tsx";
 import RegisterFoodAPI from "../../service/foods/RegisterFoodAPI.ts";
+import TotalButton from "../../components/ui/TotalButton.tsx";
 
 type foodInfo = {
     image: File | null;
@@ -58,6 +59,7 @@ const RegisterFoodPage = () => {
             onChangeImg={handleChangeImg}
             onRegisterFood={handleRegisterMenu}
             />
+            <TotalButton title="메뉴 등록하기" onClick={handleRegisterMenu} />
         </div>
     );
 };

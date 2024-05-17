@@ -2,7 +2,7 @@ import logo from "../../assets/logo/logo.png";
 import camera from "../../assets/addphoto.png";
 import React from "react";
 import { InputFoodType } from "../../types/foods/InputFoodType.ts";
-import TotalButton from "../ui/TotalButton.tsx";
+// import TotalButton from "../ui/TotalButton.tsx";
 
 const RegisterFood: React.FC<InputFoodType> = (props) => {
   const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -12,7 +12,7 @@ const RegisterFood: React.FC<InputFoodType> = (props) => {
   };
 
   return (
-    <div className="no-footer top-[50px] gap-3">
+    <div className="flex flex-col items-center top-[50px] gap-3">
       {/* 음식 이미지 추가 */}
       <>
         <div>
@@ -48,7 +48,7 @@ const RegisterFood: React.FC<InputFoodType> = (props) => {
                   accept="image/*"
                   className="hidden"
                   onChange={handleImage}
-                />0
+                />
               </div>
             </div>
           </label>
@@ -110,7 +110,6 @@ const RegisterFood: React.FC<InputFoodType> = (props) => {
           </p>
         </div>
       </div>
-      <TotalButton title="메뉴 등록하기" onClick={props.onRegisterFood} />
     </div>
   );
 };
