@@ -18,6 +18,6 @@ public class GetSellerResponse {
     @Schema(description = "사업자 등록번호", example = "0123456789")
     private String registeredNo;
 
-    @Schema(description = "가게 번호", example = "1")
+    @Schema(description = "가게 고유번호", example = "1")
     private Long storeId;
 }

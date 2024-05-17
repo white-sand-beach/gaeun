@@ -72,6 +72,6 @@ public class CreateStoreRequest {
     @Schema(description = "소개", example = "방씀다")
     private String introduction;
 
-    @Schema(description = "카테고리 아이디 목록", example = "[1, 2, 3]")
+    @Schema(description = "카테고리 고유번호 목록", example = "[1, 2, 3]")
     private List<Long> categoryIdList;
 }
