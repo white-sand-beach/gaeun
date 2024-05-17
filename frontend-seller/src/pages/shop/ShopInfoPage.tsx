@@ -5,6 +5,7 @@ import ShopInfo from "../../components/shop/ShopInfo";
 import MySalesList from "../../components/shop/MySalesList";
 import { SalesInfoType } from "../../types/shop/SalesInfoType";
 import GetMySalesListAPI from "../../service/shop/GetMySalesListAPI";
+import ReviewList from "../../components/review/ReviewList";
 
 const ShopInfoPage = () => {
   // 가게 정보
@@ -48,6 +49,7 @@ const ShopInfoPage = () => {
         imageURL={shopInfo.imageURL}
         name={shopInfo.name}
         roadAddress={shopInfo.roadAddress}
+        introduction={shopInfo.introduction}
         tel={shopInfo.tel}
       />
       <div className="w-full flex flex-row">
@@ -66,6 +68,7 @@ const ShopInfoPage = () => {
           </h1>
         </div>
       </div>
+      {listTap === 1 && <ReviewList />}
       {listTap === 2 && <MySalesList salesLists={salesLists} />}
     </div>
   );

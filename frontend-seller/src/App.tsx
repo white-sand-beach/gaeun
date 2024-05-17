@@ -9,7 +9,6 @@ import NotificationPage from "./pages/notification/NotificationPage.tsx";
 import RegisterShopPage from "./pages/shop/RegisterShopPage.tsx";
 import RegisterFoodPage from "./pages/foods/RegisterFoodPage.tsx";
 import SaleslistPage from "./pages/sales/SaleslistPage.tsx";
-import ReviewPage from "./pages/review/ReviewPage.tsx";
 import ShopInfoPage from "./pages/shop/ShopInfoPage.tsx";
 import MenuListPage from "./pages/menu/MenuListPage.tsx";
 import Cookies from "universal-cookie";
@@ -42,7 +41,6 @@ const App = () => {
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/menus" element={<MenuListPage />} />
           <Route path="/sales" element={<SaleslistPage />} />
-          <Route path="/review" element={<ReviewPage />} />
           <Route path="/mystore" element={<ShopInfoPage />} />
       </Routes>
     </BrowserRouter>
