@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderInfoRepository extends JpaRepository<OrderInfo, Long> {
+public interface OrderInfoRepository extends JpaRepository<OrderInfo, Long>, OrderInfoRepositoryQueryDSL {
 
     Optional<OrderInfo> findByIdAndDeletedAtIsNull(Long orderInfoId);
 

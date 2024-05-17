@@ -89,6 +89,12 @@ public enum SuccessType {
     // fcm token
     CREATE_FCM_TOKEN_SUCCESS("FCM 토큰 등록에 성공하였습니다."),
     DELETE_FCM_TOKEN_SUCCESS("FCM 토큰 삭제에 성공하였습니다."),
+
+    //statistic
+    GET_CONSUMER_RECEIPT_ALL_SUCCESS("소비자 수령 된 총 구매량 조회에 성공하였습니다."),
+    GET_SELLER_RECEIPT_ALL_SUCCESS("판매자 수령 된 총 판매량 조회에 성공하였습니다."),
+    GET_SELLER_REGISTRATION_WEEK_SUCCESS("판매자 등록 된 주(오늘까지 7일간) 판매량 조회에 성공하였습니다."),
+    GET_SELLER_REGISTRATION_MONTH_SUCCESS("판매자 등록 된 월(오늘까지 30일간) 판매량 조회에 성공하였습니다.")
     ;
 
     private final String msg;
