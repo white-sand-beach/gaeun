@@ -85,8 +85,9 @@ public class ReviewService {
 
         if (seller.isEmpty()) {
             log.error("ReviewService: Review create notification fail becasue of no such seller");
+        } else {
+            fcmNotificationUtil.sendToOne(seller.get().getId(), "Seller", "편지 알림", createReviewNotification.getBody());
         }
-        fcmNotificationUtil.sendToOne(seller.get().getId(), "Seller", "편지 알림", createReviewNotification.getBody());
     }
 
 }
