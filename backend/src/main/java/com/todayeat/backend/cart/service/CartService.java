@@ -19,10 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -114,6 +111,8 @@ public class CartService {
                         }
                     });
         }
+
+        cartResponseList.sort((o1, o2) -> Math.toIntExact(o1.getSaleId() - o2.getSaleId()));
 
         return GetCartListResponse.of(storeId, store.getImageURL(), storeName, isOpened, cartResponseList,
                 originalTotalPrice.get(), originalTotalPrice.get() - sellTotalPrice.get(), sellTotalPrice.get());
