@@ -67,7 +67,6 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
 
         if (keyword != null && !keyword.isEmpty()) {
             BooleanExpression keywordCondition = store.name.containsIgnoreCase(keyword)
-                    .or(store.introduction.containsIgnoreCase(keyword))
                     .or(category.name.containsIgnoreCase(keyword));
 
             query.where(keywordCondition);
