@@ -11,7 +11,7 @@ const Shops = ({ store }: { store: StoreList }) => {
   };
 
   return (
-    <div>
+    <div className="z-50">
       <div>
         <div>
           <div onClick={goStore}>

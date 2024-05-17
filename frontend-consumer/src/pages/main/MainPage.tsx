@@ -75,10 +75,15 @@ const Main: React.FC = () => {
           ...prevState,
           hasNext: response.hasNext,
         }));
-        setStoreList((prevStoreList) => [
-          ...prevStoreList,
-          ...response.storeList,
-        ]); // 이전 가게 리스트에 새로운 가게 리스트 추가
+
+        if (allData.page === 0) {
+          setStoreList(response.storeList); // 새로운 가게 리스트로 설정
+        } else {
+          setStoreList((prevStoreList) => [
+            ...prevStoreList,
+            ...response.storeList,
+          ]); // 이전 가게 리스트에 새로운 가게 리스트 추가
+        }
       } catch (error) {
         console.error("Error fetching store list:", error);
         navigate("/login");
