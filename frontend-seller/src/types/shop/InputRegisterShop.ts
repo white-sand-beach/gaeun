@@ -8,6 +8,7 @@ export type InputRegisterShop = {
     shopNumber: string; // 가게 전화번호
     shopzibunAddr: string; // 지번 주소
     shoproadAddr: string; // 도로명 주소
+    shopDetailAddr: string; // 상세 주소
     shopLat: number; // 가게 위도 ( 소비자용 )
     shopLon: number; // 가게 경도 ( 소비자용 )
     shopIntro?: string;  // 가게소개

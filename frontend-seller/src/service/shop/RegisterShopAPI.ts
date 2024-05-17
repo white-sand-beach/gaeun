@@ -18,6 +18,7 @@ const RegisterShopAPI = () => {
         shopNumber,
         shopzibunAddr,
         shoproadAddr,
+        shopDetailAddr,
         shopLat,
         shopLon,
         shopIntro,
@@ -29,8 +30,8 @@ const RegisterShopAPI = () => {
         const formData = new FormData();
         formData.append("registeredName", shopRegisteredName);
         formData.append("bossName", shopOwner);
-        formData.append("address", shopzibunAddr);
-        formData.append("roadAddress", shoproadAddr);
+        formData.append("address", shopzibunAddr + " " + shopDetailAddr);
+        formData.append("roadAddress", shoproadAddr + " " + shopDetailAddr);
         formData.append("latitude", shopLat.toString());
         formData.append("longitude", shopLon.toString());
         formData.append("tel", shopNumber,);
