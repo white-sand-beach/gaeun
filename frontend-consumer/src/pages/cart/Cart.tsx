@@ -19,6 +19,7 @@ const Cart = () => {
     originalTotalPrice: 0,
     discountTotalPrice: 0,
     sellTotalPrice: 0,
+    imageURL: "",
   });
   const [cartData, setCartData] = useState<CartItem[]>([]);
   const [isQuantityChange, setIsQuantityChange] = useState<boolean>(true);
