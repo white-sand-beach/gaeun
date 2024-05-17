@@ -35,8 +35,8 @@ const Footer = () => {
         <p>주문현황</p>
       </button>
 
-      <button className="flex flex-col items-center justify-center gap-1" onClick={() => handleIconClick("/register-food")}>
-        <img src={AddProductIcon} alt="물품등록" className="w-[30px] h-[30px]" />
+      <button className="flex flex-col items-center justify-center gap-1" onClick={() => handleIconClick("/menus")}>
+        <img src={AddProductIcon} alt="메뉴" className="w-[30px] h-[30px]" />
         <p>등록하기</p>
       </button>
 
