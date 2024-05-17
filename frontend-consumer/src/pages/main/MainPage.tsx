@@ -35,6 +35,8 @@ const Main: React.FC = () => {
     ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-[47vh] z-10"
     : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-[5vh] z-10";
 
+  const [sortType, setSortType] = useState("saleCnt"); // New state for sorting
+
   const { lat, lng } = useUserLocation((state) => ({
     lat: state.latitude,
     lng: state.longitude,
@@ -65,7 +67,7 @@ const Main: React.FC = () => {
           page: allData.page,
           size: 10,
           radius: 3,
-          sort: "distance",
+          sort: sortType,
         };
         const response = await MapListForm(mainData);
 
@@ -86,7 +88,7 @@ const Main: React.FC = () => {
     };
 
     fetchStoreList();
-  }, [lng, lat, allData.page]); // mainData 객체 자체를 의존성 배열에 추가
+  }, [lng, lat, allData.page, sortType]); // mainData 객체 자체를 의존성 배열에 추가
 
   useEffect(() => {
     // 페이지가 처음으로 로드될 때만 실행
@@ -237,14 +239,23 @@ const Main: React.FC = () => {
     <div>
       <div className="pt-14">
         <div className="flex justify-between px-1 pt-3 pb-3 font-bold bg-gray-100">
-          <div className="p-1 px-3 bg-white border-2 border-white shadow-xl rounded-xl">
+          <div
+            onClick={() => setSortType("distance")}
+            className="flex-1 p-1 px-3 mx-1 text-center bg-white border-2 border-white shadow-xl rounded-xl"
+          >
             가까운 순
           </div>
-          <div className="p-1 px-3 bg-white border-2 border-white shadow-xl rounded-xl">
-            리뷰 많은 순
+          <div
+            onClick={() => setSortType("saleCnt")}
+            className="flex-1 p-1 px-3 mx-1 text-center bg-white border-2 border-white shadow-xl rounded-xl"
+          >
+            나눔 순
           </div>
-          <div className="p-1 px-3 bg-white border-2 border-white shadow-xl rounded-xl">
-            찜 많은 순
+          <div
+            onClick={() => setSortType("reviewCnt")}
+            className="flex-1 p-1 px-3 mx-1 text-center bg-white border-2 border-white shadow-xl rounded-xl"
+          >
+            감사편지 순
           </div>
         </div>
       </div>
