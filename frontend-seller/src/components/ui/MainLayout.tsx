@@ -4,7 +4,7 @@ import Footer from "./Footer.tsx";
 
 const MainLayout = () => {
     // 상단바 숨길 페이지 path
-    const hiddenHeader = [""];
+    const hiddenHeader = ["/login"];
 
     // 하단바 숨길 페이지 path
     const hiddeneFooter = ["/login", "/signup", "/notification", "/register-shop", "/register-food"];
