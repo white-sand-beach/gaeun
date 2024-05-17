@@ -33,7 +33,7 @@ const ProfileUpdateButton = ({
   };
 
   return (
-    <button className="footer-button text-center" onClick={handleSignUp}>
+    <button className="w-[330px] footer-button text-center" onClick={handleSignUp}>
       {buttonText}
     </button>
   );
