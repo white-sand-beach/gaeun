@@ -42,7 +42,7 @@ const Header: React.FC = () => {
                 <img src={GotoBack} alt="뒤로가기" className="w-[40px] h-[40px]"/>
             </button>
             <h1>{title}</h1>
-            <button>
+            <button onClick={() => navigate("/notification")}>
                 <img src={NotiIcon} alt="알림" className="w-[40px] h-[40px]"/>
             </button>
         </header>
