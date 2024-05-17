@@ -1,11 +1,22 @@
-const ReviewButton = () => {
-  return (
-    <>
-      <button className="orange-hover-button ml-2 w-[140px] border-[1px] py-3">
-        리뷰 작성
-      </button>
-    </>
-  )
+interface OrderStatus {
+  orderStatus?: string;
 }
+
+const ReviewButton = ({ orderStatus }: OrderStatus) => {
+  const isCompleted = orderStatus === "수령 완료";
+
+  return (
+    <button
+      className={`mt-3 w-[290px] mx-4 border-[1px] py-3 ${isCompleted ? "orange-hover-button" : ""}`}
+      style={{
+        visibility: isCompleted ? "visible" : "hidden",
+        opacity: isCompleted ? 1 : 0,
+        pointerEvents: isCompleted ? "auto" : "none",
+      }}
+    >
+      리뷰 작성
+    </button>
+  );
+};
 
 export default ReviewButton;

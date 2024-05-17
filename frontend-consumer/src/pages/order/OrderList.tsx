@@ -76,9 +76,9 @@ const OrderList = () => {
     <div className="py-14">
       {/* 가게 및 메뉴 검색 */}
       <div className="my-2 center">
-        <div className="search w-screen mx-2">
+        <div className="w-screen mx-2 search">
           <input
-            className="text-xs pl-2 w-11/12 py-2 rounded-xl"
+            className="w-11/12 py-2 pl-2 text-xs rounded-xl"
             type="text"
             placeholder="가게 이름 검색"
             value={inputText}
