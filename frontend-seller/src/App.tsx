@@ -15,6 +15,7 @@ import MenuListPage from "./pages/menu/MenuListPage.tsx";
 import Cookies from "universal-cookie";
 import UpdateFoodPage from "./pages/foods/UpdateFoodPage.tsx";
 import OrderDetailPage from "./pages/order/OrderInfoPage.tsx";
+import StatisticsPage from "./pages/statistics/StatisticsPage.tsx";
 
 
 const App = () => {
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/order/:orderInfoId" element={<OrderDetailPage />} />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/menus" element={<MenuListPage />} />
+          <Route path="/statistics" element={<StatisticsPage />} />
           <Route path="/sales" element={<SaleslistPage />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/mystore" element={<ShopInfoPage />} />

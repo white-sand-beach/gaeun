@@ -19,7 +19,7 @@
   }
 
   footer {
-    @apply fixed bottom-0 flex flex-row justify-evenly items-center gap-3 w-full h-[60px] bg-white border-t-2
+    @apply fixed bottom-0 flex flex-row justify-evenly items-center gap-3 w-full h-[80px] bg-white border-t-2
     text-[16px] text-gray-500 z-10
   }
 }
@@ -55,17 +55,17 @@
 
   /* Footer 없는 경우 최상위 div container */
   .no-footer {
-    @apply flex flex-col items-center absolute w-full max-h-[calc(100vh-70px)]
+    @apply flex flex-col items-center absolute w-full max-h-[calc(100vh-70px)] h-full
   }
 
   /* Footer 있는 경우 */
   .yes-footer {
-    @apply flex flex-col items-center absolute w-full max-h-[calc(100vh-140px)]
+    @apply flex flex-col items-center absolute w-full max-h-[calc(100vh-140px)] h-full
   }
 
   /* 버튼 선택됐을 경우 */
   .selected-btn {
-    @apply bg-mainColor text-white w-full h-[60px] shadow-lg rounded-[5px] border font-bold text-xl
+    @apply bg-mainColor text-white w-screen h-[60px] shadow-lg rounded-[5px] border font-bold text-xl
   }
 
   /* 버튼 선택 안 했을 경우 */

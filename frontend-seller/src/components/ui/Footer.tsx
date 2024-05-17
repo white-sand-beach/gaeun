@@ -20,28 +20,28 @@ const Footer = () => {
 
   return (
     <footer>
-      <button className="flex flex-col items-center justify-center">
-        <img src={ChartIcon} alt="통계" />
+      <button className="flex flex-col items-center justify-center gap-1" onClick={() => handleIconClick("/statistics")}>
+        <img src={ChartIcon} alt="통계" className="w-[30px] h-[30px]" />
         <p>통계</p>
       </button>
 
-      <button className="flex flex-col items-center justify-center" onClick={() => handleIconClick("/sales")}>
-        <img src={SellListIcon} alt="판매내역" />
+      <button className="flex flex-col items-center justify-center gap-1" onClick={() => handleIconClick("/sales")}>
+        <img src={SellListIcon} alt="판매내역" className="w-[30px] h-[30px]" />
         <p>판매내역</p>
       </button>
 
-      <button className="flex flex-col items-center justify-center" onClick={() => handleIconClick("/order")}>
-        <img src={OrderListIcon} alt="주문현황" />
+      <button className="flex flex-col items-center justify-center gap-1" onClick={() => handleIconClick("/order")}>
+        <img src={OrderListIcon} alt="주문현황" className="w-[30px] h-[30px]" />
         <p>주문현황</p>
       </button>
 
-      <button className="flex flex-col items-center justify-center" onClick={() => handleIconClick("/register-food")}>
-        <img src={AddProductIcon} alt="물품등록" />
+      <button className="flex flex-col items-center justify-center gap-1" onClick={() => handleIconClick("/register-food")}>
+        <img src={AddProductIcon} alt="물품등록" className="w-[30px] h-[30px]" />
         <p>등록하기</p>
       </button>
 
-      <button className="flex flex-col items-center justify-center" onClick={() => handleIconClick("/mystore")}>
-        <img src={ProfileIcon} alt="프로필" />
+      <button className="flex flex-col items-center justify-center gap-1" onClick={() => handleIconClick("/mystore")}>
+        <img src={ProfileIcon} alt="프로필" className="w-[30px] h-[30px]" />
         <p>프로필</p>
       </button>
     </footer>

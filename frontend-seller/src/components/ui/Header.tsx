@@ -32,6 +32,9 @@ const Header: React.FC = () => {
         case "/sales":
             title = "판매내역"
             break;
+        case "/statistics":
+            title = "통계"
+            break;
     }
     return (
         <header>
