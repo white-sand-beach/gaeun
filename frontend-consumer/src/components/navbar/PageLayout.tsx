@@ -25,7 +25,6 @@ const hideFooterLayoutPaths = [
   "/profile",
   "/profile-setting",
   "/loading",
-  "/shop/:Id",
 ];
 
 const PageLayout = () => {

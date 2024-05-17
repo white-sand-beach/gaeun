@@ -6,7 +6,8 @@ import logo from "../../../public/windows11/LargeTile.scale-100.png";
 const SearchStoreList = ({ store }: { store: StoreList }) => {
   return (
     <div>
-      <div className="between p-2">
+      
+      <div className="between p-4">
         <Link to={`/shop/${store.storeId}`}>
           <div className="flex items-center">
             <img
