@@ -10,7 +10,9 @@ import java.util.concurrent.TimeUnit;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DistributedLock {
 
-    String key(); // 락의 이름
+    String key() default ""; // 락의 이름
+
+    String prefix() default ""; // 락의 이름 접두사
 
     TimeUnit timeUnit() default TimeUnit.SECONDS; // 락의 시간 단위
 

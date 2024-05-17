@@ -34,7 +34,7 @@ public class DistributedLockAspect {
         Method method = signature.getMethod();
         DistributedLock distributedLock = method.getAnnotation(DistributedLock.class);
 
-        String key = "LOCK:" + getKey(signature.getParameterNames(), joinPoint.getArgs(), distributedLock.key());
+        String key = distributedLock.prefix() + ":" + getKey(signature.getParameterNames(), joinPoint.getArgs(), distributedLock.key());
 
         RLock rLock = redissonClient.getLock(key);
         String lockName = rLock.getName();
