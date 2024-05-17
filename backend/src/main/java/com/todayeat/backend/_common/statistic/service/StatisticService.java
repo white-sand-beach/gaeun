@@ -4,6 +4,7 @@ import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.statistic.dto.response.GetConsumerReceiptAllResponse;
 import com.todayeat.backend._common.statistic.dto.response.GetSellerReceiptAllResponse;
+import com.todayeat.backend._common.statistic.dto.response.GetSellerRegistrationMonthResponse;
 import com.todayeat.backend._common.statistic.dto.response.GetSellerRegistrationWeekResponse;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.order.repository.OrderInfoRepository;
@@ -38,5 +39,10 @@ public class StatisticService {
     public GetSellerRegistrationWeekResponse getSellerRegistrationWeek(Long storeId) {
 
         return orderInfoRepository.findRegistrationWeekByStoreId(storeId);
+    }
+
+    public GetSellerRegistrationMonthResponse getSellerRegistrationMonth(Long storeId) {
+
+        return orderInfoRepository.findRegistrationMonthByStoreId(storeId);
     }
 }

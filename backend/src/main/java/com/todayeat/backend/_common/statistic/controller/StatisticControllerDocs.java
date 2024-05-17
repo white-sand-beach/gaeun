@@ -4,6 +4,7 @@ import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend._common.statistic.dto.response.GetConsumerReceiptAllResponse;
 import com.todayeat.backend._common.statistic.dto.response.GetSellerReceiptAllResponse;
+import com.todayeat.backend._common.statistic.dto.response.GetSellerRegistrationMonthResponse;
 import com.todayeat.backend._common.statistic.dto.response.GetSellerRegistrationWeekResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -48,4 +49,15 @@ public interface StatisticControllerDocs {
     @GetMapping("/{store-id}/registration/week")
     @PreAuthorize("hasRole('SELLER')")
     SuccessResponse<GetSellerRegistrationWeekResponse> getSellerRegistrationWeek(@PathVariable("store-id") Long storeId);
+
+    @Operation(summary = "판매자 등록 된 월(오늘까지 30일간) 판매량 조회")
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetSellerRegistrationMonthResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "존재하지 않는 가게입니다.",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @GetMapping("/{store-id}/registration/month")
+    @PreAuthorize("hasRole('SELLER')")
+    SuccessResponse<GetSellerRegistrationMonthResponse> getSellerRegistrationMonth(@PathVariable("store-id") Long storeId);
 }
