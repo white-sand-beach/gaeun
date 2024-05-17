@@ -9,6 +9,6 @@ import lombok.Setter;
 @Schema(name = "가게 등록 응답")
 public class CreateStoreResponse {
 
-    @Schema(description = "가게 아이디", example = "1")
+    @Schema(description = "가게 고유번호", example = "1")
     private Long storeId;
 }

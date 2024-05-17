@@ -21,10 +21,10 @@ public interface SellerMapper {
     @Mapping(target = "password", qualifiedByName = "encodePassword")
     Seller signupSellerRequestToSeller(SignupSellerRequest signupSellerRequest, @Context PasswordEncoder passwordEncoder);
 
-    @Mapping(source = "isValid", target = "isValid")
+    @Mapping(target = "isValid", source = "isValid")
     CheckEmailSellerResponse toCheckEmailSellerResponse(Boolean isValid);
 
-    @Mapping(source = "isValid", target = "isValid")
+    @Mapping(target = "isValid", source = "isValid")
     CheckRegisteredNoSellerResponse toCheckRegisteredNoSellerResponse(Boolean isValid);
 
     default FindEmailSellerResponse sellerListToFindEmailSellerResponse(List<Seller> sellerList) {
@@ -36,9 +36,10 @@ public interface SellerMapper {
         return findEmailSellerResponse;
     }
 
-    @Mapping(source = "isValid", target = "isValid")
+    @Mapping(target = "isValid", source = "isValid")
     CheckTempPasswordSellerResponse toCheckTempPasswordSellerResponse(Boolean isValid);
 
+    @Mapping(target = "storeId", source = "seller.store.id")
     GetSellerResponse sellerToGetSellerResponse(Seller seller);
 
     @Named("encodePassword")
