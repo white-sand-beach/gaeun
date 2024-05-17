@@ -170,9 +170,6 @@ public class OrderService {
         if (!getPaymentResponse.getStatus().equals("PAID")
                 || !Objects.equals(getPaymentResponse.getAmount().getTotal(), orderInfo.getPaymentPrice())) {
 
-            // 아임 포트 결제 취소
-            cancelPayment(paymentId);
-
             // 주문 아이템 삭제
             orderInfoItemRepository.deleteAll(
                     orderInfoItemRepository.findAllByOrderInfoIdAndDeletedAtIsNull(orderInfo.getId()));
@@ -226,15 +223,30 @@ public class OrderService {
 
             // 수락
             if (orderInfoStatus == IN_PROGRESS) {
+
                 orderInfo.updateStatus(orderInfoStatus);
                 orderInfo.updateTakenTimeAndApprovedAt(request.getTakenTime());
+
                 return;
             }
 
             // 거절
             if (orderInfoStatus == DENIED) {
+
+                // 주문 상태 변경
                 orderInfo.updateStatus(orderInfoStatus);
+
+                // 판매량 감소
+                orderInfo.getOrderInfoItemList().stream().iterator().forEachRemaining(
+                        item -> {
+                            Sale sale = item.getSale();
+                            sale.updateTotalQuantity(-item.getQuantity());
+                        }
+                );
+
+                // 결제 취소
                 cancelPayment(orderInfo.getPaymentId());
+
                 return;
             }
 
@@ -247,14 +259,29 @@ public class OrderService {
 
             // 준비 완료
             if (orderInfoStatus == PREPARED) {
+
                 orderInfo.updateStatus(orderInfoStatus);
+
                 return;
             }
 
             // 취소
             if (orderInfoStatus == CANCEL) {
+
+                // 주문 상태 변경
                 orderInfo.updateStatus(orderInfoStatus);
+
+                // 판매량 감소
+                orderInfo.getOrderInfoItemList().stream().iterator().forEachRemaining(
+                        item -> {
+                            Sale sale = item.getSale();
+                            sale.updateTotalQuantity(-item.getQuantity());
+                        }
+                );
+
+                // 결제 취소
                 cancelPayment(orderInfo.getPaymentId());
+
                 return;
             }
 
@@ -267,6 +294,7 @@ public class OrderService {
 
             // 수령 완료
             if (orderInfoStatus == FINISHED) {
+
                 orderInfo.updateStatus(orderInfoStatus);
 
                 int value = orderInfoItemRepository.findAllByOrderInfoIdAndDeletedAtIsNull(orderInfoId).stream()
@@ -279,6 +307,7 @@ public class OrderService {
                         storeRepository.findByIdAndDeletedAtIsNull(seller.getStore().getId())
                                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)),
                         value);
+
                 return;
             }
         }
@@ -300,8 +329,18 @@ public class OrderService {
             throw new BusinessException(ORDER_STATUS_CANT_UPDATE);
         }
 
-        // 주문 상태 변경 및 결제 취소
+        // 주문 상태 변경
         orderInfo.updateStatus(CANCEL);
+
+        // 판매량 감소
+        orderInfo.getOrderInfoItemList().stream().iterator().forEachRemaining(
+                item -> {
+                    Sale sale = item.getSale();
+                    sale.updateTotalQuantity(-item.getQuantity());
+                }
+        );
+
+        // 결제 취소
         cancelPayment(orderInfo.getPaymentId());
     }
 
