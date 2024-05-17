@@ -282,9 +282,9 @@ public class StoreServiceElasticsearchImpl implements StoreService {
 
     @Override
     @Transactional
-    public void updateSaleCnt(Store store) {
+    public void updateSaleCnt(Store store, int value) {
 
-        store.updateSaleCnt();
+        store.updateSaleCnt(value);
 
         Document document = Document.create();
         document.put("saleCnt", store.getSaleCnt());

@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 
 import java.util.ArrayList;
@@ -41,6 +42,10 @@ public class Consumer extends BaseTime {
     @Column(length = 20, nullable = true)
     private String phoneNumber;
 
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer orderCnt;
+
     @OneToMany(mappedBy = "consumer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Location> locations = new ArrayList<>();
 
@@ -58,5 +63,9 @@ public class Consumer extends BaseTime {
 
     public boolean isJoined() {
         return this.nickname != null && this.phoneNumber != null;
+    }
+
+    public void updateOrderCnt(int value) {
+        this.orderCnt += value;
     }
 }
