@@ -23,7 +23,7 @@ public interface StoreService {
 
     void updateIsOpened(Store store, Boolean isOpened);
 
-    void updateSaleCnt(Store store);
+    void updateSaleCnt(Store store, int value);
 
     void updateReviewCnt(Store store, int value);
 
