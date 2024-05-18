@@ -1,6 +1,8 @@
 package com.todayeat.backend.seller.service;
 
+import com.todayeat.backend._common.refreshtoken.repository.RefreshTokenRepository;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
+import com.todayeat.backend._common.util.CookieUtil;
 import com.todayeat.backend._common.util.MailUtil;
 import com.todayeat.backend._common.util.RedisUtil;
 import com.todayeat.backend._common.util.SecurityUtil;
@@ -10,6 +12,8 @@ import com.todayeat.backend.seller.dto.response.*;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.mapper.SellerMapper;
 import com.todayeat.backend.seller.repository.SellerRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,15 +37,20 @@ import static com.todayeat.backend._common.response.error.ErrorType.*;
 @RequiredArgsConstructor
 public class SellerService implements UserDetailsService {
 
+    private final RefreshTokenRepository refreshTokenRepository;
     private final SellerRepository sellerRepository;
     private final PasswordEncoder passwordEncoder;
     private final SecurityUtil securityUtil;
+    private final CookieUtil cookieUtil;
     private final RedisUtil redisUtil;
     private final MailUtil mailUtil;
 
     @Value("${spring.mail.auth-code-expiration-millis}")
     private long authCodeExpirationMillis;
 
+
+    private static final String REFRESH_TOKEN_COOKIE_NAME = "RefreshToken";
+    private static final String ACCESS_TOKEN_COOKIE_NAME = "accessToken";
     private static final String AUTH_CODE_PREFIX = "AuthCode ";
 
     @Transactional
@@ -179,6 +188,17 @@ public class SellerService implements UserDetailsService {
     public void updatePhoneNumber(UpdatePhoneNumberSellerRequest updatePhoneNumberSellerRequest) {
 
         securityUtil.getSeller().updatePhoneNumber(updatePhoneNumberSellerRequest.getPhoneNumber());
+    }
+
+    @Transactional
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+
+        cookieUtil.getCookie(request, REFRESH_TOKEN_COOKIE_NAME)
+                .flatMap(cookie -> refreshTokenRepository.findByRefreshToken(cookie.getValue()))
+                .ifPresent(refreshTokenRepository::delete);
+
+        cookieUtil.deleteCookie(request, response, ACCESS_TOKEN_COOKIE_NAME);
+        cookieUtil.deleteCookie(request, response, REFRESH_TOKEN_COOKIE_NAME);
     }
 
     private void sendCertification(String email, String authCode) {
