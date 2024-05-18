@@ -9,7 +9,6 @@ import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.consumer.entity.Consumer;
-import com.todayeat.backend.consumer.repository.ConsumerRepository;
 import com.todayeat.backend.favorite.entity.Favorite;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -33,7 +31,6 @@ import java.util.stream.Collectors;
 public class ConsumerNotificationService {
 
     private final ConsumerNotificationRepository consumerNotificationRepository;
-    private final ConsumerRepository consumerRepository;
     private final FavoriteRepository favoriteRepository;
     private final SecurityUtil securityUtil;
 

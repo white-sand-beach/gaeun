@@ -32,9 +32,7 @@ public class SellerNotificationService {
     private final SecurityUtil securityUtil;
 
     @Transactional
-    public void createOrderNotification(CreateOrderNotification createDTO) {
-
-        Seller seller = securityUtil.getSeller();
+    public void createOrderNotification(CreateOrderNotification createDTO, Seller seller) {
 
         sellerNotificationRepository.save(SellerNotification.of(createDTO.getType(),
                 createDTO.getTypeId(), createDTO.getContent(), seller));
