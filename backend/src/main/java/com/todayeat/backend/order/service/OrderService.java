@@ -278,7 +278,7 @@ public class OrderService {
                 );
 
                 // 결제 취소
-                if (!orderInfo.getPaymentId().isEmpty()) {
+                if (orderInfo.getPaymentId() != null) {
                     cancelPayment(orderInfo.getPaymentId());
                 }
 
@@ -315,7 +315,7 @@ public class OrderService {
                 );
 
                 // 결제 취소
-                if (!orderInfo.getPaymentId().isEmpty()) {
+                if (orderInfo.getPaymentId()!= null) {
                     cancelPayment(orderInfo.getPaymentId());
                 }
 
@@ -378,7 +378,7 @@ public class OrderService {
         );
 
         // 결제 취소
-        if (!orderInfo.getPaymentId().isEmpty()) {
+        if (orderInfo.getPaymentId() != null) {
             cancelPayment(orderInfo.getPaymentId());
         }
     }
