@@ -3,7 +3,7 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies()
 const accessToken = cookies.get("accessToken")
-const storeId = 4
+const storeId = 1;
 
 const TotalStatisticsAPI = async ():Promise<any> => {
   try {
@@ -20,7 +20,7 @@ const TotalStatisticsAPI = async ():Promise<any> => {
     console.log("총 판매량 조회 실패")
     console.error(err)
     throw err
-  };
+  }
 };
 
 export default TotalStatisticsAPI;

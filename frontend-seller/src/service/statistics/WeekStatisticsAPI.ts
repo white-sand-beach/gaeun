@@ -5,7 +5,7 @@ import { SaleStatisticList } from "../../types/statistics/SaleStatisticList";
 
 const cookies = new Cookies()
 const accessToken = cookies.get("accessToken")
-const storeId = 4
+const storeId = 1
 const WeekStatisticsAPI = async (): Promise<SaleStatisticList> => {
   try {
     const response = await axios.get(import.meta.env.VITE_BASE_URL + `/api/statistics/${storeId}/registration/week`, {
@@ -14,14 +14,14 @@ const WeekStatisticsAPI = async (): Promise<SaleStatisticList> => {
       }
     });
     console.log("주간 판매량 조회 성공")
-    console.log(response)
-    return response.data.data.SaleStatisticList;
+    console.log(response.data.data)
+    return response.data.data;
   }
   catch (err) {
     console.log("주간 판매랑 조회 실패")
     console.error(err)
     throw err;
-  };
+  }
 };
 
 export default WeekStatisticsAPI;
