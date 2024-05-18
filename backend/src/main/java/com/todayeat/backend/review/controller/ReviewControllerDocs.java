@@ -50,7 +50,7 @@ public interface ReviewControllerDocs {
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
-            content = @Content(schema = @Schema(implementation = GetOrderListConsumerResponse.class)))
+            content = @Content(schema = @Schema(implementation = GetReviewListConsumerResponse.class)))
     @PreAuthorize("hasRole('CONSUMER')")
     @GetMapping("/consumer")
     SuccessResponse<GetReviewListConsumerResponse> getListConsumer(@Schema(description = "페이지 번호, 0부터 시작", example = "0")
@@ -71,7 +71,7 @@ public interface ReviewControllerDocs {
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
-            content = @Content(schema = @Schema(implementation = GetOrderListConsumerResponse.class)))
+            content = @Content(schema = @Schema(implementation = GetReviewListSellerResponse.class)))
     @PreAuthorize("hasRole('SELLER')")
     @GetMapping("/seller")
     SuccessResponse<GetReviewListSellerResponse> getListSeller(@Schema(description = "페이지 번호, 0부터 시작", example = "0")
