@@ -34,6 +34,7 @@ const Header: React.FC = () => {
             break;
         case "/statistics":
             title = "통계"
+            break;
         case "/register-food":
             title = "메뉴등록"
             break;
