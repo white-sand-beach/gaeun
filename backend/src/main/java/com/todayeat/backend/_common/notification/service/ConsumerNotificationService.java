@@ -1,6 +1,7 @@
 package com.todayeat.backend._common.notification.service;
 
 import com.todayeat.backend._common.notification.dto.CreateFavoriteNotification;
+import com.todayeat.backend._common.notification.dto.CreateOrderNotification;
 import com.todayeat.backend._common.notification.dto.response.*;
 import com.todayeat.backend._common.notification.entity.ConsumerNotification;
 import com.todayeat.backend._common.notification.repository.ConsumerNotificationRepository;
@@ -85,5 +86,16 @@ public class ConsumerNotificationService {
         createDTO.updateConsumerIdList(consumerIdList);
 
         return createDTO;
+    }
+
+    @Transactional
+    public void createOrderNotification(CreateOrderNotification createDTO, Consumer consumer) {
+
+        consumerNotificationRepository.save(ConsumerNotification.of(
+                createDTO.getType(),
+                createDTO.getTypeId(),
+                createDTO.getContent(),
+                consumer
+        ));
     }
 }
