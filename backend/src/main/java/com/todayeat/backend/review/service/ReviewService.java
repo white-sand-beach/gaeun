@@ -15,6 +15,8 @@ import com.todayeat.backend.order.repository.OrderInfoRepository;
 import com.todayeat.backend.review.dto.request.CreateReviewRequest;
 import com.todayeat.backend.review.dto.response.GetReviewConsumerResponse;
 import com.todayeat.backend.review.dto.response.GetReviewListConsumerResponse;
+import com.todayeat.backend.review.dto.response.GetReviewListSellerResponse;
+import com.todayeat.backend.review.dto.response.GetReviewSellerResponse;
 import com.todayeat.backend.review.entity.Review;
 import com.todayeat.backend.review.mapper.ReviewMapper;
 import com.todayeat.backend.review.repository.ReviewRepository;
@@ -101,6 +103,7 @@ public class ReviewService {
 
     // 소비자: 자신의 리뷰 목록 보기
     public GetReviewListConsumerResponse getListConsumer(Integer page, Integer size, Long storeId) {
+
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Consumer consumer = securityUtil.getConsumer();
 
@@ -117,4 +120,28 @@ public class ReviewService {
         );
     }
 
+    public GetReviewListSellerResponse getListSeller(Integer page, Integer size, Long storeId) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Store store = validateStoreAndSeller(storeId);
+
+        Page<Review> reviewList = reviewRepository.findAllByStoreId(store.getId(), pageable);
+
+        return GetReviewListSellerResponse.of(
+                reviewList.getContent().stream().map(GetReviewSellerResponse::from)
+                        .collect(Collectors.toList()),
+                reviewList.getNumber(),
+                reviewList.hasNext(),
+                reviewList.getTotalElements()
+        );
+    }
+
+    // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인
+    private Store validateStoreAndSeller(Long storeId) {
+
+        Seller seller = securityUtil.getSeller();
+
+        return sellerRepository.findByIdAndStoreIdAndDeletedAtIsNullAndStoreDeletedAtIsNull(seller.getId(), storeId)
+                .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND)).getStore();
+    }
 }

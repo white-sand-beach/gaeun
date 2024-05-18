@@ -15,4 +15,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "AND r.consumer.id = :consumerId " +
             "AND r.deletedAt is null")
     Page<Review> findAllByStoreIdAndConsumerId(@Param("storeId") Long storeId, @Param("consumerId") Long consumerId, Pageable pageable);
+
+    @Query("SELECT r FROM Review r " +
+            "WHERE r.store.id = :storeId " +
+            "AND r.deletedAt is null")
+    Page<Review> findAllByStoreId(@Param("storeId") Long storeId, Pageable pageable);
 }

@@ -7,11 +7,11 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-@Schema(name = "GetReviewListConsumerResponse", description = "소비자 내 리뷰 목록 조회 응답")
-public class GetReviewListConsumerResponse {
+@Schema(name = "GetReviewListSellerResponse", description = "판매자 내 가게 리뷰 목록 조회 응답")
+public class GetReviewListSellerResponse {
 
     @Schema(description = "리뷰 정보")
-    private List<GetReviewConsumerResponse> reviewList;
+    private List<GetReviewSellerResponse> reviewList;
 
     @Schema(description = "현재 페이지", example = "0")
     private Integer page;
@@ -23,14 +23,14 @@ public class GetReviewListConsumerResponse {
     private Long totalCnt;
 
     @Builder
-    private GetReviewListConsumerResponse(List<GetReviewConsumerResponse> reviewList, Integer page, Boolean hasNext, Long totalCnt) {
+    private GetReviewListSellerResponse(List<GetReviewSellerResponse> reviewList, Integer page, Boolean hasNext, Long totalCnt) {
         this.reviewList = reviewList;
         this.page = page;
         this.hasNext = hasNext;
         this.totalCnt = totalCnt;
     }
 
-    public static GetReviewListConsumerResponse of(List<GetReviewConsumerResponse> reviewList, Integer page, Boolean hasNext, Long totalCnt) {
+    public static GetReviewListSellerResponse of(List<GetReviewSellerResponse> reviewList, Integer page, Boolean hasNext, Long totalCnt) {
 
         return builder()
                 .reviewList(reviewList)
