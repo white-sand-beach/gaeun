@@ -16,6 +16,9 @@ public class GetPopularSearchListResponse {
 
     private List<KeywordInfo> keywordInfoList;
 
+    @Schema(description = "기준 시각", example = "1")
+    private Integer hour;
+
     @Getter
     @Setter
     @NoArgsConstructor
@@ -37,13 +40,15 @@ public class GetPopularSearchListResponse {
     }
 
     @Builder
-    private GetPopularSearchListResponse(List<KeywordInfo> keywordInfoList) {
+    private GetPopularSearchListResponse(List<KeywordInfo> keywordInfoList, Integer hour) {
         this.keywordInfoList = keywordInfoList;
+        this.hour = hour;
     }
 
-    public static GetPopularSearchListResponse of(List<KeywordInfo> keywordInfoList) {
+    public static GetPopularSearchListResponse of(List<KeywordInfo> keywordInfoList, Integer hour) {
         return builder()
                 .keywordInfoList(keywordInfoList)
+                .hour(hour)
                 .build();
     }
 }
