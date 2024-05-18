@@ -44,7 +44,7 @@ const ShopInfoPage = () => {
   }, []);
 
   return (
-    <div className="yes-footer top-[70px] overflow-y-scroll gap-3">
+    <div className="yes-footer top-[75px] overflow-y-scroll gap-3">
       <ShopInfo
         imageURL={shopInfo.imageURL}
         name={shopInfo.name}

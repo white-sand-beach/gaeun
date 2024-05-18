@@ -38,6 +38,9 @@ const Header: React.FC = () => {
         case "/register-food":
             title = "메뉴등록"
             break;
+        case "/menus":
+            title = "메뉴"
+            break;
     }
 
     return (

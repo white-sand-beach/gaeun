@@ -34,16 +34,17 @@ const MonthStat = () => {
     datasets: [
       {
         label: "통계",
-        backgroundColor: "rgba(255, 159, 64, 0.2)",
+        backgroundColor: "#FFAF38",
         borderColor: "rgba(0, 0, 0, 1)",
-        borderWidth: 2,
+        borderWidth: 1,
+        borderRadius: 14,
         data: monthInfo?.saleStatisticList.map((stat) => stat.saleStatistic),
       },
     ],
   };
 
   const chartOptions: ChartOptions<"bar"> = {
-    responsive: false,
+    responsive: true,
     scales: {
       x: {
         type: "category",

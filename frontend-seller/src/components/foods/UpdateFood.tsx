@@ -1,38 +1,46 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { MenuInfoType } from "../../types/menu/MenuInfoType";
 import GetMenuAPI from "../../service/menu/GetMenuAPI";
-import logo from "/icons/main-icon-192.png";
 import camera from "../../assets/addphoto.png";
 import { PutMenuAPIType } from "../../types/menu/PutMenuAPIType";
 import TotalButton from "../ui/TotalButton";
 import PutMenuAPI from "../../service/menu/PutMenuAPI";
+import Cookies from "universal-cookie";
 
 const UpdateFood = () => {
+  const cookies = new Cookies();
+  const storeId = cookies.get("storeId");
   // 메뉴 상세보기를 위한 menuId를 useParams를 통해 구함
   const { menuId } = useParams();
   const [menuInfo, setMenuInfo] = useState<MenuInfoType | null>(null);
   const [updateMenuInfo, setUpdateMenuInfo] = useState<PutMenuAPIType>({
-    image: "",
+    image: null,
     name: "",
     originalPrice: 0,
-    sellPrice: 0
-  })
+    sellPrice: 0,
+  });
 
   useEffect(() => {
     if (menuInfo) {
       setUpdateMenuInfo({
-        image: menuInfo.imageUrl,
+        image: null,
         name: menuInfo.name,
         originalPrice: menuInfo.originalPrice,
         sellPrice: menuInfo.sellPrice
       })
     }
   }, [menuInfo])
+  
 
-  const imgRef = useRef<HTMLInputElement>(null);
-  const handleImage = () => {
-    imgRef.current && imgRef.current.click();
+  const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files ? event.target.files[0] : null
+    if (selectedFile) {
+      setUpdateMenuInfo((prev) => ({
+        ...prev,
+        image: selectedFile
+      }))
+    }
   };
 
   const handleChangeInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +49,7 @@ const UpdateFood = () => {
       ...updateMenuInfo,
       [name]: value,
     });
-    console.log(`${name} : ${value}`)
+    console.log(`${name} : ${value}`);
   };
 
   // 메뉴 id의 변화에 따른 메뉴 상세보기 페이지 rendering
@@ -69,66 +77,101 @@ const UpdateFood = () => {
       image: updateMenuInfo.image,
       originalPrice: updateMenuInfo.originalPrice,
       sellPrice: updateMenuInfo.sellPrice,
-      storeId: 1
-    })
+      storeId: storeId,
+    });
   };
 
   return (
-    <div className="no-footer top-[100px] gap-3">
+    <div className="flex flex-col items-center top-[50px] gap-3">
       {/* 음식 이미지 추가 */}
-      <div onClick={handleImage}>
-        <img src={logo} alt="음식사진" className="w-[120px]" />
-        <img
-          src={camera}
-          alt="사진 추가"
-          className="w-[35px] relative z-10 -top-6 left-[90px]"
-        />
-      </div>
-      <input type="file" className="hidden" ref={imgRef} />
+      <label htmlFor="input-file">
+        <div className="relative flex justify-center items-center">
+          {!updateMenuInfo?.image ? (
+            <div className="border-[5px] rounded-full border-white p-2 bg-gray-50 shadow-lg">
+              <img
+                src={menuInfo?.imageUrl}
+                alt="음식사진"
+                className="w-[300px] h-[300px] rounded-full"
+              />
+            </div>
+          ) : (
+            <div className="border-[5px] rounded-3xl border-white p-2 bg-gray-100 shadow-lg">
+              <img
+                src={updateMenuInfo.image instanceof File ? URL.createObjectURL(updateMenuInfo.image) : updateMenuInfo.image}
+                alt="음식사진"
+                className="w-[300px] h-[300px] rounded-3xl object-cover"
+              />
+            </div>
+          )}
+          <div>
+            <img
+              src={camera}
+              alt="사진 추가"
+              className="w-[60px] bottom-0 right-0 absolute z-10"
+            />
+            <input
+              name="image"
+              id="input-file"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImage}
+            />
+          </div>
+        </div>
+      </label>
 
       {/* 음식명 입력칸 */}
-      <input
-        name="name"
-        type="text"
-        placeholder="음식명을 입력하세요."
-        className="w-[290px] border-b-[3px]"
-        value={updateMenuInfo.name}
-        onChange={handleChangeInfo}
-      />
-
-      {/* 원가 입력칸 */}
-      <div className="flex flex-row mt-10">
-        <input
-          name="originalPrice"
-          type="number"
-          placeholder="상품의 원가를 입력하세요."
-          className="w-[270px] border-b-[3px]"
-          value={updateMenuInfo.originalPrice}
-          onChange={handleChangeInfo}
-          onFocus={(event) =>
-            event.target.value === "0" && (event.target.value = "")
-          }
-        />
-        <p className="text-xl font-bold">원</p>
-      </div>
-
-      {/* 판매가 입력칸 */}
-      <div className="flex flex-col mt-10">
-        <div className="flex flex-row">
+      <div className="py-14">
+        <div>
+          <p className="text-3xl font-bold mb-4 pl-2">음식명</p>
           <input
-            name="sellPrice"
-            type="number"
-            placeholder="상품의 판매가를 입력하세요."
-            className="w-[270px] border-b-[3px]"
-            value={updateMenuInfo.sellPrice}
+            name="name"
+            type="text"
+            placeholder="음식명을 입력하세요."
+            className="w-[400px] p-4 text-lg border-b-[3px]"
+            value={updateMenuInfo.name}
             onChange={handleChangeInfo}
-            onFocus={(event) =>
-              event.target.value === "0" && (event.target.value = "")
-            }
           />
-          <p className="text-xl font-bold">원</p>
         </div>
-        <p className="text-[12px] text-gray-500 mt-2 font-bold"></p>
+
+        {/* 원가 입력칸 */}
+        <div className="py-10">
+          <p className="text-3xl font-bold mb-4 pl-2">음식 원가</p>
+          <div className="flex items-center">
+            <input
+              name="originalPrice"
+              type="number"
+              placeholder="상품의 원가를 입력하세요."
+              className="w-[400px] p-4 text-lg border-b-[3px] mr-2"
+              // value={menuInfo?.originalPrice}
+              onChange={handleChangeInfo}
+              onFocus={(event) =>
+                event.target.value === "0" && (event.target.value = "")
+              }
+            />
+            <p className="text-xl font-bold">원</p>
+          </div>
+        </div>
+
+        {/* 판매가 입력칸 */}
+        <div>
+          <p className="text-3xl font-bold mb-4 pl-2">음식 판매가</p>
+          <div className="flex items-center">
+            <input
+              name="sellPrice"
+              type="number"
+              placeholder="상품의 판매가를 입력하세요."
+              className="w-[400px] p-4 text-lg border-b-[3px] mr-2"
+              // value={menuInfo?.sellPrice}
+              onChange={handleChangeInfo}
+              onFocus={(event) =>
+                event.target.value === "0" && (event.target.value = "")
+              }
+            />
+            <p className="text-xl font-bold">원</p>
+          </div>
+        </div>
       </div>
       <TotalButton title="수정 요청" onClick={handleUpdateMenu} />
     </div>
