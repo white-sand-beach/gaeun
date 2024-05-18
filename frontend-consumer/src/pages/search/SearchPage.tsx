@@ -6,6 +6,9 @@ import MapListForm from "../../services/maps/MapMainService";
 import { MainAllData } from "../../types/MainAllDataType";
 import { StoreList } from "../../types/StoreList";
 import SearchStoreList from "../../components/search/SearchStoreList";
+import RealTimeTrendingSearch from "../../components/search/RealTimeTrendingSearch";
+import PopularSearchListService from "../../services/searches/PopularSearchListService";
+import { TrendingItem } from "../../types/TrendingItem";
 
 const SearchPage = () => {
   const [mapData, setMapData] = useState<MainMapData>({
@@ -17,14 +20,13 @@ const SearchPage = () => {
     sort: "distance",
   });
   const [storeList, setStoreList] = useState<StoreList[]>([]);
+  const [popularSearchList, setPopularSearchList] = useState<TrendingItem[]>([]);
   const [allData, setAllData] = useState<MainAllData>({
     storeList: [],
     page: 0,
     hasNext: false,
   });
-  const [intro, setInfro] = useState(
-    "찾고 싶은 가게 이름이나 카테고리를 검색하세요!"
-  );
+
 
   useEffect(() => {
     const userLocation = localStorage.getItem("user-location");
@@ -36,6 +38,19 @@ const SearchPage = () => {
         latitude: parsedLocation.state.latitude,
       }));
     }
+
+    const fetchPopularSearches = async () => {
+      try {
+        const data = await PopularSearchListService();
+        console.log("Fetched Popular Searches:", data);
+        console.log("Fetched Popular Searches:", data.keywordInfoList);
+        setPopularSearchList(data.keywordInfoList);
+      } catch (error) {
+        console.error("Failed to fetch popular searches:", error);
+      }
+    };
+
+    fetchPopularSearches();
   }, []);
 
   const handleSearch = async (keyword: string) => {
@@ -56,7 +71,7 @@ const SearchPage = () => {
         hasNext: response.hasNext,
       });
       setStoreList(response.storeList);
-      setInfro("검색 결과가 없습니다.");
+      // setInfro("검색 결과가 없습니다.");
     } catch (error) {
       console.error("에러 발생:", error);
     } finally {
@@ -84,7 +99,7 @@ const SearchPage = () => {
         hasNext: response.hasNext,
       });
       setStoreList(response.storeList);
-      setInfro("검색 결과가 없습니다.");
+      // setInfro("검색 결과가 없습니다.");
     } catch (error) {
       console.error("에러 발생:", error);
     } finally {
@@ -134,9 +149,7 @@ const SearchPage = () => {
             <SearchStoreList key={index} store={store} />
           ))
         ) : (
-          <div className="h-[100px] center">
-            <div className="text-lg">{intro}</div>
-          </div>
+          <RealTimeTrendingSearch popularSearchList={popularSearchList} />
         )}
       </div>
     </div>
