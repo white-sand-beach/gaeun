@@ -7,6 +7,8 @@ import com.todayeat.backend.seller.dto.response.CheckRegisteredNoSellerResponse;
 import com.todayeat.backend.seller.dto.response.CheckTempPasswordSellerResponse;
 import com.todayeat.backend.seller.dto.response.FindEmailSellerResponse;
 import com.todayeat.backend.seller.service.SellerService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,5 +57,12 @@ public class SellerAuthController implements SellerAuthControllerDocs {
     public SuccessResponse<CheckTempPasswordSellerResponse> checkTempPassword(CheckTempPasswordSellerRequest checkTempPasswordSellerRequest) {
 
         return SuccessResponse.of(sellerService.checkTempPassword(checkTempPasswordSellerRequest), CHECK_TEMP_PASSWORD_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+
+        sellerService.logout(request, response);
+        return SuccessResponse.of(LOGOUT_SELLER_SUCCESS);
     }
 }

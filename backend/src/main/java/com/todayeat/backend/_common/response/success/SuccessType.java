@@ -58,6 +58,7 @@ public enum SuccessType {
     GET_SELLER_SUCCESS("판매자 회원 정보 조회에 성공하였습니다."),
     UPDATE_PASSWORD_SELLER_SUCCESS("판매자 비밀번호 수정에 성공하였습니다."),
     UPDATE_PHONE_NUMBER_SELLER_SUCCESS("판매자 전화번호 수정에 성공하였습니다."),
+    LOGOUT_SELLER_SUCCESS("판매자 로그아웃에 성공하였습니다."),
 
     // store
     CREATE_STORE_SUCCESS("가게 등록에 성공하였습니다."),
