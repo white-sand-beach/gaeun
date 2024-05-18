@@ -65,7 +65,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail:3.2.0'
 
     // redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.redisson:redisson-spring-boot-starter:3.27.0'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // oauth2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
@@ -86,6 +87,12 @@ dependencies {
 
     // openfeign
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    // Elasticsearch
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+
+    // FCM
+    implementation 'com.google.firebase:firebase-admin:7.1.1'
 }
 
 tasks.named('test') {

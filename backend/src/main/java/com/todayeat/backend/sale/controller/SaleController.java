@@ -2,10 +2,7 @@ package com.todayeat.backend.sale.controller;
 
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend._common.response.success.SuccessType;
-import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
-import com.todayeat.backend.sale.dto.request.UpdateSaleContentRequest;
-import com.todayeat.backend.sale.dto.request.UpdateSaleStatusRequest;
-import com.todayeat.backend.sale.dto.request.UpdateSaleStockRequest;
+import com.todayeat.backend.sale.dto.request.*;
 import com.todayeat.backend.sale.dto.response.GetSaleDetailConsumerResponse;
 import com.todayeat.backend.sale.dto.response.GetSaleListConsumerResponse;
 import com.todayeat.backend.sale.dto.response.GetSaleListSellerResponse;
@@ -48,27 +45,19 @@ public class SaleController implements SaleControllerDocs {
     }
 
     @Override
-    public SuccessResponse<Void> updateStatus(Long saleId, UpdateSaleStatusRequest request) {
+    public SuccessResponse<Void> update(Long saleId, UpdateSaleRequest request) {
 
-        saleService.updateStatus(saleId, request);
+        saleService.update(saleId, request);
 
-        return SuccessResponse.of(SuccessType.UPDATE_SALE_STATUS_SUCCESS);
+        return SuccessResponse.of(SuccessType.UPDATE_SALE_SUCCESS);
     }
 
     @Override
-    public SuccessResponse<Void> updateContent(Long saleId, UpdateSaleContentRequest request) {
+    public SuccessResponse<Void> updateIsFinishedAll(UpdateSaleIsFinishedAllRequest request) {
 
-        saleService.updateContent(saleId, request);
+        saleService.updateIsFinishedAll(request);
 
-        return SuccessResponse.of(SuccessType.UPDATE_SALE_CONTENT_SUCCESS);
-    }
-
-    @Override
-    public SuccessResponse<Void> updateStock(Long saleId, UpdateSaleStockRequest request) {
-
-        saleService.updateStock(saleId, request);
-
-        return SuccessResponse.of(SuccessType.UPDATE_SALE_CONTENT_SUCCESS);
+        return SuccessResponse.of(SuccessType.UPDATE_SALE_IS_FINISHED_ALL_SUCCESS);
     }
 }
 

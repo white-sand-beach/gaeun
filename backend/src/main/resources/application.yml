@@ -2,6 +2,9 @@ server:
   port: 8081
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
   datasource:
     url: ${DB_URL}?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     username: ${DB_USERNAME}
@@ -63,6 +66,14 @@ spring:
           writetimeout: 5000
     auth-code-expiration-millis: 1800000
 
+  data:
+    elasticsearch:
+      client:
+        rest:
+          uris: ${ELASTICSEARCH_URIS}
+          username: ${ELASTICSEARCH_USERNAME}
+          password: ${ELASTICSEARCH_PASSWORD}
+
 cloud:
   aws:
     s3:
@@ -89,3 +100,6 @@ secret:
 
 oauth2:
   callback-uri: ${OAUTH2_CALLBACK_URI}
+
+fcm:
+  certification: ${FCM_CERTIFICATION}

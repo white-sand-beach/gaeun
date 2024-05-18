@@ -97,7 +97,7 @@ public interface StoreControllerDocs {
                                                                        @RequestParam(required = false, name = "keyword")
                                                                        String keyword,
 
-                                                                       @Schema(description = "카테고리 아이디", example = "1")
+                                                                       @Schema(description = "카테고리 고유번호", example = "1")
                                                                        @RequestParam(required = false, name = "category-id")
                                                                        Long categoryId,
 
@@ -115,6 +115,7 @@ public interface StoreControllerDocs {
                                                                        @Schema(description = """
                                                                                정렬 조건
                                                                                - distance: 가까운 순
+                                                                               - saleCnt: 판매 많은 순
                                                                                - reviewCnt: 리뷰 많은 순
                                                                                - favoriteCnt: 찜 많은 순
                                                                                """, example = "distance")
@@ -131,15 +132,4 @@ public interface StoreControllerDocs {
     @PutMapping(value = "/{store-id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('SELLER')")
     SuccessResponse<Void> update(@PathVariable("store-id") Long storeId, @ModelAttribute @Valid UpdateStoreRequest updateStoreRequest);
-
-    @Operation(summary = "가게 영업 여부 수정")
-    @ApiResponse(responseCode = "200",
-            description = "성공",
-            content = @Content(schema = @Schema()))
-    @ApiResponse(responseCode = "404",
-            description = "존재하지 않는 가게입니다.",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PutMapping("/{store-id}/is-opened")
-    @PreAuthorize("hasRole('SELLER')")
-    SuccessResponse<Void> updateIsOpened(@PathVariable("store-id") Long storeId);
 }

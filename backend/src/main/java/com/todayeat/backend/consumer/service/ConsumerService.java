@@ -73,7 +73,12 @@ public class ConsumerService {
             }
 
             // 기존 이미지 유지
-            updateConsumer(consumer, consumer.getProfileImage(), request);
+            consumerRepository.updateConsumer(
+                    consumer.getId(),
+                    consumer.getProfileImage(),
+                    request.getNickname(),
+                    request.getPhoneNumber(),
+                    request.getIsDonated());
             return;
         }
 
@@ -84,7 +89,12 @@ public class ConsumerService {
 
         // 소비자 정보 수정
         try {
-            updateConsumer(consumer, afterUrl, request);
+            consumerRepository.updateConsumer(
+                    consumer.getId(),
+                    afterUrl,
+                    request.getNickname(),
+                    request.getPhoneNumber(),
+                    request.getIsDonated());
         } catch (Exception e) {
             s3Util.deleteImageIfPresent(afterUrl); // 실패 시 S3에 업로드했던 파일 삭제
             throw new BusinessException(CONSUMER_UPDATE_FAIL);
@@ -161,12 +171,5 @@ public class ConsumerService {
     private Consumer findBySecurityContext() {
         return consumerRepository.findByIdAndDeletedAtIsNull(securityUtil.getConsumer().getId())
                 .orElseThrow(() -> new BusinessException(CONSUMER_NOT_FOUND));
-    }
-
-    private void updateConsumer(Consumer consumer, String imageUrl, UpdateConsumerRequest request) {
-        consumerRepository.updateConsumer(consumer.getId(),
-                                            imageUrl,
-                                            request.getNickname(),
-                                            request.getPhoneNumber());
     }
 }

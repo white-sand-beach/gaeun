@@ -13,12 +13,12 @@ public enum ErrorType {
     URL_NOT_FOUND(HttpStatus.BAD_REQUEST, "잘못된 URL 입니다."),
     PATH_VARIABLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "Path Variable이 없습니다."),
     REQUEST_PARAM_NOT_FOUND(HttpStatus.BAD_REQUEST, "Request Param이 없습니다."),
-    REQUEST_FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 
     /**
      * CUSTOM ERROR
      */
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버에서 에러가 발생하였습니다."),
+    REQUEST_FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 
     // consumer
     CONSUMER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 소비자를 찾을 수 없습니다."),
@@ -44,6 +44,16 @@ public enum ErrorType {
     CART_CONFLICT_STORE(HttpStatus.CONFLICT, "이미 다른 가게의 음식이 장바구니에 있습니다."),
 
     // order
+    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 주문을 찾을 수 없습니다."),
+    ORDER_ALREADY_PAID(HttpStatus.BAD_REQUEST, "이미 결제가 완료된 주문입니다."),
+    ORDER_PAYMENT_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "주문 결제에 실패하였습니다."),
+    ORDER_STATUS_BAD_REQUEST(HttpStatus.BAD_REQUEST, "주문 상태가 올바르지 않습니다."),
+    ORDER_STATUS_CANT_UPDATE(HttpStatus.BAD_REQUEST, "주문 상태를 변경할 수 없습니다."),
+    ORDER_TAKEN_TIME_NOT_BLANK(HttpStatus.BAD_REQUEST, "takenTime: 빈 값이 아니어야 합니다."),
+    ORDER_TAKEN_TIME_BLANK(HttpStatus.BAD_REQUEST, "takenTime: 빈 값이어야 합니다."),
+    ORDER_FORBIDDEN(HttpStatus.FORBIDDEN, "해당 주문에 접근 권한이 없습니다."),
+    ORDER_NOT_IN_PROGRESS(HttpStatus.BAD_REQUEST, "진행 중인 주문이 아닙니다."),
+    ORDER_VALIDATE_FORBIDDEN(HttpStatus.FORBIDDEN, "주문 검증에 대한 접근 권한이 없습니다."),
 
     // seller
     SELLER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 판매자를 찾을 수 없습니다."),
@@ -76,8 +86,6 @@ public enum ErrorType {
     MENU_IMAGE_DUPLICATE(HttpStatus.BAD_REQUEST, "이미지 URL(기존 이미지)과 이미지 파일(신규 이미지) 중 하나를 요청해야 합니다."),
     MENU_IMAGE_URL_BAD_REQUEST(HttpStatus.BAD_REQUEST, "기존 이미지 URL이 맞지 않습니다."),
 
-    // store
-
     // mail
     MAIL_INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "메일 전송에 실패했습니다."),
 
@@ -92,7 +100,11 @@ public enum ErrorType {
     SALE_STATUS_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 상태 변경에 실패했습니다."),
     SALE_CONTENT_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 내용 변경에 실패했습니다."),
     SALE_STOCK_UPDATE_FAIL(HttpStatus.BAD_REQUEST, "판매 재고 변경에 실패했습니다."),
-    SALE_NOT_SELLING(HttpStatus.BAD_REQUEST, "판매하고 있지 않습니다.")
+    SALE_NOT_SELLING(HttpStatus.BAD_REQUEST, "판매하고 있지 않습니다."),
+
+    // notification
+    NOTIFICATION_SEND_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "FCM 알림 전송에 실패했습니다."),
+    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 알림을 찾을 수 없습니다."),
     ;
 
     private HttpStatus httpStatus;

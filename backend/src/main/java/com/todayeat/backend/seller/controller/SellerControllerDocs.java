@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,4 +49,10 @@ public interface SellerControllerDocs {
             content = @Content(schema = @Schema()))
     @PutMapping("/phone-number")
     SuccessResponse<Void> updatePhoneNumber(UpdatePhoneNumberSellerRequest updatePhoneNumberSellerRequest);
+
+    @Operation(summary = "판매자 로그아웃")
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @GetMapping("/logout")
+    SuccessResponse<Void> logout(HttpServletRequest request, HttpServletResponse response);
 }
