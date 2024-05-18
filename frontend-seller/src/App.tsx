@@ -72,6 +72,7 @@ const App = () => {
       // accessToken 있는 경우에 토큰 저장 api 요청
       if (accessToken) {
         const response = await RegisterFCMToken(token)
+        console.log(response)
         return response
       }
     }
@@ -83,7 +84,7 @@ const App = () => {
 
   onMessage(messaging, (payload) => {
     console.log("메시지 받았어요", payload)
-    alert(`${payload.notification?.title} \n ${payload.notification?.body}`)
+    alert(`${payload.data?.title} \n ${payload.data?.body}`)
   })
 
 
