@@ -1,7 +1,9 @@
 package com.todayeat.backend.order.api.dto.request;
 
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class CancelPaymentRequest {
 
     private String reason;
