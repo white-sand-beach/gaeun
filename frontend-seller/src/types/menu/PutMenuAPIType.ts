@@ -1,5 +1,5 @@
 export type PutMenuAPIType = {
-  image: string;
+  image: File | string | null;
   name: string;
   originalPrice: number;
   sellPrice: number;

@@ -50,14 +50,12 @@ const MenuList: React.FC<MenuListType> = (props) => {
   // };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <button className="common-btn" onClick={() => navigate("/register-food")}>
+    <div className="flex flex-col items-center gap-4 relative w-full">
+      <button className="absolute right-4 top-2" onClick={() => navigate("/register-food")}>
         메뉴 등록
       </button>
-      <h1>메뉴 보여줄 페이지 입니다.</h1>
-      <h1>여기서 바로 음식 수량을 결정, 판매를 등록합니다.</h1>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="flex flex-col items-center gap-4">
         {props.menusInfo.map((menu) => (
           <div
             key={menu.menuId}
