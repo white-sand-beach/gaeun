@@ -173,22 +173,14 @@ const Shop = () => {
       </div>
 
       {/* 탭 내용 */}
-      <div>
-        {activeTab === "details" && (
-          <div className="pb-16">
-            <ShopMenu />
-          </div>
-        )}
-        {activeTab === "menu" && (
-          <div className="pb-16">
-            <ShopInformation />
-          </div>
-        )}
-        {activeTab === "review" && (
-          <div className="pb-16">
-            <ShopReview />
-          </div>
-        )}
+      <div className={`${activeTab === "details" ? "block" : "hidden"} pb-16`}>
+        <ShopMenu />
+      </div>
+      <div className={`${activeTab === "menu" ? "block" : "hidden"} pb-16`}>
+        <ShopInformation />
+      </div>
+      <div className={`${activeTab === "review" ? "block" : "hidden"} pb-16`}>
+        <ShopReview />
       </div>
     </div>
   );

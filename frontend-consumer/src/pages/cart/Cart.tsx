@@ -37,7 +37,7 @@ const Cart = () => {
         }
       };
       fetchCartInfo();
-      setIsQuantityChange(false)
+      setIsQuantityChange(false);
     }
   }, [isQuantityChange]);
 
@@ -64,7 +64,7 @@ const Cart = () => {
           <div className="center">
             <div className="border-gray-400 border-2 rounded-lg w-[300px]">
               {/* 가게 로고 및 가게명 전체 삭제 기능 */}
-              <div className="between p-2">
+              <div className="p-2 between">
                 <div className="flex items-center">
                   <img
                     className="w-4 h-4 rounded-full"
@@ -91,7 +91,7 @@ const Cart = () => {
                 />
               ))}
               <Link to={`/shop/${cartInfo.storeId}`}>
-                <div className="center p-2">
+                <div className="p-2 center">
                   <div className="text-xs font-extrabold pb-">+ 메뉴추가</div>
                 </div>
               </Link>
@@ -99,20 +99,25 @@ const Cart = () => {
           </div>
 
           {/* 결제 확인 */}
-          <div className="center pt-4">
+          <div className="pt-4 center">
             <CheckPayment cartInfo={cartInfo} />
           </div>
-          <div className="center pt-10">
+          <div className="pt-10 center">
             <PaymentButton cartInfo={cartInfo} />
           </div>
         </div>
       ) : (
         <div className="h-screen pb-40 center">
-          <div className="justify-center items-center">
+          <div className="items-center justify-center">
             <img className="rounded-full" src={logo} alt="로고" />
             <h2 className="text-lg font-bold center">
               장바구니가
-              <span className="mx-2 text-3xl font-serif">텅~</span>
+              <span
+                className="mx-2 text-3xl"
+                style={{ fontFamily: "'MyFont', sans-serif" }}
+              >
+                텅~
+              </span>
               비었습니다
             </h2>
           </div>
