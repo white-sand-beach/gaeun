@@ -59,8 +59,8 @@ const OrderState = () => {
 
   return (
     <div className="pt-16">
-      <header className="between mx-4 mt-2">
-        <p className="text- font-bold ml-1">{orderCurrent.orderStatus}</p>
+      <header className="mx-4 mt-2 between">
+        <p className="ml-1 font-bold text-">{orderCurrent.orderStatus}</p>
         {orderCurrent.orderStatus === "결제 완료" ? (
           <button
             onClick={handleDeleteSubmit}
@@ -83,9 +83,9 @@ const OrderState = () => {
         ) : null}
       </header>
 
-      <div className="center my-2">
-        <div className="w-full mx-4 border-2 rounded-lg text-gray-400 font-bold px-4 pb-4">
-          <div className="between text-black text-sm py-2">
+      <div className="my-2 center">
+        <div className="w-full px-4 pb-4 mx-4 font-bold text-gray-400 border-2 rounded-lg">
+          <div className="py-2 text-sm text-black between">
             <p>주문 시간</p>
             <p>{orderCurrent.orderDate}</p>
           </div>
@@ -99,10 +99,10 @@ const OrderState = () => {
             </Link>
             <p className="text-sm">{orderCurrent.orderContents}</p>
           </div>
-          <p className="my-2 font-normal text-xs">
+          <p className="my-2 text-xs font-normal">
             가게가 마감하기 전에 반드시 픽업해주세요!
           </p>
-          <div className="center justify-between">
+          <div className="justify-between center">
             <div className="flex items-center mt-1">
               <CallButton storeTel={orderCurrent.storeTel} />
             </div>
@@ -113,8 +113,8 @@ const OrderState = () => {
       <div className="w-11/12 mx-auto mb-4 border-2 border-orange-400 center h-14 rounded-xl">
         <BannerSlider />
       </div>
-      <div className="border-2 m-4 rounded-lg p-2 text-xs">
-        <p className="font-bold text-sm pb-1">가게 주소</p>
+      <div className="p-2 m-4 text-xs border-2 rounded-lg">
+        <p className="pb-1 text-sm font-bold">가게 주소</p>
         <p>도로명 주소: {orderCurrent.storeRoadAddress}</p>
         <p>지번 주소: {orderCurrent.storeAddress}</p>
       </div>

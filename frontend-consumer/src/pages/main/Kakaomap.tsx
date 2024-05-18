@@ -21,7 +21,7 @@ interface KakaoMapProps {
   updateCounter?: number;
   storeList?: StoreList[] | undefined; // nearbyStores 속성의 타입 수정
   isShop?: boolean;
-  isDonated: boolean;
+  isDonated?: boolean;
 }
 
 const KakaoMap: React.FC<KakaoMapProps> = ({
