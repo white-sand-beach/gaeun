@@ -8,7 +8,7 @@ import { StoreList } from "../../types/StoreList";
 import SearchStoreList from "../../components/search/SearchStoreList";
 import RealTimeTrendingSearch from "../../components/search/RealTimeTrendingSearch";
 import PopularSearchListService from "../../services/searches/PopularSearchListService";
-import { TrendingItem } from "../../types/TrendingItem";
+import { PopularSearchList } from "../../types/PopularSearchList";
 
 const SearchPage = () => {
   const [mapData, setMapData] = useState<MainMapData>({
@@ -20,7 +20,8 @@ const SearchPage = () => {
     sort: "distance",
   });
   const [storeList, setStoreList] = useState<StoreList[]>([]);
-  const [popularSearchList, setPopularSearchList] = useState<TrendingItem[]>([]);
+  const [popularSearchList, setPopularSearchList] = useState<PopularSearchList[]>([]);
+  const [hour, setHour] = useState<number>(0);
   const [allData, setAllData] = useState<MainAllData>({
     storeList: [],
     page: 0,
@@ -45,6 +46,7 @@ const SearchPage = () => {
         console.log("Fetched Popular Searches:", data);
         console.log("Fetched Popular Searches:", data.keywordInfoList);
         setPopularSearchList(data.keywordInfoList);
+        setHour(data.hour);
       } catch (error) {
         console.error("Failed to fetch popular searches:", error);
       }
@@ -149,7 +151,7 @@ const SearchPage = () => {
             <SearchStoreList key={index} store={store} />
           ))
         ) : (
-          <RealTimeTrendingSearch popularSearchList={popularSearchList} />
+          <RealTimeTrendingSearch popularSearchList={popularSearchList} hour={hour} />
         )}
       </div>
     </div>
