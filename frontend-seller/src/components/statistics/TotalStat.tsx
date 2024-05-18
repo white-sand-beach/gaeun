@@ -16,6 +16,7 @@ const TotalStat = () => {
     };
     fetchTotalInfo()
   }, [])
+  
   return (
     <div className="w-screen h-screen flex flex-row justify-center items-center gap-3">
       <p>총 판매량은</p>
