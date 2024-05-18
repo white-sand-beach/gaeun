@@ -46,7 +46,7 @@ const SaleslistPage = () => {
     },
   ]
   return (
-    <div className="yes-footer top-[70px] overflow-y-scroll gap-3">
+    <div className="yes-footer top-[70px] overflow-y-scroll gap-">
       {saleslists.map((saleslist, index) => (
         <div key={index}>
           <SalesList 

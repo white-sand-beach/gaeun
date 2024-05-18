@@ -15,12 +15,12 @@
   }
 
   header {
-    @apply fixed top-0 flex flex-row justify-between items-center w-full h-[60px] bg-mainColor p-4
+    @apply fixed top-0 flex flex-row justify-between items-center w-full h-[70px] bg-mainColor p-4 z-10
   }
 
   footer {
-    @apply fixed bottom-0 flex flex-row justify-evenly items-center gap-3 w-full h-[60px] bg-white border-t-2
-    text-[16px] text-gray-500
+    @apply fixed bottom-0 flex flex-row justify-evenly items-center gap-3 w-full h-[70px] bg-white border-t-2
+    text-[16px] text-gray-500 z-10
   }
 }
 
@@ -30,47 +30,41 @@
   }
 
   .detail-btn {
-    @apply h-[30px] border border-mainColor text-mainColor text-xs rounded-[5px]
+    @apply h-[40px] border border-mainColor text-mainColor text-xs rounded-[5px]
   }
   
   .list-component {
     @apply flex flex-col justify-around border-2 p-4 rounded-[5px] shadow-lg
   }
 
-  /* 큰 화면에서는 리스트 2개로 출력 */
-  /* 1280px ~ */
-  .xl-size-list {
-    @apply w-[600px] h-[300px]
-  }
-
-  /* 주문내역 페이지 크기별 flex */
-  .normal-order-flex {
-    @apply flex flex-col items-center 
-  }
-
-  /* width 1280px 이상일 경우, 주문현황 목록 2열로 출력 */
-  .xl-order-flex {
-    @apply grid grid-cols-2 justify-items-center
-  }
-
   /* Footer 없는 경우 최상위 div container */
   .no-footer {
-    @apply flex flex-col items-center fixed w-full max-h-[calc(100vh-70px)]
+    @apply flex flex-col items-center absolute w-full max-h-[calc(100vh-70px)] h-full
   }
 
   /* Footer 있는 경우 */
   .yes-footer {
-    @apply flex flex-col items-center fixed w-full max-h-[calc(100vh-140px)]
+    @apply flex flex-col items-center absolute w-full max-h-[calc(100vh-130px)]
   }
 
   /* 버튼 선택됐을 경우 */
   .selected-btn {
-    @apply bg-mainColor text-white w-full h-[60px] shadow-lg rounded-[5px] border font-bold text-xl
+    @apply bg-mainColor text-white w-screen h-[60px] shadow-lg rounded-[5px] border font-bold text-xl
   }
 
   /* 버튼 선택 안 했을 경우 */
   .no-selected-btn {
     @apply bg-white text-mainColor w-full h-[60px] shadow-lg rounded-[5px] border font-bold text-xl
+  }
+
+  /* 가게등록 input tag */
+  .register-input-tag {
+    @apply w-[320px] h-[40px] border-b-2 bg-orange-50 rounded-lg p-2
+  }
+
+  /* 가게등록 textarea tag */
+  .register-textarea-tag {
+    @apply border-b-2 bg-orange-50 w-[320px] h-[200px] rounded-lg p-2
   }
 }
 

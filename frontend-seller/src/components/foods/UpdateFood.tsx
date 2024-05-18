@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { MenuInfoType } from "../../types/menu/MenuInfoType";
 import GetMenuAPI from "../../service/menu/GetMenuAPI";
-import logo from "/icons/size-192.png";
+import logo from "/icons/main-icon-192.png";
 import camera from "../../assets/addphoto.png";
 import { PutMenuAPIType } from "../../types/menu/PutMenuAPIType";
 import TotalButton from "../ui/TotalButton";
@@ -69,7 +69,7 @@ const UpdateFood = () => {
       image: updateMenuInfo.image,
       originalPrice: updateMenuInfo.originalPrice,
       sellPrice: updateMenuInfo.sellPrice,
-      storeId: 37
+      storeId: 1
     })
   };
 
