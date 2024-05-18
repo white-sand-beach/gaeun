@@ -18,7 +18,8 @@ public enum SuccessType {
 
     // review
     CREATE_REVIEW_SUCCESS("리뷰 등록에 성공하였습니다."),
-
+    GET_CONSUMER_REVIEW_SUCCESS("소비자 리뷰 목록 조회에 성공하였습니다."),
+    GET_SELLER_REVIEW_SUCCESS("판매자 리뷰 목록 조회에 성공하였습니다."),
 
     // location
     CREATE_LOCATION_SUCCESS("위치 등록에 성공하였습니다."),
