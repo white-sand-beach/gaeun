@@ -17,7 +17,16 @@ const Notification = () => {
     hasNext: false,
   });
 
-
+  const handleCheckSubmit = async (notification: any) => {
+    try {
+      if (!notification.isRead) {
+        const response = await NotificationsCountForm(String(notification.id));
+        console.log(response);
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  };
 
   useEffect(() => {
     const fetchNotification = async () => {
