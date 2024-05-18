@@ -242,25 +242,48 @@ const Main: React.FC = () => {
     }
   };
 
+  const [activeButton, setActiveButton] = useState<string>("saleCnt");
+
   return (
     <div>
       <div className="pt-14">
         <div className="flex justify-between px-1 pt-3 pb-3 font-bold bg-gray-100">
           <div
-            onClick={() => setSortType("distance")}
-            className="flex-1 p-1 px-3 mx-1 text-center bg-white border-2 border-white shadow-xl rounded-xl"
+            onClick={() => {
+              setSortType("distance");
+              setActiveButton("distance");
+            }}
+            className={`flex-1 p-1 px-3 mx-1 text-center border-2 shadow-xl rounded-xl ${
+              activeButton === "distance"
+                ? "bg-orange-400 border-orange-400 text-white"
+                : "bg-white border-white"
+            }`}
           >
             가까운 순
           </div>
           <div
-            onClick={() => setSortType("saleCnt")}
-            className="flex-1 p-1 px-3 mx-1 text-center bg-white border-2 border-white shadow-xl rounded-xl"
+            onClick={() => {
+              setSortType("saleCnt");
+              setActiveButton("saleCnt");
+            }}
+            className={`flex-1 p-1 px-3 mx-1 text-center border-2 shadow-xl rounded-xl ${
+              activeButton === "saleCnt"
+                ? "bg-orange-400 border-orange-400 text-white"
+                : "bg-white border-white"
+            }`}
           >
             나눔 순
           </div>
           <div
-            onClick={() => setSortType("reviewCnt")}
-            className="flex-1 p-1 px-3 mx-1 text-center bg-white border-2 border-white shadow-xl rounded-xl"
+            onClick={() => {
+              setSortType("reviewCnt");
+              setActiveButton("reviewCnt");
+            }}
+            className={`flex-1 p-1 px-3 mx-1 text-center border-2 shadow-xl rounded-xl ${
+              activeButton === "reviewCnt"
+                ? "bg-orange-400 border-orange-400 text-white"
+                : "bg-white border-white"
+            }`}
           >
             감사편지 순
           </div>
