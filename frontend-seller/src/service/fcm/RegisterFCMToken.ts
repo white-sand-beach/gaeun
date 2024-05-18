@@ -1,22 +1,20 @@
 import axios from "axios";
-import Cookies from "universal-cookie";
 
-const cookies = new Cookies()
-const accessToken = cookies.get("accessToken")
-const RegisterFCMToken = async (token: string): Promise<any> => {
+const RegisterFCMToken = async (fcmtoken: string, accessToken: string): Promise<any> => {
     try {
         const response = await axios.post(import.meta.env.VITE_BASE_URL + "/api/fcmtokens", {
-            "token": token,
+            "token": fcmtoken,
         }, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
         })
-        console.log(response.data.msg)
-        return response
+        console.log(response.data)
+        return response.data
     }
     catch (err) {
         console.error(err)
+        throw err
     }
 };
 

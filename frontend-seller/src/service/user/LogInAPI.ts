@@ -4,6 +4,7 @@ import { LoginType } from "../../types/user/LoginType";
 import Cookies from "universal-cookie";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
+import RegisterFCMToken from "../fcm/RegisterFCMToken";
 
 const LoginAPI = () => {
     const cookies = new Cookies()
@@ -42,6 +43,7 @@ const LoginAPI = () => {
                             console.log("로그인 하면서 FCM 토큰 받았습니다.")
                             console.log(currentToken)
                             cookies.set("fcm-token", currentToken)
+                            RegisterFCMToken(currentToken, res.headers.authorization)
                         }
                     })
                     .catch((err) => {
