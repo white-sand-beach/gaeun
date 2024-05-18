@@ -107,8 +107,8 @@ const Cart = () => {
           </div>
         </div>
       ) : (
-        <div className="h-screen pb-40 center">
-          <div className="items-center justify-center">
+        <div className="h-screen pb-32 center">
+          <div>
             <img className="rounded-full" src={logo} alt="로고" />
             <h2 className="text-lg font-bold center">
               장바구니가
@@ -118,7 +118,7 @@ const Cart = () => {
               >
                 텅~
               </span>
-              비었습니다
+              비었어요
             </h2>
           </div>
         </div>

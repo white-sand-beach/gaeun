@@ -75,7 +75,7 @@ const OrderList = () => {
   };
 
   return (
-    <div className="py-12">
+    <div className="pt-12">
       {/* 가게 및 메뉴 검색 */}
       <div className="fixed flex items-center bg-white rounded-md">
         <div className="mt-4 center w-screen">
@@ -95,10 +95,10 @@ const OrderList = () => {
       </div>
 
       {/* 주문 목록 */}
-      <div className="justify-center">
+      <div className="pt-16">
         {orderData.length === 0 ? (
-          <div className="h-screen pb-40 center">
-            <div className="items-center justify-center">
+          <div className="h-screen pb-48 center">
+            <div>
               <img className="rounded-full" src={logo} alt="로고" />
               <h2 className="text-lg font-bold center">
                 천사가게에서
@@ -114,7 +114,9 @@ const OrderList = () => {
           </div>
         ) : (
           orderData.map((order, index) => (
-            <Ordertarget key={index} orderData={order} />
+            <div className="pb-14">
+              <Ordertarget key={index} orderData={order} />
+            </div>
           ))
         )}
       </div>

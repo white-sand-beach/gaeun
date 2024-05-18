@@ -23,12 +23,18 @@ const PaymentButton = ({ cartInfo }: CheckPaymentProps) => {
     cartInfo.sellTotalPrice
   );
   const [orderInfoId, setOrderInfoId] = useState<number>(0);
+  const [consumerNickname, setCustomerNickName] = useState<string>("");
+  const [customerEmail, setCustomerEmail] = useState<string>("");
+  const [customerPhoneNumber, setCustomerPhoneNumber] = useState<string>("");
 
   const handlePaymentClick = async () => {
     if (cartInfo.isOpened) {
       try {
         const response = await OrderPostForm();
         setOrderInfoId(response.orderInfoId);
+        setCustomerNickName(response.consumerNickname);
+        setCustomerEmail(response.customerEmail);
+        setCustomerPhoneNumber(response.customerPhoneNumber);
       } catch (error) {
         console.error(error);
       }
@@ -38,8 +44,10 @@ const PaymentButton = ({ cartInfo }: CheckPaymentProps) => {
   useEffect(() => {
     const processPayment = async () => {
       if (orderInfoId !== 0) {
-        console.log(orderInfoId)
-        alert("결제 후 마감 시간 전까지 매장 방문을 하지 않으시면 결제 금액은 사회에 환원됩니다.");
+        console.log(orderInfoId);
+        alert(
+          "결제 후 마감 시간 전까지 매장 방문을 하지 않으시면 결제 금액은 사회에 환원됩니다."
+        );
         try {
           const paymentId = `payment-${generateRandomId(30)}`;
           const redirectUrl = `${window.location.origin}/consumer/payment-callback?orderInfoId=${orderInfoId}&paymentId=${paymentId}`;
@@ -53,13 +61,13 @@ const PaymentButton = ({ cartInfo }: CheckPaymentProps) => {
             payMethod: "CARD",
             redirectUrl: redirectUrl,
             customer: {
-              fullName: "가은",
-              email: "an@an.an",
-              phoneNumber: "010-1234-1234",
+              fullName: consumerNickname,
+              email: customerEmail,
+              phoneNumber: customerPhoneNumber,
             },
           });
-          window.location.href = redirectUrl
-          console.log(response)
+          window.location.href = redirectUrl;
+          console.log(response);
         } catch (error) {
           console.error(error);
         }
