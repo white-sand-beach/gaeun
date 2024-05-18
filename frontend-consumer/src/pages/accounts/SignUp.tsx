@@ -16,7 +16,11 @@ const SignUp = () => {
     imageUrl: "",
     nickname: "",
     phoneNumber: "",
+    isDonated: false,
   });
+
+  const [userType, setUserType] = useState(false);
+  const [joinCode, setJoinCode] = useState("");
 
   const headerText = "본인 인증";
   const buttonText = "회원 가입";
@@ -35,6 +39,15 @@ const SignUp = () => {
   const closeModal = () => {
     setShowModal(false);
   };
+
+  useEffect(() => {
+    console.log(joinCode);
+  }, [joinCode]);
+
+  useEffect(() => {
+    console.log("우하하");
+    console.log(userType);
+  }, [userType]);
 
   const handleImageUpload = (file: File | null) => {
     setUploadedImage(file);
@@ -72,7 +85,7 @@ const SignUp = () => {
       <div className="mt-8 center">
         <div className="relative flex justify-center items-center w-36 h-36 rounded-full border-[1px] border-gray-200 shadow-md">
           <img
-            className="w-32 h-32 rounded-full object-cover"
+            className="object-cover w-32 h-32 rounded-full"
             src={displayImage}
             alt="프로필 사진"
           />
@@ -95,12 +108,12 @@ const SignUp = () => {
       <div className="center">
         <button
           onClick={() => handleImageUpload(null)}
-          className=" mt-5 mb-8 text-gray-400 text-xs"
+          className="mt-5 mb-3 text-xs text-gray-400 "
         >
           프로필 사진 삭제
         </button>
       </div>
-      <div className="flex justify-center mt-14">
+      <div className="flex justify-center">
         <NicknameCheck
           nickname={profileData.nickname}
           updateNickname={(newNickname) =>
@@ -109,7 +122,7 @@ const SignUp = () => {
         />
       </div>
 
-      <div className="flex justify-center mt-14">
+      <div className="flex justify-center mt-5">
         <PhoneCheck
           phoneNumber={profileData.phoneNumber}
           updatePhoneNumber={(newPhoneNumber) =>
@@ -118,13 +131,59 @@ const SignUp = () => {
           headerText={headerText}
         />
       </div>
-      <div className="center my-14">
+
+      {/* 회원 유형 선택 */}
+      <div className="flex justify-center mt-5">
+        <div className="w-[330px]">
+          <h1 className="mb-2 ml-2 text-lg font-bold ">회원유형</h1>
+          <div className="flex items-center mt-4 ml-2">
+            <input
+              type="radio"
+              id="normal"
+              name="userType"
+              value="normal"
+              checked={userType === false}
+              onChange={() => setUserType(false)}
+              className="mr-2"
+            />
+            <label htmlFor="normal" className="mr-4">
+              일반 회원
+            </label>
+            <input
+              type="radio"
+              id="join"
+              name="userType"
+              value="join"
+              checked={userType === true}
+              onChange={() => setUserType(true)}
+              className="mr-2"
+            />
+            <label htmlFor="join">참여 회원</label>
+          </div>
+        </div>
+      </div>
+
+      {/* 참여 회원의 경우 참여 코드 입력란 표시 */}
+      {userType === true && (
+        <div className="flex justify-center mt-4">
+          <input
+            type="text"
+            placeholder="참여 코드를 입력하세요."
+            value={joinCode}
+            onChange={(e) => setJoinCode(e.target.value)}
+            className="p-2 border-2 border-gray-300 rounded-md w-[330px]"
+          />
+        </div>
+      )}
+
+      <div className="mt-8 center">
         <ProfileUpdateButton
           nickname={profileData.nickname}
           profileImage={propsImageFile}
           imageUrl={propsImageUrl}
           phoneNumber={profileData.phoneNumber}
           buttonText={buttonText}
+          isDonated={userType}
         />
       </div>
     </div>

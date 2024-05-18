@@ -1,6 +1,7 @@
 // 상태 인터페이스 정의 !
 interface UserState {
   email?: string;
+  isDonated?: boolean;
   nickname?: string;
   profileImage?: any;
   imageUrl?: string;

@@ -56,6 +56,7 @@ const Main: React.FC = () => {
     page: 0,
     loading: false,
     hasNext: false,
+    isDonated: false,
   });
   const navigate = useNavigate();
 
@@ -76,6 +77,7 @@ const Main: React.FC = () => {
         setAllData((prevState) => ({
           ...prevState,
           hasNext: response.hasNext,
+          isDonated: response.isDonated,
         }));
 
         if (allData.page === 0) {
@@ -103,6 +105,10 @@ const Main: React.FC = () => {
       window.location.reload();
     }
   }, []);
+
+  useEffect(() => {
+    console.log(allData);
+  }, [allData]);
 
   const handleGPSButtonClick = async () => {
     if (navigator.geolocation) {
@@ -297,6 +303,7 @@ const Main: React.FC = () => {
           lng={lng}
           updateCounter={findlocation.updateCounter}
           storeList={storeList} // 근처 가게 리스트를 전달
+          isDonated={allData.isDonated}
         />
         {/* 왼쪽 버튼 */}
         <button className={gpsButtonClass} onClick={handleGPSButtonClick}>
@@ -342,6 +349,16 @@ const Main: React.FC = () => {
               className="flex flex-col gap-2 py-2 pl-2 overflow-y-auto modalContent"
               style={{ maxHeight: isExpanded ? "467px" : "212px" }}
             >
+              {allData.loading && (
+                <div className="flex items-center justify-center">
+                  <Lottie
+                    options={storeListLoadingOptions}
+                    height={180}
+                    width={180}
+                  />
+                </div>
+              )}
+
               {storeList && storeList.length > 0 ? (
                 storeList.map((store, index) => (
                   <Shops key={index} store={store} /> // 각 요소에 대한 JSX 생성 및 Shops 컴포넌트에 데이터 전달

@@ -17,6 +17,7 @@ const ProfileSetting = () => {
     imageUrl: "",
     nickname: "",
     phoneNumber: "",
+    isDonated: false,
   });
 
   const headerText = "전화번호 수정";
@@ -73,7 +74,7 @@ const ProfileSetting = () => {
       <div className="mt-8 center">
         <div className="relative flex justify-center items-center w-36 h-36 rounded-full border-[1px] border-gray-200 shadow-md">
           <img
-            className="w-32 h-32 rounded-full object-cover"
+            className="object-cover w-32 h-32 rounded-full"
             src={displayImage}
             alt="프로필 사진"
           />
@@ -96,7 +97,7 @@ const ProfileSetting = () => {
       <div className="center">
         <button
           onClick={() => handleImageUpload(null)}
-          className=" mt-5 mb-8 text-gray-400 text-xs"
+          className="mt-5 mb-8 text-xs text-gray-400 "
         >
           프로필 사진 삭제
         </button>
@@ -125,10 +126,11 @@ const ProfileSetting = () => {
           profileImage={propsImageFile}
           imageUrl={propsImageUrl}
           phoneNumber={profileData.phoneNumber}
+          isDonated={profileData.isDonated}
           buttonText={buttonText}
         />
       </div>
-      <div className="center text-xs text-gray-400">
+      <div className="text-xs text-gray-400 center">
         <LogoutButton />
         <span className="mx-2">|</span>
         <KakaoUnlinkButton />
