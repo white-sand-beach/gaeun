@@ -7,11 +7,11 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-@Schema(name = "GetSellerNotificationListResponse", description = "판매자 알림 목록 조회 응답")
-public class GetSellerNotificationListResponse {
+@Schema(name = "GetConsumerNotificationListResponse", description = "소비자 알림 목록 조회 응답")
+public class GetConsumerNotificationListResponse {
 
     @Schema(description = "리뷰 정보")
-    private List<GetSellerNotificationResponse> notificationList;
+    private List<GetConsumerNotificationResponse> notificationList;
 
     @Schema(description = "현재 페이지", example = "0")
     private Integer page;
@@ -20,13 +20,13 @@ public class GetSellerNotificationListResponse {
     private Boolean hasNext;
 
     @Builder
-    private GetSellerNotificationListResponse(List<GetSellerNotificationResponse> notificationList, Integer page, Boolean hasNext, Long totalCnt) {
+    private GetConsumerNotificationListResponse(List<GetConsumerNotificationResponse> notificationList, Integer page, Boolean hasNext) {
         this.notificationList = notificationList;
         this.page = page;
         this.hasNext = hasNext;
     }
 
-    public static GetSellerNotificationListResponse of(List<GetSellerNotificationResponse> notificationList, Integer page, Boolean hasNext) {
+    public static GetConsumerNotificationListResponse of(List<GetConsumerNotificationResponse> notificationList, Integer page, Boolean hasNext) {
 
         return builder()
                 .notificationList(notificationList)

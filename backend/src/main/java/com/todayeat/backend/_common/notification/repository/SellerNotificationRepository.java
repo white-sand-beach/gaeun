@@ -1,7 +1,6 @@
 package com.todayeat.backend._common.notification.repository;
 
 import com.todayeat.backend._common.notification.entity.SellerNotification;
-import com.todayeat.backend.review.entity.Review;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

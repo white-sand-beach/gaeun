@@ -2,7 +2,6 @@ package com.todayeat.backend._common.notification.controller;
 
 import com.todayeat.backend._common.notification.dto.response.GetSellerNotificationCountResponse;
 import com.todayeat.backend._common.notification.dto.response.GetSellerNotificationListResponse;
-import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
 import com.todayeat.backend.sale.dto.response.GetSaleListSellerResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,7 +22,7 @@ public interface SellerNotificationControllerDocs {
                     """)
     @ApiResponse(responseCode = "200",
             description = "성공",
-            content = @Content(schema = @Schema(implementation = GetSaleListSellerResponse.class)))
+            content = @Content(schema = @Schema(implementation = GetSellerNotificationListResponse.class)))
     @GetMapping()
     @PreAuthorize("hasRole('SELLER')")
     SuccessResponse<GetSellerNotificationListResponse> getList(@Schema(description = "페이지 번호, 0부터 시작", example = "0")
@@ -39,7 +38,7 @@ public interface SellerNotificationControllerDocs {
                     """)
     @ApiResponse(responseCode = "200",
             description = "성공",
-            content = @Content(schema = @Schema(implementation = GetSaleListSellerResponse.class)))
+            content = @Content(schema = @Schema(implementation = GetSellerNotificationCountResponse.class)))
     @GetMapping("/count")
     @PreAuthorize("hasRole('SELLER')")
     SuccessResponse<GetSellerNotificationCountResponse> getCount();
@@ -49,8 +48,7 @@ public interface SellerNotificationControllerDocs {
                     `ROLE_SELLER` \n
                     """)
     @ApiResponse(responseCode = "200",
-            description = "성공",
-            content = @Content(schema = @Schema(implementation = GetSaleListSellerResponse.class)))
+            description = "성공")
     @PostMapping("/is-read-true/{seller-notification-id}")
     @PreAuthorize("hasRole('SELLER')")
     SuccessResponse<Void> isReadTrue(@PathVariable(name = "seller-notification-id")
