@@ -89,7 +89,7 @@ public class ReviewService {
 
         // todo 한 트랜잭션에 안 묶이게 수정하기
         CreateReviewNotification createReviewNotification = CreateReviewNotification.of(review.getId(), consumer.getNickname());
-        sellerNotificationService.createSellerReviewNotification(createReviewNotification);
+        sellerNotificationService.createReviewNotification(createReviewNotification);
 
         // 알림 보내기
         Optional<Seller> seller = sellerRepository.findByStoreAndDeletedAtIsNull(store);
