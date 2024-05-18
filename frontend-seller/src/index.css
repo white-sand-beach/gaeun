@@ -39,12 +39,12 @@
 
   /* Footer 없는 경우 최상위 div container */
   .no-footer {
-    @apply flex flex-col items-center absolute w-full max-h-[calc(100vh-70px)] h-full
+    @apply flex flex-col items-center absolute w-screen max-h-[calc(100vh-70px)] h-full
   }
 
   /* Footer 있는 경우 */
   .yes-footer {
-    @apply flex flex-col items-center absolute w-full max-h-[calc(100vh-150px)]
+    @apply flex flex-col items-center absolute w-screen max-h-[calc(100vh-150px)]
   }
 
   /* 버튼 선택됐을 경우 */
