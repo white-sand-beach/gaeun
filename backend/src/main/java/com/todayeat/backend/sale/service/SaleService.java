@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -59,7 +58,7 @@ public class SaleService {
 
             saleList.add(
                     SaleMapper.INSTANCE
-                            .createSaleReqeustToSale(createSaleRequest,
+                            .createSaleRequestToSale(createSaleRequest,
                                     getDiscountRate(menu.getOriginalPrice(), createSaleRequest.getSellPrice()),
                                     false, 0, store, menu)
             );
@@ -77,7 +76,7 @@ public class SaleService {
 
         List<GetSaleConsumerResponse> getSaleToConsumerResponseList = saleRepository.findAllByStoreAndIsFinishedIsFalseAndDeletedAtIsNull(store)
                 .stream()
-                .map(s -> SaleMapper.INSTANCE.getSaleConsumerResponse(s, s.getStock() - s.getTotalQuantity()))
+                .map(s -> GetSaleConsumerResponse.of(s, s.getStock() - s.getTotalQuantity(), securityUtil.getConsumer().getIsDonated()))
                 .toList();
 
         return GetSaleListConsumerResponse.of(storeId, getSaleToConsumerResponseList, getSaleToConsumerResponseList.size());
