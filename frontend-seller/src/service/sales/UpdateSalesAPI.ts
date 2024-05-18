@@ -5,7 +5,7 @@ import Cookies from "universal-cookie";
 const UpdateSalesAPI = () => {
     const cookies = new Cookies()
     const accessToken = cookies.get("accessToken")
-    const storeId = 1;
+    const storeId = cookies.get("storeId");
     const putSales = ({saleId, menuId, content, isFinished, stock}: UpdateSales) => {
         axios.put(import.meta.env.VITE_BASE_URL + `/api/sales/${String(saleId)}`, {
             storeId,

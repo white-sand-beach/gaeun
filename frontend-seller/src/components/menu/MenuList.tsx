@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 import TotalButton from "../ui/TotalButton";
 import DeleteMenuAPI from "../../service/menu/DeleteMenuAPI";
 import RegisterSalesAPI from "../../service/sales/RegisterSalesAPI";
+import Cookies from "universal-cookie";
 
 const MenuList: React.FC<MenuListType> = (props) => {
+  const cookies = new Cookies()
+  const storeId = cookies.get("storeId")
   const navigate = useNavigate();
   const { DeleteMenu } = DeleteMenuAPI();
   const { postSales } = RegisterSalesAPI();
@@ -79,7 +82,7 @@ const MenuList: React.FC<MenuListType> = (props) => {
               title="판매 등록"
               onClick={() =>
                 postSales({
-                  storeId: 1,
+                  storeId: storeId,
                   saleList: [
                     {
                       sellPrice: menu.sellPrice,

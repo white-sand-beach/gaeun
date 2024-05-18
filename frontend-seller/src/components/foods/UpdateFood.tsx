@@ -7,8 +7,11 @@ import camera from "../../assets/addphoto.png";
 import { PutMenuAPIType } from "../../types/menu/PutMenuAPIType";
 import TotalButton from "../ui/TotalButton";
 import PutMenuAPI from "../../service/menu/PutMenuAPI";
+import Cookies from "universal-cookie";
 
 const UpdateFood = () => {
+  const cookies = new Cookies()
+  const storeId = cookies.get("storeId")
   // 메뉴 상세보기를 위한 menuId를 useParams를 통해 구함
   const { menuId } = useParams();
   const [menuInfo, setMenuInfo] = useState<MenuInfoType | null>(null);
@@ -69,7 +72,7 @@ const UpdateFood = () => {
       image: updateMenuInfo.image,
       originalPrice: updateMenuInfo.originalPrice,
       sellPrice: updateMenuInfo.sellPrice,
-      storeId: 1
+      storeId: storeId
     })
   };
 

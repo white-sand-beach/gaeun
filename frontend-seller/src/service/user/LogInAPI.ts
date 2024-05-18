@@ -5,6 +5,7 @@ import Cookies from "universal-cookie";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
 import RegisterFCMToken from "../fcm/RegisterFCMToken";
+import SellerInfoAPI from "./SellerInfoAPI";
 
 const LoginAPI = () => {
     const cookies = new Cookies()
@@ -36,6 +37,7 @@ const LoginAPI = () => {
                 // 로그인 성공하면 accessToken을 cookie에 저장
                 console.log("로그인 성공")
                 cookies.set("accessToken", res.headers.authorization, { path: "/" })
+                SellerInfoAPI(res.headers.authorization)
                 // 로그인 성공했을 때, FCM 토큰을 얻어온다.
                 getToken(messaging, { vapidKey: `${vapidKey}` })
                     .then((currentToken) => {

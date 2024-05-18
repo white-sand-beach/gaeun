@@ -3,7 +3,7 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies()
 const accessToken = cookies.get("accessToken")
-const storeId = 1;
+const storeId = cookies.get("storeId");
 
 const TotalStatisticsAPI = async ():Promise<any> => {
   try {
