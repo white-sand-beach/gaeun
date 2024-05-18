@@ -19,7 +19,7 @@ const MenuList: React.FC<MenuListType> = (props) => {
   return (
     <div className="flex flex-col items-center w-full gap-4">
       <button
-        className="fixed right-4 bottom-[80px]"
+        className="fixed right-4 bottom-[80px] z-10 bg-white"
         onClick={() => navigate("/register-food")}
       >
         <img src={AddIcon} alt="메뉴 추가하기" className="w-[80px] h-[80px]" />
