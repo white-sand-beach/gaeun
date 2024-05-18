@@ -53,6 +53,7 @@ public enum ErrorType {
     ORDER_TAKEN_TIME_BLANK(HttpStatus.BAD_REQUEST, "takenTime: 빈 값이어야 합니다."),
     ORDER_FORBIDDEN(HttpStatus.FORBIDDEN, "해당 주문에 접근 권한이 없습니다."),
     ORDER_NOT_IN_PROGRESS(HttpStatus.BAD_REQUEST, "진행 중인 주문이 아닙니다."),
+    ORDER_VALIDATE_FORBIDDEN(HttpStatus.FORBIDDEN, "주문 검증에 대한 접근 권한이 없습니다."),
 
     // seller
     SELLER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 판매자를 찾을 수 없습니다."),

@@ -12,6 +12,12 @@ public class CreateOrderResponse {
     @Schema(description = "주문 고유번호, 결제 후 결제 검증 로직에 필요합니다.", example = "1")
     private Long orderInfoId;
 
+    @Schema(description = "나눔 여부", example = "false")
+    private Boolean isDonated;
+
+    @Schema(description = "결제 가격", example = "10000")
+    private Integer paymentPrice;
+
     @Schema(description = "소비자 닉네임", example = "김지녕")
     private String consumerNickname;
 
@@ -22,16 +28,20 @@ public class CreateOrderResponse {
     private String consumerPhoneNumber;
 
     @Builder
-    private CreateOrderResponse(Long orderInfoId, String consumerNickname, String consumerEmail, String consumerPhoneNumber) {
+    private CreateOrderResponse(Long orderInfoId, Boolean isDonated, Integer paymentPrice, String consumerNickname, String consumerEmail, String consumerPhoneNumber) {
         this.orderInfoId = orderInfoId;
+        this.isDonated = isDonated;
+        this.paymentPrice = paymentPrice;
         this.consumerNickname = consumerNickname;
         this.consumerEmail = consumerEmail;
         this.consumerPhoneNumber = consumerPhoneNumber;
     }
 
-    public static CreateOrderResponse of(Long orderInfoId, Consumer consumer) {
+    public static CreateOrderResponse of(Long orderInfoId, Integer paymentPrice, Consumer consumer) {
         return builder()
                 .orderInfoId(orderInfoId)
+                .isDonated(consumer.getIsDonated())
+                .paymentPrice(paymentPrice)
                 .consumerNickname(consumer.getNickname())
                 .consumerEmail(consumer.getEmail())
                 .consumerPhoneNumber(consumer.getPhoneNumber())
