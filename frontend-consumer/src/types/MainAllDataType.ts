@@ -5,5 +5,5 @@ export interface MainAllData {
   storeList: StoreList[];
   page: number;
   hasNext: boolean;
-  loading: boolean;
+  loading?: boolean;
 }

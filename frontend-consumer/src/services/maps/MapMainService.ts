@@ -13,9 +13,14 @@ const MapListForm = async (mainData: MainMapData): Promise<any> => {
           size: mainData.size,
           radius: mainData.radius,
           sort: mainData.sort,
+          keyword: mainData.keyword,
+          "category-id": mainData.categoryId,
         },
       }
     );
+    console.log(mainData.keyword)
+    console.log(mainData.categoryId)
+    console.log(response)
     return response.data.data;
 };
 export default MapListForm;

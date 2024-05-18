@@ -15,4 +15,5 @@ export interface StoreList {
   distance: number;
   categoryList: Category[];
   saleImageURLList: SaleImageURLType[];
+  imageURL?: string;
 }
