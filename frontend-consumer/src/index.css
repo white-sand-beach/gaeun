@@ -32,7 +32,7 @@
   }
 
   .order-detail-button {
-    @apply border-gray-400 border-[1px] bg-white rounded-lg text-xxs font-bold p-2 hover:bg-gray-50;
+    @apply border-gray-400 border-[1px] bg-white rounded-lg text-xs font-bold p-2 hover:bg-gray-50;
   }
 
   .orange-hover-button {
