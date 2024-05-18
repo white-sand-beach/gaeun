@@ -1,7 +1,10 @@
 package com.todayeat.backend.order.service;
 
 import com.todayeat.backend._common.annotation.DistributedLock;
+import com.todayeat.backend._common.notification.dto.CreateOrderNotification;
+import com.todayeat.backend._common.notification.service.ConsumerNotificationService;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
+import com.todayeat.backend._common.util.FCMNotificationUtil;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.cart.entity.Cart;
 import com.todayeat.backend.cart.repository.CartRepository;
@@ -54,10 +57,12 @@ public class OrderService {
     private final StoreRepository storeRepository;
     private final SaleRepository saleRepository;
     private final CartRepository cartRepository;
+    private final ConsumerNotificationService consumerNotificationService;
 
     private final StoreService storeService;
 
     private final SecurityUtil securityUtil;
+    private final FCMNotificationUtil fcmNotificationUtil;
 
     private final IamportRequestClient iamportRequestClient;
 
@@ -344,6 +349,17 @@ public class OrderService {
                         storeRepository.findByIdAndDeletedAtIsNull(seller.getStore().getId())
                                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)),
                         value);
+
+                // 소비자 음식 수령 알림
+                CreateOrderNotification createOrderNotification = CreateOrderNotification.of(
+                        orderInfo,
+                        orderInfo.getOrderInfoItemList().get(0).getName(),
+                        orderInfo.getOrderInfoItemList().size());
+
+                consumerNotificationService.createOrderNotification(createOrderNotification, orderInfo.getConsumer());
+
+                fcmNotificationUtil.sendToOne(orderInfo.getConsumer().getId(), "Consumer",
+                        createOrderNotification.getTitle(), createOrderNotification.getBody());
 
                 return;
             }
