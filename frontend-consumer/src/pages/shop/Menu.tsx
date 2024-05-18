@@ -49,10 +49,10 @@ const ShopMenu = ({ menu }: { menu: MenuItem }) => {
               </div>
             </div>
             <div className="my-auto">
-              <div className="w-[112px] h-[112px] rounded-lg">
+              <div className="w-[110px] h-[110px]">
                 <img
                   src={menu.imageUrl}
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-full rounded-xl"
                   alt="음식이미지"
                 />
               </div>

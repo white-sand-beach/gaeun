@@ -37,7 +37,7 @@ const Cart = () => {
         }
       };
       fetchCartInfo();
-      setIsQuantityChange(false)
+      setIsQuantityChange(false);
     }
   }, [isQuantityChange]);
 
@@ -107,13 +107,18 @@ const Cart = () => {
           </div>
         </div>
       ) : (
-        <div className="h-screen pb-40 center">
-          <div className="justify-center items-center">
+        <div className="h-screen pb-32 center">
+          <div>
             <img className="rounded-full" src={logo} alt="로고" />
             <h2 className="text-lg font-bold center">
               장바구니가
-              <span className="mx-2 text-3xl font-serif">텅~</span>
-              비었습니다
+              <span
+                className="mx-2 text-3xl"
+                style={{ fontFamily: "MyFont" }}
+              >
+                텅~
+              </span>
+              비었어요
             </h2>
           </div>
         </div>
