@@ -28,4 +28,12 @@ public class SellerNotificationController implements SellerNotificationControlle
 
         return SuccessResponse.of(sellerNotificationService.getCount() ,SuccessType.GET_SELLER_NOTIFICATION_COUNT_SUCCESS);
     }
+
+    @Override
+    public SuccessResponse<Void> isReadTrue(Long sellerNotificationId) {
+
+        sellerNotificationService.isReadTrue(sellerNotificationId);
+
+        return  SuccessResponse.of(SuccessType.UPDATE_SELLER_NOTIFICATION_IS_READ_TRUE);
+    }
 }

@@ -11,10 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "seller-notifications", description = "판매자 알림")
 @RequestMapping("/api/seller-notifications")
@@ -46,4 +43,17 @@ public interface SellerNotificationControllerDocs {
     @GetMapping("/count")
     @PreAuthorize("hasRole('SELLER')")
     SuccessResponse<GetSellerNotificationCountResponse> getCount();
+
+    @Operation(summary = "판매자용 알림 읽음 처리",
+            description = """
+                    `ROLE_SELLER` \n
+                    """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetSaleListSellerResponse.class)))
+    @PostMapping("/is-read-true/{seller-notification-id}")
+    @PreAuthorize("hasRole('SELLER')")
+    SuccessResponse<Void> isReadTrue(@PathVariable(name = "seller-notification-id")
+                                     @Schema(description = "판매자용 알림 ID", example = "1")
+                                     Long sellerNotificationId);
 }

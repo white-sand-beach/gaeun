@@ -7,6 +7,8 @@ import com.todayeat.backend._common.notification.dto.response.GetSellerNotificat
 import com.todayeat.backend._common.notification.dto.response.GetSellerNotificationResponse;
 import com.todayeat.backend._common.notification.entity.SellerNotification;
 import com.todayeat.backend._common.notification.repository.SellerNotificationRepository;
+import com.todayeat.backend._common.response.error.ErrorType;
+import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.seller.entity.Seller;
 import lombok.RequiredArgsConstructor;
@@ -67,5 +69,14 @@ public class SellerNotificationService {
         Seller seller = securityUtil.getSeller();
 
         return GetSellerNotificationCountResponse.of(sellerNotificationRepository.countByIsReadFalse(seller.getId()));
+    }
+
+    @Transactional
+    public void isReadTrue(Long sellerNotificationId) {
+
+        SellerNotification sellerNotification = sellerNotificationRepository.findByIdAndDeletedAtIsNull(sellerNotificationId)
+                .orElseThrow(() -> new BusinessException(ErrorType.NOTIFICATION_NOT_FOUND));
+
+        sellerNotification.isReadTrue();
     }
 }

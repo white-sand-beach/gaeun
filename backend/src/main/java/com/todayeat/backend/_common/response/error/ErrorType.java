@@ -103,6 +103,7 @@ public enum ErrorType {
 
     // notification
     NOTIFICATION_SEND_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "FCM 알림 전송에 실패했습니다."),
+    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 알림을 찾을 수 없습니다."),
     ;
 
     private HttpStatus httpStatus;
