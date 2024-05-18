@@ -1,18 +1,13 @@
 export interface NotificationItem {
-  orderNumber?: number;
-  storeName?: string;
-  orderTime?: number;
-  orderStatus?: number;
-  payment?: number;
-  menus?: string;
+  id: number;
+  type?: string;
+  typeId: number;
+  isRead?: boolean;
+  content: string[];
 }
 
 export interface NotificationInfo {
-  id: number;
-  type?: string;
-  typeId?: number;
-  content?: NotificationItem[];
-  isRead?: boolean;
+  notificationList?: NotificationItem[];
   page: number;
   hasNext?: boolean;
 }
