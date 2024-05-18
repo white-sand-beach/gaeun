@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
+import logo from "../../../public/windows11/LargeTile.scale-100.png";
 import NotificationGetForm from "../../services/notifications/NotificationGetService";
+import NotificationCheckForm from "../../services/notifications/NotificationCheckServics";
 import {
   NotificationInfo,
   NotificationItem,
 } from "../../types/NotificationType";
 import OrderDetailButton from "../../components/button/OrderDetailButton";
-import NotificationsCountForm from "../../services/notifications/NotificationCheckServics";
 
 const Notification = () => {
   const [notificationData, setNotificationData] = useState<NotificationItem[]>(
@@ -16,12 +18,14 @@ const Notification = () => {
     page: 0,
     hasNext: false,
   });
+  const [isCheck, setIsCheck] = useState<boolean>(false);
 
   const handleCheckSubmit = async (notification: any) => {
     try {
       if (!notification.isRead) {
-        const response = await NotificationsCountForm(String(notification.id));
+        const response = await NotificationCheckForm(String(notification.id));
         console.log(response);
+        setIsCheck(true);
       }
     } catch (error) {
       console.warn(error);
@@ -38,12 +42,13 @@ const Notification = () => {
         setNotificationInfo(response);
         setNotificationData(response.notificationList);
         console.log(response);
+        setIsCheck(false);
       } catch (error) {
         console.error(error);
       }
     };
     fetchNotification();
-  }, [notificationInfo.page]);
+  }, [notificationInfo.page, isCheck]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,47 +74,89 @@ const Notification = () => {
   return (
     <div className="pt-14">
       {/* 컴포넌트로 만들 거에요 */}
-      {notificationData.map((notification) => (
-        <div
-          key={notification.id}
-          onClick={() => {
-            (async () => {
-              await handleCheckSubmit(notification);
-            })();
-          }}
-          className={`${notification.isRead ? "bg-white" : "bg-orange-100"}`}
-        >
-          {notification.type === "order" ? (
-            <div>
-              <div className="between px-4 pt-2 text-xs font-bold text-gray-400">
-                <p>{notification.content[3]}</p> {/* 수정 */}
-                <p className="text-xs">{notification.content[0]}</p>{" "}
-                {/* 수정 */}
-              </div>
-              <div className="between pb-2 pl-6">
-                <div className="font-bold">
-                  <h1 className="">{notification.content[2]}</h1> {/* 수정 */}
-                  <p className="text-sm">{notification.content[5]}</p>{" "}
-                  {/* 수정 */}
-                  <div className="flex text-xs">
-                    <p>결제 금액</p>
-                    <p className="ml-2 text-red-500">
-                      {notification.content[4]}원
-                    </p>{" "}
-                    {/* 수정 */}
+      {notificationData.length > 0 ? (
+        <div>
+          {notificationData.map((notification) => (
+            <div
+              key={notification.id}
+              onClick={() => {
+                (async () => {
+                  await handleCheckSubmit(notification);
+                })();
+              }}
+              className={`${notification.isRead ? "bg-white" : "bg-orange-100"}`}
+            >
+              {notification.type === "order" ? (
+                <div>
+                  <div className="between px-4 pt-2 text-xs font-bold text-gray-600">
+                    {/* 날짜 및 주문 현황 */}
+                    <p>{notification.content[3]}</p>
+                    <p className="text-xs">
+                      {notification.content[0] === "FINISHED"
+                        ? "수령 완료"
+                        : notification.content[0] === "IN_PROGRESS"
+                          ? "주문 수락"
+                          : notification.content[0] === "DENIED"
+                            ? "주문 거절"
+                            : notification.content[0] === "PREPARED" &&
+                              "음식 준비 완료"}
+                    </p>
                   </div>
+                  <div className="between pb-2 pl-6">
+                    <div className="font-bold">
+                      <h1 className="">{notification.content[2]}</h1>
+                      <p className="text-sm">{notification.content[5]}</p>
+                      <div className="flex text-xs">
+                        <p>결제 금액</p>
+                        <p className="ml-2 text-red-500">
+                          {notification.content[4]}원
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-4 mr-2">
+                      <OrderDetailButton orderInfoId={notification.typeId} />
+                    </div>
+                  </div>
+                  <hr className="mb-1 mx-2" />
                 </div>
-                <div className="mt-4 mr-2">
-                  <OrderDetailButton orderInfoId={notification.typeId} />
+              ) : (
+                <div>
+                  <div className="between px-4 pt-2 text-xs font-bold text-gray-600">
+                    <p>{notification.content[2]}</p>
+                    <p>{notification.content[1]}</p>
+                  </div>
+                  <div className="font-bold pb-2 pl-6">
+                    {/* 가게 오픈 알림 */}
+                    <p>{notification.content[0]}</p>
+                    <div className="between">
+                      <p className="pb-3">확인해보러 갈까요?</p>
+                      <Link to={`/shop/${notification.typeId}`}>
+                        <button className="order-detail-button mr-2">
+                          <p className="whitespace-nowrap">{`천사가게 보러가기 >`}</p>
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                  <hr className="mb-1 mx-2" />
                 </div>
-              </div>
-              <hr className="mb-1" />
+              )}
             </div>
-          ) : (
-            <div></div>
-          )}
+          ))}
         </div>
-      ))}
+      ) : (
+        <div className="h-screen pb-40 center">
+          <div>
+            <img className="rounded-full" src={logo} alt="로고" />
+            <h2 className="text-lg font-bold center">
+              중요한 알림이
+              <span className="mx-2 text-4xl" style={{ fontFamily: "MyFont" }}>
+                슈슝~
+              </span>
+              올 거에요
+            </h2>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
