@@ -35,6 +35,7 @@ const PaymentButton = ({ cartInfo }: CheckPaymentProps) => {
         setCustomerNickName(response.consumerNickname);
         setCustomerEmail(response.customerEmail);
         setCustomerPhoneNumber(response.customerPhoneNumber);
+        console.log(response)
       } catch (error) {
         console.error(error);
       }
@@ -45,38 +46,46 @@ const PaymentButton = ({ cartInfo }: CheckPaymentProps) => {
     const processPayment = async () => {
       if (orderInfoId !== 0) {
         console.log(orderInfoId);
-        alert(
-          "결제 후 마감 시간 전까지 매장 방문을 하지 않으시면 결제 금액은 사회에 환원됩니다."
+        // confirm 대화상자를 사용하여 사용자의 결정을 받습니다.
+        const isConfirmed = confirm(
+          "결제 후 마감 시간 전까지 매장 방문을 하지 않으시면 결제 금액은 사회에 환원됩니다. 결제를 진행하시겠습니까?"
         );
-        try {
-          const paymentId = `payment-${generateRandomId(30)}`;
-          const redirectUrl = `${window.location.origin}/consumer/payment-callback?orderInfoId=${orderInfoId}&paymentId=${paymentId}`;
-          const response = await PortOne.requestPayment({
-            storeId: import.meta.env.VITE_STORE_ID,
-            channelKey: import.meta.env.VITE_CHANNEL_KEY,
-            paymentId: paymentId,
-            orderName: "가은",
-            totalAmount: cartInfo.sellTotalPrice,
-            currency: "CURRENCY_KRW",
-            payMethod: "CARD",
-            redirectUrl: redirectUrl,
-            customer: {
-              fullName: consumerNickname,
-              email: customerEmail,
-              phoneNumber: customerPhoneNumber,
-            },
-          });
-          window.location.href = redirectUrl;
-          console.log(response);
-        } catch (error) {
-          console.error(error);
+  
+        if (isConfirmed) {
+          // 사용자가 "확인"을 클릭한 경우, 결제 과정을 계속 진행합니다.
+          try {
+            const paymentId = `payment-${generateRandomId(30)}`;
+            const redirectUrl = `${window.location.origin}/consumer/payment-callback?orderInfoId=${orderInfoId}&paymentId=${paymentId}`;
+            const response = await PortOne.requestPayment({
+              storeId: import.meta.env.VITE_STORE_ID,
+              channelKey: import.meta.env.VITE_CHANNEL_KEY,
+              paymentId: paymentId,
+              orderName: "가은",
+              totalAmount: cartInfo.sellTotalPrice,
+              currency: "CURRENCY_KRW",
+              payMethod: "CARD",
+              redirectUrl: redirectUrl,
+              customer: {
+                fullName: consumerNickname,
+                email: customerEmail || "example@email.com",
+                phoneNumber: customerPhoneNumber || "010-1234-5678",
+              },
+            });
+            window.location.href = redirectUrl;
+            console.log(response);
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          // 사용자가 "취소"를 클릭한 경우, 결제 과정을 취소합니다.
+          console.log("결제가 취소되었습니다.");
+          alert("결제가 취소되었습니다.")
         }
       }
     };
-
+  
     processPayment();
   }, [orderInfoId]);
-
   return (
     <button
       className={`footer-button w-[300px] ${!cartInfo.isOpened ? "bg-gray-300" : "bg-myColor"}`}
