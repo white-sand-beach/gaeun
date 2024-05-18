@@ -18,7 +18,8 @@ public enum SuccessType {
 
     // review
     CREATE_REVIEW_SUCCESS("리뷰 등록에 성공하였습니다."),
-
+    GET_CONSUMER_REVIEW_SUCCESS("소비자 리뷰 목록 조회에 성공하였습니다."),
+    GET_SELLER_REVIEW_SUCCESS("판매자 리뷰 목록 조회에 성공하였습니다."),
 
     // location
     CREATE_LOCATION_SUCCESS("위치 등록에 성공하였습니다."),
@@ -58,6 +59,7 @@ public enum SuccessType {
     GET_SELLER_SUCCESS("판매자 회원 정보 조회에 성공하였습니다."),
     UPDATE_PASSWORD_SELLER_SUCCESS("판매자 비밀번호 수정에 성공하였습니다."),
     UPDATE_PHONE_NUMBER_SELLER_SUCCESS("판매자 전화번호 수정에 성공하였습니다."),
+    LOGOUT_SELLER_SUCCESS("판매자 로그아웃에 성공하였습니다."),
 
     // store
     CREATE_STORE_SUCCESS("가게 등록에 성공하였습니다."),
@@ -99,7 +101,15 @@ public enum SuccessType {
     GET_SELLER_REGISTRATION_MONTH_SUCCESS("판매자 등록 된 월(오늘까지 30일간) 판매량 조회에 성공하였습니다."),
 
     // searchKeyword
-    GET_POPULAR_SEARCH_LIST_SUCCESS("인기 검색어 조회에 성공하였습니다.")
+    GET_POPULAR_SEARCH_LIST_SUCCESS("인기 검색어 조회에 성공하였습니다."),
+    
+    // notification
+    GET_SELLER_NOTIFICATION_LIST_SUCCESS("판매자 알림 목록 조회에 성공하였습니다."),
+    GET_SELLER_NOTIFICATION_COUNT_SUCCESS("판매자 미확인 알림 개수 조회에 성공하였습니다."),
+    UPDATE_SELLER_NOTIFICATION_IS_READ_TRUE("판매자 알림 읽음 처리에 성공하였습니다."),
+    GET_CONSUMER_NOTIFICATION_LIST_SUCCESS("소비자 알림 목록 조회에 성공하였습니다."),
+    GET_CONSUMER_NOTIFICATION_COUNT_SUCCESS("소비자 미확인 알림 개수 조회에 성공하였습니다."),
+    UPDATE_CONSUMER_NOTIFICATION_IS_READ_TRUE("소비자 알림 읽음 처리에 성공하였습니다.")
     ;
 
     private final String msg;

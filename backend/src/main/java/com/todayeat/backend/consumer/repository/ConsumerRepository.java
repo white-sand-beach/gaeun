@@ -18,7 +18,7 @@ public interface ConsumerRepository extends JpaRepository<Consumer, Long> {
 
     @Modifying
     @Query("update Consumer c " +
-            "set c.profileImage = :imageUrl, c.nickname = :nickname, c.phoneNumber = :phoneNumber " +
+            "set c.profileImage = :imageUrl, c.nickname = :nickname, c.phoneNumber = :phoneNumber, c.isDonated = :isDonated " +
             "where c.id = :consumerId")
-    void updateConsumer(Long consumerId, String imageUrl, String nickname, String phoneNumber);
+    void updateConsumer(Long consumerId, String imageUrl, String nickname, String phoneNumber, Boolean isDonated);
 }

@@ -31,6 +31,17 @@ public class FCMNotificationUtil {
         send(tokenList, getMulticastMessage(tokenList, title, body));
     }
 
+    public void sendToMany(List<Long> memberIdList, String role, String title, String body) {
+
+        List<String> tokenList = new ArrayList<>();
+
+        for(Long memberId : memberIdList) {
+            tokenList.addAll(getTokenList(memberId, role));
+        }
+
+        send(tokenList, getMulticastMessage(tokenList, title, body));
+    }
+
     private List<String> getTokenList(Long memberId, String role) {
 
         List<FCMToken> tokens = fcmTokenRepository.findByMemberIdAndRole(memberId, role);

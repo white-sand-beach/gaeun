@@ -16,6 +16,9 @@ public class GetConsumerListStoreResponse {
 
     private List<StoreInfo> storeList;
 
+    @Schema(description = "나눔 여부", example = "false")
+    private Boolean isDonated;
+
     @Schema(description = "현재 페이지", example = "0")
     private Integer page;
 
@@ -75,15 +78,17 @@ public class GetConsumerListStoreResponse {
     }
 
     @Builder
-    private GetConsumerListStoreResponse(List<StoreInfo> storeList, Integer page, Boolean hasNext) {
+    private GetConsumerListStoreResponse(List<StoreInfo> storeList, Boolean isDonated, Integer page, Boolean hasNext) {
         this.storeList = storeList;
+        this.isDonated = isDonated;
         this.page = page;
         this.hasNext = hasNext;
     }
 
-    static public GetConsumerListStoreResponse of(List<StoreInfo> storeList, Integer page, Boolean hasNext) {
+    static public GetConsumerListStoreResponse of(List<StoreInfo> storeList, Boolean isDonated, Integer page, Boolean hasNext) {
         return builder()
                 .storeList(storeList)
+                .isDonated(isDonated)
                 .page(page)
                 .hasNext(hasNext)
                 .build();
