@@ -26,16 +26,19 @@ const Header: React.FC = () => {
         case "/notification":
             title = "알림"
             break;
-        case "/register/shop":
+        case "/register-shop":
             title = "가게등록"
             break;
-        case "/sales":
+        case "/order-finished":
             title = "판매내역"
             break;
         case "/statistics":
             title = "통계"
+        case "/register-food":
+            title = "메뉴등록"
             break;
     }
+
     return (
         <header>
             <button onClick={() => navigate(-1)} >
