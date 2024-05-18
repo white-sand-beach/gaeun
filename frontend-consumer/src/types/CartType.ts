@@ -7,6 +7,7 @@ export interface CartInfo {
   originalTotalPrice: number;
   discountTotalPrice: number;
   sellTotalPrice: number;
+  imageURL: string;
 }
 
 export interface CartItem {

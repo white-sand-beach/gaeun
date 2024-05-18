@@ -19,6 +19,7 @@ const Cart = () => {
     originalTotalPrice: 0,
     discountTotalPrice: 0,
     sellTotalPrice: 0,
+    imageURL: "",
   });
   const [cartData, setCartData] = useState<CartItem[]>([]);
   const [isQuantityChange, setIsQuantityChange] = useState<boolean>(true);
@@ -67,7 +68,7 @@ const Cart = () => {
                 <div className="flex items-center">
                   <img
                     className="w-4 h-4 rounded-full"
-                    src="https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/09/18/1e586277-48ba-4e8a-9b98-d8cdbe075d86.jpg"
+                    src={cartInfo.imageURL || logo}
                     alt=""
                   />
                   <p className="ml-2 text-sm font-bold">{cartInfo.storeName}</p>

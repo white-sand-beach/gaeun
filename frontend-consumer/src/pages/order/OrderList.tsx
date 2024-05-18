@@ -75,20 +75,22 @@ const OrderList = () => {
   };
 
   return (
-    <div className="py-14">
+    <div className="py-12">
       {/* 가게 및 메뉴 검색 */}
-      <div className="my-2 center">
-        <div className="w-screen mx-2 search">
-          <input
-            className="w-11/12 py-2 pl-2 text-xs rounded-xl"
-            type="text"
-            placeholder="가게 이름 검색"
-            value={inputText}
-            onChange={onUpdateText}
-          />
-          <button onClick={handleSearchSubmit}>
-            <img className="mr-1" src={searchIcon} alt="검색" />
-          </button>
+      <div className="fixed flex items-center bg-white rounded-md">
+        <div className="mt-4 center w-screen">
+          <div className="search w-11/12">
+            <input
+              className="text-xs pl-2 w-11/12 py-2 rounded-md"
+              type="text"
+              placeholder="가게 이름 검색"
+              value={inputText}
+              onChange={onUpdateText}
+            />
+            <button onClick={handleSearchSubmit}>
+              <img className="mr-1" src={searchIcon} alt="검색" />
+            </button>
+          </div>
         </div>
       </div>
 
