@@ -95,7 +95,7 @@ const OrderList = () => {
       </div>
 
       {/* 주문 목록 */}
-      <div className="pt-16">
+      <div className="pt-16 pb-14">
         {orderData.length === 0 ? (
           <div className="h-screen pb-48 center">
             <div>
@@ -114,7 +114,7 @@ const OrderList = () => {
           </div>
         ) : (
           orderData.map((order, index) => (
-            <div className="pb-14">
+            <div>
               <Ordertarget key={index} orderData={order} />
             </div>
           ))
