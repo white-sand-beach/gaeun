@@ -32,6 +32,8 @@ const Header: React.FC = () => {
         case "/order-finished":
             title = "판매내역"
             break;
+        case "/statistics":
+            title = "통계"
         case "/register-food":
             title = "메뉴등록"
             break;
@@ -43,7 +45,7 @@ const Header: React.FC = () => {
                 <img src={GotoBack} alt="뒤로가기" className="w-[40px] h-[40px]"/>
             </button>
             <h1>{title}</h1>
-            <button>
+            <button onClick={() => navigate("/notification")}>
                 <img src={NotiIcon} alt="알림" className="w-[40px] h-[40px]"/>
             </button>
         </header>

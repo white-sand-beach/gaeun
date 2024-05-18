@@ -47,8 +47,14 @@ const InprogressListPage = () => {
   }, [inprogressOrderInfo.hasNext]);
 
   return (
-    <div className="gap-3 yes-footer top-[70px]">
-      <InprogressList inprogressOrderInfo={inprogressOrderInfo.orderInfo} />
+    <div className="gap-3 yes-footer top-[70px] w-screen justify-center">
+      {inprogressOrderInfo.orderInfo.length === 0 ? (
+        <h1>
+          주문내역이 없어요 😭
+        </h1>
+      ) : (
+        <InprogressList inprogressOrderInfo={inprogressOrderInfo.orderInfo} />
+      )}
     </div>
   );
 };
