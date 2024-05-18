@@ -42,11 +42,11 @@ pipeline {
                     }
                 }
 
-                //withCredentials([file(credentialsId: 'firebase-messaging-sw', variable: 'configFile')]) {
-                //    script {
-                //        sh 'cp -rf $configFile ./frontend-consumer/public/firebase-messaging-sw.js'
-                //    }
-                //}
+                withCredentials([file(credentialsId: 'firebase-messaging-sw', variable: 'configFile')]) {
+                   script {
+                       sh 'cp -rf $configFile ./frontend-consumer/public/firebase-messaging-sw.js'
+                   }
+                }
             }
         }
         
