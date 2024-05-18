@@ -15,7 +15,7 @@
   }
 
   header {
-    @apply fixed top-0 flex flex-row justify-between items-center w-full h-[60px] bg-mainColor p-4 z-10
+    @apply fixed top-0 flex flex-row justify-between items-center w-full h-[70px] bg-mainColor p-4 z-10
   }
 
   footer {
@@ -39,7 +39,7 @@
 
   /* Footer 없는 경우 최상위 div container */
   .no-footer {
-    @apply flex flex-col items-center absolute w-full max-h-[calc(100vh-70px)]
+    @apply flex flex-col items-center absolute w-full max-h-[calc(100vh-70px)] h-full
   }
 
   /* Footer 있는 경우 */
@@ -49,7 +49,7 @@
 
   /* 버튼 선택됐을 경우 */
   .selected-btn {
-    @apply bg-mainColor text-white w-full h-[60px] shadow-lg rounded-[5px] border font-bold text-xl
+    @apply bg-mainColor text-white w-screen h-[60px] shadow-lg rounded-[5px] border font-bold text-xl
   }
 
   /* 버튼 선택 안 했을 경우 */

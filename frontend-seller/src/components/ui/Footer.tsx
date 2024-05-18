@@ -20,8 +20,8 @@ const Footer = () => {
 
   return (
     <footer>
-      <button className="flex flex-col items-center justify-center">
-        <img src={ChartIcon} alt="통계" />
+      <button className="flex flex-col items-center justify-center gap-1" onClick={() => handleIconClick("/statistics")}>
+        <img src={ChartIcon} alt="통계" className="w-[30px] h-[30px]" />
         <p>통계</p>
       </button>
       
