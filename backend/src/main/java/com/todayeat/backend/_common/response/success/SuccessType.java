@@ -96,7 +96,10 @@ public enum SuccessType {
     GET_CONSUMER_RECEIPT_ALL_SUCCESS("소비자 수령 된 총 구매량 조회에 성공하였습니다."),
     GET_SELLER_RECEIPT_ALL_SUCCESS("판매자 수령 된 총 판매량 조회에 성공하였습니다."),
     GET_SELLER_REGISTRATION_WEEK_SUCCESS("판매자 등록 된 주(오늘까지 7일간) 판매량 조회에 성공하였습니다."),
-    GET_SELLER_REGISTRATION_MONTH_SUCCESS("판매자 등록 된 월(오늘까지 30일간) 판매량 조회에 성공하였습니다.")
+    GET_SELLER_REGISTRATION_MONTH_SUCCESS("판매자 등록 된 월(오늘까지 30일간) 판매량 조회에 성공하였습니다."),
+
+    // searchKeyword
+    GET_POPULAR_SEARCH_LIST_SUCCESS("인기 검색어 조회에 성공하였습니다.")
     ;
 
     private final String msg;

@@ -12,6 +12,7 @@ import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
 import com.todayeat.backend.sale.repository.SaleRepository;
+import com.todayeat.backend.searchKeyword.service.SearchKeywordService;
 import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
@@ -65,6 +66,8 @@ public class StoreServiceElasticsearchImpl implements StoreService {
     private final SellerRepository sellerRepository;
     private final StoreRepository storeRepository;
     private final SaleRepository saleRepository;
+
+    private final SearchKeywordService searchKeywordService;
 
     private final SecurityUtil securityUtil;
     private final S3Util s3Util;
@@ -164,6 +167,8 @@ public class StoreServiceElasticsearchImpl implements StoreService {
         Query query = NativeQuery.builder()
                 .withQuery(q -> q.bool(b -> {
                     if (keyword != null && !keyword.isEmpty()) {
+                        searchKeywordService.saveSearchKeyword(keyword);
+
                         b.must(m -> m.multiMatch(mm -> mm
                                 .query(keyword)
                                 .fields("name", "categoryList.name")));
