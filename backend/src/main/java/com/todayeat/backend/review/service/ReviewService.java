@@ -2,7 +2,7 @@ package com.todayeat.backend.review.service;
 
 import com.todayeat.backend._common.entity.DirectoryType;
 import com.todayeat.backend._common.notification.dto.CreateReviewNotification;
-import com.todayeat.backend._common.notification.service.ConsumerNotificationService;
+import com.todayeat.backend._common.notification.service.SellerNotificationService;
 import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.FCMNotificationUtil;
@@ -48,7 +48,7 @@ public class ReviewService {
     private final S3Util s3Util;
     private final FCMNotificationUtil fcmNotificationUtil;
 
-    private final ConsumerNotificationService consumerNotificationService;
+    private final SellerNotificationService sellerNotificationService;
     private final StoreService storeService;
 
     @Transactional
@@ -88,17 +88,19 @@ public class ReviewService {
         }
 
         // todo 한 트랜잭션에 안 묶이게 수정하기
-        CreateReviewNotification createReviewNotification = CreateReviewNotification.of(review.getId(), consumer.getNickname());
-        consumerNotificationService.create(createReviewNotification);
-
         // 알림 보내기
         Optional<Seller> seller = sellerRepository.findByStoreAndDeletedAtIsNull(store);
 
         if (seller.isEmpty()) {
             log.error("ReviewService: Review create notification fail becasue of no such seller");
-        } else {
-            fcmNotificationUtil.sendToOne(seller.get().getId(), "Seller", "편지 알림", createReviewNotification.getBody());
+            return;
         }
+
+        CreateReviewNotification createReviewNotification = CreateReviewNotification.of(review.getId(), consumer.getNickname(), seller.get());
+        sellerNotificationService.createReviewNotification(createReviewNotification);
+
+        fcmNotificationUtil.sendToOne(seller.get().getId(), "Seller", "편지 알림", createReviewNotification.getBody());
+
     }
 
     // 소비자: 자신의 리뷰 목록 보기

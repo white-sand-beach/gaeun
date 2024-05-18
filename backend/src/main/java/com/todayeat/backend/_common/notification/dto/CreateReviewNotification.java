@@ -1,5 +1,6 @@
 package com.todayeat.backend._common.notification.dto;
 
+import com.todayeat.backend.seller.entity.Seller;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,17 +11,21 @@ public class CreateReviewNotification {
 
     private String nickname;
 
+    private Seller seller;
+
     @Builder
-    private CreateReviewNotification(Long reviewId, String nickname) {
+    private CreateReviewNotification(Long reviewId, String nickname, Seller seller) {
         this.reviewId = reviewId;
         this.nickname = nickname;
+        this.seller = seller;
     }
 
-    public static CreateReviewNotification of(Long reviewId, String nickname) {
+    public static CreateReviewNotification of(Long reviewId, String nickname, Seller seller) {
 
         return builder()
                 .reviewId(reviewId)
                 .nickname(nickname)
+                .seller(seller)
                 .build();
     }
 
