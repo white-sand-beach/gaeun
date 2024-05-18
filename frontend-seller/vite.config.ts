@@ -9,10 +9,6 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      // 개발 환경에서 자동으로 service-worker 생성해줌
-      devOptions: {
-        enabled: true
-      },
       manifest: {
         name: "가은",
         short_name: "가은",

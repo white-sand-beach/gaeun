@@ -42,7 +42,7 @@ const LoginAPI = () => {
                         if (currentToken) {
                             console.log("로그인 하면서 FCM 토큰 받았습니다.")
                             console.log(currentToken)
-                            cookies.set("fcm-token", currentToken)
+                            cookies.set("fcm-token", currentToken, {path: "/"})
                             RegisterFCMToken(currentToken, res.headers.authorization)
                         }
                     })
