@@ -1,12 +1,13 @@
-import { KeywordInfo, PopularSearchList } from "../../types/PopularSearchList";
+import { KeywordInfo } from "../../types/PopularSearchList";
 import logo from "../../../public/android/android-launchericon-512-512.png";
 
 interface RealTimeTrendingSearchProps {
     popularSearchList: KeywordInfo[];
     hour: number;
+    onKeywordClick: (keyword: string) => void;
   }
 
-const RealTimeTrendingSearch = ({ popularSearchList, hour }: RealTimeTrendingSearchProps) => {
+const RealTimeTrendingSearch = ({ popularSearchList, hour, onKeywordClick }: RealTimeTrendingSearchProps) => {
   return (
     <div>
       <div className="w-[300px] text-sm">
@@ -22,7 +23,7 @@ const RealTimeTrendingSearch = ({ popularSearchList, hour }: RealTimeTrendingSea
       <div className="center">
         <div className="w-[150px] pl-4">
           {popularSearchList.slice(0, 5).map((item, index) => (
-            <div className="pt-2" key={index}>
+            <div className="pt-2" key={index} onClick={() => onKeywordClick(item.keyword)}>
               <span className="font-mono font-bold">{index + 1} </span>
               {item.keyword}
             </div>
@@ -30,7 +31,7 @@ const RealTimeTrendingSearch = ({ popularSearchList, hour }: RealTimeTrendingSea
         </div>
         <div className="w-[150px] pl-4">
           {popularSearchList.slice(6, 10).map((item, index) => (
-            <div className="pt-2" key={index}>
+            <div className="pt-2" key={index} onClick={() => onKeywordClick(item.keyword)}>
               <span className="font-mono font-bold">{index + 6} </span>
               {item.keyword}
             </div>

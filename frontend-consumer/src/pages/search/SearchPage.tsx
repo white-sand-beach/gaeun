@@ -131,6 +131,10 @@ const SearchPage = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [allData.hasNext]);
 
+  const handleKeywordClick = (keyword: string) => {
+    handleSearch(keyword);
+  };
+
   return (
     <div className="pt-14">
       <div className="fixed bg-white">
@@ -151,7 +155,7 @@ const SearchPage = () => {
             <SearchStoreList key={index} store={store} />
           ))
         ) : (
-          <RealTimeTrendingSearch popularSearchList={popularSearchList} hour={hour} />
+          <RealTimeTrendingSearch popularSearchList={popularSearchList} hour={hour} onKeywordClick={handleKeywordClick} />
         )}
       </div>
     </div>
