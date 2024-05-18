@@ -114,9 +114,7 @@ const OrderList = () => {
           </div>
         ) : (
           orderData.map((order, index) => (
-            <div>
-              <Ordertarget key={index} orderData={order} />
-            </div>
+            <Ordertarget key={index} orderData={order} />
           ))
         )}
       </div>

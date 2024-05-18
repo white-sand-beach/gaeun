@@ -5,6 +5,7 @@ import { StoreList } from "../../types/StoreList";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../public/icons/main-icon-512.png";
 import shopmaker from "../../assets/maker/shopmaker.png";
+import person from "../../assets/maker/person.png";
 
 // 전역(window) 객체의 타입 확장
 declare global {
@@ -20,6 +21,7 @@ interface KakaoMapProps {
   updateCounter?: number;
   storeList?: StoreList[] | undefined; // nearbyStores 속성의 타입 수정
   isShop?: boolean;
+  isDonated?: boolean;
 }
 
 const KakaoMap: React.FC<KakaoMapProps> = ({
@@ -29,6 +31,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
   updateCounter,
   storeList,
   isShop,
+  isDonated,
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const markerRef = useRef<any>(null);
@@ -77,9 +80,13 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
     const map = new window.kakao.maps.Map(container, options);
     const markerPosition = new window.kakao.maps.LatLng(latitude, longitude);
 
+    // isDonated가 true인 경우와 그렇지 않은 경우에 대한 마커 이미지 URL 정의
+    const markerImageUrl = isDonated ? firefighter : person;
     // 커스텀 마커 이미지를 위한 설정
     // 마커 이미지의 크기를 설정합니다.
-    const imageSize = new window.kakao.maps.Size(32, 35); // 마커 이미지의 크기
+    const imageSize = isDonated
+      ? new window.kakao.maps.Size(34, 37)
+      : new window.kakao.maps.Size(38, 42); // 마커 이미지의 크기
 
     // 마커 이미지의 옵션을 설정합니다.
     const imageOption = {
@@ -91,7 +98,7 @@ const KakaoMap: React.FC<KakaoMapProps> = ({
 
     // 마커 이미지 객체를 생성합니다.
     const markerImage = new window.kakao.maps.MarkerImage(
-      firefighter, // 이미지 소스를 사용합니다.
+      markerImageUrl, // 이미지 소스를 사용합니다.
       imageSize,
       imageOption
     );

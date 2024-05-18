@@ -6,24 +6,26 @@ const UpdateProfileForm = async ({
   profileImage,
   imageUrl,
   phoneNumber,
+  isDonated,
 }: UserState): Promise<UserState> => {
   const formData = new FormData();
 
   formData.append("nickname", String(nickname));
   formData.append("phoneNumber", String(phoneNumber));
+  formData.append("isDonated", String(isDonated));
   if (profileImage) {
     formData.append("profileImage", profileImage);
   }
   if (imageUrl) {
     formData.append("imageUrl", imageUrl);
   }
-  
+
   const response = await axiosInstance.put(
     `${import.meta.env.VITE_API_URL}/api/consumers`,
     formData,
     {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     }
   );

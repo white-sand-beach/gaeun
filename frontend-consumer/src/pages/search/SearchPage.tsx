@@ -22,7 +22,9 @@ const SearchPage = () => {
     page: 0,
     hasNext: false,
   });
-  const [intro, setInfro] = useState("찾고 싶은 가게 이름이나 카테고리를 검색하세요!")
+  const [intro, setInfro] = useState(
+    "찾고 싶은 가게 이름이나 카테고리를 검색하세요!"
+  );
 
   useEffect(() => {
     const userLocation = localStorage.getItem("user-location");
@@ -54,7 +56,7 @@ const SearchPage = () => {
         hasNext: response.hasNext,
       });
       setStoreList(response.storeList);
-      setInfro("검색 결과가 없습니다.")
+      setInfro("검색 결과가 없습니다.");
     } catch (error) {
       console.error("에러 발생:", error);
     } finally {
@@ -82,7 +84,7 @@ const SearchPage = () => {
         hasNext: response.hasNext,
       });
       setStoreList(response.storeList);
-      setInfro("검색 결과가 없습니다.")
+      setInfro("검색 결과가 없습니다.");
     } catch (error) {
       console.error("에러 발생:", error);
     } finally {
@@ -125,7 +127,7 @@ const SearchPage = () => {
         <hr className="border-4 border-gray-100" />
       </div>
 
-      <div className="pt-80 pb-16">
+      <div className="pb-16 pt-80">
         {/* 가게 정보 넣는 곳 */}
         {storeList.length > 0 ? (
           storeList.map((store, index) => (
