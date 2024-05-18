@@ -8,6 +8,7 @@ const ProfileUpdateButton = ({
   imageUrl,
   phoneNumber,
   buttonText,
+  isDonated,
 }: UserState) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,6 +21,7 @@ const ProfileUpdateButton = ({
         phoneNumber,
         profileImage,
         imageUrl,
+        isDonated,
       });
       console.log(response);
       alert("회원정보 수정을 성공하였습니다!");
@@ -33,7 +35,10 @@ const ProfileUpdateButton = ({
   };
 
   return (
-    <button className="w-[330px] footer-button text-center" onClick={handleSignUp}>
+    <button
+      className="w-[330px] footer-button text-center"
+      onClick={handleSignUp}
+    >
       {buttonText}
     </button>
   );
