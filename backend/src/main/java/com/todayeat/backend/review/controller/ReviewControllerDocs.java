@@ -2,7 +2,9 @@ package com.todayeat.backend.review.controller;
 
 import com.todayeat.backend._common.response.error.ErrorResponse;
 import com.todayeat.backend._common.response.success.SuccessResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
 import com.todayeat.backend.review.dto.request.CreateReviewRequest;
+import com.todayeat.backend.review.dto.response.GetReviewListConsumerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,4 +39,26 @@ public interface ReviewControllerDocs {
     @PreAuthorize("hasRole('CONSUMER')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     SuccessResponse<Void> create(@ModelAttribute @Valid CreateReviewRequest request);
+
+    @Operation(summary = "리뷰 목록 조회 (소비자)",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          리뷰 목록을 조회합니다. \n
+                          request param으로 page, size, store-id가 넣어주세요. \n
+                          store-id 없으면 전체 데이터를 검색하고, store-id가 있으면 해당 가게의 데이터를 검색합니다.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderListConsumerResponse.class)))
+    @PreAuthorize("hasRole('CONSUMER')")
+    @GetMapping("/consumer")
+    SuccessResponse<GetReviewListConsumerResponse> getListConsumer(@Schema(description = "페이지 번호, 0부터 시작", example = "0")
+                                                                  @RequestParam
+                                                                  Integer page,
+                                                                   @Schema(description = "데이터 개수", example = "10")
+                                                                  @RequestParam
+                                                                  Integer size,
+                                                                   @Schema(description = "가게 Id", example = "1")
+                                                                  @RequestParam(value = "store-id", required = false)
+                                                                  String storeId);
 }

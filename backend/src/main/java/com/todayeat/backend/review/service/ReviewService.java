@@ -13,6 +13,8 @@ import com.todayeat.backend.order.entity.OrderInfo;
 import com.todayeat.backend.order.entity.OrderInfoStatus;
 import com.todayeat.backend.order.repository.OrderInfoRepository;
 import com.todayeat.backend.review.dto.request.CreateReviewRequest;
+import com.todayeat.backend.review.dto.response.GetReviewConsumerResponse;
+import com.todayeat.backend.review.dto.response.GetReviewListConsumerResponse;
 import com.todayeat.backend.review.entity.Review;
 import com.todayeat.backend.review.mapper.ReviewMapper;
 import com.todayeat.backend.review.repository.ReviewRepository;
@@ -20,12 +22,15 @@ import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.repository.StoreRepository;
+import com.todayeat.backend.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -42,6 +47,7 @@ public class ReviewService {
     private final FCMNotificationUtil fcmNotificationUtil;
 
     private final ConsumerNotificationService consumerNotificationService;
+    private final StoreService storeService;
 
     @Transactional
     public void create(CreateReviewRequest request) {
@@ -69,6 +75,9 @@ public class ReviewService {
 
             orderInfo.saveReview(review);
             orderInfoRepository.save(orderInfo);
+
+            // 리뷰수 증가 반영
+            storeService.updateReviewCnt(store, 1);
         } catch (RuntimeException e) {
 
             s3Util.deleteImageIfPresent(imageUrl);
@@ -88,6 +97,24 @@ public class ReviewService {
         } else {
             fcmNotificationUtil.sendToOne(seller.get().getId(), "Seller", "편지 알림", createReviewNotification.getBody());
         }
+    }
+
+    // 소비자: 자신의 리뷰 목록 보기
+    public GetReviewListConsumerResponse getListConsumer(Integer page, Integer size, Long storeId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Consumer consumer = securityUtil.getConsumer();
+
+
+        Page<Review> reviewList = reviewRepository
+                .findAllByStoreIdAndConsumerId(storeId, consumer.getId(), pageable);
+
+        return GetReviewListConsumerResponse.of(
+                reviewList.getContent().stream().map(GetReviewConsumerResponse::from)
+                        .collect(Collectors.toList()),
+                reviewList.getNumber(),
+                reviewList.hasNext(),
+                reviewList.getTotalElements()
+        );
     }
 
 }
