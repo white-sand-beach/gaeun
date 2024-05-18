@@ -1,14 +1,73 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ReviewResponse, ReviewState } from "../../types/ReviewType"; // 수정된 부분: 파일명 오타 수정
+import ShopReveiwGetForm from "../../services/shops/ShopReveiwGetService";
+import { useParams } from "react-router-dom";
 
 import BannerSlider from "../../components/navbar/ServiceBanner";
 import Review from "./Review";
 
 const ShopReview = () => {
-  const [checked, setChecked] = useState(false);
+  const [reviewState, setReviewState] = useState<ReviewState>({
+    reviewList: [],
+    totalCnt: 0,
+    page: 0,
+    loading: false,
+    hasNext: false,
+    scrollPosition: 0,
+  });
 
-  const changeChceck = () => {
-    setChecked(!checked);
-  };
+  const { Id } = useParams();
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      setReviewState((prevState) => ({ ...prevState, loading: true }));
+      try {
+        const response: ReviewResponse = await ShopReveiwGetForm({
+          page: reviewState.page,
+          size: 10,
+          storeId: Id,
+        });
+        setReviewState((prevState) => ({
+          ...prevState,
+          reviewList: [
+            ...prevState.reviewList,
+            ...(response.data.reviewList || []),
+          ],
+          totalCnt: response.data.totalCnt,
+          hasNext: response.data.hasNext,
+        }));
+        console.log(response.data);
+        console.log(reviewState);
+      } catch (error) {
+        console.error("에러발생 에러발생! ", error);
+      } finally {
+        setReviewState((prevState) => ({ ...prevState, loading: false }));
+      }
+    };
+    fetchReviews();
+  }, [reviewState.page]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const scrollTop = document.documentElement.scrollTop;
+      const clientHeight = document.documentElement.clientHeight;
+
+      if (
+        scrollTop + clientHeight >= scrollHeight &&
+        !reviewState.loading &&
+        reviewState.hasNext
+      ) {
+        setReviewState((prevState) => ({
+          ...prevState,
+          page: prevState.page + 1,
+        }));
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [reviewState.loading, reviewState.hasNext]);
 
   return (
     <div className="w-full bg-white">
@@ -17,20 +76,9 @@ const ShopReview = () => {
       </div>
       <hr className="w-full" />
       <hr className="border-4 border-gray-100" />
-      <div className="flex items-center mt-2 space-x-2">
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={changeChceck}
-          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-        />
-        <label className="text-sm font-medium text-gray-700 ">
-          사진리뷰 보기
-        </label>
-      </div>
 
       <div>
-        <Review />
+        <Review reviewList={reviewState.reviewList} />
       </div>
     </div>
   );

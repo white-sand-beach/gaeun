@@ -58,7 +58,7 @@ const NavBar = () => {
       title = "프로필 설정";
       break;
     case "/my-review":
-      title = "나의 리뷰";
+      title = "나의 감사편지";
       break;
     default:
       title = "";
