@@ -2,6 +2,21 @@ pipeline {
     agent any
 
     stages {
+        stage("CI/CD start") {
+            steps {
+                script {
+                    def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                    def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+
+                    mattermostSend (
+                        color: '#D0E0E3',
+                        icon: "https://jenkins.io/images/logos/jenkins/jenkins.png",
+                        message: "배포 출발 합니다 🛫 \n${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name}) <- 얘가 시작함 \n(<${env.BUILD_URL}|Details>)"
+                    )
+                }
+            }
+        }
+
         stage("CURRENT ID, GROUPS") {
             steps {
                 script {
@@ -142,10 +157,10 @@ pipeline {
 
     post {
         success {
-            mattermostSend color: '#32a852', message: "Deploy Success! (${env.JOB_NAME}) #(${env.BUILD_NUMBER}) (<${env.BUILD_URL}|Open>) \n See the (<${env.BUILD_URL}console|console>)"
+            mattermostSend color: 'good', message: "Deploy Success! (${env.JOB_NAME}) #(${env.BUILD_NUMBER}) (<${env.BUILD_URL}|Open>) \n See the (<${env.BUILD_URL}console|console>)"
         }
         failure {
-            mattermostSend color: '#ff0800', message: "Deploy Fail! (${env.JOB_NAME}) #(${env.BUILD_NUMBER}) (<${env.BUILD_URL}|Open>) \n See the (<${env.BUILD_URL}console|console>)"
+            mattermostSend color: 'danger', message: "Deploy Fail! ${Author_ID}(${Author_Name}) <- 얘가 범인임 (${env.JOB_NAME}) #(${env.BUILD_NUMBER}) (<${env.BUILD_URL}|Open>) \n See the (<${env.BUILD_URL}console|console>)"
         }
     }
 }
