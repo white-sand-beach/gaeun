@@ -1,6 +1,61 @@
+// import { useState, useEffect } from "react";
+
+// import NotificationGetForm from "../../services/notifications/NotificationGetService";
+// import {
+//   NotificationInfo,
+//   NotificationItem,
+// } from "../../types/NotificationType";
 // import OrderDetailButton from "../../components/button/OrderDetailButton";
 
 const Notification = () => {
+  // const [notificationData, setNotificationData] = useState<NotificationItem[]>([]);
+  // const [notificationInfo, setNotificationInfo] = useState<NotificationInfo>({
+  //   id: 0,
+  //   type: "",
+  //   typeId: 0,
+  //   isRead: false,
+  //   page: 0,
+  //   hasNext: false,
+  // });
+
+  // useEffect(() => {
+  //   const fetchNotification = async () => {
+  //     try {
+  //       const response = await NotificationGetForm({
+  //         page: String(notificationInfo.page),
+  //         size: "10",
+  //       });
+  //       setNotificationInfo(response);
+  //       setNotificationData(response.content);
+  //       console.log(response);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchNotification();
+  // });
+
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const scrollHeight = document.documentElement.scrollHeight;
+  //     const scrollTop = document.documentElement.scrollTop;
+  //     const clientHeight = document.documentElement.clientHeight;
+
+  //     if (
+  //       scrollTop + clientHeight >= scrollHeight &&
+  //       notificationInfo.hasNext
+  //     ) {
+  //       setNotificationInfo((prevState) => ({
+  //         ...prevState,
+  //         page: prevState.page + 1,
+  //       }));
+  //     }
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, [notificationInfo.hasNext]);
+
   return (
     <div className="pt-14">
       {/* 컴포넌트로 만들 거에요 */}
@@ -21,9 +76,7 @@ const Notification = () => {
             </div>
           </div>
           {/* 버튼 컴포넌트 만들거에요 */}
-          <div className="mt-4 mr-2">
-            {/* <OrderDetailButton /> */}
-          </div>
+          <div className="mt-4 mr-2">{/* <OrderDetailButton /> */}</div>
         </div>
         <hr />
       </div>
