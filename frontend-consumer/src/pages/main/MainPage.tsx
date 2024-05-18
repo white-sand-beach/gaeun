@@ -342,16 +342,27 @@ const Main: React.FC = () => {
               className="flex flex-col gap-2 py-2 pl-2 overflow-y-auto modalContent"
               style={{ maxHeight: isExpanded ? "467px" : "212px" }}
             >
-              {storeList &&
+              {storeList && storeList.length > 0 ? (
                 storeList.map((store, index) => (
                   <Shops key={index} store={store} /> // 각 요소에 대한 JSX 생성 및 Shops 컴포넌트에 데이터 전달
-                ))}
-              {allData.loading && (
-                <div className="flex justify-center">
+                ))
+              ) : (
+                <div className="flex flex-col items-center justify-center">
+                  {/* 여기에 storeList가 비어 있을 때 보여줄 내용을 추가합니다 */}
+                  <span className="text-base">현재 가게 목록이 없습니다.</span>
                   <Lottie
                     options={storeListLoadingOptions}
-                    height={100}
-                    width={100}
+                    height={170}
+                    width={170}
+                  />
+                </div>
+              )}
+              {allData.loading && (
+                <div className="flex items-center justify-center">
+                  <Lottie
+                    options={storeListLoadingOptions}
+                    height={180}
+                    width={180}
                   />
                 </div>
               )}

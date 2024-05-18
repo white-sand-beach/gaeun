@@ -18,6 +18,7 @@ const ProfileCard: React.FC = () => {
     nickname: "",
     socialType: "",
     email: "",
+    orderCnt: 0,
   });
 
   useEffect(() => {
@@ -118,18 +119,21 @@ const ProfileCard: React.FC = () => {
             />
           </div>
           {/* 왼쪽 상단 문구 */}
-          <span className="absolute z-10 text-lg font-bold text-black top-4 left-4">
-            {profileData.nickname}님, 수달을 지켜주세요!!
-          </span>
-          {/* 중앙 아래 식물 이미지 */}
-          <div className="absolute z-10 transform -translate-x-1/2 bottom-4 left-1/2">
+          <div className="z-30 bg-white">
+            <span className="absolute z-10 text-lg font-bold text-black top-4 left-4">
+              {profileData.nickname}님, 수달을 지켜주세요!!
+            </span>
+          </div>
+          {/* 중앙 아래 수달 이미지 */}
+          <div className="absolute z-10 transform -translate-x-1/2 bottom-12 left-1/2">
             {/* 아이콘 또는 이미지 */}
             <img src={sudal} alt="수달키우기" />
           </div>
-          {/* 오른쪽 하단 금액 */}
-          <span className="absolute text-lg font-bold text-black bottom-4 right-4">
-            10,000원
-          </span>
+          {/* 오른쪽 하단 개수 */}
+          <div className="absolute px-2.5 text-lg font-bold text-black bg-white rounded-md shadow-md bottom-4 right-2">
+            <span className="py-1 text-red-500">{profileData.orderCnt}</span>번
+            환경을 지켰어요!
+          </div>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ interface UserState {
   imageUrl?: string;
   phoneNumber?: string;
   socialType?: string;
+  orderCnt?: number;
   data?: any;
   headerText?: string;
   buttonText?: string;
