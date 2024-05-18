@@ -28,12 +28,12 @@ public class ReviewController implements ReviewControllerDocs{
     @Override
     public SuccessResponse<GetReviewListConsumerResponse> getListConsumer(Integer page, Integer size, String storeId) {
 
-        return SuccessResponse.of(reviewService.getListConsumer(page, size, storeId == null ? null : Long.valueOf(storeId)), SuccessType.GET_CONSUMER_REVIEW_SUCCESS);
+        return SuccessResponse.of(reviewService.getListConsumer(page, size, storeId), SuccessType.GET_CONSUMER_REVIEW_SUCCESS);
     }
 
     @Override
     public SuccessResponse<GetReviewListSellerResponse> getListSeller(Integer page, Integer size, String storeId) {
 
-        return SuccessResponse.of(reviewService.getListSeller(page, size, Long.valueOf(storeId)), SuccessType.GET_SELLER_REVIEW_SUCCESS);
+        return SuccessResponse.of(reviewService.getListSeller(page, size, storeId), SuccessType.GET_SELLER_REVIEW_SUCCESS);
     }
 }

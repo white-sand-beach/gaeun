@@ -102,14 +102,14 @@ public class ReviewService {
     }
 
     // 소비자: 자신의 리뷰 목록 보기
-    public GetReviewListConsumerResponse getListConsumer(Integer page, Integer size, Long storeId) {
+    public GetReviewListConsumerResponse getListConsumer(Integer page, Integer size, String storeId) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Consumer consumer = securityUtil.getConsumer();
 
 
         Page<Review> reviewList = reviewRepository
-                .findAllByStoreIdAndConsumerId(storeId, consumer.getId(), pageable);
+                .findAllByStoreIdAndConsumerId(storeId == null ? null : Long.valueOf(storeId), consumer.getId(), pageable);
 
         return GetReviewListConsumerResponse.of(
                 reviewList.getContent().stream().map(GetReviewConsumerResponse::from)
@@ -120,10 +120,10 @@ public class ReviewService {
         );
     }
 
-    public GetReviewListSellerResponse getListSeller(Integer page, Integer size, Long storeId) {
+    public GetReviewListSellerResponse getListSeller(Integer page, Integer size, String storeId) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        Store store = validateStoreAndSeller(storeId);
+        Store store = validateStoreAndSeller(Long.valueOf(storeId));
 
         Page<Review> reviewList = reviewRepository.findAllByStoreId(store.getId(), pageable);
 
