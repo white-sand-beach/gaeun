@@ -178,6 +178,12 @@ public class StoreServiceElasticsearchImpl implements StoreService {
                             .distance(radius + "km")
                             .location(l -> l.latlon(ll -> ll.lat(latitude.doubleValue()).lon(longitude.doubleValue())))));
                     if (categoryId != null) {
+                        searchKeywordService.saveSearchKeyword(
+                                categoryRepository.findById(categoryId)
+                                        .orElseThrow(() -> new BusinessException(CATEGORY_NOT_FOUND))
+                                        .getName()
+                        );
+
                         b.must(m -> m.term(t -> t
                                 .field("categoryList.categoryId")
                                 .value(categoryId)));
