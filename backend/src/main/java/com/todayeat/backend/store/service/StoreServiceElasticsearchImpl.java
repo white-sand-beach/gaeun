@@ -206,7 +206,7 @@ public class StoreServiceElasticsearchImpl implements StoreService {
 
         boolean hasNext = pageRequest.getPageNumber() + 1 < (searchHits.getTotalHits() / pageRequest.getPageSize()) + 1;
 
-        return GetConsumerListStoreResponse.of(storeInfoList, page, hasNext);
+        return GetConsumerListStoreResponse.of(storeInfoList, securityUtil.getConsumer().getIsDonated(), page, hasNext);
     }
 
     @Override
