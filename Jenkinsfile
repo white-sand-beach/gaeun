@@ -26,6 +26,12 @@ pipeline {
                         sh 'cp -rf $configFile ./frontend-consumer/.env'
                     }
                 }
+
+                withCredentials([file(credentialsId: 'firebase-messaging-sw', variable: 'configFile')]) {
+                    script {
+                        sh 'cp -rf $configFile ./frontend-consumer/public/firebase-messaging-sw.js'
+                    }
+                }
             }
         }
         
@@ -60,6 +66,12 @@ pipeline {
                 withCredentials([file(credentialsId: 'fe_seller_env', variable: 'configFile')]) {
                     script {
                         sh 'cp -rf $configFile ./frontend-seller/.env'
+                    }
+                }
+
+                withCredentials([file(credentialsId: 'firebase-messaging-sw', variable: 'configFile')]) {
+                    script {
+                        sh 'cp -rf $configFile ./frontend-seller/public/firebase-messaging-sw.js'
                     }
                 }
             }
