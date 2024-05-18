@@ -7,12 +7,12 @@ import { ChartOptions, CategoryScale, Chart, LinearScale, BarElement, BarControl
 const MonthStat = () => {
   Chart.register(CategoryScale, LinearScale, BarElement, BarController, Title)
   const [monthInfo, setMonthInfo] = useState<SaleStatisticList>({
-    SaleStatisticList: [
+    saleStatisticList: [
       {
         menuName: "",
-        saleStatistic: 0
+        saleStatistic: 0,
       },
-    ],
+    ]
   });
 
   useEffect(() => {
@@ -30,14 +30,14 @@ const MonthStat = () => {
 
   // Chart.js 에 넣을 데이터
   const monthChartData = {
-    labels: monthInfo?.SaleStatisticList.map((stat) => stat.menuName),
+    labels: monthInfo?.saleStatisticList.map((stat) => stat.menuName),
     datasets: [
       {
         label: "통계",
         backgroundColor: "rgba(255, 159, 64, 0.2)",
         borderColor: "rgba(0, 0, 0, 1)",
         borderWidth: 2,
-        data: monthInfo?.SaleStatisticList.map((stat) => stat.saleStatistic),
+        data: monthInfo?.saleStatisticList.map((stat) => stat.saleStatistic),
       },
     ],
   };
@@ -60,7 +60,7 @@ const MonthStat = () => {
   };
 
   return (
-    <div className="w-screen h-screen flex flex-col justify-center items-center">
+    <div className="flex flex-col items-center justify-center w-screen h-screen">
       {monthInfo ? (
         <Bar data={monthChartData} options={chartOptions} />
       ) : (
