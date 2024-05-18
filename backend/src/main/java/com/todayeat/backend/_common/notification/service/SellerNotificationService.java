@@ -2,16 +2,22 @@ package com.todayeat.backend._common.notification.service;
 
 import com.todayeat.backend._common.notification.dto.CreateOrderNotification;
 import com.todayeat.backend._common.notification.dto.CreateReviewNotification;
-import com.todayeat.backend._common.notification.entity.ConsumerNotification;
+import com.todayeat.backend._common.notification.dto.response.GetSellerNotificationListResponse;
+import com.todayeat.backend._common.notification.dto.response.GetSellerNotificationResponse;
 import com.todayeat.backend._common.notification.entity.SellerNotification;
 import com.todayeat.backend._common.notification.repository.SellerNotificationRepository;
 import com.todayeat.backend._common.util.SecurityUtil;
-import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.seller.entity.Seller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,7 +29,7 @@ public class SellerNotificationService {
     private final SecurityUtil securityUtil;
 
     @Transactional
-    public void createSellerOrderNotification(CreateOrderNotification createDTO) {
+    public void createOrderNotification(CreateOrderNotification createDTO) {
 
         Seller seller = securityUtil.getSeller();
 
@@ -32,12 +38,26 @@ public class SellerNotificationService {
     }
 
     @Transactional
-    public void createSellerReviewNotification(CreateReviewNotification createDTO) {
+    public void createReviewNotification(CreateReviewNotification createDTO) {
+
+        sellerNotificationRepository.save(SellerNotification.of(createDTO.getType(),
+                createDTO.getReviewId(), createDTO.getContent(), createDTO.getSeller()));
+
+    }
+
+    public GetSellerNotificationListResponse getList(Integer page, Integer size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         Seller seller = securityUtil.getSeller();
 
-        sellerNotificationRepository.save(SellerNotification.of(createDTO.getType(),
-                createDTO.getReviewId(), createDTO.getContent(), seller));
+        Slice<SellerNotification> notificationList = sellerNotificationRepository.findAllBySellerIdAndDeletedAtIsNull(seller.getId(), pageable);
 
+        return GetSellerNotificationListResponse.of(
+                notificationList.getContent().stream().map(GetSellerNotificationResponse::from)
+                        .collect(Collectors.toList()),
+                notificationList.getNumber(),
+                notificationList.hasNext()
+        );
     }
 }

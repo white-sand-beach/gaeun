@@ -5,7 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 @Getter
 public class CreateOrderNotification {
@@ -16,7 +19,7 @@ public class CreateOrderNotification {
 
     private String storeName;
 
-    private LocalDateTime notifiedAt;
+    private String notifiedAt;
 
     private String orderStatus;
 
@@ -25,7 +28,7 @@ public class CreateOrderNotification {
     private List<CreateOrderItemNotification> orderItemNotificationList;
 
     @Builder
-    private CreateOrderNotification(Long orderInfoId, String orderNo, String storeName, LocalDateTime notifiedAt, String orderStatus, Integer paymentPrice, List<CreateOrderItemNotification> orderItemNotificationList) {
+    private CreateOrderNotification(Long orderInfoId, String orderNo, String storeName, String notifiedAt, String orderStatus, Integer paymentPrice, List<CreateOrderItemNotification> orderItemNotificationList) {
         this.orderInfoId = orderInfoId;
         this.orderNo = orderNo;
         this.storeName = storeName;
@@ -40,7 +43,7 @@ public class CreateOrderNotification {
         return builder()
                 .orderInfoId(orderInfo.getId())
                 .orderNo(orderInfo.getOrderNo())
-                .notifiedAt(orderInfo.getUpdatedAt())
+                .notifiedAt(getDate(orderInfo.getUpdatedAt()))
                 .paymentPrice(orderInfo.getPaymentPrice())
                 .orderItemNotificationList(orderItemNotificationList)
                 .build();
@@ -90,6 +93,17 @@ public class CreateOrderNotification {
         sb.deleteCharAt(sb.length() - 1);
         sb.append("주문 들어왔습니다.");
 
+        return sb.toString();
+    }
+
+    private static String getDate(LocalDateTime localDateTime) {
+
+        StringBuilder sb =  new StringBuilder();
+
+        String date = localDateTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        String dayOfWeek = localDateTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN);
+
+        sb.append(date).append("(").append(dayOfWeek).append(")");
         return sb.toString();
     }
 }
