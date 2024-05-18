@@ -10,6 +10,8 @@ import MapListForm from "../../services/maps/MapMainService";
 import { MainAllData } from "../../types/MainAllDataType";
 import { StoreList } from "../../types/StoreList";
 import { useNavigate } from "react-router-dom";
+import Lottie from "react-lottie";
+import { storeListLoadingOptions } from "../../assets/lotties/lottieOptions";
 
 interface LocationState {
   lat: number | undefined;
@@ -321,7 +323,15 @@ const Main: React.FC = () => {
                 storeList.map((store, index) => (
                   <Shops key={index} store={store} /> // 각 요소에 대한 JSX 생성 및 Shops 컴포넌트에 데이터 전달
                 ))}
-              {allData.loading && <div>Loading...</div>}
+              {allData.loading && (
+                <div className="flex justify-center">
+                  <Lottie
+                    options={storeListLoadingOptions}
+                    height={100}
+                    width={100}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -96,7 +96,7 @@ const ProfileCard: React.FC = () => {
                     src={review}
                     alt="리뷰 목록"
                   />
-                  <p className="pt-1">내 리뷰</p>
+                  <p className="pt-1">감사 편지</p>
                 </button>
               </Link>
             </div>
