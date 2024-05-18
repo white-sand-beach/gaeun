@@ -22,7 +22,7 @@
         window.addEventListener("load", () => {
           navigator.serviceWorker
             .register("/firebase-messaging-sw.js")
-            .then((registration) => {
+            .then((registration: ServiceWorkerRegistration) => {
               console.log("service-worker 등록 성공");
               console.log(registration);
             })
