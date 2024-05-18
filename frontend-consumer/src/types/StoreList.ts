@@ -1,5 +1,6 @@
 // Store.ts
 import { Category } from "./Category";
+import { SaleImageURLType } from "./SaleImageURLListType";
 
 export interface StoreList {
   storeId: number;
@@ -13,4 +14,6 @@ export interface StoreList {
   favoriteCnt: number;
   distance: number;
   categoryList: Category[];
+  saleImageURLList: SaleImageURLType[];
+  imageURL?: string;
 }

@@ -3,6 +3,8 @@ import FavoriteList from "../../components/favorite/FavoriteList";
 import FavoriteGetForm from "../../services/favorites/FavoriteGetService";
 import { FavoriteResponse, FavoriteState } from "../../types/FavoriteType";
 
+import logo from "../../../public/windows11/LargeTile.scale-100.png";
+
 const Favorite = () => {
   const [favoriteState, setFavoriteState] = useState<FavoriteState>({
     favorites: [],
@@ -12,30 +14,6 @@ const Favorite = () => {
     hasNext: false,
     scrollPosition: 0,
   });
-
-  // 아래 부분은 스크롤 위치를 기억하여
-  // 해당 페이지로 돌아왔을 때 다시 원래 위치를 찾아가는 기능인데
-  // 저희 서비스에서는 아직 테스트를 해볼 수 없어서
-  // 우선 주석 처리해두었습니다.
-  // 추후에 좀 더 테스트 후 정상적으로 작동 시 말씀드리겠습니다.
-
-  // useEffect(() => {
-  //   // 컴포넌트가 마운트될 때 이전에 저장된 스크롤 위치로 이동
-  //   window.scrollTo(0, favoriteState.scrollPosition);
-  // }, []);
-
-  // useEffect(() => {
-  //   // 스크롤 위치 변경 시 상태 업데이트
-  //   const handleScroll = () => {
-  //     setFavoriteState((prevState) => ({
-  //       ...prevState,
-  //       scrollPosition: window.pageYOffset,
-  //     }));
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, []);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -87,17 +65,33 @@ const Favorite = () => {
   }, [favoriteState.loading, favoriteState.hasNext]);
 
   return (
-    <div className="pt-12 bg-gray-100">
-      <div className="flex items-center border-2 border-gray-200">
+    <div className="pt-12 ">
+      <div className="fixed flex items-center w-full bg-gray-100 border-2 border-gray-200">
         <p className="p-2 pt-4 text-sm font-bold">내가 찜한 맛집</p>
-        <p className="pt-2 text-xs text-gray-500 font-bold">
+        <p className="pt-2 text-xs font-bold text-gray-500">
           {favoriteState.totalCnt}개
         </p>
       </div>
-      <div className="bg-white pb-14">
+      <div className="pt-12 pb-14">
         {/* 찜 리스트 */}
-        {favoriteState.favorites && (
-          <FavoriteList favorites={favoriteState?.favorites} />
+        {favoriteState.favorites.length > 0 ? (
+          <FavoriteList favorites={favoriteState.favorites} />
+        ) : (
+          <div className="h-screen pb-40 center">
+            <div>
+              <img className="rounded-full" src={logo} alt="로고" />
+              <h2 className="text-lg font-bold center">
+                나만의 천사 가게를
+                <span
+                  className="mx-2 text-4xl"
+                  style={{ fontFamily: "MyFont" }}
+                >
+                  찜
+                </span>
+                해보세요
+              </h2>
+            </div>
+          </div>
         )}
       </div>
     </div>

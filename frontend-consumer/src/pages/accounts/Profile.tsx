@@ -1,11 +1,16 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import setting from "../../assets/profile/setting.png";
-import heart from "../../assets/profile/heart.png";
+import heart from "../../assets/profile/favorite.png";
 import order from "../../assets/profile/order.png";
 import review from "../../assets/profile/review.png";
 import ProfileForm from "../../services/accounts/ProfileInformation";
 import UserState from "../../types/UserState";
+
+import defaultImg from "../../assets/profile/defaultImg.png";
+import sudal from "../../assets/profile/sudal.gif";
+import sudalbg from "../../assets/profile/sudalbg.png";
+import BannerSlider from "../../components/navbar/ServiceBanner";
 
 const ProfileCard: React.FC = () => {
   const [profileData, setProfileData] = useState<UserState>({
@@ -13,6 +18,7 @@ const ProfileCard: React.FC = () => {
     nickname: "",
     socialType: "",
     email: "",
+    orderCnt: 0,
   });
 
   useEffect(() => {
@@ -24,71 +30,110 @@ const ProfileCard: React.FC = () => {
       .catch((error) => {
         console.error("Failed to fetch profile data", error);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // 빈 배열을 넣어서 컴포넌트 마운트 시에만 호출되도록 함
 
   return (
-    <div className="w-full h-screen bg-white border border-black">
+    <div className="w-full h-screen">
       <div className="flex items-center justify-center w-11/12 pt-20 m-auto">
-        <div className="relative w-full h-56 p-6 m-auto bg-white border border-gray-500 rounded-lg shadow-lg">
+        <div className="relative w-full h-56 px-2 pt-2 m-auto bg-white border border-gray-500 rounded-lg shadow-lg">
           {/* 설정 아이콘 */}
-          <div className="absolute right-4 top-4">
+          <div className="absolute right-2 top-2">
             <Link to="/profile-setting">
               <img src={setting} alt="설정" />
             </Link>
           </div>
           {/* 프로필 이미지, 이름, 이메일 */}
-          <div className="flex items-center ml-4 space-x-4 mb-9 mt-9">
-            <div className="w-16 h-16 overflow-hidden bg-blue-100 rounded-full">
+          <div className="flex pl-2">
+            <div className="relative flex justify-center items-center w-24 h-24 rounded-full border-[1px] border-gray-200 shadow-md">
               <img
-                src={profileData.profileImage}
+                className="object-cover w-20 h-20 rounded-full"
+                src={
+                  profileData.profileImage
+                    ? profileData.profileImage
+                    : defaultImg
+                }
                 alt="프로필 이미지"
-                className="object-cover w-full h-full"
               />
             </div>
-            <div>
-              <p className="text-lg font-medium text-gray-900">
-                음식지킴이, {profileData.nickname}
-              </p>
-              <p className="text-sm text-gray-500">{profileData.email}</p>
+            <div className="pt-6 pb-2 pl-4 text-sm">
+              <p>나누면 더 따뜻한 세상</p>
+              <p className="text-lg font-bold"> {profileData.nickname}</p>
+              <p className="text-gray-400">{profileData.email}</p>
             </div>
           </div>
-          {/* 아이콘들 */}
-          <div className="flex justify-around">
-            <button className="flex items-center justify-center w-10 h-10 rounded-lg">
-              <img src={order} alt="" />
-            </button>
-            <button className="flex items-center justify-center w-10 h-10 rounded-lg">
-              <img src={heart} alt="" />
-            </button>
-            <button className="flex items-center justify-center w-10 h-10 rounded-lg">
-              <img src={review} alt="" />
-            </button>
+
+          <div className="pt-6 mx-1 font-bold between text-xxs">
+            <div className="flex justify-center w-24">
+              <Link to="/order-list">
+                <button className="items-center justify-center rounded-lg">
+                  <img
+                    className="w-12 h-12 bg-white rounded-full"
+                    src={order}
+                    alt="주문 내역"
+                  />
+                  <p className="pt-1">주문 내역</p>
+                </button>
+              </Link>
+            </div>
+
+            <div className="flex justify-center w-24">
+              <Link to="/favorite">
+                <button className="items-center justify-center rounded-lg">
+                  <img
+                    className="w-12 h-12 bg-white rounded-full"
+                    src={heart}
+                    alt="찜 목록"
+                  />
+                  <p className="pt-1">찜 목록</p>
+                </button>
+              </Link>
+            </div>
+
+            <div className="flex justify-center w-24">
+              <Link to="/my-review">
+                <button className="items-center justify-center rounded-lg">
+                  <img
+                    className="w-12 h-12 bg-white rounded-full"
+                    src={review}
+                    alt="리뷰 목록"
+                  />
+                  <p className="pt-1">감사 편지</p>
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-      <div className="w-11/12 mx-auto mt-5">
-        <div className="p-4 mb-5 text-center bg-white border border-gray-500 rounded-lg shadow-lg">
-          <span className="text-sm text-gray-800">
-            음식을 지키고 식물을 키워주세요!!
-          </span>
+
+      <div className="w-11/12 mx-auto">
+        <div className="w-full m-auto my-5 border-2 border-orange-400 center h-14 rounded-xl">
+          <BannerSlider />
         </div>
         <div className="relative h-64 p-4 bg-white border border-gray-500 rounded-lg shadow-lg">
-          {/* 왼쪽 상단 문구 */}
-          <span className="absolute text-sm text-gray-800 top-4 left-4">
-            {profileData.nickname}님이 지금까지 지킨 음식은?
-          </span>
-          {/* 중앙 아래 식물 이미지 */}
-          <div className="absolute transform -translate-x-1/2 bottom-4 left-1/2">
-            <div className="inline-block p-2 bg-green-100 rounded-full">
-              {/* 아이콘 또는 이미지 */}
-              <span className="text-green-800">식물</span>
-            </div>
+          {/* 배경 이미지 */}
+          <div className="absolute inset-0 z-0 opacity-50">
+            <img
+              src={sudalbg}
+              alt="배경 이미지"
+              className="object-cover w-full h-full"
+            />
           </div>
-          {/* 오른쪽 하단 금액 */}
-          <span className="absolute text-lg text-blue-600 bottom-4 right-4">
-            10,000원
-          </span>
+          {/* 왼쪽 상단 문구 */}
+          <div className="z-30 bg-white">
+            <span className="absolute z-10 text-lg font-bold text-black top-4 left-4">
+              {profileData.nickname}님, 수달을 지켜주세요!!
+            </span>
+          </div>
+          {/* 중앙 아래 수달 이미지 */}
+          <div className="absolute z-10 transform -translate-x-1/2 bottom-12 left-1/2">
+            {/* 아이콘 또는 이미지 */}
+            <img src={sudal} alt="수달키우기" />
+          </div>
+          {/* 오른쪽 하단 개수 */}
+          <div className="absolute px-2.5 text-lg font-bold text-black bg-white rounded-md shadow-md bottom-4 right-2">
+            <span className="py-1 text-red-500">{profileData.orderCnt}</span>번
+            환경을 지켰어요!
+          </div>
         </div>
       </div>
     </div>

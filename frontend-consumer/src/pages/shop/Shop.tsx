@@ -9,8 +9,10 @@ import ShopMenu from "./ShopMenu";
 import { useParams } from "react-router-dom";
 import ShopInfoGetForm from "../../services/shops/ShopInfoGetService";
 import { ShopInfo } from "../../types/ShopInfoType";
-import ShoptFavoritePostForm from "../../services/favorites/ShopFavoritePostService";
-import ShopDetailGetForm from "../../services/shops/ShopDetailGetService";
+import FavoritePostForm from "../../services/favorites/FavoritePostService";
+import ShoptFavoriteDeleteForm from "../../services/favorites/ShopFavoriteDeleteService";
+
+import logo from "../../../public/windows11/LargeTile.scale-100.png";
 
 const mapHeight = "105px"; // 예시 높이값
 const updateCounter = 0;
@@ -30,6 +32,7 @@ const Shop = () => {
     reviewCnt: 0,
     favoriteCnt: 0,
     opened: false,
+    favorite: false,
   });
 
   const makePhoneCall = (phoneNumber: string) => {
@@ -40,16 +43,21 @@ const Shop = () => {
     makePhoneCall(shopInfo.tel);
   };
 
-  const [isFavorite, setIsFavorite] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(shopInfo.favorite);
+  const [favoriteCount, setFavoriteCount] = useState(shopInfo.favoriteCnt);
 
   const handleToggle = async (newIsFavorite: boolean) => {
     try {
       if (newIsFavorite) {
         // 찜 등록 API 호출
-        await ShoptFavoritePostForm({ Id });
+        await FavoritePostForm({ storeId: Number(Id) });
+        setFavoriteCount((prev) => prev + 1); // 찜 수 증가
+        console.log("찜 등록 완료");
       } else {
         // 찜 삭제 API 호출
-        await ShopDetailGetForm({ Id });
+        await ShoptFavoriteDeleteForm({ storeId: Number(Id) });
+        setFavoriteCount((prev) => prev - 1); // 찜 수 감소
+        console.log("찜 등록 취소");
       }
       setIsFavorite(newIsFavorite);
     } catch (error) {
@@ -57,6 +65,16 @@ const Shop = () => {
       console.error(error);
     }
   };
+
+  // shopInfo.favorite 값이 변경될 때마다 isFavorite 상태 업데이트
+  useEffect(() => {
+    setIsFavorite(shopInfo.favorite);
+  }, [shopInfo.favorite]);
+
+  // shopInfo.favoriteCnt 값이 변경될 때마다 favoriteCount 상태 업데이트
+  useEffect(() => {
+    setFavoriteCount(shopInfo.favoriteCnt);
+  }, [shopInfo.favoriteCnt]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,7 +95,7 @@ const Shop = () => {
       {/* Header image container */}
       <div className="h-[150px] center mb-8 ">
         <img
-          src={shopInfo.imageURL}
+          src={shopInfo.imageURL || logo}
           alt="가게 대표 이미지"
           className="object-cover w-full h-[150px]"
         />
@@ -90,21 +108,21 @@ const Shop = () => {
         {/* Icons and details */}
         <div className="flex items-center justify-center mt-2 space-x-3">
           <div onClick={handlePhoneClick} className="flex items-center">
-            <img src={phoneIcon} alt="Phone" className="w-5 h-5 mr-1" />
-            <span className="text-sm">전화</span>
+            <img src={phoneIcon} alt="Phone" className="w-3 h-3 mr-1" />
+            <span className="text-xxs">전화</span>
           </div>
 
           <div className="flex items-center">
             {/* 토글 버튼 */}
             <FavoriteButton isFavorite={isFavorite} onToggle={handleToggle} />
-            <span className="text-sm">{shopInfo.favoriteCnt}</span>
+            <span className="pl-2 text-sm font-bold">{favoriteCount}</span>
           </div>
         </div>
 
         {/* Other details */}
         <div className="flex flex-col items-center mt-2 ">
           <span className="text-sm text-gray-600">
-            리뷰 수 {shopInfo.reviewCnt} | 마감 시간 {shopInfo.operatingTime}
+            편지 수 {shopInfo.reviewCnt} | 운영 시간 {shopInfo.operatingTime}
           </span>
         </div>
       </div>
@@ -113,8 +131,8 @@ const Shop = () => {
         <div className="mr-5">
           <p className="text-sm font-semibold whitespace-nowrap ">위치안내</p>
         </div>
-        <div>
-          <p className="text-xs text-gray-600">{shopInfo.roadAddress}</p>
+        <div className="my-auto">
+          <p className="text-sm text-gray-600">{shopInfo.roadAddress}</p>
         </div>
       </div>
       {/* 지도 정보 */}
@@ -133,44 +151,36 @@ const Shop = () => {
         </div>
       </div>
       {/* 탭 버튼 */}
-      <div className="flex justify-around w-full mt-5 mb-0.5">
+      <div className="flex justify-around w-full mt-5 mb-0.5 space-x-2">
         <button
-          className={`my-1 py-2 px-10 text-xs ${activeTab === "details" ? "bg-orange-400 text-white" : "bg-gray-200 text-black"}`}
+          className={`my-1 whitespace-nowrap flex-1 py-2 text-xs ${activeTab === "details" ? "bg-orange-400 text-white" : "bg-gray-200 text-black"}`}
           onClick={() => setActiveTab("details")}
         >
           메뉴
         </button>
         <button
-          className={`my-1 py-2 px-10 text-xs ${activeTab === "menu" ? "bg-orange-400 text-white" : "bg-gray-200 text-black"}`}
+          className={`my-1 whitespace-nowrap flex-1 py-2 text-xs ${activeTab === "menu" ? "bg-orange-400 text-white" : "bg-gray-200 text-black"}`}
           onClick={() => setActiveTab("menu")}
         >
           정보ㆍ원산지
         </button>
         <button
-          className={`my-1 py-2 px-10 text-xs ${activeTab === "review" ? "bg-orange-400 text-white" : "bg-gray-200 text-black"}`}
+          className={`my-1 whitespace-nowrap flex-1 py-2 text-xs ${activeTab === "review" ? "bg-orange-400 text-white" : "bg-gray-200 text-black"}`}
           onClick={() => setActiveTab("review")}
         >
-          리뷰
+          감사편지
         </button>
       </div>
 
       {/* 탭 내용 */}
-      <div>
-        {activeTab === "details" && (
-          <div className="pb-16">
-            <ShopMenu />
-          </div>
-        )}
-        {activeTab === "menu" && (
-          <div className="pb-16">
-            <ShopInformation />
-          </div>
-        )}
-        {activeTab === "review" && (
-          <div className="pb-16">
-            <ShopReview />
-          </div>
-        )}
+      <div className={`${activeTab === "details" ? "block" : "hidden"} pb-16`}>
+        <ShopMenu />
+      </div>
+      <div className={`${activeTab === "menu" ? "block" : "hidden"} pb-16`}>
+        <ShopInformation />
+      </div>
+      <div className={`${activeTab === "review" ? "block" : "hidden"} pb-16`}>
+        <ShopReview />
       </div>
     </div>
   );

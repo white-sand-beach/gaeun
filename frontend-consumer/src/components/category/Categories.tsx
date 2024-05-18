@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import CategoryForm from "../../services/categories/CategoryService";
 import { Category } from "../../types/CategoryType";
 
-const Categories = () => {
+interface CategoriesProps {
+  onCategoryChange: (categoryId: string) => void;
+}
+
+const Categories = ({ onCategoryChange }: CategoriesProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -22,16 +26,18 @@ const Categories = () => {
     <div>
       <ul className="flex flex-wrap justify-center w-[360px] h-[230px]">
         {categories.map((category) => (
-          <li key={category.id}>
+          <li key={category.categoryId} onClick={() => onCategoryChange(String(category.categoryId))}>
             <div>
               <div className="center mx-4">
-              <img
-                className="w-[45px] h-[45px] object-cover"
-                src={category.imageURL}
-                alt={`카테고리 ${category.name}`}
-              />
+                <img
+                  className="w-[45px] h-[45px] object-cover"
+                  src={category.imageURL}
+                  alt={`카테고리 ${category.name}`}
+                />
               </div>
-              <div className="text-xs font-bold text-center">{category.name}</div>
+              <div className="text-xs font-bold text-center pt-2">
+                {category.name}
+              </div>
             </div>
           </li>
         ))}
