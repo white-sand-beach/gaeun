@@ -108,4 +108,8 @@ public class OrderInfo extends BaseTime {
         this.takenTime = takenTime;
         this.approvedAt = LocalDateTime.now();
     }
+
+    public void saveReview(Review review) {
+        this.review = review;
+    }
 }

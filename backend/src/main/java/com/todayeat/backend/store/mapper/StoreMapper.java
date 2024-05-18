@@ -51,6 +51,7 @@ public interface StoreMapper {
 
     @Mapping(target = "latitude", source = "storeDocument.location.lat")
     @Mapping(target = "longitude", source = "storeDocument.location.lon")
+    @Mapping(target = "favorite", source = "isFavorite")
     GetConsumerInfoStoreResponse storeDocumentToGetConsumerInfoStoreResponse(StoreDocument storeDocument, boolean isFavorite);
 
     GetConsumerDetailStoreResponse storeDocumentToGetConsumerDetailStoreResponse(StoreDocument storeDocument);

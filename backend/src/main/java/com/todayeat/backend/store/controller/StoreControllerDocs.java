@@ -97,7 +97,7 @@ public interface StoreControllerDocs {
                                                                        @RequestParam(required = false, name = "keyword")
                                                                        String keyword,
 
-                                                                       @Schema(description = "카테고리 아이디", example = "1")
+                                                                       @Schema(description = "카테고리 고유번호", example = "1")
                                                                        @RequestParam(required = false, name = "category-id")
                                                                        Long categoryId,
 

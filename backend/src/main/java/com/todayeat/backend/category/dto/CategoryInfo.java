@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class CategoryInfo {
 
-    @Schema(description = "카테고리 아이디", example = "1")
+    @Schema(description = "카테고리 고유번호", example = "1")
     private Long categoryId;
 
     @Schema(description = "카테고리 명", example = "카테고리")

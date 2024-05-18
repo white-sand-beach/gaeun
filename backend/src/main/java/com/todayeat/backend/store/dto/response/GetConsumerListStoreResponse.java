@@ -26,7 +26,7 @@ public class GetConsumerListStoreResponse {
     @Setter
     public static class StoreInfo {
 
-        @Schema(description = "가게 아이디", example = "1")
+        @Schema(description = "가게 고유번호", example = "1")
         private Long storeId;
 
         @Schema(description = "지번 주소", example = "OO시 OO구 OO동 OOO-OO")
@@ -43,6 +43,9 @@ public class GetConsumerListStoreResponse {
 
         @Schema(description = "가게 명", example = "가게")
         private String name;
+
+        @Schema(description = "대표 이미지", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/store-image/img.png")
+        private String imageURL;
 
         @Schema(description = "영업 시간", example = "00시 ~ 24시")
         private String operatingTime;
