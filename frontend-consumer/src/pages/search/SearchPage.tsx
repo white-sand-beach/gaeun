@@ -19,6 +19,7 @@ const SearchPage = () => {
     size: 10,
     sort: "distance",
   });
+  const [isSearchFocused, setIsSearchFocused] = useState<boolean>(true);
   const [storeList, setStoreList] = useState<StoreList[]>([]);
   const [popularSearchList, setPopularSearchList] = useState<KeywordInfo[]>([]);
   const [hour, setHour] = useState<number>(0);
@@ -73,6 +74,8 @@ const SearchPage = () => {
         hasNext: response.hasNext,
       });
       setStoreList(response.storeList);
+      setIsSearchFocused(false);
+      console.log(isSearchFocused);
       // setInfro("검색 결과가 없습니다.");
     } catch (error) {
       console.error("에러 발생:", error);
@@ -101,6 +104,8 @@ const SearchPage = () => {
         hasNext: response.hasNext,
       });
       setStoreList(response.storeList);
+      setIsSearchFocused(false);
+      console.log(isSearchFocused);
       // setInfro("검색 결과가 없습니다.");
     } catch (error) {
       console.error("에러 발생:", error);
@@ -135,27 +140,34 @@ const SearchPage = () => {
     handleSearch(keyword);
   };
 
-  return (
-    <div className="pt-14">
-      <div className="fixed bg-white">
-        <div className="my-2 center">
-          <StoreSearch onSearch={handleSearch} />
-        </div>
+  const handleSearchFocus = () => {
+    console.log(isSearchFocused);
+    setIsSearchFocused(true);
+  };
 
-        <div className="py-2 center">
-          <Categories onCategoryChange={handleCategoryChange} />
+  return (
+    <div className="pt-16">
+      <div className="fixed w-full bg-white">
+        <div className="my-2 center">
+          <StoreSearch onSearch={handleSearch} onClick={handleSearchFocus} />
         </div>
-        <hr className="border-4 border-gray-100" />
       </div>
 
-      <div className="pb-16 pt-80">
-        {/* 가게 정보 넣는 곳 */}
-        {storeList.length > 0 ? (
+      <div className="pt-16">
+        {isSearchFocused ? (
+          <div>
+            <div className="py-2 center">
+              <Categories onCategoryChange={handleCategoryChange} />
+            </div>
+            <hr className="border-4 border-gray-100" />
+            <div>
+              <RealTimeTrendingSearch popularSearchList={popularSearchList} hour={hour} onKeywordClick={handleKeywordClick} />
+            </div>
+          </div>
+        ) : (
           storeList.map((store, index) => (
             <SearchStoreList key={index} store={store} />
           ))
-        ) : (
-          <RealTimeTrendingSearch popularSearchList={popularSearchList} hour={hour} onKeywordClick={handleKeywordClick} />
         )}
       </div>
     </div>
