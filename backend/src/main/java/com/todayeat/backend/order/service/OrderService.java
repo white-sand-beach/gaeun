@@ -265,6 +265,9 @@ public class OrderService {
                 orderInfo.updateStatus(orderInfoStatus);
                 orderInfo.updateTakenTimeAndApprovedAt(request.getTakenTime());
 
+                // 소비자 음식 수락 알림
+                getNotification(orderInfo);
+
                 return;
             }
 
@@ -287,6 +290,9 @@ public class OrderService {
                     cancelPayment(orderInfo.getPaymentId());
                 }
 
+                // 소비자 음식 거절 알림
+                getNotification(orderInfo);
+
                 return;
             }
 
@@ -301,6 +307,9 @@ public class OrderService {
             if (orderInfoStatus == PREPARED) {
 
                 orderInfo.updateStatus(orderInfoStatus);
+
+                // 소비자 음식 준비완료 알림
+                getNotification(orderInfo);
 
                 return;
             }
@@ -351,15 +360,7 @@ public class OrderService {
                         value);
 
                 // 소비자 음식 수령 알림
-                CreateOrderNotification createOrderNotification = CreateOrderNotification.of(
-                        orderInfo,
-                        orderInfo.getOrderInfoItemList().get(0).getName(),
-                        orderInfo.getOrderInfoItemList().size());
-
-                consumerNotificationService.createOrderNotification(createOrderNotification, orderInfo.getConsumer());
-
-                fcmNotificationUtil.sendToOne(orderInfo.getConsumer().getId(), "Consumer",
-                        createOrderNotification.getTitle(), createOrderNotification.getBody());
+                getNotification(orderInfo);
 
                 return;
             }
@@ -367,6 +368,18 @@ public class OrderService {
 
         // 상태 수정 불가능한 상태
         throw new BusinessException(ORDER_STATUS_CANT_UPDATE);
+    }
+
+    private void getNotification(OrderInfo orderInfo) {
+        CreateOrderNotification createOrderNotification = CreateOrderNotification.of(
+                orderInfo,
+                orderInfo.getOrderInfoItemList().getFirst().getName(),
+                orderInfo.getOrderInfoItemList().size());
+
+        consumerNotificationService.createOrderNotification(createOrderNotification, orderInfo.getConsumer());
+
+        fcmNotificationUtil.sendToOne(orderInfo.getConsumer().getId(), "Consumer",
+                createOrderNotification.getTitle(), createOrderNotification.getBody());
     }
 
     @Transactional
