@@ -16,9 +16,9 @@ import UpdateFoodPage from "./pages/foods/UpdateFoodPage.tsx";
 import OrderDetailPage from "./pages/order/OrderInfoPage.tsx";
 import StatisticsPage from "./pages/statistics/StatisticsPage.tsx";
 
+import { initializeApp } from "firebase/app";
 
 const App = () => {
-
   // 브라우저 종료하면 로컬스토리지 클리어
   // 쿠키도 클리어
   const cookies = new Cookies()
@@ -26,6 +26,16 @@ const App = () => {
     localStorage.clear()
     cookies.remove("accessToken")
   })
+
+  const firebaseConfig = {
+    apikey: "",
+    authDomain: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: "",
+  }
 
   return (
     <BrowserRouter basename="/seller">
