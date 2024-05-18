@@ -5,6 +5,8 @@ import com.todayeat.backend.seller.dto.request.UpdatePasswordSellerRequest;
 import com.todayeat.backend.seller.dto.request.UpdatePhoneNumberSellerRequest;
 import com.todayeat.backend.seller.dto.response.GetSellerResponse;
 import com.todayeat.backend.seller.service.SellerService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,5 +36,12 @@ public class SellerController implements SellerControllerDocs {
 
         sellerService.updatePhoneNumber(updatePhoneNumberSellerRequest);
         return SuccessResponse.of(UPDATE_PHONE_NUMBER_SELLER_SUCCESS);
+    }
+
+    @Override
+    public SuccessResponse<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+
+        sellerService.logout(request, response);
+        return SuccessResponse.of(LOGOUT_SELLER_SUCCESS);
     }
 }
