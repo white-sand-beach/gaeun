@@ -41,7 +41,12 @@ public class CreateReviewNotification {
 
     public String getContent() {
 
-        return nickname;
+        return nickname + "님의 편지가 도착했어요.";
+    }
+
+    public String getTitle() {
+
+        return nickname + "편지 도착";
     }
 
     public String getBody() {
