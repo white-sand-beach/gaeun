@@ -101,6 +101,7 @@ public enum SuccessType {
 
     // notification
     GET_SELLER_NOTIFICATION_LIST_SUCCESS("판매자 알림 목록 조회에 성공하였습니다."),
+    GET_SELLER_NOTIFICATION_COUNT_SUCCESS("판매자 미확인 알림 개수 조회에 성공하였습니다."),
     ;
 
     private final String msg;

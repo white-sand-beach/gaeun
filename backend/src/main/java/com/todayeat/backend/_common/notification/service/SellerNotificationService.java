@@ -2,6 +2,7 @@ package com.todayeat.backend._common.notification.service;
 
 import com.todayeat.backend._common.notification.dto.CreateOrderNotification;
 import com.todayeat.backend._common.notification.dto.CreateReviewNotification;
+import com.todayeat.backend._common.notification.dto.response.GetSellerNotificationCountResponse;
 import com.todayeat.backend._common.notification.dto.response.GetSellerNotificationListResponse;
 import com.todayeat.backend._common.notification.dto.response.GetSellerNotificationResponse;
 import com.todayeat.backend._common.notification.entity.SellerNotification;
@@ -59,5 +60,12 @@ public class SellerNotificationService {
                 notificationList.getNumber(),
                 notificationList.hasNext()
         );
+    }
+
+    @Transactional
+    public GetSellerNotificationCountResponse getCount() {
+        Seller seller = securityUtil.getSeller();
+
+        return GetSellerNotificationCountResponse.of(sellerNotificationRepository.countByIsReadFalse(seller.getId()));
     }
 }
