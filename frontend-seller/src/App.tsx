@@ -11,21 +11,21 @@ import RegisterFoodPage from "./pages/foods/RegisterFoodPage.tsx";
 import SaleslistPage from "./pages/sales/SaleslistPage.tsx";
 import ShopInfoPage from "./pages/shop/ShopInfoPage.tsx";
 import MenuListPage from "./pages/menu/MenuListPage.tsx";
-import Cookies from "universal-cookie";
+// import Cookies from "universal-cookie";
 import UpdateFoodPage from "./pages/foods/UpdateFoodPage.tsx";
 import OrderDetailPage from "./pages/order/OrderInfoPage.tsx";
 import StatisticsPage from "./pages/statistics/StatisticsPage.tsx";
 
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
-import RegisterFCMToken from "./service/fcm/RegisterFCMToken.ts";
+import { getMessaging, onMessage } from "firebase/messaging";
+// import RegisterFCMToken from "./service/fcm/RegisterFCMToken.ts";
 
 const App = () => {
-  const cookies = new Cookies()
-  const accessToken = cookies.get("accessToken")
+  // const cookies = new Cookies()
+  // const accessToken = cookies.get("accessToken")
 
   // firebase 설정
-  const vapidKey = import.meta.env.VITE_FCM_VAPID_KEY;
+  // const vapidKey = import.meta.env.VITE_FCM_VAPID_KEY;
   const firebaseConfig = {
     apiKey: import.meta.env.VITE_FCM_API_KEY,
     authDomain: import.meta.env.VITE_FCM_AUTH_DOMAIN,
@@ -50,37 +50,22 @@ const App = () => {
       }
     });
 
-  // FCM 사용을 위한 토큰 요청
-  getToken(messaging, { vapidKey: `${vapidKey}` })
-    .then((currentToken) => {
-      if (currentToken) {
-        console.log("FCM 토큰 받았습니다")
-        console.log(currentToken)
-        saveToken(currentToken)
-      }
-      else {
-        console.log("등록된 토큰이 없습니다. 다시 요청하세요")
-      }
-    }).catch((err) => {
-      console.error(err)
-    })
-
-  // FCM 토큰 저장
-  const saveToken = async (token: string) => {
-    cookies.set("fcm-token", token)
-    try {
-      // accessToken 있는 경우에 토큰 저장 api 요청
-      if (accessToken) {
-        const response = await RegisterFCMToken(token)
-        console.log(response)
-        return response
-      }
-    }
-    catch (err) {
-      console.error(err)
-      throw err
-    }
-  };
+  // // FCM 토큰 저장
+  // const saveToken = async (token: string) => {
+  //   cookies.set("fcm-token", token)
+  //   try {
+  //     // accessToken 있는 경우에 토큰 저장 api 요청
+  //     if (accessToken) {
+  //       const response = await RegisterFCMToken(token)
+  //       console.log(response)
+  //       return response
+  //     }
+  //   }
+  //   catch (err) {
+  //     console.error(err)
+  //     throw err
+  //   }
+  // };
 
   onMessage(messaging, (payload) => {
     console.log("메시지 받았어요", payload)
