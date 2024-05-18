@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.todayeat.backend.order.entity.OrderInfoStatus.PAID;
+import static com.todayeat.backend.order.entity.OrderInfoStatus.UNPAID;
+
 @Getter
 @Entity
 @DynamicInsert
@@ -91,6 +94,7 @@ public class OrderInfo extends BaseTime {
                 .originalPrice(originalPrice)
                 .discountPrice(discountPrice)
                 .paymentPrice(paymentPrice)
+                .status(paymentPrice.intValue() == 0? PAID : UNPAID)
                 .consumer(consumer)
                 .store(store)
                 .build();

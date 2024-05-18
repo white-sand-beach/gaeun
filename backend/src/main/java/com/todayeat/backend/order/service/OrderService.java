@@ -73,6 +73,7 @@ public class OrderService {
     public CreateOrderResponse create() {
 
         Consumer consumer = securityUtil.getConsumer();
+        Boolean isDonated = consumer.getIsDonated();
 
         // 장바구니 목록 조회
         List<Cart> carts = cartRepository.findAllByConsumerId(consumer.getId());
@@ -103,11 +104,13 @@ public class OrderService {
 
             // 금액 증가
             originalPrice += cart.getQuantity() * sale.getOriginalPrice();
-            paymentPrice += cart.getQuantity() * sale.getSellPrice();
+            if (!isDonated) { // 나눔이 아닐 경우 결제 금액 증가
+                paymentPrice += cart.getQuantity() * sale.getSellPrice();
+            }
         }
 
         // 주문 정보 저장
-        OrderInfo orderInfo = OrderInfo.of(
+        OrderInfo orderInfo = OrderInfo.of( // 나눔 받지 않는 경우
                 UUID.randomUUID().toString(),
                 originalPrice,
                 originalPrice - paymentPrice, // discountPrice
@@ -122,7 +125,15 @@ public class OrderService {
                         OrderInfoItem.of(findSaleOrElseThrow(cart), cart.getQuantity(), orderInfo))
         );
 
-        return CreateOrderResponse.of(orderInfo.getId(), consumer);
+        // 나눔일 경우
+        if (isDonated) {
+
+            // 장바구니 삭제
+            cartRepository.findAllByConsumerId(consumer.getId())
+                    .iterator().forEachRemaining(cartRepository::delete);
+        }
+
+        return CreateOrderResponse.of(orderInfo.getId(), paymentPrice, consumer);
     }
 
     @Transactional
@@ -147,6 +158,11 @@ public class OrderService {
     public void validate(Long orderInfoId, ValidateOrderConsumerRequest request) {
 
         Consumer consumer = securityUtil.getConsumer();
+
+        // 나눔 받는 경우
+        if (consumer.getIsDonated()) {
+            throw new BusinessException(ORDER_VALIDATE_FORBIDDEN);
+        }
 
         // 주문 확인
         OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);
