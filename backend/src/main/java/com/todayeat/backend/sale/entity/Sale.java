@@ -96,4 +96,8 @@ public class Sale extends BaseTime {
 
         return true;
     }
+
+    public void updateTotalQuantity(Integer quantity) {
+        this.totalQuantity += quantity;
+    }
 }

@@ -1,5 +1,6 @@
 package com.todayeat.backend.order.service;
 
+import com.todayeat.backend._common.annotation.DistributedLock;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.cart.entity.Cart;
@@ -82,7 +83,8 @@ public class OrderService {
         }
 
         // 첫 번째 장바구니 확인
-        Store firstStore = findStoreOrElseThrow(carts.getFirst().getStoreId()); // store 유효성 검사
+        Store firstStore = storeRepository.findByIdAndDeletedAtIsNull(carts.getFirst().getStoreId())
+                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)); // store 유효성 검사
         if (!firstStore.getIsOpened()) { // store 열려 있는지 확인
             throw new BusinessException(STORE_NOT_OPEN);
         }
@@ -93,10 +95,11 @@ public class OrderService {
         // 장바구니 목록 확인
         for (Cart cart : carts) {
 
+            // 판매
             Sale sale = findSaleOrElseThrow(cart);
 
-            // 수량 유효성 검사
-            validateQuantity(sale, cart);
+            // 수량 유효성 검사 후 판매량 증가
+            validateAndUpdateSale(sale, cart.getQuantity());
 
             // 금액 증가
             originalPrice += cart.getQuantity() * sale.getOriginalPrice();
@@ -104,7 +107,8 @@ public class OrderService {
         }
 
         // 주문 정보 저장
-        OrderInfo orderInfo = OrderInfo.of(UUID.randomUUID().toString(),
+        OrderInfo orderInfo = OrderInfo.of(
+                UUID.randomUUID().toString(),
                 originalPrice,
                 originalPrice - paymentPrice, // discountPrice
                 paymentPrice,
@@ -118,10 +122,28 @@ public class OrderService {
                         OrderInfoItem.of(findSaleOrElseThrow(cart), cart.getQuantity(), orderInfo))
         );
 
-        return CreateOrderResponse.of(orderInfo.getId());
+        return CreateOrderResponse.of(orderInfo.getId(), consumer);
     }
 
     @Transactional
+    @DistributedLock(key = "#sale.getId()", prefix = "create_order")
+    public Sale validateAndUpdateSale(Sale sale, Integer cartQuantity) {
+
+        Integer stock = sale.getStock() - sale.getTotalQuantity();
+
+        // 실제 남은 수량과 장바구니 수량을 비교
+        if (stock.compareTo(cartQuantity) < 0) {
+            throw new BusinessException(CART_QUANTITY_MORE_THAN_REST_STOCK);
+        }
+
+        // 판매량 증가
+        sale.updateTotalQuantity(cartQuantity);
+
+        return sale;
+    }
+
+    @Transactional
+    @DistributedLock(key = "#orderInfo.getId()", prefix = "validate_order")
     public void validate(Long orderInfoId, ValidateOrderConsumerRequest request) {
 
         Consumer consumer = securityUtil.getConsumer();
@@ -141,7 +163,8 @@ public class OrderService {
 
         // 아임포트 결제 조회
         try {
-            getPaymentResponse = iamportRequestClient.getPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
+            getPaymentResponse = iamportRequestClient.getPayment(
+                    PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
                     request.getPaymentId(),
                     IAMPORT_STORE_ID);
         } catch (Exception e) {
@@ -152,15 +175,20 @@ public class OrderService {
         if (!getPaymentResponse.getStatus().equals("PAID")
                 || !Objects.equals(getPaymentResponse.getAmount().getTotal(), orderInfo.getPaymentPrice())) {
 
-            // 아임 포트 결제 취소
-            cancelPayment(request.getPaymentId());
-
             // 주문 아이템 삭제
             orderInfoItemRepository.deleteAll(
-                    orderInfoItemRepository.findAllByOrderInfoIdAndDeletedAtIsNull(orderInfoId));
+                    orderInfoItemRepository.findAllByOrderInfoIdAndDeletedAtIsNull(orderInfo.getId()));
 
             // 주문 삭제
             orderInfoRepository.delete(orderInfo);
+
+            // 판매량 감소
+            orderInfo.getOrderInfoItemList().stream().iterator().forEachRemaining(
+                    item -> {
+                        Sale sale = item.getSale();
+                        updateSaleQuantity(sale, -item.getQuantity());
+                    }
+            );
 
             throw new BusinessException(ORDER_PAYMENT_FAIL);
         }
@@ -175,6 +203,12 @@ public class OrderService {
     }
 
     @Transactional
+    @DistributedLock(key = "#sale.getId()", prefix = "update_sale_quantity")
+    public void updateSaleQuantity(Sale sale, Integer quantity) {
+        sale.updateTotalQuantity(quantity);
+    }
+
+    @Transactional
     public void updateStatusSeller(Long orderInfoId, UpdateStatusSellerRequest request) {
 
         OrderInfo orderInfo = findOrderInfoOrElseThrow(orderInfoId);
@@ -183,7 +217,13 @@ public class OrderService {
         // 권한 검사
         validateStoreAndSeller(orderInfo.getStore().getId(), seller);
 
-        OrderInfoStatus orderInfoStatus = getOrderInfoStatusOrThrow(request.getStatus());
+        // 요청된 주문 상태
+        OrderInfoStatus orderInfoStatus;
+        try {
+            orderInfoStatus =  OrderInfoStatus.valueOf(request.getStatus());
+        } catch (Exception e) {
+            throw new BusinessException(ORDER_STATUS_BAD_REQUEST);
+        }
 
         // 수락 요청인데 소요 예상 시간이 없는 경우
         if (orderInfoStatus == IN_PROGRESS && request.getTakenTime() == null) {
@@ -200,15 +240,30 @@ public class OrderService {
 
             // 수락
             if (orderInfoStatus == IN_PROGRESS) {
+
                 orderInfo.updateStatus(orderInfoStatus);
                 orderInfo.updateTakenTimeAndApprovedAt(request.getTakenTime());
+
                 return;
             }
 
             // 거절
             if (orderInfoStatus == DENIED) {
+
+                // 주문 상태 변경
                 orderInfo.updateStatus(orderInfoStatus);
+
+                // 판매량 감소
+                orderInfo.getOrderInfoItemList().stream().iterator().forEachRemaining(
+                        item -> {
+                            Sale sale = item.getSale();
+                            updateSaleQuantity(sale, -item.getQuantity());
+                        }
+                );
+
+                // 결제 취소
                 cancelPayment(orderInfo.getPaymentId());
+
                 return;
             }
 
@@ -221,14 +276,29 @@ public class OrderService {
 
             // 준비 완료
             if (orderInfoStatus == PREPARED) {
+
                 orderInfo.updateStatus(orderInfoStatus);
+
                 return;
             }
 
             // 취소
             if (orderInfoStatus == CANCEL) {
+
+                // 주문 상태 변경
                 orderInfo.updateStatus(orderInfoStatus);
+
+                // 판매량 감소
+                orderInfo.getOrderInfoItemList().stream().iterator().forEachRemaining(
+                        item -> {
+                            Sale sale = item.getSale();
+                            updateSaleQuantity(sale, -item.getQuantity());
+                        }
+                );
+
+                // 결제 취소
                 cancelPayment(orderInfo.getPaymentId());
+
                 return;
             }
 
@@ -241,6 +311,7 @@ public class OrderService {
 
             // 수령 완료
             if (orderInfoStatus == FINISHED) {
+
                 orderInfo.updateStatus(orderInfoStatus);
 
                 int value = orderInfoItemRepository.findAllByOrderInfoIdAndDeletedAtIsNull(orderInfoId).stream()
@@ -253,6 +324,7 @@ public class OrderService {
                         storeRepository.findByIdAndDeletedAtIsNull(seller.getStore().getId())
                                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)),
                         value);
+
                 return;
             }
         }
@@ -274,8 +346,18 @@ public class OrderService {
             throw new BusinessException(ORDER_STATUS_CANT_UPDATE);
         }
 
-        // 주문 상태 변경 및 결제 취소
+        // 주문 상태 변경
         orderInfo.updateStatus(CANCEL);
+
+        // 판매량 감소
+        orderInfo.getOrderInfoItemList().stream().iterator().forEachRemaining(
+                item -> {
+                    Sale sale = item.getSale();
+                    updateSaleQuantity(sale, -item.getQuantity());
+                }
+        );
+
+        // 결제 취소
         cancelPayment(orderInfo.getPaymentId());
     }
 
@@ -395,44 +477,22 @@ public class OrderService {
                 .orElseThrow(() -> new BusinessException(SALE_NOT_SELLING));
     }
 
-    private Store findStoreOrElseThrow(Long storeId) {
-
-        return storeRepository.findByIdAndDeletedAtIsNull(storeId)
-                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
-    }
-
     private OrderInfo findOrderInfoOrElseThrow(Long orderInfoId) {
 
         return orderInfoRepository.findByIdAndDeletedAtIsNull(orderInfoId)
                 .orElseThrow(() -> new BusinessException(ORDER_NOT_FOUND));
     }
 
-    private void validateQuantity(Sale sale, Cart cart) {
-
-        Integer stock = sale.getStock() - sale.getTotalQuantity();
-
-        // 실제 남은 수량과 장바구니 수량을 비교
-        if (stock.compareTo(cart.getQuantity()) < 0) {
-            throw new BusinessException(CART_QUANTITY_MORE_THAN_REST_STOCK);
-        }
-    }
-
-    private OrderInfoStatus getOrderInfoStatusOrThrow(String status) {
-
-        try {
-            return OrderInfoStatus.valueOf(status);
-        } catch (Exception e) {
-            throw new BusinessException(ORDER_STATUS_BAD_REQUEST);
-        }
-    }
-
     private void cancelPayment(String paymentId) {
 
-        // TODO: 통신 에러 처리하기
-
-        iamportRequestClient.cancelPayment(PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
-                paymentId,
-                CancelPaymentRequest.of("invalid value"));
+        try {
+            iamportRequestClient.cancelPayment(
+                    PORTONE_PREFIX + IAMPORT_API_SECRET_V2,
+                    paymentId,
+                    CancelPaymentRequest.of("invalid value"));
+        } catch (Exception e) {
+            log.error("[OrderService.cancelPayment] paymentId {} error : {}", paymentId, e.getMessage());
+        }
     }
 
     private void validateOrderInfoAndConsumer(OrderInfo orderInfo, Consumer consumer) {
