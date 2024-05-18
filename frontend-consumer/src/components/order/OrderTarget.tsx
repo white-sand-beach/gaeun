@@ -12,11 +12,11 @@ const Ordertarget = ({ orderData }: OrderInfoProps) => {
       <div className="mb-2 border-2 rounded-xl">
         <div className="px-4 pt-2 text-xs font-bold text-gray-400 between">
           <p>{orderData.orderDate}</p>
-          <p className="text-xxs">{orderData.orderStatus}</p>
+          <p>{orderData.orderStatus}</p>
         </div>
-        <div className="items-center py-2 pl-4 font-bold">
-          <h1>{orderData.storeName}</h1>
-          <div className="flex items-center text-gray-400 text-xxs">
+        <div className="py-2 pl-4 font-bold">
+          <h1 className="text-lg">{orderData.storeName}</h1>
+          <div className="flex items-center text-gray-400 text-sm">
             <p className="">{orderData.orderContents}</p>
             <p className="ml-2 text-red-500">{orderData.orderPrice}원</p>
           </div>

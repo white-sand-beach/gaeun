@@ -78,13 +78,13 @@ const Favorite = () => {
           <FavoriteList favorites={favoriteState.favorites} />
         ) : (
           <div className="h-screen pb-40 center">
-            <div className="items-center justify-center">
+            <div>
               <img className="rounded-full" src={logo} alt="로고" />
               <h2 className="text-lg font-bold center">
-                자주 찾는 가게를
+                나만의 천사 가게를
                 <span
                   className="mx-2 text-4xl"
-                  style={{ fontFamily: "'MyFont', sans-serif" }}
+                  style={{ fontFamily: "MyFont" }}
                 >
                   찜
                 </span>
