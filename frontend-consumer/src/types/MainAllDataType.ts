@@ -6,5 +6,5 @@ export interface MainAllData {
   page: number;
   hasNext: boolean;
   loading?: boolean;
-  isDonated: boolean;
+  isDonated?: boolean;
 }
