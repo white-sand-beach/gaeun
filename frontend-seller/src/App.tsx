@@ -17,6 +17,8 @@ import OrderDetailPage from "./pages/order/OrderInfoPage.tsx";
 import StatisticsPage from "./pages/statistics/StatisticsPage.tsx";
 
 import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import RegisterFCMToken from "./service/fcm/RegisterFCMToken.ts";
 
 const App = () => {
   // 브라우저 종료하면 로컬스토리지 클리어
@@ -25,17 +27,66 @@ const App = () => {
   window.addEventListener("unload", () => {
     localStorage.clear()
     cookies.remove("accessToken")
+  });
+
+  // firebase 설정
+  const vapidKey = import.meta.env.VITE_FCM_VAPID_KEY;
+  const firebaseConfig = {
+    apiKey: import.meta.env.VITE_FCM_API_KEY,
+    authDomain: import.meta.env.VITE_FCM_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FCM_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FCM_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FCM_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FCM_APP_ID,
+    measurementId: import.meta.env.VITE_FCM_MEASUREMENT_ID,
+  };
+
+  const firebaseApp = initializeApp(firebaseConfig);
+  const messaging = getMessaging(firebaseApp);
+
+  // 권한 요청
+  Notification.requestPermission()
+  .then((permission) => {
+    if (permission === "granted") {
+      console.log("알림 권한이 부여됐습니다.")
+    }
+    else {
+      console.log("권한 부여 실패")
+    }
+  });
+
+  // FCM 사용을 위한 토큰 요청
+  getToken(messaging, {vapidKey: `${vapidKey}`})
+  .then((currentToken) => {
+    if (currentToken) {
+      console.log(currentToken)
+      saveToken(currentToken)
+    }
+    else {
+      console.log("등록된 토큰이 없습니다. 다시 요청하세요")
+    }
+  }).catch((err) => {
+    console.error(err)
   })
 
-  const firebaseConfig = {
-    apikey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: "",
-    measurementId: "",
-  }
+  // 토큰 저장
+  const saveToken = async (token: string) => {
+    cookies.set("fcm-token", token)
+    try {
+      const response = await RegisterFCMToken(token)
+      return response
+    }
+    catch (err) {
+      console.error(err)
+      throw err
+    }
+  };
+
+  onMessage(messaging, (payload) => {
+    console.log("메시지 받았어요", payload)
+    alert(payload.notification?.body)
+  })
+  
 
   return (
     <BrowserRouter basename="/seller">
