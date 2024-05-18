@@ -71,7 +71,7 @@ pipeline {
 
                 withCredentials([file(credentialsId: 'firebase-messaging-sw', variable: 'configFile')]) {
                     script {
-                        sh 'cp -rf $configFile ./frontend-seller/public/seller/firebase-messaging-sw.js'
+                        sh 'cp -rf $configFile ./frontend-seller/public/firebase-messaging-sw.js'
                     }
                 }
             }
