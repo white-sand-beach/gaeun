@@ -5,6 +5,8 @@ import searchIcon from "../../assets/search/searchIcon.png";
 import OrderGetForm from "../../services/orders/OrderGetService";
 import { OrderInfo, OrderListType } from "../../types/OrderType";
 
+import logo from "../../../public/windows11/LargeTile.scale-100.png";
+
 const OrderList = () => {
   const [orderData, setOrderData] = useState<OrderInfo[]>([]);
   const [order, setOrder] = useState<OrderListType>({
@@ -94,9 +96,27 @@ const OrderList = () => {
 
       {/* 주문 목록 */}
       <div className="justify-center">
-        {orderData.map((order, index) => (
-          <Ordertarget key={index} orderData={order} />
-        ))}
+        {orderData.length === 0 ? (
+          <div className="h-screen pb-40 center">
+            <div className="items-center justify-center">
+              <img className="rounded-full" src={logo} alt="로고" />
+              <h2 className="text-lg font-bold center">
+                천사가게에서
+                <span
+                  className="mx-2 text-4xl"
+                  style={{ fontFamily: "'MyFont', sans-serif" }}
+                >
+                  주문
+                </span>
+                해보세요
+              </h2>
+            </div>
+          </div>
+        ) : (
+          orderData.map((order, index) => (
+            <Ordertarget key={index} orderData={order} />
+          ))
+        )}
       </div>
     </div>
   );
