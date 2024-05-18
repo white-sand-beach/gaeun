@@ -6,11 +6,11 @@ interface OrderInfoProps {
   orderData: OrderInfo;
 }
 
-const Ordertarget = ({orderData}: OrderInfoProps) => {
+const Ordertarget = ({ orderData }: OrderInfoProps) => {
   return (
     <div className="w-screen px-2">
-      <div className="border-2 rounded-xl mb-2">
-        <div className="between px-4 pt-2 text-xs font-bold text-gray-400">
+      <div className="mb-2 border-2 rounded-xl">
+        <div className="px-4 pt-2 text-xs font-bold text-gray-400 between">
           <p>{orderData.orderDate}</p>
           <p className="text-xxs">{orderData.orderStatus}</p>
         </div>
@@ -21,9 +21,9 @@ const Ordertarget = ({orderData}: OrderInfoProps) => {
             <p className="ml-2 text-red-500">{orderData.orderPrice}원</p>
           </div>
         </div>
-        <div className="between mx-4 mb-2">
+        <div className="mx-4 mb-2 between">
           <CallButton storeTel={String(orderData.storeTel)} />
-          <OrderDetailButton orderInfoId={orderData.orderInfoId}/>
+          <OrderDetailButton orderInfoId={orderData.orderInfoId} />
         </div>
       </div>
     </div>

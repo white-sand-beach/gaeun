@@ -82,7 +82,12 @@ const Favorite = () => {
               <img className="rounded-full" src={logo} alt="로고" />
               <h2 className="text-lg font-bold center">
                 자주 찾는 가게를
-                <span className="mx-2 font-serif text-4xl">찜</span>
+                <span
+                  className="mx-2 text-4xl"
+                  style={{ fontFamily: "'MyFont', sans-serif" }}
+                >
+                  찜
+                </span>
                 해보세요
               </h2>
             </div>
