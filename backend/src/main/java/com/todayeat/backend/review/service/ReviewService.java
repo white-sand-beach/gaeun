@@ -99,7 +99,7 @@ public class ReviewService {
         CreateReviewNotification createReviewNotification = CreateReviewNotification.of(review.getId(), consumer.getNickname(), seller.get());
         sellerNotificationService.createReviewNotification(createReviewNotification);
 
-        fcmNotificationUtil.sendToOne(seller.get().getId(), "Seller", "편지 알림", createReviewNotification.getBody());
+        fcmNotificationUtil.sendToOne(seller.get().getId(), "Seller", createReviewNotification.getTitle(), createReviewNotification.getBody());
 
     }
 

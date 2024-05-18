@@ -1,11 +1,15 @@
 package com.todayeat.backend.sale.service;
 
+import com.todayeat.backend._common.notification.dto.CreateFavoriteNotification;
+import com.todayeat.backend._common.notification.service.ConsumerNotificationService;
 import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
+import com.todayeat.backend._common.util.FCMNotificationUtil;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.cart.entity.Cart;
 import com.todayeat.backend.cart.repository.CartRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
+import com.todayeat.backend.fcmtoken.repository.FCMTokenRepository;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.repository.MenuRepository;
 import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
@@ -43,6 +47,8 @@ public class SaleService {
     private final StoreRepository storeRepository;
     private final CartRepository cartRepository;
     private final StoreService storeService;
+    private final ConsumerNotificationService consumerNotificationService;
+    private final FCMNotificationUtil fcmNotificationUtil;
 
     @Transactional
     public void create(CreateSaleListRequest request) {
@@ -67,6 +73,11 @@ public class SaleService {
         saleRepository.saveAll(saleList);
 
         storeService.updateIsOpened(store, true);
+
+        // 알림
+        CreateFavoriteNotification createFavoriteNotification = consumerNotificationService.CreateFavoriteNotification(CreateFavoriteNotification.of(store.getId(), store.getName(), new ArrayList<>()));
+
+        fcmNotificationUtil.sendToMany(createFavoriteNotification.getConsumerIdList(), "Consumer", createFavoriteNotification.getTitle(), createFavoriteNotification.getBody());
     }
 
     public GetSaleListConsumerResponse getListToConsumer(Long storeId) {
