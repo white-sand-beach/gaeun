@@ -12,7 +12,7 @@ const RegisterFCMToken = async (token: string): Promise<any> => {
                 Authorization: `Bearer ${accessToken}`
             }
         })
-        console.log(response)
+        console.log(response.data.msg)
         return response
     }
     catch (err) {
