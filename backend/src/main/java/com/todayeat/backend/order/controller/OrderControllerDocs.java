@@ -1,0 +1,253 @@
+package com.todayeat.backend.order.controller;
+
+import com.todayeat.backend._common.response.error.ErrorResponse;
+import com.todayeat.backend._common.response.success.SuccessResponse;
+import com.todayeat.backend.order.dto.request.seller.UpdateStatusSellerRequest;
+import com.todayeat.backend.order.dto.request.consumer.ValidateOrderConsumerRequest;
+import com.todayeat.backend.order.dto.response.consumer.CreateOrderResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderDetailConsumerResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderInProgressConsumerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderDetailSellerResponse;
+import com.todayeat.backend.order.dto.response.consumer.GetOrderListConsumerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderListFinishedSellerResponse;
+import com.todayeat.backend.order.dto.response.seller.GetOrderListInProgressSellerResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+@Tag(name = "orders", description = "주문")
+@RequestMapping("/api/orders")
+public interface OrderControllerDocs {
+
+    @Operation(summary = "주문 등록 (소비자)",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          orderInfoId를 반환합니다. 이 값은 결제 검증에 쓰입니다.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = CreateOrderResponse.class)))
+    @ApiResponse(responseCode = "400",
+            description = "가게 영업 시간이 아닐 경우 / 실제 남은 수량이 장바구니 수량보다 적을 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "장바구니가 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('CONSUMER')")
+    @PostMapping
+    SuccessResponse<CreateOrderResponse> create();
+
+    @Operation(summary = "주문 검증 (소비자)",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          path variable, request body 넣어주세요. \n
+                          검증이 완료되면 주문이 결제 완료 상태로 바뀝니다.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @ApiResponse(responseCode = "400",
+            description = "이미 결제가 완료된 주문인 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "주문이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "500",
+            description = "아임포트 결제 검증에 실패한 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('CONSUMER')")
+    @PutMapping("/{order-info-id}/validation")
+    SuccessResponse<Void> validation(@PathVariable(value = "order-info-id", required = true)
+                                     @Schema(description = "주문 고유번호", example = "1")
+                                     Long orderInfoId,
+                                     @RequestBody
+                                     @Valid
+                                     ValidateOrderConsumerRequest request);
+
+    @Operation(summary = "주문 상태 변경 (판매자)",
+            description = """
+                          `ROLE_SELLER` \n
+                          Path Variable, Request Body 넣어주세요. \n
+                          - 현재 주문이 UNPAID / CANCEL / DENIED / FINISHED 상태 -> 변경 불가능
+                          - 현재 주문이 PAID 상태 -> DENIED(거절) / IN_PROGRESS(수락) 가능
+                          - 현재 주문이 IN_PROGRESS 상태 -> PREPARED(준비 완료) / CANCEL(취소) 가능
+                          - 현재 주문이 PREPARED 상태 -> FINISHED(수령 완료) 가능 \n
+                          ** IN_PROGRESS 상태로 변경할 때는 takenTime 도 함께 보내주셔야 합니다. 그 외에는 takenTime 값 안 보내주시면 됩니다. \n
+                          ** 자세한건 request body 스키마 확인해주세요! \n
+                          ** 취소 또는 거절로 상태를 변경할 때는 결제가 취소됩니다. \n
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @ApiResponse(responseCode = "400",
+            description = "상태 수정이 불가능한 경우 / takenTime 안 맞는 경우 ",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "가게 접근 권한이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "주문이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('SELLER')")
+    @PutMapping("/{order-info-id}/status/seller")
+    SuccessResponse<Void> updateStatusBySeller(@PathVariable(value = "order-info-id", required = true)
+                                               @Schema(description = "주문 고유번호", example = "1")
+                                               Long orderInfoId,
+                                               @RequestBody
+                                               @Valid
+                                               UpdateStatusSellerRequest request);
+
+    @Operation(summary = "주문 상태 변경 (소비자)",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          주문을 취소합니다. 현재 주문 상태가 UNPAID, PAID 상태일 때만 가능합니다.
+                          Path Variable 넣어주세요.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공")
+    @PreAuthorize("hasRole('CONSUMER')")
+    @PutMapping("/{order-info-id}/status/consumer")
+    SuccessResponse<Void> updateStatusByConsumer(@PathVariable(value = "order-info-id", required = true)
+                                                @Schema(description = "주문 고유번호", example = "1")
+                                                Long orderInfoId);
+
+    @Operation(summary = "주문 목록 조회 (소비자)",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          주문 목록을 조회합니다. \n
+                          request param으로 page, size, keyword 넣어주세요. \n
+                          키워드가 없으면 전체 데이터를 검색하고, 키워드가 있으면 해당 키워드가 포함된 가게의 데이터를 검색합니다.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderListConsumerResponse.class)))
+    @PreAuthorize("hasRole('CONSUMER')")
+    @GetMapping
+    SuccessResponse<GetOrderListConsumerResponse> getListConsumer(@Schema(description = "페이지 번호, 0부터 시작", example = "0")
+                                                                  @RequestParam
+                                                                  Integer page,
+                                                                  @Schema(description = "데이터 개수", example = "10")
+                                                                  @RequestParam
+                                                                  Integer size,
+                                                                  @Schema(description = "검색어", example = "마라")
+                                                                  @RequestParam(required = false)
+                                                                  String keyword);
+
+    @Operation(summary = "진행중인 주문 목록 조회 (판매자)",
+            description = """
+                          `ROLE_SELLER` \n
+                          해당 가게의 진행중인 주문 목록을 조회합니다. \n
+                          request param으로 page, size 넣어주세요.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderListInProgressSellerResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "권한이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping("/in-progress")
+    SuccessResponse<GetOrderListInProgressSellerResponse> getInProgressListSeller(@RequestParam(value = "store-id")
+                                                                                  @Schema(description = "가게 고유번호", example = "1")
+                                                                                  Long storeId,
+                                                                                  @Schema(description = "페이지 번호, 0부터 시작", example = "0")
+                                                                                  @RequestParam
+                                                                                  Integer page,
+                                                                                  @Schema(description = "데이터 개수", example = "10")
+                                                                                  @RequestParam
+                                                                                  Integer size);
+
+    @Operation(summary = "종료된 주문 목록 조회 (판매자)",
+            description = """
+                          `ROLE_SELLER` \n
+                          해당 가게의 종료된 주문 목록을 조회합니다. \n
+                          request param으로 page, size, order-no 넣어주세요. \n
+                          주문 번호가 없으면 전체 데이터를 검색하고, 주문 번호가 있으면 해당 번호가 포함된 주문 데이터를 검색합니다.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderListFinishedSellerResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "권한이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping("/finished")
+    SuccessResponse<GetOrderListFinishedSellerResponse> getFinishedListSeller(@RequestParam(value = "store-id")
+                                                                              @Schema(description = "가게 고유번호", example = "1")
+                                                                              Long storeId,
+                                                                              @Schema(description = "페이지 번호, 0부터 시작", example = "0")
+                                                                              @RequestParam
+                                                                              Integer page,
+                                                                              @Schema(description = "데이터 개수", example = "10")
+                                                                              @RequestParam
+                                                                              Integer size,
+                                                                              @Schema(description = "주문 번호", example = "UUID")
+                                                                              @RequestParam(required = false, value = "order-no")
+                                                                              String orderNo);
+
+    @Operation(summary = "주문 상세 조회 (소비자)",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          Path Variable로 order-info-id 넣어주세요.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderDetailConsumerResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "권한이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "주문이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('CONSUMER')")
+    @GetMapping("/{order-info-id}/consumer")
+    SuccessResponse<GetOrderDetailConsumerResponse> getOrderDetailConsumer(@PathVariable(value = "order-info-id", required = true)
+                                                                           @Schema(description = "주문 고유번호", example = "1")
+                                                                           Long orderInfoId);
+
+    @Operation(summary = "주문 상세 조회 (판매자)",
+            description = """
+                          `ROLE_SELLER` \n
+                          Path Variable로 order-info-id 넣어주세요.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderDetailSellerResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "권한이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "주문이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping("/{order-info-id}/seller")
+    SuccessResponse<GetOrderDetailSellerResponse> getOrderDetailSeller(@PathVariable(value = "order-info-id", required = true)
+                                                                       @Schema(description = "주문 고유번호", example = "1")
+                                                                       Long orderInfoId);
+
+    @Operation(summary = "주문 현황 조회 (소비자)",
+            description = """
+                          `ROLE_CONSUMER` \n
+                          Path Variable로 order-info-id 넣어주세요.
+                          """)
+    @ApiResponse(responseCode = "200",
+            description = "성공",
+            content = @Content(schema = @Schema(implementation = GetOrderInProgressConsumerResponse.class)))
+    @ApiResponse(responseCode = "400",
+            description = "진행 중인 주문이 아닌 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "403",
+            description = "권한이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404",
+            description = "주문이 없는 경우",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @PreAuthorize("hasRole('CONSUMER')")
+    @GetMapping("/{order-info-id}/in-progress")
+    SuccessResponse<GetOrderInProgressConsumerResponse> getOrderInProgressConsumer(@PathVariable(value = "order-info-id")
+                                                                                   @Schema(description = "주문 고유번호", example = "1")
+                                                                                   Long orderInfoId);
+}
