@@ -3,6 +3,7 @@ package com.todayeat.backend.searchKeyword.dto.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -10,12 +11,14 @@ import java.util.List;
 @Getter
 @Setter
 @Schema(name = "인기 검색어 조회 응답")
+@NoArgsConstructor
 public class GetPopularSearchListResponse {
 
     private List<KeywordInfo> keywordInfoList;
 
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class KeywordInfo {
 
         @Schema(description = "인기 검색어", example = "검색어")
@@ -26,7 +29,7 @@ public class GetPopularSearchListResponse {
             this.keyword = keyword;
         }
 
-        static public KeywordInfo of(String keyword) {
+        public static KeywordInfo of(String keyword) {
             return builder()
                     .keyword(keyword)
                     .build();
@@ -38,7 +41,7 @@ public class GetPopularSearchListResponse {
         this.keywordInfoList = keywordInfoList;
     }
 
-    static public GetPopularSearchListResponse of(List<KeywordInfo> keywordInfoList) {
+    public static GetPopularSearchListResponse of(List<KeywordInfo> keywordInfoList) {
         return builder()
                 .keywordInfoList(keywordInfoList)
                 .build();

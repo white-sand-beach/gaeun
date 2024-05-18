@@ -1,5 +1,10 @@
 package com.todayeat.backend.searchKeyword.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.todayeat.backend._common.response.error.ErrorType;
+import com.todayeat.backend._common.response.error.exception.BusinessException;
+import com.todayeat.backend._common.util.RedisUtil;
 import com.todayeat.backend.searchKeyword.dto.response.GetPopularSearchListResponse;
 import com.todayeat.backend.searchKeyword.dto.response.GetPopularSearchListResponse.KeywordInfo;
 import com.todayeat.backend.searchKeyword.entity.SearchKeywordDocument;
@@ -16,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,8 +32,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SearchKeywordService {
 
-    private final ElasticsearchOperations elasticsearchOperations;
     private final SearchKeywordDocumentRepository searchKeywordDocumentRepository;
+    private final ElasticsearchOperations elasticsearchOperations;
+    private final ObjectMapper objectMapper;
+    private final RedisUtil redisUtil;
+
+    private static final String POPULAR_KEYWORDS_KEY = "popularKeywords";
 
     @Transactional
     public void saveSearchKeyword(String keyword) {
@@ -39,10 +49,32 @@ public class SearchKeywordService {
 
     public GetPopularSearchListResponse getTopKeywordsInLastHour() {
 
-        long now = System.currentTimeMillis();
-        long oneHourAgo = now - 3600000;
+        String popularKeywordsJson = redisUtil.getValueByKey(POPULAR_KEYWORDS_KEY);
 
-        Criteria criteria = Criteria.where("timestamp").between(oneHourAgo, now);
+        if (popularKeywordsJson == null) {
+
+            updatePopularSearchListInRedis();
+            popularKeywordsJson = redisUtil.getValueByKey(POPULAR_KEYWORDS_KEY);
+        }
+
+        try {
+
+            return objectMapper.readValue(popularKeywordsJson, GetPopularSearchListResponse.class);
+        } catch (JsonProcessingException e) {
+
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public void updatePopularSearchListInRedis() {
+
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.HOURS);
+        LocalDateTime oneHourAgo = now.minusHours(1);
+
+        long nowMillis = now.atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
+        long oneHourAgoMillis = oneHourAgo.atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
+
+        Criteria criteria = Criteria.where("timestamp").between(oneHourAgoMillis, nowMillis);
         CriteriaQuery query = new CriteriaQuery(criteria);
 
         SearchHits<SearchKeywordDocument> searchHits = elasticsearchOperations.search(query, SearchKeywordDocument.class);
@@ -57,6 +89,15 @@ public class SearchKeywordService {
                 .map(entry -> KeywordInfo.of(entry.getKey()))
                 .collect(Collectors.toList());
 
-        return GetPopularSearchListResponse.of(topKeywords);
+        GetPopularSearchListResponse popularKeywords = GetPopularSearchListResponse.of(topKeywords);
+
+        try {
+
+            String popularKeywordsJson = objectMapper.writeValueAsString(popularKeywords);
+            redisUtil.setKeyValue(POPULAR_KEYWORDS_KEY, popularKeywordsJson, 3600000);
+        } catch (JsonProcessingException e) {
+
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR);
+        }
     }
 }
