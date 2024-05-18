@@ -143,7 +143,7 @@ public class OrderService {
     }
 
     @Transactional
-    @DistributedLock(key = "#orderInfo.getId()", prefix = "validate_order")
+    @DistributedLock(key = "#orderInfoId", prefix = "validate_order")
     public void validate(Long orderInfoId, ValidateOrderConsumerRequest request) {
 
         Consumer consumer = securityUtil.getConsumer();
