@@ -89,7 +89,7 @@ public class SearchKeywordService {
                 .map(entry -> KeywordInfo.of(entry.getKey()))
                 .collect(Collectors.toList());
 
-        GetPopularSearchListResponse popularKeywords = GetPopularSearchListResponse.of(topKeywords);
+        GetPopularSearchListResponse popularKeywords = GetPopularSearchListResponse.of(topKeywords, LocalDateTime.now().getHour());
 
         try {
 
