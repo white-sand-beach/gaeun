@@ -1,9 +1,12 @@
 package com.todayeat.backend._common.notification.service;
 
 import com.todayeat.backend._common.notification.dto.CreateOrderNotification;
+import com.todayeat.backend._common.notification.dto.CreateReviewNotification;
+import com.todayeat.backend._common.notification.entity.ConsumerNotification;
 import com.todayeat.backend._common.notification.entity.SellerNotification;
 import com.todayeat.backend._common.notification.repository.SellerNotificationRepository;
 import com.todayeat.backend._common.util.SecurityUtil;
+import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.seller.entity.Seller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,5 +29,15 @@ public class SellerNotificationService {
 
         sellerNotificationRepository.save(SellerNotification.of(createDTO.getType(),
                 createDTO.getTypeId(), createDTO.getContent(), seller));
+    }
+
+    @Transactional
+    public void createSellerReviewNotification(CreateReviewNotification createDTO) {
+
+        Seller seller = securityUtil.getSeller();
+
+        sellerNotificationRepository.save(SellerNotification.of(createDTO.getType(),
+                createDTO.getReviewId(), createDTO.getContent(), seller));
+
     }
 }
