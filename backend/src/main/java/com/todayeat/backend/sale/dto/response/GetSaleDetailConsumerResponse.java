@@ -1,5 +1,6 @@
 package com.todayeat.backend.sale.dto.response;
 
+import com.todayeat.backend.sale.entity.Sale;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,10 +9,10 @@ import lombok.Getter;
 @Schema(name = "GetSaleDetailConsumerResponse", description = "소비자용 판매 상세 조회")
 public class GetSaleDetailConsumerResponse {
 
-    @Schema(description = "판매 ID", example = "1")
+    @Schema(description = "판매 고유번호", example = "1")
     private Long saleId;
 
-    @Schema(description = "판매 이미지 url", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/uuid.png")
+    @Schema(description = "판매 이미지 URL", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/uuid.png")
     private String imageUrl;
 
     @Schema(description = "판매 이름", example = "마라샹궈")
@@ -42,5 +43,18 @@ public class GetSaleDetailConsumerResponse {
         this.discountRate = discountRate;
         this.content = content;
         this.restStock = restStock;
+    }
+
+    public static GetSaleDetailConsumerResponse of(Sale sale, Integer restStock, Boolean isDonated) {
+        return builder()
+                .saleId(sale.getId())
+                .imageUrl(sale.getImageUrl())
+                .name(sale.getName())
+                .originalPrice(sale.getOriginalPrice())
+                .sellPrice(isDonated? 0: sale.getSellPrice())
+                .discountRate(isDonated? 100: sale.getDiscountRate())
+                .content(sale.getContent())
+                .restStock(restStock)
+                .build();
     }
 }

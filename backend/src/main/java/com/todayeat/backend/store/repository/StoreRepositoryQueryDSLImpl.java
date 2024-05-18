@@ -9,6 +9,7 @@ import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.category.dto.CategoryInfo;
 import com.todayeat.backend.category.entity.QCategory;
 import com.todayeat.backend.category.entity.QStoreCategory;
@@ -31,6 +32,7 @@ import static com.querydsl.core.types.Projections.fields;
 public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
 
     private final JPAQueryFactory jpaQueryFactory;
+    private final SecurityUtil securityUtil;
 
     @Override
     public GetConsumerListStoreResponse findStoreList(Location location, Integer radius, String keyword, Long categoryId, Pageable pageable) {
@@ -126,7 +128,7 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
             hasNext = true;
         }
 
-        return GetConsumerListStoreResponse.of(storeInfos, pageable.getPageSize(), hasNext);
+        return GetConsumerListStoreResponse.of(storeInfos, securityUtil.getConsumer().getIsDonated(), pageable.getPageSize(), hasNext);
     }
 
     private static NumberTemplate<Integer> getIntegerNumberTemplate(Location location, QStore store) {

@@ -48,6 +48,10 @@ public class Consumer extends BaseTime {
     @ColumnDefault("0")
     private Integer orderCnt;
 
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private Boolean isDonated; // 일반인 or 소방관, 경찰관, 결식아동 등 여부
+
     @OneToMany(mappedBy = "consumer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Location> locations = new ArrayList<>();
 
@@ -55,12 +59,13 @@ public class Consumer extends BaseTime {
     private List<Favorite> favorites = new ArrayList<>();
 
     @Builder
-    private Consumer(OAuth2Provider socialType, String email, String nickname, String profileImage, String phoneNumber) {
+    private Consumer(OAuth2Provider socialType, String email, String nickname, String profileImage, String phoneNumber, Boolean isDonated) {
         this.socialType = socialType;
         this.email = email;
         this.nickname = nickname;
         this.profileImage = profileImage;
         this.phoneNumber = phoneNumber;
+        this.isDonated = isDonated;
     }
 
     public boolean isJoined() {

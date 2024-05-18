@@ -5,7 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 @Getter
 public class CreateOrderNotification {
@@ -16,33 +19,33 @@ public class CreateOrderNotification {
 
     private String storeName;
 
-    private LocalDateTime notifiedAt;
+    private String notifiedAt;
 
     private String orderStatus;
 
     private Integer paymentPrice;
 
-    private List<CreateOrderItemNotification> orderItemNotificationList;
+    private String saleContent; // 메뉴명 외 1개
 
     @Builder
-    private CreateOrderNotification(Long orderInfoId, String orderNo, String storeName, LocalDateTime notifiedAt, String orderStatus, Integer paymentPrice, List<CreateOrderItemNotification> orderItemNotificationList) {
+    private CreateOrderNotification(Long orderInfoId, String orderNo, String storeName, String notifiedAt, String orderStatus, Integer paymentPrice, String saleContent) {
         this.orderInfoId = orderInfoId;
         this.orderNo = orderNo;
         this.storeName = storeName;
         this.notifiedAt = notifiedAt;
         this.orderStatus = orderStatus;
         this.paymentPrice = paymentPrice;
-        this.orderItemNotificationList = orderItemNotificationList;
+        this.saleContent = saleContent;
     }
 
-    public static CreateOrderNotification of(OrderInfo orderInfo, List<CreateOrderItemNotification> orderItemNotificationList) {
+    public static CreateOrderNotification of(OrderInfo orderInfo, String saleContent) {
 
         return builder()
                 .orderInfoId(orderInfo.getId())
                 .orderNo(orderInfo.getOrderNo())
-                .notifiedAt(orderInfo.getUpdatedAt())
+                .notifiedAt(getDate(orderInfo.getUpdatedAt()))
                 .paymentPrice(orderInfo.getPaymentPrice())
-                .orderItemNotificationList(orderItemNotificationList)
+                .saleContent(saleContent)
                 .build();
     }
 
@@ -63,33 +66,20 @@ public class CreateOrderNotification {
                 .append(storeName).append(",")
                 .append(notifiedAt).append(",")
                 .append(orderStatus).append(",")
-                .append(paymentPrice).append(",");
+                .append(paymentPrice).append(",")
+                .append(saleContent);
 
-        for(CreateOrderItemNotification oin : orderItemNotificationList) {
-            sb.append(oin.getName()).append(",")
-                    .append(oin.getQuantity()).append(",");
-        }
-
-        return sb.deleteCharAt(sb.length() - 1).toString();
+        return sb.toString();
     }
 
-    public String getTitle() {
+    private static String getDate(LocalDateTime localDateTime) {
 
-        return "주문번호: " + orderNo;
-    }
+        StringBuilder sb =  new StringBuilder();
 
-    public String getBody() {
+        String date = localDateTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        String dayOfWeek = localDateTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN);
 
-        StringBuilder sb = new StringBuilder();
-
-        for(CreateOrderItemNotification oin : orderItemNotificationList) {
-            sb.append(oin.getName()).append(": ")
-                    .append(oin.getQuantity()).append(", ");
-        }
-
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append("주문 들어왔습니다.");
-
+        sb.append(date).append("(").append(dayOfWeek).append(")");
         return sb.toString();
     }
 }

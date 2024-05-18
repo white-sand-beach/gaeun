@@ -1,5 +1,6 @@
 package com.todayeat.backend._common.notification.entity;
 
+import com.todayeat.backend._common.entity.BaseTime;
 import com.todayeat.backend.consumer.entity.Consumer;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,7 +14,7 @@ import org.hibernate.annotations.SQLDelete;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE consumer_notification SET deleted_at = CONVERT_TZ(NOW(), '+00:00', '+09:00') WHERE consumer_notification_id = ?")
-public class ConsumerNotification {
+public class ConsumerNotification extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,5 +55,9 @@ public class ConsumerNotification {
                 .isRead(false)
                 .consumer(consumer)
                 .build();
+    }
+
+    public void isReadTrue() {
+        this.isRead = true;
     }
 }

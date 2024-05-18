@@ -1,11 +1,15 @@
 package com.todayeat.backend.sale.service;
 
+import com.todayeat.backend._common.notification.dto.CreateFavoriteNotification;
+import com.todayeat.backend._common.notification.service.ConsumerNotificationService;
 import com.todayeat.backend._common.response.error.ErrorType;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
+import com.todayeat.backend._common.util.FCMNotificationUtil;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.cart.entity.Cart;
 import com.todayeat.backend.cart.repository.CartRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
+import com.todayeat.backend.fcmtoken.repository.FCMTokenRepository;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.repository.MenuRepository;
 import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
@@ -30,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -44,6 +47,8 @@ public class SaleService {
     private final StoreRepository storeRepository;
     private final CartRepository cartRepository;
     private final StoreService storeService;
+    private final ConsumerNotificationService consumerNotificationService;
+    private final FCMNotificationUtil fcmNotificationUtil;
 
     @Transactional
     public void create(CreateSaleListRequest request) {
@@ -59,7 +64,7 @@ public class SaleService {
 
             saleList.add(
                     SaleMapper.INSTANCE
-                            .createSaleReqeustToSale(createSaleRequest,
+                            .createSaleRequestToSale(createSaleRequest,
                                     getDiscountRate(menu.getOriginalPrice(), createSaleRequest.getSellPrice()),
                                     false, 0, store, menu)
             );
@@ -68,6 +73,11 @@ public class SaleService {
         saleRepository.saveAll(saleList);
 
         storeService.updateIsOpened(store, true);
+
+        // 알림
+        CreateFavoriteNotification createFavoriteNotification = consumerNotificationService.CreateFavoriteNotification(CreateFavoriteNotification.of(store.getId(), store.getName(), new ArrayList<>()));
+
+        fcmNotificationUtil.sendToMany(createFavoriteNotification.getConsumerIdList(), "Consumer", createFavoriteNotification.getTitle(), createFavoriteNotification.getBody());
     }
 
     public GetSaleListConsumerResponse getListToConsumer(Long storeId) {
@@ -77,7 +87,7 @@ public class SaleService {
 
         List<GetSaleConsumerResponse> getSaleToConsumerResponseList = saleRepository.findAllByStoreAndIsFinishedIsFalseAndDeletedAtIsNull(store)
                 .stream()
-                .map(s -> SaleMapper.INSTANCE.getSaleConsumerResponse(s, s.getStock() - s.getTotalQuantity()))
+                .map(s -> GetSaleConsumerResponse.of(s, s.getStock() - s.getTotalQuantity(), securityUtil.getConsumer().getIsDonated()))
                 .toList();
 
         return GetSaleListConsumerResponse.of(storeId, getSaleToConsumerResponseList, getSaleToConsumerResponseList.size());
@@ -91,7 +101,7 @@ public class SaleService {
         // 내 장바구니 고려한 재고로 바꾸기
         Integer restStock = getRestStock(sale);
 
-        return SaleMapper.INSTANCE.getSaleDetailConsumerResponse(sale, restStock);
+        return GetSaleDetailConsumerResponse.of(sale, restStock, securityUtil.getConsumer().getIsDonated());
     }
 
     public GetSaleListSellerResponse getListToSeller(Long storeId) {

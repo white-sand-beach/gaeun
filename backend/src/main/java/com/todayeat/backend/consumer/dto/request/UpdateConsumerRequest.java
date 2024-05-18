@@ -2,6 +2,7 @@ package com.todayeat.backend.consumer.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -29,4 +30,8 @@ public class UpdateConsumerRequest {
     @Pattern(regexp = "^[0-9]*$", message = "phoneNumber: 숫자만 입력해주세요.")
     @Schema(description = "휴대폰 번호", example = "01012345678")
     private String phoneNumber;
+
+    @NotNull(message = "isDonated: 값이 null이 아니어야 합니다.")
+    @Schema(description = "나눔 여부. 일반인인 경우 false, 아닐 경우 true로 보내주시면 됩니다.", example = "false")
+    private Boolean isDonated;
 }

@@ -56,4 +56,8 @@ public class SellerNotification extends BaseTime {
                 .seller(seller)
                 .build();
     }
+
+    public void isReadTrue() {
+        this.isRead = true;
+    }
 }

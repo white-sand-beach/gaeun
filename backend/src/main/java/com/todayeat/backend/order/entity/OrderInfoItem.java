@@ -66,13 +66,13 @@ public class OrderInfoItem extends BaseTime {
         this.sale = sale;
     }
 
-    public static OrderInfoItem of(Sale sale, Integer quantity, OrderInfo orderInfo) {
+    public static OrderInfoItem of(Sale sale, Integer quantity, OrderInfo orderInfo, Boolean isDonated) {
         return builder()
                 .name(sale.getName())
                 .originalPrice(sale.getOriginalPrice())
-                .sellPrice(sale.getSellPrice())
+                .sellPrice(isDonated? 0 : sale.getSellPrice())
                 .quantity(quantity)
-                .paymentPrice(quantity * sale.getSellPrice())
+                .paymentPrice(isDonated? 0 : quantity * sale.getSellPrice())
                 .orderInfo(orderInfo)
                 .menu(sale.getMenu())
                 .sale(sale)

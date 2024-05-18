@@ -27,7 +27,8 @@ public interface OrderControllerDocs {
     @Operation(summary = "주문 등록 (소비자)",
             description = """
                           `ROLE_CONSUMER` \n
-                          orderInfoId를 반환합니다. 이 값은 결제 검증에 쓰입니다.
+                          반환되는 orderInfoId 값은 결제 검증에 쓰입니다. \n
+                          isDonated 값이 true 일 때는 결제창을 호출하지 않고, false 일 때만 결제창을 호출하시면 됩니다.
                           """)
     @ApiResponse(responseCode = "200",
             description = "성공",
@@ -46,6 +47,7 @@ public interface OrderControllerDocs {
             description = """
                           `ROLE_CONSUMER` \n
                           path variable, request body 넣어주세요. \n
+                          isDonated == true 인 사용자의 경우 주문 검증 권한이 없습니다. \n
                           검증이 완료되면 주문이 결제 완료 상태로 바뀝니다.
                           """)
     @ApiResponse(responseCode = "200",
