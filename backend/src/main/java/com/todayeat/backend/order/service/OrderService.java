@@ -122,7 +122,7 @@ public class OrderService {
         // 주문 아이템 정보 저장
         carts.iterator().forEachRemaining(
                 cart -> orderInfoItemRepository.save(
-                        OrderInfoItem.of(findSaleOrElseThrow(cart), cart.getQuantity(), orderInfo))
+                        OrderInfoItem.of(findSaleOrElseThrow(cart), cart.getQuantity(), orderInfo, isDonated))
         );
 
         // 나눔일 경우
@@ -278,7 +278,9 @@ public class OrderService {
                 );
 
                 // 결제 취소
-                cancelPayment(orderInfo.getPaymentId());
+                if (!orderInfo.getPaymentId().isEmpty()) {
+                    cancelPayment(orderInfo.getPaymentId());
+                }
 
                 return;
             }
@@ -313,7 +315,9 @@ public class OrderService {
                 );
 
                 // 결제 취소
-                cancelPayment(orderInfo.getPaymentId());
+                if (!orderInfo.getPaymentId().isEmpty()) {
+                    cancelPayment(orderInfo.getPaymentId());
+                }
 
                 return;
             }
@@ -374,7 +378,9 @@ public class OrderService {
         );
 
         // 결제 취소
-        cancelPayment(orderInfo.getPaymentId());
+        if (!orderInfo.getPaymentId().isEmpty()) {
+            cancelPayment(orderInfo.getPaymentId());
+        }
     }
 
     public GetOrderListConsumerResponse getListConsumer(Integer page, Integer size, String keyword) {
