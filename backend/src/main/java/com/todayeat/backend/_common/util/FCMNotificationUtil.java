@@ -53,6 +53,10 @@ public class FCMNotificationUtil {
 
     private MulticastMessage getMulticastMessage (List<String> tokenList, String title, String body) {
 
+        if(tokenList.isEmpty()) {
+            return null;
+        }
+
         return MulticastMessage.builder()
                 .putData("title", title)
                 .putData("body", body)
@@ -61,6 +65,9 @@ public class FCMNotificationUtil {
     }
 
     private void send(List<String> tokenList, MulticastMessage message) {
+
+        if(message == null)
+            return;
 
         try {
             BatchResponse batchResponse = FirebaseMessaging.getInstance().sendMulticast(message);
