@@ -1,8 +1,8 @@
 export interface SaleStatisticList {
-  SaleStatisticList: [
-    {
-      menuName: string;
-      saleStatistic: number;
-    }
-  ]
+  saleStatisticList: SaleStatistic[]
+}
+
+export interface SaleStatistic {
+  menuName: string;
+  saleStatistic: number;
 }
