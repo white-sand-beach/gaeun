@@ -21,11 +21,15 @@ public class GetConsumerProfileResponse {
     @Schema(description = "이메일", example = "pangdoonbabo@naver.com")
     private String email;
 
+    @Schema(description = "주문 수량", example = "27")
+    private Integer orderCnt;
+
     @Builder
-    private GetConsumerProfileResponse(String profileImage, String nickname, OAuth2Provider socialType, String email) {
+    private GetConsumerProfileResponse(String profileImage, String nickname, OAuth2Provider socialType, String email, Integer orderCnt) {
         this.profileImage = profileImage;
         this.nickname = nickname;
         this.socialType = socialType;
         this.email = email;
+        this.orderCnt = orderCnt;
     }
 }
