@@ -57,8 +57,11 @@ public class GetOrderDetailConsumerResponse {
     @Schema(description = "결제 금액", example = "20000")
     private Integer paymentPrice;
 
+    @Schema(description = "리뷰 고유번호", example = "1")
+    private Long reviewId;
+
     @Builder
-    private GetOrderDetailConsumerResponse(Long orderInfoId, String orderNo, Long storeId, String storeName, String storeTel, String orderStatus, String orderDate, Integer restTime, List<GetOrderInfoItemResponse> orderItems, Integer originalPrice, Integer discountPrice, Integer paymentPrice) {
+    private GetOrderDetailConsumerResponse(Long orderInfoId, String orderNo, Long storeId, String storeName, String storeTel, String orderStatus, String orderDate, Integer restTime, List<GetOrderInfoItemResponse> orderItems, Integer originalPrice, Integer discountPrice, Integer paymentPrice, Long reviewId) {
         this.orderInfoId = orderInfoId;
         this.orderNo = orderNo;
         this.storeId = storeId;
@@ -71,6 +74,7 @@ public class GetOrderDetailConsumerResponse {
         this.originalPrice = originalPrice;
         this.discountPrice = discountPrice;
         this.paymentPrice = paymentPrice;
+        this.reviewId = reviewId;
     }
 
     public static GetOrderDetailConsumerResponse from(OrderInfo orderInfo) {
@@ -93,6 +97,7 @@ public class GetOrderDetailConsumerResponse {
                 .originalPrice(orderInfo.getOriginalPrice())
                 .discountPrice(orderInfo.getDiscountPrice())
                 .paymentPrice(orderInfo.getPaymentPrice())
+                .reviewId(orderInfo.getReview() == null? null : orderInfo.getReview().getId())
                 .build();
     }
 
