@@ -8,7 +8,7 @@ import { StoreList } from "../../types/StoreList";
 import SearchStoreList from "../../components/search/SearchStoreList";
 import RealTimeTrendingSearch from "../../components/search/RealTimeTrendingSearch";
 import PopularSearchListService from "../../services/searches/PopularSearchListService";
-import { PopularSearchList } from "../../types/PopularSearchList";
+import { KeywordInfo } from "../../types/PopularSearchList";
 
 const SearchPage = () => {
   const [mapData, setMapData] = useState<MainMapData>({
@@ -20,7 +20,7 @@ const SearchPage = () => {
     sort: "distance",
   });
   const [storeList, setStoreList] = useState<StoreList[]>([]);
-  const [popularSearchList, setPopularSearchList] = useState<PopularSearchList[]>([]);
+  const [popularSearchList, setPopularSearchList] = useState<KeywordInfo[]>([]);
   const [hour, setHour] = useState<number>(0);
   const [allData, setAllData] = useState<MainAllData>({
     storeList: [],
