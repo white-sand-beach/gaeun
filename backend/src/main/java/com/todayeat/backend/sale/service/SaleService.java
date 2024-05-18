@@ -90,7 +90,7 @@ public class SaleService {
         // 내 장바구니 고려한 재고로 바꾸기
         Integer restStock = getRestStock(sale);
 
-        return SaleMapper.INSTANCE.getSaleDetailConsumerResponse(sale, restStock);
+        return GetSaleDetailConsumerResponse.of(sale, restStock, securityUtil.getConsumer().getIsDonated());
     }
 
     public GetSaleListSellerResponse getListToSeller(Long storeId) {

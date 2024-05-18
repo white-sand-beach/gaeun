@@ -27,9 +27,6 @@ public interface SaleMapper {
     Sale createSaleRequestToSale(CreateSaleRequest createSaleRequest, Integer discountRate, Boolean isFinished, Integer totalQuantity, Store store, Menu menu);
 
     @Mapping(source = "sale.id", target = "saleId")
-    GetSaleDetailConsumerResponse getSaleDetailConsumerResponse(Sale sale, Integer restStock);
-
-    @Mapping(source = "sale.id", target = "saleId")
     @Mapping(source = "sale.menu.id", target = "menuId")
     GetSaleSellerResponse getSaleSellerResponse(Sale sale, Integer restStock);
 }
