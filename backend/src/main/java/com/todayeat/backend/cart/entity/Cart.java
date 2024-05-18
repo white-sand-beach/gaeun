@@ -1,5 +1,6 @@
 package com.todayeat.backend.cart.entity;
 
+import com.todayeat.backend.cart.dto.request.CreateCartRequest;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;

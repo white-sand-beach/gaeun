@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -59,7 +58,7 @@ public class SaleService {
 
             saleList.add(
                     SaleMapper.INSTANCE
-                            .createSaleReqeustToSale(createSaleRequest,
+                            .createSaleRequestToSale(createSaleRequest,
                                     getDiscountRate(menu.getOriginalPrice(), createSaleRequest.getSellPrice()),
                                     false, 0, store, menu)
             );
@@ -77,7 +76,7 @@ public class SaleService {
 
         List<GetSaleConsumerResponse> getSaleToConsumerResponseList = saleRepository.findAllByStoreAndIsFinishedIsFalseAndDeletedAtIsNull(store)
                 .stream()
-                .map(s -> SaleMapper.INSTANCE.getSaleConsumerResponse(s, s.getStock() - s.getTotalQuantity()))
+                .map(s -> GetSaleConsumerResponse.of(s, s.getStock() - s.getTotalQuantity(), securityUtil.getConsumer().getIsDonated()))
                 .toList();
 
         return GetSaleListConsumerResponse.of(storeId, getSaleToConsumerResponseList, getSaleToConsumerResponseList.size());
@@ -91,7 +90,7 @@ public class SaleService {
         // 내 장바구니 고려한 재고로 바꾸기
         Integer restStock = getRestStock(sale);
 
-        return SaleMapper.INSTANCE.getSaleDetailConsumerResponse(sale, restStock);
+        return GetSaleDetailConsumerResponse.of(sale, restStock, securityUtil.getConsumer().getIsDonated());
     }
 
     public GetSaleListSellerResponse getListToSeller(Long storeId) {
