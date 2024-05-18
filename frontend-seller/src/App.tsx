@@ -21,13 +21,8 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import RegisterFCMToken from "./service/fcm/RegisterFCMToken.ts";
 
 const App = () => {
-  // 브라우저 종료하면 로컬스토리지 클리어
-  // 쿠키도 클리어
   const cookies = new Cookies()
-  window.addEventListener("unload", () => {
-    localStorage.clear()
-    cookies.remove("accessToken")
-  });
+  const accessToken = cookies.get("accessToken")
 
   // firebase 설정
   const vapidKey = import.meta.env.VITE_FCM_VAPID_KEY;
@@ -46,35 +41,39 @@ const App = () => {
 
   // 권한 요청
   Notification.requestPermission()
-  .then((permission) => {
-    if (permission === "granted") {
-      console.log("알림 권한이 부여됐습니다.")
-    }
-    else {
-      console.log("권한 부여 실패")
-    }
-  });
+    .then((permission) => {
+      if (permission === "granted") {
+        console.log("알림 권한이 부여됐습니다.")
+      }
+      else {
+        console.log("권한 부여 실패")
+      }
+    });
 
   // FCM 사용을 위한 토큰 요청
-  getToken(messaging, {vapidKey: `${vapidKey}`})
-  .then((currentToken) => {
-    if (currentToken) {
-      console.log(currentToken)
-      saveToken(currentToken)
-    }
-    else {
-      console.log("등록된 토큰이 없습니다. 다시 요청하세요")
-    }
-  }).catch((err) => {
-    console.error(err)
-  })
+  getToken(messaging, { vapidKey: `${vapidKey}` })
+    .then((currentToken) => {
+      if (currentToken) {
+        console.log("FCM 토큰 받았습니다")
+        console.log(currentToken)
+        saveToken(currentToken)
+      }
+      else {
+        console.log("등록된 토큰이 없습니다. 다시 요청하세요")
+      }
+    }).catch((err) => {
+      console.error(err)
+    })
 
-  // 토큰 저장
+  // FCM 토큰 저장
   const saveToken = async (token: string) => {
     cookies.set("fcm-token", token)
     try {
-      const response = await RegisterFCMToken(token)
-      return response
+      // accessToken 있는 경우에 토큰 저장 api 요청
+      if (accessToken) {
+        const response = await RegisterFCMToken(token)
+        return response
+      }
     }
     catch (err) {
       console.error(err)
@@ -84,27 +83,27 @@ const App = () => {
 
   onMessage(messaging, (payload) => {
     console.log("메시지 받았어요", payload)
-    alert(payload.notification?.body)
+    alert(`${payload.notification?.title} \n ${payload.notification?.body}`)
   })
-  
+
 
   return (
     <BrowserRouter basename="/seller">
       <MainLayout />
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/register-shop" element={<RegisterShopPage />} />
-          <Route path="/register-food" element={<RegisterFoodPage />} />
-          <Route path="/update/food/:menuId" element={<UpdateFoodPage />} />
-          <Route path="/order" element={<InprogressListPage />} />
-          <Route path="/order/:orderInfoId" element={<OrderDetailPage />} />
-          <Route path="/notification" element={<NotificationPage />} />
-          <Route path="/menus" element={<MenuListPage />} />
-          <Route path="/statistics" element={<StatisticsPage />} />
-          <Route path="/sales" element={<SaleslistPage />} />
-          <Route path="/mystore" element={<ShopInfoPage />} />
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/register-shop" element={<RegisterShopPage />} />
+        <Route path="/register-food" element={<RegisterFoodPage />} />
+        <Route path="/update/food/:menuId" element={<UpdateFoodPage />} />
+        <Route path="/order" element={<InprogressListPage />} />
+        <Route path="/order/:orderInfoId" element={<OrderDetailPage />} />
+        <Route path="/notification" element={<NotificationPage />} />
+        <Route path="/menus" element={<MenuListPage />} />
+        <Route path="/statistics" element={<StatisticsPage />} />
+        <Route path="/sales" element={<SaleslistPage />} />
+        <Route path="/mystore" element={<ShopInfoPage />} />
       </Routes>
     </BrowserRouter>
   );
