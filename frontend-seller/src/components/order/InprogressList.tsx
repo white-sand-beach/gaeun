@@ -27,7 +27,7 @@ const InprogressList: React.FC<inprogressProps> = (props) => {
   };
 
   return (
-    <div className=" gap-4">
+    <>
       <input
         type="text"
         className="border-4 w-full rounded-[20px] h-[50px] p-2 mb-4"
@@ -70,7 +70,7 @@ const InprogressList: React.FC<inprogressProps> = (props) => {
           </div>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 
