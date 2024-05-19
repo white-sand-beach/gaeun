@@ -1,12 +1,12 @@
-export interface Notification {
-  notificationList?: NotiList[]
+export interface NotificationInfo {
+  notificationList: NotiListInfo[]
   page: number;
   hasNext?: boolean;
 }
 
-export interface NotiList {
+export interface NotiListInfo {
   id: number;
-  type?: string[];
+  type: string;
   typeId: number;
   content: string[];
   isRead?: boolean;

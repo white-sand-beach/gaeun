@@ -1,31 +1,45 @@
 import React from "react";
-import { NotificationListType } from "../../types/notification/NotificationListType";
+import { NotiListInfo } from "../../types/notification/NotificationListType";
+import { useNavigate } from "react-router-dom";
+import SellerNotiRead from "../../service/notification/SellerNotiRead";
 
-const NotificationList: React.FC<NotificationListType> = (props) => {
-    return (
-        <div className="flex flex-col justify-around w-screen h-[160px] border-b-2 p-3">
-            {/* 주문번호 및 주문날짜 */}
-            <div className="flex flex-row justify-between w-full">
-                <p className="text-gray-500 ">{props.orderNum}</p>
-                <p className="text-gray-500">{props.orderDate}</p>
-            </div>
+interface NotiProps {
+  notiInfo: NotiListInfo[];
+};
 
-            <div className="flex flex-row items-center justify-between w-full mt-3">
-                <div className="flex flex-col">
-                    {/* 음식명 */}
-                    <p className="mt-1 font-bold text-[20px]">{props.foodName}</p>
+const NotificationList: React.FC<NotiProps> = (props) => {
+    const navigate = useNavigate()
+    const handleReadNoti = async (id:number, type: string, typeId?: number) => {
+        try {
+            await SellerNotiRead(id)
+            // 타입이 review 이면
+            // 리뷰목록이 있는 내 가게 정보로 이동
+            if (type === "review") {
+                navigate("/mystore")
+            }
+            else if (type === "order") {
+                navigate(`/order/${typeId}`)
+            }
+        }
+        catch (err) {
+            console.error(err)
+            throw err
+        }
+    };
 
-                    {/* 결제 금액 */}
-                    <div className="flex flex-row justify-between w-[140px] font-bold text-[14px]">
-                        <p>결제 금액</p>
-                        <p className="text-red-500">{props.price}원</p>
-                    </div>
-                </div>
-                {/* 상세내역 보러가기 */}
-                <button className="text-[14px] w-[160px] md:w-[200px] border-2 border-[#A3A3A3] p-2 rounded-lg font-bold">상세내역 보러가기</button>
-            </div>
+  return (
+    <div className="flex flex-col w-full gap-4">
+      {props.notiInfo.map((item) => (
+        <div
+          key={item.id}
+          className={`border-2 mx-2 rounded-3xl p-3 h-[300px] flex flex-col justify-center items-center ${!item.isRead ? "bg-mainColor" : "bg-gray-200"}`}
+          onClick={() => handleReadNoti(item.id, item.type, item.typeId)}
+        >
+          <p className="text-4xl">{item.content}</p>
         </div>
-    );
+      ))}
+    </div>
+  );
 };
 
 export default NotificationList;
