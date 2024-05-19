@@ -47,8 +47,8 @@ const ReviewList: React.FC = () => {
 
   return (
     <div className="flex flex-col w-screen h-full gap-3 overflow-y-scroll">
-      {reviewInfo.reviewList.map((list) => (
-        <div key={list.reviewId}>
+      {reviewInfo.reviewList.map((list, index) => (
+        <div key={index}>
           <img src={list.imageUrl} alt="" />
           <p>작성일자 : {list.createdAd}</p>
           <p>가게 : {list.storeName}</p>
