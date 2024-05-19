@@ -34,11 +34,11 @@ const OrderDetail: React.FC = () => {
 
     // 요청한 상태에 따라 표시할 status 맵핑
     const statusDisplayMap: { [key: string]: string } = {
-      "IN_PROGRESS": "진행 중",
-      "PREPARED": "준비 완료",
-      "FINISHED": "수령 완료",
-      "DENIED": "거절됨",
-      "CANCEL": "취소됨"
+      IN_PROGRESS: "진행 중",
+      PREPARED: "준비 완료",
+      FINISHED: "수령 완료",
+      DENIED: "거절됨",
+      CANCEL: "취소됨",
     };
 
     try {
@@ -105,21 +105,33 @@ const OrderDetail: React.FC = () => {
           </div>
 
           {/* 현재 결제 상태에 따라 노출될 버튼들 */}
+
+          {/* status가 PAID (결제 완료) 상태일 때 */}
           {detailInfo.orderStatus === "결제 완료" && (
             <div className="flex flex-row gap-3">
+              {/* 준비 할게요 */}
               <button onClick={() => handleStatusChange("IN_PROGRESS", 30)}>
                 준비할게요
               </button>
+              {/* 거절 할게요 */}
               <button onClick={() => handleStatusChange("DENIED")}>거절</button>
+            </div>
+          )}
+
+          {/* status가 IN_PROGRESS (진행 중) 상태일 때 */}
+          {detailInfo.orderStatus === "진행 중" && (
+            <div className="flex flex-row gap-3">
+              {/* 준비 다 했어요 */}
+              <button onClick={() => handleStatusChange("PREPARED")}>
+                준비 다 햇어요
+              </button>
+              {/* 취소 할게요 */}
               <button onClick={() => handleStatusChange("CANCEL")}>취소</button>
             </div>
           )}
-          {detailInfo.orderStatus === "진행 중" && (
-            <button onClick={() => handleStatusChange("PREPARED")}>
-              준비 다 햇어요
-            </button>
-          )}
+          {/* status가 PREPARED (준비 완료) 상태일 때 */}
           {detailInfo.orderStatus === "준비 완료" && (
+            // 손님이 가져갔어요
             <button onClick={() => handleStatusChange("FINISHED")}>
               수령 완료 처리
             </button>
