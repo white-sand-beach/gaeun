@@ -7,6 +7,7 @@ import { OrderCurrentState } from "../../types/OrderType";
 import KakaoMap from "../main/Kakaomap";
 import BannerSlider from "../../components/navbar/ServiceBanner";
 import OrderDeleteForm from "../../services/orders/OrderDeleteService";
+import refresh from "../../assets/order/refresh.png";
 
 const OrderState = () => {
   const location = useLocation();
@@ -57,6 +58,10 @@ const OrderState = () => {
     }
   };
 
+  const handleRefresh = () => {
+    navigate(0)
+  }
+
   return (
     <div className="pt-16">
       <header className="mx-4 mt-2 between">
@@ -84,29 +89,34 @@ const OrderState = () => {
       </header>
 
       <div className="my-2 center">
-        <div className="w-full px-4 pb-4 mx-4 font-bold text-gray-400 border-2 rounded-lg">
-          <div className="py-2 text-sm text-black between">
+        <div className="w-full px-2 pb-4 mx-4 font-bold text-gray-400 border-2 rounded-lg">
+          <div className="py-2 pl-2 text-sm text-black between">
             <p>주문 시간</p>
-            <p>{orderCurrent.orderDate}</p>
+            <div className="flex items-center">
+              <p>{orderCurrent.orderDate}</p>
+              <img onClick={handleRefresh} className="ml-1 w-4 h-4 " src={refresh} alt="" />
+            </div>
           </div>
           <hr className="mb-2" />
-          <div className="text-xl text-black">
-            <Link to={`/shop/${orderCurrent.storeId}`}>
-              <p>
-                {orderCurrent.storeName}
-                {" >"}
-              </p>
-            </Link>
-            <p className="text-sm">{orderCurrent.orderContents}</p>
-          </div>
-          <p className="my-2 text-xs font-normal">
-            가게가 마감하기 전에 반드시 픽업해주세요!
-          </p>
-          <div className="justify-between center">
-            <div className="flex items-center mt-1">
-              <CallButton storeTel={orderCurrent.storeTel} />
+          <div className="px-2">
+            <div className="text-xl text-black">
+              <Link to={`/shop/${orderCurrent.storeId}`}>
+                <p>
+                  {orderCurrent.storeName}
+                  {" >"}
+                </p>
+              </Link>
+              <p className="text-sm">{orderCurrent.orderContents}</p>
             </div>
-            <OrderDetailButton orderInfoId={orderCurrent.orderInfoId} />
+            <p className="my-2 text-xs font-normal">
+              가게가 마감하기 전에 반드시 픽업해주세요!
+            </p>
+            <div className="justify-between center">
+              <div className="flex items-center mt-1">
+                <CallButton storeTel={orderCurrent.storeTel} />
+              </div>
+              <OrderDetailButton orderInfoId={orderCurrent.orderInfoId} />
+            </div>
           </div>
         </div>
       </div>
