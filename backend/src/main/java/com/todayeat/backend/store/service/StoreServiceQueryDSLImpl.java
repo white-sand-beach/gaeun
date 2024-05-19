@@ -11,6 +11,7 @@ import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
+import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
@@ -103,11 +104,9 @@ public class StoreServiceQueryDSLImpl implements StoreService {
         store = storeRepository.findByIdAndDeletedAtIsNull(store.getId())
                 .orElseThrow(() -> new BusinessException(ErrorType.STORE_NOT_FOUND));
 
-        GetSellerStoreResponse getSellerStoreResponse = StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store, categoryRepository.findAll().stream()
+        return StoreMapper.INSTANCE.storeToGetSellerStoreResponse(store, categoryRepository.findAll().stream()
                 .map(CategoryMapper.INSTANCE::categoryToCategoryInfo)
                 .collect(Collectors.toList()));
-
-        return getSellerStoreResponse;
     }
 
     @Override
@@ -143,7 +142,7 @@ public class StoreServiceQueryDSLImpl implements StoreService {
 
         Store store = sellerRepository.findById(securityUtil.getSeller().getId())
                 .map(Seller::getStore)
-                .filter(s -> s != null && Objects.equals(s.getId(), storeId))
+                .filter(s ->  Objects.equals(s.getId(), storeId))
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
 
         String imageURL = imageToURL(updateStoreRequest.getImage());
@@ -185,7 +184,7 @@ public class StoreServiceQueryDSLImpl implements StoreService {
 
     @Override
     @Transactional
-    public  void updateSaleCnt(Store store, int value) {
+    public void updateSaleCnt(Store store, int value) {
 
         store.updateSaleCnt(value);
     }
@@ -202,6 +201,18 @@ public class StoreServiceQueryDSLImpl implements StoreService {
     public void updateFavoriteCnt(Store store, int value) {
 
         store.updateFavoriteCnt(value);
+    }
+
+    @Override
+    @Transactional
+    public void addSaleList(Store store, List<Sale> saleList) {
+
+    }
+
+    @Override
+    @Transactional
+    public void deleteSale(Store store, String name) {
+
     }
 
     private String imageToURL(MultipartFile image) {
