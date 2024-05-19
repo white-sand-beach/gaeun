@@ -19,7 +19,7 @@ pipeline {
 
         stage("firebase-messaging-sw download") {
             steps {
-                withCredentials([file(credentialsId: 'ffirebase-messaging-sw', variable: 'configFile')]) {
+                withCredentials([file(credentialsId: 'firebase-messaging-sw', variable: 'configFile')]) {
                     script {
                         sh 'cp -rf $configFile /usr/share/nginx/html/firebase-messaging-sw.js'
                     }
