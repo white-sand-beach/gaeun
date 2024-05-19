@@ -78,10 +78,10 @@ const OrderList = () => {
     <div className="pt-12">
       {/* 가게 및 메뉴 검색 */}
       <div className="fixed flex items-center bg-white rounded-md">
-        <div className="mt-4 center w-screen">
-          <div className="search w-11/12">
+        <div className="w-screen mt-4 center">
+          <div className="w-11/12 search">
             <input
-              className="text-xs pl-2 w-11/12 py-2 rounded-md"
+              className="w-11/12 py-2 pl-2 text-xs rounded-md"
               type="text"
               placeholder="가게 이름 검색"
               value={inputText}

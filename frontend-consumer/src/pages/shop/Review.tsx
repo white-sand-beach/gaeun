@@ -1,6 +1,7 @@
 import { reviewListItem } from "../../types/ReviewType";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../public/windows11/LargeTile.scale-100.png";
+import defaultImg from "../../../src/assets/profile/defaultImg.png";
 
 const Review = ({ reviewList }: { reviewList: reviewListItem[] }) => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Review = ({ reviewList }: { reviewList: reviewListItem[] }) => {
             <div className="flex items-center space-x-2">
               {/* 사용자 프로필 사진 */}
               <img
-                src={review.profileImage}
+                src={review.profileImage || defaultImg}
                 alt="user"
                 className="object-cover w-10 h-10 rounded-full"
               />
@@ -54,13 +55,15 @@ const Review = ({ reviewList }: { reviewList: reviewListItem[] }) => {
           </div>
 
           {/* 편지 사진 */}
-          <div className="flex justify-center mt-2">
-            <img
-              src={review.imageUrl || logo}
-              alt="food"
-              className="object-cover rounded-lg w-44 h-44"
-            />
-          </div>
+          {review.imageUrl && (
+            <div className="flex justify-center mt-2">
+              <img
+                src={review.imageUrl}
+                alt="food"
+                className="object-cover rounded-lg w-44 h-44"
+              />
+            </div>
+          )}
         </div>
       ))}
       <hr className="mt-4" />
