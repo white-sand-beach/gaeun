@@ -1,3 +1,5 @@
+import { useLocation } from 'react-router-dom';
+
 import love from "../../assets/favorite/love.png";
 import nolove from "../../assets/favorite/nolove.png";
 
@@ -7,13 +9,16 @@ interface FavoriteButtonProps {
 }
 
 const FavoriteButton = ({ isFavorite, onToggle }: FavoriteButtonProps) => {
+  const location = useLocation();
+  const isFavoritePath = location.pathname === '/favorite';
+
   const toggleLove = () => {
     onToggle(!isFavorite);
   };
 
   return (
     <img
-      className="w-6 cursor-pointer"
+      className={`cursor-pointer ${isFavoritePath ? 'w-6' : 'w-4'}`}
       src={isFavorite ? love : nolove}
       alt="토글하트"
       onClick={toggleLove}

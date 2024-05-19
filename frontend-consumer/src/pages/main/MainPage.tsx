@@ -3,12 +3,15 @@ import list from "../../assets/map/list.png";
 import gps from "../../assets/map/gps.png";
 import KakaoMap from "./Kakaomap";
 import Shops from "./Shops";
-import ServiceBanner from "../../components/navbar/ServiceBanner";
+import BannerSlider from "../../components/navbar/ServiceBanner";
 import useUserLocation from "../../store/UserLocation";
 import MainMapData from "../../types/MainMapDataType";
 import MapListForm from "../../services/maps/MapMainService";
 import { MainAllData } from "../../types/MainAllDataType";
 import { StoreList } from "../../types/StoreList";
+import { useNavigate } from "react-router-dom";
+import Lottie from "react-lottie";
+import { storeListLoadingOptions } from "../../assets/lotties/lottieOptions";
 
 interface LocationState {
   lat: number | undefined;
@@ -26,13 +29,15 @@ const Main: React.FC = () => {
   // 현재 터치의 Y좌표를 기록하는 상태
   const [currentTouchY, setCurrentTouchY] = useState<number>(0);
   // 지도의 높이를 패널 상태에 따라 결정
-  const mapHeight = isOpen ? "300px" : "100%";
+  const mapHeight = isOpen ? "40%" : "100%";
   const gpsButtonClass = isOpen
-    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-4 mb-80 z-10"
-    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-4 mb-7 z-10";
+    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-[47vh] z-10"
+    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-[5vh] z-10";
   const listButtonClass = isOpen
-    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-80 z-10"
-    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-4 mb-7 z-10";
+    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-[47vh] z-10"
+    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-[5vh] z-10";
+
+  const [sortType, setSortType] = useState("saleCnt"); // New state for sorting
 
   const { lat, lng } = useUserLocation((state) => ({
     lat: state.latitude,
@@ -45,31 +50,65 @@ const Main: React.FC = () => {
     updateCounter: 0,
   });
 
-  const [allData, setAllData] = useState<MainAllData[]>([]);
   const [storeList, setStoreList] = useState<StoreList[]>([]);
+  const [allData, setAllData] = useState<MainAllData>({
+    storeList: [],
+    page: 0,
+    loading: false,
+    hasNext: false,
+    isDonated: false,
+  });
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const mainData: MainMapData = {
-      longitude: lng,
-      latitude: lat,
-      page: 0,
-      size: 10,
-      radius: 3,
-      sort: "distance",
-    };
-    // 즉시 실행 함수로 비동기 로직 처리
-    (async () => {
+    const fetchStoreList = async () => {
+      setAllData((prevState) => ({ ...prevState, loading: true }));
       try {
+        const mainData: MainMapData = {
+          longitude: lng,
+          latitude: lat,
+          page: allData.page,
+          size: 10,
+          radius: 3,
+          sort: sortType,
+        };
         const response = await MapListForm(mainData);
-        setAllData(response); // 비동기 결과로 상태 업데이트
-        setStoreList(response.storeList);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, [lng, lat]); // mainData 객체 자체를 의존성 배열에 추가
 
-  useEffect(() => {}, [allData, storeList]);
+        setAllData((prevState) => ({
+          ...prevState,
+          hasNext: response.hasNext,
+          isDonated: response.isDonated,
+        }));
+
+        if (allData.page === 0) {
+          setStoreList(response.storeList); // 새로운 가게 리스트로 설정
+        } else {
+          setStoreList((prevStoreList) => [
+            ...prevStoreList,
+            ...response.storeList,
+          ]); // 이전 가게 리스트에 새로운 가게 리스트 추가
+        }
+      } catch (error) {
+        console.error("Error fetching store list:", error);
+        navigate("/login");
+      } finally {
+        setAllData((prevState) => ({ ...prevState, loading: false }));
+      }
+    };
+
+    fetchStoreList();
+  }, [lng, lat, allData.page, sortType]); // mainData 객체 자체를 의존성 배열에 추가
+
+  useEffect(() => {
+    // 페이지가 처음으로 로드될 때만 실행
+    if (!performance.navigation.type) {
+      window.location.reload();
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(allData);
+  }, [allData]);
 
   const handleGPSButtonClick = async () => {
     if (navigator.geolocation) {
@@ -108,6 +147,34 @@ const Main: React.FC = () => {
       }));
     }
   };
+
+  useEffect(() => {
+    const modalContent = document.querySelector(".modalContent"); // 정확한 클래스명 확인
+
+    if (modalContent) {
+      const handleModalScroll = () => {
+        const { scrollHeight, scrollTop, clientHeight } = modalContent;
+
+        // 스크롤이 하단에 도달했는지 확인
+        if (
+          scrollTop + clientHeight >= scrollHeight - 5 &&
+          !allData.loading &&
+          allData.hasNext
+        ) {
+          setAllData((prevState) => ({
+            ...prevState,
+            page: prevState.page + 1,
+          }));
+        }
+      };
+
+      modalContent.addEventListener("scroll", handleModalScroll);
+
+      // 컴포넌트 언마운트 시 이벤트 리스너 제거
+      return () =>
+        modalContent.removeEventListener("scroll", handleModalScroll);
+    }
+  }, [allData.loading, allData.hasNext]); // 의존성 배열에 loading과 hasNext 추가
 
   useEffect(() => {
     // 컴포넌트가 마운트될 때 스크롤을 막습니다.
@@ -181,18 +248,50 @@ const Main: React.FC = () => {
     }
   };
 
+  const [activeButton, setActiveButton] = useState<string>("saleCnt");
+
   return (
     <div>
       <div className="pt-14">
         <div className="flex justify-between px-1 pt-3 pb-3 font-bold bg-gray-100">
-          <div className="p-1 px-3 bg-white border-2 border-white shadow-xl rounded-xl">
+          <div
+            onClick={() => {
+              setSortType("distance");
+              setActiveButton("distance");
+            }}
+            className={`flex-1 p-1 px-3 mx-1 text-center border-2 shadow-xl rounded-xl ${
+              activeButton === "distance"
+                ? "bg-orange-400 border-orange-400 text-white"
+                : "bg-white border-white"
+            }`}
+          >
             가까운 순
           </div>
-          <div className="p-1 px-3 bg-white border-2 border-white shadow-xl rounded-xl">
-            리뷰 많은 순
+          <div
+            onClick={() => {
+              setSortType("saleCnt");
+              setActiveButton("saleCnt");
+            }}
+            className={`flex-1 p-1 px-3 mx-1 text-center border-2 shadow-xl rounded-xl ${
+              activeButton === "saleCnt"
+                ? "bg-orange-400 border-orange-400 text-white"
+                : "bg-white border-white"
+            }`}
+          >
+            나눔 순
           </div>
-          <div className="p-1 px-3 bg-white border-2 border-white shadow-xl rounded-xl">
-            찜 많은 순
+          <div
+            onClick={() => {
+              setSortType("reviewCnt");
+              setActiveButton("reviewCnt");
+            }}
+            className={`flex-1 p-1 px-3 mx-1 text-center border-2 shadow-xl rounded-xl ${
+              activeButton === "reviewCnt"
+                ? "bg-orange-400 border-orange-400 text-white"
+                : "bg-white border-white"
+            }`}
+          >
+            감사편지 순
           </div>
         </div>
       </div>
@@ -204,6 +303,7 @@ const Main: React.FC = () => {
           lng={lng}
           updateCounter={findlocation.updateCounter}
           storeList={storeList} // 근처 가게 리스트를 전달
+          isDonated={allData.isDonated}
         />
         {/* 왼쪽 버튼 */}
         <button className={gpsButtonClass} onClick={handleGPSButtonClick}>
@@ -239,19 +339,50 @@ const Main: React.FC = () => {
           {/* 슬라이드 업되는 패널 내용 */}
           <div className="pt-2 bg-white rounded-t-lg shadow h-svh">
             {/* 여기에 지도 아래 정보를 렌더링합니다. */}
-            <div className="flex items-center justify-center w-full m-auto my-1 border border-orange-400 h-14 rounded-xl">
-              <ServiceBanner />
+            <div className="flex items-center justify-center w-auto mx-3 mb-2 border-2 border-orange-400 h-14 rounded-xl">
+              <BannerSlider />
             </div>
+            <hr className="w-full my-2" />
 
             {/* 패널 내부 스크롤 부분 */}
             <div
-              className="flex flex-col gap-2 py-2 pl-2 overflow-y-auto "
+              className="flex flex-col gap-2 py-2 pl-2 overflow-y-auto modalContent"
               style={{ maxHeight: isExpanded ? "467px" : "212px" }}
             >
-              {storeList &&
+              {allData.loading && (
+                <div className="flex items-center justify-center">
+                  <Lottie
+                    options={storeListLoadingOptions}
+                    height={180}
+                    width={180}
+                  />
+                </div>
+              )}
+
+              {storeList && storeList.length > 0 ? (
                 storeList.map((store, index) => (
                   <Shops key={index} store={store} /> // 각 요소에 대한 JSX 생성 및 Shops 컴포넌트에 데이터 전달
-                ))}
+                ))
+              ) : (
+                <div className="flex flex-col items-center justify-center">
+                  {/* 여기에 storeList가 비어 있을 때 보여줄 내용을 추가합니다 */}
+                  <span className="text-base">현재 가게 목록이 없습니다.</span>
+                  <Lottie
+                    options={storeListLoadingOptions}
+                    height={170}
+                    width={170}
+                  />
+                </div>
+              )}
+              {allData.loading && (
+                <div className="flex items-center justify-center">
+                  <Lottie
+                    options={storeListLoadingOptions}
+                    height={180}
+                    width={180}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>

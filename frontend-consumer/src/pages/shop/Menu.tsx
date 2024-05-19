@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 
 import { MenuItem } from "../../types/ShopMenuType";
 
@@ -10,15 +10,18 @@ const ShopMenu = ({ menu }: { menu: MenuItem }) => {
   const { Id } = useParams();
 
   const handleClick = () => {
-    navigate('/add-cart', { state: {saleId: menu.saleId, storeId: Id} });
+    navigate("/add-cart", { state: { saleId: menu.saleId, storeId: Id } });
   };
 
   return (
     <div>
       <div className="m-auto mt-5 center">
-        <div onClick={handleClick} className="w-[350px] h-[135px] border-2 rounded-xl px-4 pt-2">
+        <div
+          onClick={handleClick}
+          className="w-[350px] h-[135px] border-2 rounded-xl px-4 pt-2.5"
+        >
           <div className="between">
-            <div>
+            <div className="w-[200px] h-[110px]">
               <div className="flex items-center space-x-1">
                 <img className="w-4" src={sale} alt="세일" />
                 <p className="font-bold text-red-500 text-xxxs">
@@ -45,8 +48,14 @@ const ShopMenu = ({ menu }: { menu: MenuItem }) => {
                 </div>
               </div>
             </div>
-            <div className="w-[112px] h-[112px] rounded-lg">
-              <img src={menu.imageUrl} alt="음식이미지" />
+            <div className="my-auto">
+              <div className="w-[110px] h-[110px]">
+                <img
+                  src={menu.imageUrl}
+                  className="object-cover w-full h-full rounded-xl"
+                  alt="음식이미지"
+                />
+              </div>
             </div>
           </div>
         </div>

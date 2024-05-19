@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="manifest" href="/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <link rel="icon" type="image/png" href="/ios/16.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script
@@ -10,6 +10,9 @@
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%VITE_KAKAO_JAVASCRIPT_API_KEY%&libraries=services,clusterer&autoload=true"
     ></script>
     <title>가은</title>
+    <link rel="stylesheet" href="/src/fonts/onglefont.css" />
+    <link rel="stylesheet" href="/src/fonts/omyupretty.css" />
+    <!-- fonts.css 파일의 경로를 적어줍니다. -->
   </head>
   <body>
     <div id="root"></div>
@@ -17,7 +20,16 @@
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
-          navigator.serviceWorker.register("/pwabuilder-sw.js");
+          navigator.serviceWorker
+            .register("/firebase-messaging-sw.js")
+            .then((registration: ServiceWorkerRegistration) => {
+              console.log("service-worker 등록 성공");
+              console.log(registration);
+            })
+            .catch((err) => {
+              console.log("service-worker 등록 실패");
+              console.error(err);
+            });
         });
       }
     </script>
