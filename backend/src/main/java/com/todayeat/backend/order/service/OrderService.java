@@ -379,6 +379,7 @@ public class OrderService {
                 .toList();
 
         storeService.addSaleList(orderInfo.getStore(), saleList);
+    }
 
     private void getConsumerNotification(OrderInfo orderInfo) {
 
