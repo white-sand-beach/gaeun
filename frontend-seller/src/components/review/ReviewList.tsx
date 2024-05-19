@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ReviewListType } from "../../types/review/ReviewListType";
 import getReviewAPI from "../../service/review/getReviewAPI";
+import logo from "../../assets/logo/logo.png"
 
 const ReviewList: React.FC = () => {
   const [reviewInfo, setReviewInfo] = useState<ReviewListType>({
@@ -13,11 +14,11 @@ const ReviewList: React.FC = () => {
   useEffect(() => {
     const fetchReviewInfo = async () => {
       try {
-        const response = await getReviewAPI(reviewInfo.page, 10);
+        const response = await getReviewAPI(reviewInfo.page, 1000);
         console.log(response.data.data);
         setReviewInfo((prev) => ({
           ...prev,
-          reviewList: [...prev.reviewList, response.data.data.reviewList],
+          reviewList: [...prev.reviewList, ...response.data.data.reviewList],
           hasNext: response.data.data.hasNext,
         }));
       } catch (err) {
@@ -26,7 +27,7 @@ const ReviewList: React.FC = () => {
     };
     fetchReviewInfo();
   }, [reviewInfo.page]);
-
+  
   useEffect(() => {
     const handleScroll = () => {
       const scrollH = document.documentElement.scrollHeight;
@@ -46,14 +47,16 @@ const ReviewList: React.FC = () => {
   }, [reviewInfo.hasNext]);
 
   return (
-    <div className="flex flex-col w-screen h-full gap-3 overflow-y-scroll">
-      {reviewInfo.reviewList.map((list, index) => (
-        <div key={index}>
-          <img src={list.imageUrl} alt="" />
-          <p>작성일자 : {list.createdAd}</p>
-          <p>가게 : {list.storeName}</p>
-          <p>닉네임 : {list.nickname}</p>
-          <p>내용 : {list.content}</p>
+    <div className="flex flex-col w-screen h-full gap-3">
+      {reviewInfo.reviewList.map((item, index) => (
+        <div key={index} className="mx-4 flex flex-row gap-4">
+          <img src={item.imageUrl ? item.imageUrl : logo} alt="손님 프로필 이미지" className="w-[100px] h-[100px]" />
+          <div>
+          <p>작성일자 : {item.createdAt}</p>
+          <p>가게 : {item.storeName}</p>
+          <p>닉네임 : {item.nickname}</p>
+          <p>내용 : {item.content}</p>
+          </div>
         </div>
       ))}
     </div>

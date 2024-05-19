@@ -16,7 +16,7 @@ const getReviewAPI = async (page: number, size: number): Promise<any> => {
         Authorization: `Bearer ${accessToken}`
       }
     })
-    console.log(response)
+    console.log("리뷰 조회 성공: ", response)
     return response
   }
   catch (err) {

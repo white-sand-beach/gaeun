@@ -13,5 +13,5 @@ export interface ReviewInfoType {
   nickname: string;
   storeId: number;
   storeName: string;
-  createdAd: string;
+  createdAt: string;
 }
