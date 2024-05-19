@@ -1,27 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import GotoBack from "../../assets/back.png";
 import NotiIcon from "../../assets/notification.png";
-import SellerNotiCount from "../../service/notification/SellerNotiCount";
 
 const Header: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [notiCount, setNotiCount] = useState<number>(0);
-
-  useEffect(() => {
-    const fetchCountInfo = async () => {
-      try {
-        const response = await SellerNotiCount();
-        setNotiCount(response.data.data.count);
-        return response;
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchCountInfo();
-  }, []);
 
   // 주소에 따른 Header의 title변경
   let title = "";
@@ -65,7 +50,6 @@ const Header: React.FC = () => {
       </button>
       <h1>{title}</h1>
       <button onClick={() => navigate("/notification")}>
-        <p className="">{notiCount}</p>
         <img src={NotiIcon} alt="알림" className="w-[40px] h-[40px]" />
       </button>
     </header>
