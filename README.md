@@ -54,28 +54,23 @@
 <br>
 
 ### 📱 서비스 화면
--
+
 
 <br>
 
 ### 📂 프로젝트 산출물
 **와이어프레임** <br>
-
+![image](/uploads/5b4b9d80362ee0fe4a7e3ce7881d47b6/image.png)
+![image](/uploads/d73a7233c5789be653a070cad02bb19e/image.png)
 **프로토타입** <br>
-
+![image](/uploads/60bbc7dea7c7f1a36d2aa6fcc6caf0d6/image.png)
+![image](/uploads/bb3c8bb2191b1f867b6a3168297c074d/image.png)
 **ERD** <br>
-
+![image](/uploads/18f99c4ee6732ec6af58bbe3f5387e5c/image.png)
 **서비스 아키텍처** <br>
-
-
-<br>
-
-### 
-
+![image](/uploads/e17221d0ecf2b9502c160f7c155cacd7/image.png)
 
 <br>
-
-### 
 
 ### 😺 팀원 소개
 | 이름 | 역할 | 내용 |
