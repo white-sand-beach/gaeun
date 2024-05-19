@@ -149,6 +149,10 @@ public class OrderService {
 
         // 판매량 증가
         sale.updateTotalQuantity(cartQuantity);
+        if (sale.isFinished(false)) {
+
+            storeService.deleteSale(sale.getStore(), sale.getName());
+        }
 
         return sale;
     }
@@ -199,12 +203,9 @@ public class OrderService {
             orderInfoRepository.delete(orderInfo);
 
             // 판매량 감소
-            orderInfo.getOrderInfoItemList().stream().iterator().forEachRemaining(
-                    item -> {
-                        Sale sale = item.getSale();
-                        updateSaleQuantity(sale, -item.getQuantity());
-                    }
-            );
+            reduceSaleStock(orderInfo);
+
+            cancelPayment(request.getPaymentId());
 
             throw new BusinessException(ORDER_PAYMENT_FAIL);
         }
@@ -236,7 +237,7 @@ public class OrderService {
         // 요청된 주문 상태
         OrderInfoStatus orderInfoStatus;
         try {
-            orderInfoStatus =  OrderInfoStatus.valueOf(request.getStatus());
+            orderInfoStatus = OrderInfoStatus.valueOf(request.getStatus());
         } catch (Exception e) {
             throw new BusinessException(ORDER_STATUS_BAD_REQUEST);
         }
@@ -270,12 +271,7 @@ public class OrderService {
                 orderInfo.updateStatus(orderInfoStatus);
 
                 // 판매량 감소
-                orderInfo.getOrderInfoItemList().stream().iterator().forEachRemaining(
-                        item -> {
-                            Sale sale = item.getSale();
-                            updateSaleQuantity(sale, -item.getQuantity());
-                        }
-                );
+                reduceSaleStock(orderInfo);
 
                 // 결제 취소
                 if (orderInfo.getPaymentId() != null) {
@@ -307,15 +303,10 @@ public class OrderService {
                 orderInfo.updateStatus(orderInfoStatus);
 
                 // 판매량 감소
-                orderInfo.getOrderInfoItemList().stream().iterator().forEachRemaining(
-                        item -> {
-                            Sale sale = item.getSale();
-                            updateSaleQuantity(sale, -item.getQuantity());
-                        }
-                );
+                reduceSaleStock(orderInfo);
 
                 // 결제 취소
-                if (orderInfo.getPaymentId()!= null) {
+                if (orderInfo.getPaymentId() != null) {
                     cancelPayment(orderInfo.getPaymentId());
                 }
 
@@ -353,6 +344,19 @@ public class OrderService {
         throw new BusinessException(ORDER_STATUS_CANT_UPDATE);
     }
 
+    private void reduceSaleStock(OrderInfo orderInfo) {
+
+        List<Sale> saleList = orderInfo.getOrderInfoItemList().stream()
+                .map(OrderInfoItem::getSale)
+                .peek(sale -> {
+                    updateSaleQuantity(sale, -sale.getTotalQuantity());
+                    sale.isFinished(false);
+                })
+                .toList();
+
+        storeService.addSaleList(orderInfo.getStore(), saleList);
+    }
+
     @Transactional
     public void updateStatusConsumer(Long orderInfoId) {
 
@@ -370,12 +374,7 @@ public class OrderService {
         orderInfo.updateStatus(CANCEL);
 
         // 판매량 감소
-        orderInfo.getOrderInfoItemList().stream().iterator().forEachRemaining(
-                item -> {
-                    Sale sale = item.getSale();
-                    updateSaleQuantity(sale, -item.getQuantity());
-                }
-        );
+        reduceSaleStock(orderInfo);
 
         // 결제 취소
         if (orderInfo.getPaymentId() != null) {

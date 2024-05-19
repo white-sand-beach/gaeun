@@ -11,6 +11,9 @@ import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
+import com.todayeat.backend.sale.dto.SaleInfo;
+import com.todayeat.backend.sale.entity.Sale;
+import com.todayeat.backend.sale.mapper.SaleMapper;
 import com.todayeat.backend.sale.repository.SaleRepository;
 import com.todayeat.backend.searchKeyword.service.SearchKeywordService;
 import com.todayeat.backend.seller.entity.Location;
@@ -79,10 +82,10 @@ public class StoreServiceElasticsearchImpl implements StoreService {
         Seller seller = sellerRepository.findById(securityUtil.getSeller().getId())
                 .orElseThrow(() -> new BusinessException(SELLER_NOT_FOUND));
 
-        //if (seller.getStore() != null) {
-        //
-        //    throw new BusinessException(STORE_CONFLICT);
-        //}
+        if (seller.getStore() != null) {
+
+            throw new BusinessException(STORE_CONFLICT);
+        }
 
         String imageURL = imageToURL(createStoreRequest.getImage());
 
@@ -171,7 +174,7 @@ public class StoreServiceElasticsearchImpl implements StoreService {
 
                         b.must(m -> m.multiMatch(mm -> mm
                                 .query(keyword)
-                                .fields("name", "categoryList.name")));
+                                .fields("name", "categoryList.name", "saleList.name")));
                     }
                     b.must(m -> m.geoDistance(g -> g
                             .field("location")
@@ -338,6 +341,73 @@ public class StoreServiceElasticsearchImpl implements StoreService {
                 .build();
 
         elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
+    }
+
+    @Override
+    @Transactional
+    public void addSaleList(Store store, List<Sale> saleList) {
+
+        StoreDocument storeDocument = validateAndGetStoreDocument(store.getId());
+
+        List<SaleInfo> saleInfoList = storeDocument.getSaleList();
+
+        List<String> existingNameList = saleInfoList.stream()
+                .map(SaleInfo::getName)
+                .toList();
+
+        saleList.forEach(sale -> {
+            if (!existingNameList.contains(sale.getName())) {
+
+                saleInfoList.add(SaleMapper.INSTANCE.saleToSaleInfo(sale));
+            }
+        });
+
+        Document document = Document.create();
+
+        document.put("saleList", saleInfoList);
+
+        UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
+                .withDocument(document)
+                .build();
+
+        elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
+    }
+
+    @Override
+    @Transactional
+    public void deleteSale(Store store, String name) {
+
+        IndexCoordinates indexCoordinates = IndexCoordinates.of("store");
+
+        StoreDocument storeDocument = elasticsearchOperations.get(store.getId().toString(), StoreDocument.class, indexCoordinates);
+
+        if (storeDocument == null) {
+
+            throw new BusinessException(STORE_NOT_FOUND);
+        }
+
+        List<SaleInfo> saleInfoList = storeDocument.getSaleList();
+        if (saleInfoList != null) {
+
+            List<SaleInfo> updatedSaleInfoList = null;
+            if (name != null) {
+
+                updatedSaleInfoList = saleInfoList.stream()
+                        .filter(saleInfo -> !saleInfo.getName().equals(name))
+                        .collect(Collectors.toList());
+            }
+
+            storeDocument.setSaleList(updatedSaleInfoList);
+
+            Document document = Document.create();
+            document.put("saleList", updatedSaleInfoList);
+
+            UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
+                    .withDocument(document)
+                    .build();
+
+            elasticsearchOperations.update(updateQuery, indexCoordinates);
+        }
     }
 
     private String imageToURL(MultipartFile image) {

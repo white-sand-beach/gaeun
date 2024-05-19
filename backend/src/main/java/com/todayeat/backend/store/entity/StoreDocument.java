@@ -1,8 +1,8 @@
 package com.todayeat.backend.store.entity;
 
 import com.todayeat.backend.category.dto.CategoryInfo;
+import com.todayeat.backend.sale.dto.SaleInfo;
 import com.todayeat.backend.seller.entity.Location;
-import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -70,4 +70,7 @@ public class StoreDocument {
 
     @Field(type = FieldType.Nested)
     private List<CategoryInfo> categoryList = new ArrayList<>();
+
+    @Field(type = FieldType.Nested)
+    private List<SaleInfo> saleList = new ArrayList<>();
 }

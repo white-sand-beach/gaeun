@@ -9,6 +9,8 @@ import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.todayeat.backend._common.response.error.ErrorType;
+import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.category.dto.CategoryInfo;
 import com.todayeat.backend.category.entity.QCategory;
@@ -43,7 +45,7 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
         QSale sale = QSale.sale;
 
         JPAQuery<StoreInfo> query = jpaQueryFactory
-                .select(fields(
+                .selectDistinct(fields(
                         StoreInfo.class,
                         store.id.as("storeId"),
                         store.address,
@@ -60,18 +62,29 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
                 .from(store)
                 .leftJoin(storeCategory).on(storeCategory.store.id.eq(store.id))
                 .leftJoin(storeCategory.category, category)
+                .leftJoin(sale).on(sale.store.id.eq(store.id))
                 .where(store.isOpened.isTrue()
+                        .and(store.deletedAt.isNull())
                         .and(getIntegerNumberTemplate(location, store).loe(radius)));
 
         if (categoryId != null) {
-            query.where(storeCategory.category.id.eq(categoryId));
+
+            query.where(
+                    storeCategory.category.id.eq(categoryId)
+                            .and(storeCategory.deletedAt.isNull())
+            );
         }
 
         if (keyword != null && !keyword.isEmpty()) {
-            BooleanExpression keywordCondition = store.name.containsIgnoreCase(keyword)
-                    .or(category.name.containsIgnoreCase(keyword));
 
-            query.where(keywordCondition);
+            query.where(
+                    store.name.containsIgnoreCase(keyword)
+                            .or(category.name.containsIgnoreCase(keyword)
+                                    .and(category.deletedAt.isNull()))
+                            .or(sale.name.containsIgnoreCase(keyword)
+                                    .and(sale.isFinished.eq(false)
+                                            .and(sale.deletedAt.isNull())))
+            );
         }
 
         query.offset(pageable.getOffset())
@@ -84,7 +97,7 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
                 case "saleCnt" -> new OrderSpecifier<>(Order.DESC, entityPath.getNumber("saleCnt", Integer.class));
                 case "reviewCnt" -> new OrderSpecifier<>(Order.DESC, entityPath.getNumber("reviewCnt", Integer.class));
                 case "favoriteCnt" -> new OrderSpecifier<>(Order.DESC, entityPath.getNumber("favoriteCnt", Integer.class));
-                default -> throw new IllegalArgumentException("Invalid property for sorting: " + order.getProperty());
+                default -> throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR);
             };
 
             query.orderBy(orderSpecifier);
@@ -124,6 +137,7 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
 
         boolean hasNext = false;
         if (storeInfos.size() > pageable.getPageSize()) {
+
             storeInfos.remove(pageable.getPageSize());
             hasNext = true;
         }
@@ -132,6 +146,7 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
     }
 
     private static NumberTemplate<Integer> getIntegerNumberTemplate(Location location, QStore store) {
+
         return Expressions.numberTemplate(Integer.class,
                 "haversine({0}, {1}, {2}, {3})",
                 store.location.lat,
