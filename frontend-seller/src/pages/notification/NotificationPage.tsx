@@ -1,70 +1,59 @@
+import { useEffect, useState } from "react";
+import { NotificationInfo } from "../../types/notification/NotificationListType";
+import SellerNoti from "../../service/notification/SellerNoti";
 import NotificationList from "../../components/notification/NotificationList";
 
 const NotificationPage = () => {
-    const alarmlists = [
-        {
-            orderNum: "1",
-            orderDate: "2024-04-26",
-            foodName: "햄버거1",
-            price: "13,900",
-        },
-        {
-            orderNum: "2",
-            orderDate: "2024-04-26",
-            foodName: "햄버거2",
-            price: "23,900",
-        },
-        {
-            orderNum: "3",
-            orderDate: "2024-04-26",
-            foodName: "햄버거3",
-            price: "33,900",
-        },
-        {
-            orderNum: "4",
-            orderDate: "2024-04-26",
-            foodName: "햄버거4",
-            price: "33,900",
-        },
-        {
-            orderNum: "5",
-            orderDate: "2024-04-26",
-            foodName: "햄버거5",
-            price: "33,900",
-        },
-        {
-            orderNum: "6",
-            orderDate: "2024-04-26",
-            foodName: "햄버거6",
-            price: "33,900",
-        },
-        {
-            orderNum: "5",
-            orderDate: "2024-04-26",
-            foodName: "햄버거5",
-            price: "33,900",
-        },
-        {
-            orderNum: "6",
-            orderDate: "2024-04-26",
-            foodName: "햄버거6",
-            price: "33,900",
-        },
-    ]
+  const [notiInfo, setNotiInfo] = useState<NotificationInfo>({
+    notificationList: [],
+    page: 0,
+    hasNext: false,
+  });
 
-    return (
-        <div className="fixed flex flex-col items-center max-h-[calc(100vh-60px)] overflow-y-scroll top-[60px]">
-            {alarmlists.map((alarmlist, index) => (
-                <div key={index}>
-                    <NotificationList
-                        orderNum={alarmlist.orderNum}
-                        orderDate={alarmlist.orderDate}
-                        foodName={alarmlist.foodName}
-                        price={alarmlist.price} />
-                </div>
-            ))}
-        </div>
-    );
+  // 페이지 변화에 따라 알람 정보 변동
+  useEffect(() => {
+    const fetchNotiInfo = async () => {
+      try {
+        const response = await SellerNoti(notiInfo.page, 5);
+        setNotiInfo((prev) => ({
+          ...prev,
+          notificationList: [
+            ...prev.notificationList,
+            ...response.data.notificationList,
+          ],
+          hasNext: response.data.hasNext,
+        }));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchNotiInfo();
+  }, [notiInfo.page]);
+
+  // 스크롤 변화에 따라 page 값 변동
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollH = document.documentElement.scrollHeight;
+      const scrollT = document.documentElement.scrollTop;
+      const clientH = document.documentElement.clientHeight;
+
+      if (scrollT + clientH >= scrollH && notiInfo.hasNext) {
+        setNotiInfo((prev) => ({
+          ...prev,
+          page: prev.page + 1,
+        }));
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [notiInfo.hasNext]);
+
+  return (
+    <div className="no-footer top-[80px]">
+      <NotificationList notiInfo={notiInfo.notificationList} />
+    </div>
+  );
 };
 
 export default NotificationPage;
