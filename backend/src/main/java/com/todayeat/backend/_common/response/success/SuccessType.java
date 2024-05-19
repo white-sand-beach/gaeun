@@ -102,6 +102,7 @@ public enum SuccessType {
 
     // searchKeyword
     GET_POPULAR_SEARCH_LIST_SUCCESS("인기 검색어 조회에 성공하였습니다."),
+    GET_SUGGESTION_SEARCH_LIST_SUCCESS("추천 검색어 조회에 성공하였습니다."),
     
     // notification
     GET_SELLER_NOTIFICATION_LIST_SUCCESS("판매자 알림 목록 조회에 성공하였습니다."),
