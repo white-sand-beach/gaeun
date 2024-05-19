@@ -28,7 +28,7 @@ const OrderDetail: React.FC = () => {
   }, [orderInfoId, detailInfo]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen p-4 bg-gray-100 w-full">
       {detailInfo ? (
         <div className="w-full max-w-4xl p-6 bg-white rounded-lg shadow-md">
           <h1 className="mb-4 text-xl font-bold">
