@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { DetailOrderInfoType } from "../../types/order/DetailOrderInfoType";
 import DetailOrderInfo from "../../service/order/DetailOrderInfo";
+import OrderStatusAPI from "../../service/order/OrderStatusAPI";
 
 const OrderDetail: React.FC = () => {
   const { orderInfoId } = useParams<{ orderInfoId: string }>();
@@ -9,6 +10,7 @@ const OrderDetail: React.FC = () => {
     null
   );
 
+  // 상세 정보 업데이트
   useEffect(() => {
     const fetchInfoData = async () => {
       try {
@@ -24,8 +26,32 @@ const OrderDetail: React.FC = () => {
 
   useEffect(() => {
     console.log(orderInfoId);
-    console.log(detailInfo);
   }, [orderInfoId, detailInfo]);
+
+  const handleStatusChange = async (newStatus: string, restTime?: number) => {
+    // 상세 정보 없으면 XX
+    if (!detailInfo) return;
+
+    // 요청한 상태에 따라 표시할 status 맵핑
+    const statusDisplayMap: { [key: string]: string } = {
+      "IN_PROGRESS": "진행 중",
+      "PREPARED": "준비 완료",
+      "FINISHED": "수령 완료",
+      "DENIED": "거절됨",
+      "CANCEL": "취소됨"
+    };
+
+    try {
+      await OrderStatusAPI(detailInfo.orderInfoId, newStatus, restTime);
+      setDetailInfo({
+        ...detailInfo,
+        orderStatus: statusDisplayMap[newStatus],
+        restTime: restTime || detailInfo.restTime,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4 bg-gray-100 w-full">
@@ -68,7 +94,36 @@ const OrderDetail: React.FC = () => {
                 {detailInfo.paymentPrice}원
               </p>
             </div>
+            {detailInfo.orderStatus === "진행 중" ? (
+              <div className="flex flex-row justify-between">
+                <p>남은 시간</p>
+                <p>{detailInfo.restTime}분</p>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
+
+          {/* 현재 결제 상태에 따라 노출될 버튼들 */}
+          {detailInfo.orderStatus === "결제 완료" && (
+            <div className="flex flex-row gap-3">
+              <button onClick={() => handleStatusChange("IN_PROGRESS", 30)}>
+                준비할게요
+              </button>
+              <button onClick={() => handleStatusChange("DENIED")}>거절</button>
+              <button onClick={() => handleStatusChange("CANCEL")}>취소</button>
+            </div>
+          )}
+          {detailInfo.orderStatus === "진행 중" && (
+            <button onClick={() => handleStatusChange("PREPARED")}>
+              준비 다 햇어요
+            </button>
+          )}
+          {detailInfo.orderStatus === "준비 완료" && (
+            <button onClick={() => handleStatusChange("FINISHED")}>
+              수령 완료 처리
+            </button>
+          )}
         </div>
       ) : (
         <p>주문 정보를 불러오는 중...</p>
