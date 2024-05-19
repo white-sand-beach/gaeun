@@ -17,16 +17,6 @@ pipeline {
             }
         }
 
-        stage("firebase-messaging-sw download") {
-            steps {
-                withCredentials([file(credentialsId: 'firebase-messaging-sw', variable: 'configFile')]) {
-                    script {
-                        sh 'cp -rf $configFile /usr/share/nginx/html/firebase-messaging-sw.js'
-                    }
-                }
-            }
-        }
-
         stage("checkout_fe_consumer") {
             steps {
                 script {
