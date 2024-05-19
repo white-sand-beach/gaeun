@@ -36,7 +36,7 @@ const MenuList: React.FC<MenuListType> = (props) => {
               alt="메뉴 사진"
               className="w-[200px] h-[200px] rounded-3xl"
             />
-            <div className="flex flex-col gap-3 w-full">
+            <div className="flex flex-col w-full gap-3">
               <p className="text-5xl font-bold">{menu.name}</p>
               <h1>원가 : {menu.originalPrice}원</h1>
               <h1>판매가 : {menu.sellPrice}원</h1>
