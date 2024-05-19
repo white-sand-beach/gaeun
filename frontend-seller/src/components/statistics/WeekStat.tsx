@@ -2,18 +2,26 @@ import React, { useEffect, useState } from "react";
 import { SaleStatisticList } from "../../types/statistics/SaleStatisticList.ts";
 import WeekStatisticsAPI from "../../service/statistics/WeekStatisticsAPI.ts";
 import { Bar } from "react-chartjs-2";
-import { ChartOptions, CategoryScale, Chart, LinearScale, BarElement, BarController, Title } from "chart.js";
+import {
+  ChartOptions,
+  CategoryScale,
+  Chart,
+  LinearScale,
+  BarElement,
+  BarController,
+  Title,
+} from "chart.js";
 
 const WeekStat: React.FC = () => {
-  Chart.register(CategoryScale, LinearScale, BarElement, BarController, Title)
+  Chart.register(CategoryScale, LinearScale, BarElement, BarController, Title);
   // 주간 데이터 받을 상태변수
   const [weekInfo, setWeekInfo] = useState<SaleStatisticList>({
     saleStatisticList: [
       {
         menuName: "",
         saleStatistic: 0,
-      }
-    ]
+      },
+    ],
   });
 
   // 주간 데이터 할당 useEffect
@@ -63,11 +71,15 @@ const WeekStat: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
-      {weekInfo ? (
-        <Bar data={weekChartData} options={chartOptions} />
-      ) : (
-        <h1>판매량 데이터가 없어요😭</h1>
-      )}
+      <div className="flex items-center justify-center w-full h-full">
+        <div className="flex items-center justify-center w-full h-full max-w-screen-lg">
+          {weekInfo ? (
+            <Bar data={weekChartData} options={chartOptions} />
+          ) : (
+            <h1>판매량 데이터가 없어요😭</h1>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

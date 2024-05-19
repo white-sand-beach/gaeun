@@ -4,9 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/icons/main-icon-16.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#FFAF38">
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%VITE_KAKAO_JS_KEY%&libraries=services&autoload=true"></script>
+    <meta name="theme-color" content="#FFAF38" />
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%VITE_KAKAO_JS_KEY%&libraries=services&autoload=true"
+    ></script>
     <title>가은</title>
+    <link rel="stylesheet" href="/src/fonts/onglefont.css" />
+    <link rel="stylesheet" href="/src/fonts/omyupretty.css" />
   </head>
   <body>
     <div id="root"></div>
@@ -14,16 +19,17 @@
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
-          navigator.serviceWorker.register("/firebase-messaging-sw.js")
-          .then((res) => {
-            console.log("service-worker 등록 성공")
-            console.log(res)
-          })
-          .catch((err) => {
-            console.log("service-worker 등록 실패")
-            console.error(err)
-          })
-        })
+          navigator.serviceWorker
+            .register("/firebase-messaging-sw.js")
+            .then((res) => {
+              console.log("service-worker 등록 성공");
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log("service-worker 등록 실패");
+              console.error(err);
+            });
+        });
       }
     </script>
   </body>

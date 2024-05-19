@@ -47,14 +47,18 @@ const InprogressListPage = () => {
   }, [inprogressOrderInfo.hasNext]);
 
   return (
-    <div className="gap-3 yes-footer top-[75px] w-screen">
-      {inprogressOrderInfo.orderInfo.length === 0 ? (
-        <div className="flex flex-col justify-center items-center w-screen h-screen">
-          주문내역이 없어요 😭
+    <div className="flex items-center justify-center min-h-screen p-4 bg-gray-100">
+      <div className="w-full max-w-screen-lg">
+        <div className="gap-3">
+          {inprogressOrderInfo.orderInfo.length === 0 ? (
+            <h1 className="text-center">주문이 없어요 😭</h1>
+          ) : (
+            <InprogressList
+              inprogressOrderInfo={inprogressOrderInfo.orderInfo}
+            />
+          )}
         </div>
-      ) : (
-        <InprogressList inprogressOrderInfo={inprogressOrderInfo.orderInfo} />
-      )}
+      </div>
     </div>
   );
 };
