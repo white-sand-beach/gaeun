@@ -17,50 +17,75 @@ const Footer = () => {
       navigate(path);
     }
   };
-
   return (
-    <footer>
+    <footer className="flex justify-around py-4 bg-mainColor">
       <button
-        className="flex flex-col items-center justify-center gap-1 w-full"
+        className="flex flex-col items-center justify-center gap-1 text-white"
         onClick={() => handleIconClick("/statistics")}
       >
-        <img src={ChartIcon} alt="통계" className="w-[24px] h-[24px]" />
+        <div className="w-8 h-8">
+          <img
+            src={ChartIcon}
+            alt="통계"
+            className="object-cover w-full h-full"
+          />
+        </div>
         <p>통계</p>
       </button>
 
       <button
-        className="flex flex-col items-center justify-center gap-1 w-full"
+        className="flex flex-col items-center justify-center gap-1 text-white"
         onClick={() => handleIconClick("/menus")}
       >
-        <img
-          src={AddProductIcon}
-          alt="물품등록"
-          className="w-[24px] h-[24px]"
-        />
+        <div className="w-8 h-8">
+          <img
+            src={AddProductIcon}
+            alt="물품등록"
+            className="object-cover w-full h-full"
+          />
+        </div>
         <p>메뉴</p>
       </button>
 
       <button
-        className="flex flex-col items-center justify-center gap-1 w-full"
+        className="flex flex-col items-center justify-center gap-1 text-white"
         onClick={() => handleIconClick("/order")}
       >
-        <img src={OrderListIcon} alt="주문현황" className="w-[24px] h-[24px]" />
+        <div className="w-8 h-8">
+          <img
+            src={OrderListIcon}
+            alt="주문현황"
+            className="object-cover w-full h-full"
+          />
+        </div>
         <p>주문현황</p>
       </button>
 
       <button
-        className="flex flex-col items-center justify-center gap-1 w-full"
+        className="flex flex-col items-center justify-center gap-1 text-white"
         onClick={() => handleIconClick("/sales")}
       >
-        <img src={SellListIcon} alt="판매내역" className="w-[24px] h-[24px]" />
+        <div className="w-8 h-8">
+          <img
+            src={SellListIcon}
+            alt="판매내역"
+            className="object-cover w-full h-full"
+          />
+        </div>
         <p>판매내역</p>
       </button>
 
       <button
-        className="flex flex-col items-center justify-center gap-1 w-full"
+        className="flex flex-col items-center justify-center gap-1 text-white"
         onClick={() => handleIconClick("/mystore")}
       >
-        <img src={ProfileIcon} alt="프로필" className="w-[24px] h-[24px]" />
+        <div className="w-8 h-8">
+          <img
+            src={ProfileIcon}
+            alt="프로필"
+            className="object-cover w-full h-full"
+          />
+        </div>
         <p>프로필</p>
       </button>
     </footer>

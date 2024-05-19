@@ -4,22 +4,20 @@ import { MenuInfoType } from "../../types/menu/MenuInfoType";
 import GetMenuAPI from "../../service/menu/GetMenuAPI";
 
 const MenuListPage = () => {
-  const [menusInfo, setMenusInfo] = useState<MenuInfoType[]>([])
-  
+  const [menusInfo, setMenusInfo] = useState<MenuInfoType[]>([]);
+
   const { getMenu } = GetMenuAPI();
   const handleGetMenu = () => {
-    getMenu(setMenusInfo)
-  }
+    getMenu(setMenusInfo);
+  };
 
   useEffect(() => {
-    handleGetMenu()
-  }, [])
+    handleGetMenu();
+  }, []);
 
   return (
-    <div className="yes-footer top-[75px] overflow-y-scroll">
-      <MenuList 
-      menusInfo={menusInfo}
-      />
+    <div className="flex items-center justify-center min-h-screen p-4 bg-gray-100">
+      <MenuList menusInfo={menusInfo} />
     </div>
   );
 };
