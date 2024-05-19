@@ -9,7 +9,6 @@ import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.cart.entity.Cart;
 import com.todayeat.backend.cart.repository.CartRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
-import com.todayeat.backend.fcmtoken.repository.FCMTokenRepository;
 import com.todayeat.backend.menu.entitiy.Menu;
 import com.todayeat.backend.menu.repository.MenuRepository;
 import com.todayeat.backend.sale.dto.request.CreateSaleListRequest;
@@ -73,6 +72,7 @@ public class SaleService {
         saleRepository.saveAll(saleList);
 
         storeService.updateIsOpened(store, true);
+        storeService.addSaleList(store, saleList);
 
         // 알림
         CreateFavoriteNotification createFavoriteNotification = consumerNotificationService.CreateFavoriteNotification(CreateFavoriteNotification.of(store.getId(), store.getName(), new ArrayList<>()));
@@ -138,8 +138,15 @@ public class SaleService {
                 .orElseThrow(() -> new BusinessException(ErrorType.SALE_CONTENT_UPDATE_FAIL));
 
         // 재고 검증 및 업데이트. 총 판매량보다 재고가 작은 경우 예외
-        if (!sale.update(request.getContent(), request.getIsFinished(), request.getStock())) {
+        if (!sale.update(request.getContent(), request.getStock())) {
+
             throw new BusinessException(ErrorType.SALE_STOCK_UPDATE_FAIL);
+        }
+
+        // 판매 여부 업데이트
+        if (sale.isFinished(request.getIsFinished())) {
+
+            storeService.deleteSale(store, sale.getName());
         }
     }
 
@@ -151,7 +158,8 @@ public class SaleService {
 
         saleRepository.updateAllSalesAsFinishedForStore(store);
 
-        store.updateIsOpened(false);
+        storeService.updateIsOpened(store, false);
+        storeService.deleteSale(store, null);
     }
 
     // 판매자의 가게가 맞는지 확인, 가게 존재 여부 확인

@@ -12,6 +12,7 @@ import com.todayeat.backend.store.repository.StoreDocumentRepository;
 import com.todayeat.backend.store.repository.StoreRepository;
 import com.todayeat.backend.store.service.StoreService;
 import com.todayeat.backend.store.service.StoreServiceElasticsearchImpl;
+import com.todayeat.backend.store.service.StoreServiceQueryDSLImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
