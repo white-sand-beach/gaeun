@@ -4,7 +4,7 @@ import EditIcon from "../../assets/mypage-change-info.png"
 
 const ShopInfo: React.FC<getShopInfoType> = (props) => {
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-3 pt-4">
       <div className="flex flex-row gap-2">
         <img
           src={props.imageURL}

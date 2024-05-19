@@ -44,32 +44,34 @@ const ShopInfoPage = () => {
   }, []);
 
   return (
-    <div className="yes-footer top-[75px] overflow-y-scroll gap-3">
-      <ShopInfo
-        imageURL={shopInfo.imageURL}
-        name={shopInfo.name}
-        roadAddress={shopInfo.roadAddress}
-        introduction={shopInfo.introduction}
-        tel={shopInfo.tel}
-      />
-      <div className="w-full flex flex-row">
-        <div onClick={() => setListTap(1)} className="w-full">
-          <h1
-            className={`border-b-2 w-full flex flex-row justify-center items-center h-[60px] ${listTap === 1 ? "bg-orange-300 border-2" : ""}`}
-          >
-            리뷰
-          </h1>
+    <div className="bg-gray-100 flex justify-center pt-24 pb-24">
+      <div className=" bg-white w-[800px] border-gray-300 border-4 rounded-[40px] p-10  overflow-y-scroll ">
+        <ShopInfo
+          imageURL={shopInfo.imageURL}
+          name={shopInfo.name}
+          roadAddress={shopInfo.roadAddress}
+          introduction={shopInfo.introduction}
+          tel={shopInfo.tel}
+        />
+        <div className="w-full flex flex-row my-5">
+          <div onClick={() => setListTap(1)} className="w-full">
+            <h1
+              className={`rounded-[20px] border-b-2 w-full flex flex-row justify-center items-center h-[60px] ${listTap === 1 ? "bg-orange-300 border-2" : ""}`}
+            >
+              리뷰
+            </h1>
+          </div>
+          <div onClick={() => setListTap(2)} className="w-full">
+            <h1
+              className={`rounded-[20px] border-b-2 w-full flex flex-row justify-center items-center h-[60px] ${listTap === 2 ? "bg-orange-300 border-2" : ""}`}
+            >
+              등록된 물품 목록
+            </h1>
+          </div>
         </div>
-        <div onClick={() => setListTap(2)} className="w-full">
-          <h1
-            className={`border-b-2 w-full flex flex-row justify-center items-center h-[60px] ${listTap === 2 ? "bg-orange-300 border-2" : ""}`}
-          >
-            등록된 물품 목록
-          </h1>
-        </div>
+        {listTap === 1 && <ReviewList />}
+        {listTap === 2 && <MySalesList salesLists={salesLists} />}
       </div>
-      {listTap === 1 && <ReviewList />}
-      {listTap === 2 && <MySalesList salesLists={salesLists} />}
     </div>
   );
 };
