@@ -47,7 +47,7 @@ const InprogressListPage = () => {
   }, [inprogressOrderInfo.hasNext]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 bg-gray-100">
+    <div className="flex justify-center pt-20 min-h-screen p-4 bg-gray-100">
       <div className="w-full max-w-screen-lg">
         <div className="gap-3">
           {inprogressOrderInfo.orderInfo.length === 0 ? (
