@@ -28,6 +28,7 @@ import Cookies from "universal-cookie";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import RegisterFCM from "./services/fcm/RegisterFCM";
+import { Flip, toast } from "react-toastify";
 
 const queryClient = new QueryClient();
 
@@ -94,9 +95,35 @@ const App = () => {
   };
 
   onMessage(messaging, (payload) => {
-    console.log("메시지 받았어요", payload);
-    alert(`${payload.data?.title} \n ${payload.data?.body}`);
-  });
+    if (payload.data?.title.includes("알림")) {
+      toast("🍳가게에서 알림이 왔어요!", {
+        position: "top-right",
+        autoClose: 10 * 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        style: { width: "280px", height: "80px"},
+        progress: undefined,
+        theme: "light",
+        transition: Flip,
+      });
+    } 
+    else if (payload.data?.title.includes("음식 나눔")) {
+      toast("❤찜한 가게에서 나눔을 시작했어요!", {
+        position: "top-right",
+        autoClose: 10 * 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        style: { width: "280px", height: "80px"},
+        progress: undefined,
+        theme: "light",
+        transition: Flip,
+      });
+    }});
+
   return (
     <BrowserRouter basename="/consumer">
       <QueryClientProvider client={queryClient}>
