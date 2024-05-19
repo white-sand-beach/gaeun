@@ -7,7 +7,9 @@ import com.todayeat.backend._common.response.error.exception.BusinessException;
 import com.todayeat.backend._common.util.RedisUtil;
 import com.todayeat.backend.searchKeyword.dto.response.GetPopularSearchListResponse;
 import com.todayeat.backend.searchKeyword.dto.response.GetPopularSearchListResponse.KeywordInfo;
+import com.todayeat.backend.searchKeyword.dto.response.GetSuggestionSearchListResponse;
 import com.todayeat.backend.searchKeyword.entity.SearchKeywordDocument;
+import com.todayeat.backend.searchKeyword.entity.SearchSuggestionDocument;
 import com.todayeat.backend.searchKeyword.mapper.SearchKeywordMapper;
 import com.todayeat.backend.searchKeyword.repository.SearchKeywordDocumentRepository;
 import lombok.RequiredArgsConstructor;
@@ -64,6 +66,23 @@ public class SearchKeywordService {
 
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public GetSuggestionSearchListResponse getSearchSuggestions(String query) {
+
+        Criteria criteria = new Criteria("keyword").contains(query);
+        CriteriaQuery criteriaQuery = new CriteriaQuery(criteria);
+
+        // Elasticsearch로 검색 실행
+        SearchHits<SearchSuggestionDocument> searchHits = elasticsearchOperations.search(criteriaQuery, SearchSuggestionDocument.class);
+
+        // 검색 결과를 KeywordInfo 리스트로 변환
+        List<GetSuggestionSearchListResponse.KeywordInfo> keywordInfoList = searchHits.stream()
+                .map(hit -> GetSuggestionSearchListResponse.KeywordInfo.of(hit.getContent().getKeyword()))
+                .collect(Collectors.toList());
+
+        // GetSuggestionSearchListResponse 생성 및 반환
+        return GetSuggestionSearchListResponse.of(keywordInfoList);
     }
 
     public void updatePopularSearchListInRedis() {
