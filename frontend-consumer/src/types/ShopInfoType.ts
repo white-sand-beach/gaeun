@@ -10,6 +10,6 @@ export interface ShopInfo {
   reviewCnt: number;
   favoriteCnt: number;
   opened: boolean;
-  favorite: boolean;
+  isFavorite: boolean;
   isExample: boolean;
 }
