@@ -14,7 +14,7 @@ const ReviewList: React.FC = () => {
   useEffect(() => {
     const fetchReviewInfo = async () => {
       try {
-        const response = await getReviewAPI(reviewInfo.page, 10);
+        const response = await getReviewAPI(reviewInfo.page, 1000);
         console.log(response.data.data);
         setReviewInfo((prev) => ({
           ...prev,
