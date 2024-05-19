@@ -10,16 +10,37 @@ const StatisticsPage = () => {
   };
 
   return (
-    <div className="yes-footer top-[70px]">
-      <div className="flex flex-row justify-around w-full text-3xl font-bold">
-        <div onClick={() => handleChangeTap(1)}>총 판매량</div>
-        <div onClick={() => handleChangeTap(2)}>주간 판매량</div>
-        <div onClick={() => handleChangeTap(3)}>월간 판매량</div>
+    <div className="flex h-full">
+      <div className="flex flex-col items-center justify-center h-full p-12 bg-gray-100 md:p-32">
+        <div className="flex flex-col gap-4 text-xl font-bold">
+          <button
+            className={`cursor-pointer p-6 rounded-lg w-full ${listTap === 1 ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-600"}`}
+            onClick={() => handleChangeTap(1)}
+          >
+            총 판매량
+          </button>
+          <button
+            className={`cursor-pointer p-6 rounded-lg w-full ${listTap === 2 ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-600"}`}
+            onClick={() => handleChangeTap(2)}
+          >
+            주간 판매량
+          </button>
+          <button
+            className={`cursor-pointer p-6 rounded-lg w-full ${listTap === 3 ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-600"}`}
+            onClick={() => handleChangeTap(3)}
+          >
+            월간 판매량
+          </button>
+        </div>
       </div>
 
-      {listTap === 1 && <TotalStat />}
-      {listTap === 2 && <WeekStat />}
-      {listTap === 3 && <MonthStat />}
+      <div className="flex-grow p-12 bg-gray-100 md:p-32">
+        <div className="flex items-center justify-center max-w-screen-lg mx-auto">
+          {listTap === 1 && <TotalStat />}
+          {listTap === 2 && <WeekStat />}
+          {listTap === 3 && <MonthStat />}
+        </div>
+      </div>
     </div>
   );
 };

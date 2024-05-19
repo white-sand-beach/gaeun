@@ -47,26 +47,33 @@ const MenuList: React.FC<MenuListType> = (props) => {
   // };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <button className="common-btn" onClick={() => navigate("/register-food")}>
+    <div className="flex flex-col items-center gap-8">
+      <button
+        className="flex items-center justify-center w-32 h-12 mt-8 text-white bg-blue-500 rounded-lg"
+        onClick={() => navigate("/register-food")}
+      >
         메뉴 등록
       </button>
-      <h1>메뉴 보여줄 페이지 입니다.</h1>
-      <h1>여기서 바로 음식 수량을 결정, 판매를 등록합니다.</h1>
+      <h1 className="text-2xl font-bold">메뉴 리스트</h1>
+      <p className="text-lg">
+        여기서 바로 음식 수량을 결정하고 판매를 등록할 수 있습니다.
+      </p>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid w-full max-w-screen-lg grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {props.menusInfo.map((menu) => (
           <div
             key={menu.menuId}
-            className="flex flex-col gap-3 border-2 rounded-lg"
+            className="flex flex-col gap-3 p-4 bg-white border-2 rounded-lg shadow-lg"
           >
-            <img src={menu.imageUrl} alt="" className="w-[40px] h-[40px]" />
-            <h1>메뉴이름 : {menu.name}</h1>
-            <h1>원가 : {menu.originalPrice}원</h1>
-            <h1>판매가 : {menu.sellPrice}원</h1>
-            <h1>할인율 : {menu.discountRate}%</h1>
-            {/* <input type="text" value={menu.content} onChange={(e) => handleChangeContent(menu.menuId, e.target.value)} placeholder="상세설명 설정"/>
-            <input type="number" value={menu.stock} onChange={(e) => handleChangeStock(menu.menuId, Number(e.target.value))} placeholder="재고 설정"/> */}
+            <img
+              src={menu.imageUrl}
+              alt={menu.name}
+              className="object-cover w-full h-32 rounded-lg"
+            />
+            <h2 className="text-xl font-semibold">{menu.name}</h2>
+            <p className="text-gray-700">원가: {menu.originalPrice}원</p>
+            <p className="text-gray-700">판매가: {menu.sellPrice}원</p>
+            <p className="text-gray-700">할인율: {menu.discountRate}%</p>
             <TotalButton
               title="메뉴 수정하기"
               onClick={() => navigate(`/update/food/${menu.menuId}`)}
