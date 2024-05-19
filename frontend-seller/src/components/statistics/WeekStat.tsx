@@ -43,7 +43,7 @@ const WeekStat: React.FC = () => {
     datasets: [
       {
         label: "통계",
-        backgroundColor: "#FFAF38",
+        backgroundColor: "#FF0000", // 두 번째 막대 그래프 색상
         borderColor: "rgba(0, 0, 0, 1)",
         borderWidth: 1,
         borderRadius: 14,
@@ -53,15 +53,50 @@ const WeekStat: React.FC = () => {
   };
 
   const chartOptions: ChartOptions<"bar"> = {
-    responsive: true, // 화면 크기에 따라서 그래프도 늘줄늘줄
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 16, // 그래프 항목 크기 조절
+            weight: "bold", // X 축 글자 굵기
+          },
+        },
+      },
+      title: {
+        display: true,
+        text: "주간 통계", // 그래프 제목
+        color: "black", // X 축 글자 색상
+        font: {
+          size: 38, // 제목 글자 크기 조절
+          family: "prettyFont", // 그래프 항목 폰트 변경
+          weight: "bold", // X 축 글자 굵기
+        },
+      },
+    },
     scales: {
       x: {
-        type: "category",
+        ticks: {
+          color: "black", // X 축 글자 색상
+          font: {
+            size: 33, // x축 레이블 크기 조절
+            family: "prettyFont", // 그래프 항목 폰트 변경
+            weight: "bold", // X 축 글자 굵기
+          },
+        },
         grid: {
           display: false,
         },
       },
       y: {
+        ticks: {
+          color: "black", // X 축 글자 색상
+          font: {
+            size: 33, // y축 레이블 크기 조절
+            family: "prettyFont", // 그래프 항목 폰트 변경
+            weight: "bold", // X 축 글자 굵기
+          },
+        },
         grid: {
           display: false,
         },
@@ -70,7 +105,7 @@ const WeekStat: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen">
+    <div className="flex flex-col items-center justify-center w-[880px] h-[770px] mx-auto">
       <div className="flex items-center justify-center w-full h-full">
         <div className="flex items-center justify-center w-full h-full max-w-screen-lg">
           {weekInfo ? (

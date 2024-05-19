@@ -41,7 +41,7 @@ const MenuList: React.FC<MenuListType> = (props) => {
               className="object-cover w-full h-full rounded-3xl"
             />
           </div>
-          <div className="flex flex-col w-full gap-2 my-auto ml-10">
+          <div className="flex flex-col w-full gap-2 mb-3 ml-10">
             <p className="text-[80px] font-bold">{menu.name}</p>
             <h1 className="text-[50px] font-bold">
               원가 : {menu.originalPrice}원
