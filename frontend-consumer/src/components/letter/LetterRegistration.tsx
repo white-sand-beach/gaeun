@@ -64,6 +64,12 @@ const LetterRegistraionModal: React.FC<
 
   // 보내기 버튼 클릭 시 호출되는 함수
   const handleSendButtonClick = async () => {
+    // 글자 수 체크
+    if (letterData.content.length < 5) {
+      alert("감사한 마음을 조금 더 보내주세요.");
+      return; // 5글자 미만일 경우 함수 종료
+    }
+
     if (window.confirm("감사편지를 보내시겠습니까?")) {
       setIsLoading(true); // 로딩 상태 시작
       try {

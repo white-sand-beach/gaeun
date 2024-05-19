@@ -27,7 +27,7 @@ const Review = ({ reviewList }: { reviewList: reviewListItem[] }) => {
             <div className="flex items-center space-x-2">
               {/* 사용자 프로필 사진 */}
               <img
-                src={review.imageUrl}
+                src={review.profileImage}
                 alt="user"
                 className="object-cover w-10 h-10 rounded-full"
               />
@@ -53,10 +53,10 @@ const Review = ({ reviewList }: { reviewList: reviewListItem[] }) => {
             <span className="text-base text-black">{review.content}</span>
           </div>
 
-          {/* 음식 사진 */}
+          {/* 편지 사진 */}
           <div className="flex justify-center mt-2">
             <img
-              src={review.imageUrl}
+              src={review.imageUrl || logo}
               alt="food"
               className="object-cover rounded-lg w-44 h-44"
             />

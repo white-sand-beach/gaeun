@@ -14,6 +14,7 @@ export interface reviewListItem {
   content: string;
   imageUrl: string;
   consumerId: number;
+  profileImage: string;
   nickname: string;
   storeId: number;
   storeName: string;

@@ -40,7 +40,10 @@ const Notification = () => {
           size: "10",
         });
         setNotificationInfo(response);
-        setNotificationData(response.notificationList);
+        setNotificationData((prevNotifications) => [
+          ...prevNotifications,
+          ...response.notificationList,
+        ]);
         console.log(response);
         setIsCheck(false);
       } catch (error) {
@@ -88,7 +91,7 @@ const Notification = () => {
             >
               {notification.type === "order" ? (
                 <div>
-                  <div className="between px-4 pt-2 text-xs font-bold text-gray-600">
+                  <div className="px-4 pt-2 text-xs font-bold text-gray-600 between">
                     {/* 날짜 및 주문 현황 */}
                     <p>{notification.content[3]}</p>
                     <p className="text-xs">
@@ -102,7 +105,7 @@ const Notification = () => {
                               "음식 준비 완료"}
                     </p>
                   </div>
-                  <div className="between pb-2 pl-6">
+                  <div className="pb-2 pl-6 between">
                     <div className="font-bold">
                       <h1 className="">{notification.content[2]}</h1>
                       <p className="text-sm">{notification.content[5]}</p>
@@ -117,27 +120,27 @@ const Notification = () => {
                       <OrderDetailButton orderInfoId={notification.typeId} />
                     </div>
                   </div>
-                  <hr className="mb-1 mx-2" />
+                  <hr className="mx-2 mb-1" />
                 </div>
               ) : (
                 <div>
-                  <div className="between px-4 pt-2 text-xs font-bold text-gray-600">
+                  <div className="px-4 pt-2 text-xs font-bold text-gray-600 between">
                     <p>{notification.content[2]}</p>
                     <p>{notification.content[1]}</p>
                   </div>
-                  <div className="font-bold pb-2 pl-6">
+                  <div className="pb-2 pl-6 font-bold">
                     {/* 가게 오픈 알림 */}
                     <p>{notification.content[0]}</p>
                     <div className="between">
                       <p className="pb-3">확인해보러 갈까요?</p>
                       <Link to={`/shop/${notification.typeId}`}>
-                        <button className="order-detail-button mr-2">
+                        <button className="mr-2 order-detail-button">
                           <p className="whitespace-nowrap">{`천사가게 보러가기 >`}</p>
                         </button>
                       </Link>
                     </div>
                   </div>
-                  <hr className="mb-1 mx-2" />
+                  <hr className="mx-2 mb-1" />
                 </div>
               )}
             </div>
