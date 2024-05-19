@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { OrderInfoType } from "../../types/order/OrderInfoType";
 import { useNavigate } from "react-router-dom";
+import phone from "../../assets/order/phone.png";
 
 type inprogressProps = {
   inprogressOrderInfo: OrderInfoType[];
@@ -17,11 +18,19 @@ const InprogressList: React.FC<inprogressProps> = (props) => {
     orderInfo.orderNo.includes(searchOrderNo)
   );
 
+  const makePhoneCall = (phoneNumber: string) => {
+    window.location.href = `tel:${phoneNumber}`;
+  };
+
+  const handlePhoneClick = (inprogress: any) => {
+    makePhoneCall(inprogress.consumerPhoneNumber);
+  };
+
   return (
-    <div className="flex flex-col w-full gap-4">
+    <div className=" gap-4">
       <input
         type="text"
-        className="border-4 rounded-[20px] h-[50px] p-2 mx-2"
+        className="border-4 w-full rounded-[20px] h-[50px] p-2 mb-4"
         placeholder="주문번호를 입력해주세요"
         value={searchOrderNo}
         onChange={handleInputChange}
@@ -29,23 +38,36 @@ const InprogressList: React.FC<inprogressProps> = (props) => {
       {filterOrderNo.map((inprogress) => (
         <div
           key={inprogress.orderInfoId}
-          className="h-[300px] border-4 p-2 rounded-[20px] mx-2 font-bold text-xl"
+          className="w-full border-4 p-2 rounded-[20px] bg-white font-bold text-xl"
         >
-          <div className="flex flex-row justify-between">
-            <p>주문번호 : {inprogress.orderNo}</p>
+          <p className="mx-6 my-2">{inprogress.orderDate}</p>
+          <hr className="my-2 mx-8 border-gray-400" />
+          <div className="flex flex-row mx-6 justify-between">
+            <p className="text-base">주문번호: {inprogress.orderNo}</p>
             <div>
-              <p>{inprogress.orderDate}</p>
               <p>{inprogress.orderStatus}</p>
             </div>
           </div>
-          <p>{inprogress.orderContents}</p>
-          <p>{inprogress.consumerPhoneNumber}</p>
-          <button
-            className="border-2 border-black rounded-[10px] flex flex-row justify-center items-center p-2"
-            onClick={() => navigate(`/order/${inprogress.orderInfoId}`)}
-          >
-            상세내역 보러가기
-          </button>
+          <div className="mx-6 mt-4">
+            <p className="text-[30px] text-blue-600">
+              {inprogress.orderContents}
+            </p>
+          </div>
+          <div className="flex justify-between items-center mx-6">
+            <div
+               onClick={() => handlePhoneClick(inprogress)}
+              className="flex items-center pt-2"
+            >
+              <img className="mr-2" src={phone} alt="" />
+              <p className="text-gray-500">고객 전화</p>
+            </div>
+            <button
+              className="border border-gray-400 text-gray-600 rounded-[10px] flex flex-row justify-center items-center p-2"
+              onClick={() => navigate(`/order/${inprogress.orderInfoId}`)}
+            >
+              {`상세내역 보러가기 >`}
+            </button>
+          </div>
         </div>
       ))}
     </div>

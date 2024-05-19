@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ReviewListType } from "../../types/review/ReviewListType";
 import getReviewAPI from "../../service/review/getReviewAPI";
-import logo from "../../assets/logo/logo.png"
+import logo from "../../assets/logo/logo.png";
 
 const ReviewList: React.FC = () => {
   const [reviewInfo, setReviewInfo] = useState<ReviewListType>({
@@ -27,7 +27,7 @@ const ReviewList: React.FC = () => {
     };
     fetchReviewInfo();
   }, [reviewInfo.page]);
-  
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollH = document.documentElement.scrollHeight;
@@ -47,16 +47,34 @@ const ReviewList: React.FC = () => {
   }, [reviewInfo.hasNext]);
 
   return (
-    <div className="flex flex-col w-screen h-full gap-3">
+    <div className="flex flex-col  gap-3 ">
       {reviewInfo.reviewList.map((item, index) => (
-        <div key={index} className="mx-4 flex flex-row gap-4">
-          <img src={item.imageUrl ? item.imageUrl : logo} alt="손님 프로필 이미지" className="w-[100px] h-[100px]" />
-          <div>
-          <p>작성일자 : {item.createdAt}</p>
-          <p>가게 : {item.storeName}</p>
-          <p>닉네임 : {item.nickname}</p>
-          <p>내용 : {item.content}</p>
+        <div>
+          <div key={index} className="justify-between mx-4 flex flex-row gap-4">
+            <div className="flex items-start">
+              <div className="relative flex items-center justify-center min-w-[100px] min-h-[100px] mr-10 bg-white border-4 shadow-lg border-gray-200  rounded-full">
+                <img
+                  src={item.imageUrl || logo}
+                  alt="손님 프로필 이미지"
+                  className="w-[85px] h-[85px] object-cover rounded-full"
+                />
+              </div>
+              <div className=" font-bold text-[20px]">
+                <p className="text-[24px] text-blue-500">
+                  {item.nickname}
+                  <span className="text-[20px] text-black">님이</span>{" "}
+                  {item.storeName}{" "}
+                  <span className="text-[20px] text-black">사장님에게</span>{" "}
+                </p>
+                <p>감사의 마음을 전했어요!</p>
+                <p className="pt-4">{item.content}</p>
+              </div>
+            </div>
+            <div className=" font-bold text-[20px]">
+              <p> {item.createdAt}</p>
+            </div>
           </div>
+          <hr className="border my-4 border-gray-400 mx-4" />
         </div>
       ))}
     </div>

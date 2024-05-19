@@ -82,7 +82,7 @@ const UpdateFood = () => {
   };
 
   return (
-    <div className="flex flex-col items-center top-[50px] gap-3">
+    <div className="flex flex-col items-center top-[50px] gap-3 pb-32">
       {/* 음식 이미지 추가 */}
       <label htmlFor="input-file">
         <div className="relative flex justify-center items-center">
@@ -122,7 +122,7 @@ const UpdateFood = () => {
       </label>
 
       {/* 음식명 입력칸 */}
-      <div className="py-14">
+      <div className="pt-12 pb-6">
         <div>
           <p className="text-3xl font-bold mb-4 pl-2">음식명</p>
           <input
@@ -173,7 +173,7 @@ const UpdateFood = () => {
           </div>
         </div>
       </div>
-      <TotalButton title="수정 요청" onClick={handleUpdateMenu} />
+      <TotalButton title="메뉴 수정" onClick={handleUpdateMenu} />
     </div>
   );
 };
