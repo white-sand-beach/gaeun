@@ -32,7 +32,7 @@ const Shop = () => {
     reviewCnt: 0,
     favoriteCnt: 0,
     opened: false,
-    favorite: false,
+    isFavorite: false,
     isExample: false,
   });
 
@@ -44,7 +44,7 @@ const Shop = () => {
     makePhoneCall(shopInfo.tel);
   };
 
-  const [isFavorite, setIsFavorite] = useState(shopInfo.favorite);
+  const [isFavorite, setIsFavorite] = useState(shopInfo.isFavorite);
   const [favoriteCount, setFavoriteCount] = useState(shopInfo.favoriteCnt);
 
   const handleToggle = async (newIsFavorite: boolean) => {
@@ -73,16 +73,13 @@ const Shop = () => {
   }, [shopInfo.favoriteCnt]);
 
   // shopInfo.favorite 값이 변경될 때마다 isFavorite 상태 업데이트
-  useEffect(() => {
-    setIsFavorite(shopInfo.favorite);
-  }, [shopInfo.favorite]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await ShopInfoGetForm({ Id });
         setShopInfo(response);
-        setIsFavorite(response.favorite); // 여기서 초기값 설정
+        setIsFavorite(response.isFavorite); // 여기서 초기값 설정
         setFavoriteCount(response.favoriteCnt); // 여기서 초기값 설정
         console.log(response);
       } catch (error) {
@@ -92,6 +89,10 @@ const Shop = () => {
 
     fetchData();
   }, [Id]);
+
+  useEffect(() => {
+    console.log(isFavorite);
+  }, [isFavorite]);
 
   return (
     <div className="sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
