@@ -26,7 +26,7 @@ const LoginAPI = () => {
     const firebaseApp = initializeApp(firebaseConfig);
     const messaging = getMessaging(firebaseApp);
 
-    const postSellerLogin = ({ email, password }: LoginType) => {
+    const postSellerLogin = async ({ email, password }: LoginType) => {
         const formData = new FormData()
         formData.append("email", email)
         formData.append("password", password)
@@ -44,14 +44,19 @@ const LoginAPI = () => {
                         if (currentToken) {
                             console.log("로그인 하면서 FCM 토큰 받았습니다.")
                             console.log(currentToken)
-                            cookies.set("fcm-token", currentToken, {path: "/"})
+                            cookies.set("fcm-token", currentToken, { path: "/" })
                             RegisterFCMToken(currentToken, res.headers.authorization)
                         }
                     })
                     .catch((err) => {
                         console.error("FCM토큰 에러: ", err)
                     })
-                navigate("/")
+                if ((cookies.get("storeId") === null) || (cookies.get("storeId") === undefined)) {
+                    navigate("/register-shop")
+                }
+                else {
+                    navigate("/")
+                }
             })
             .catch(err => {
                 console.error(err)
