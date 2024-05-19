@@ -19,14 +19,14 @@ public class CreateFavoriteNotification {
 
     private List<Long> consumerIdList;
 
-    private String updateAt;
+    private String notifiedAt;
 
     @Builder
-    private CreateFavoriteNotification(Long storeId, String storeName, List<Long> consumerIdList, String updateAt) {
+    private CreateFavoriteNotification(Long storeId, String storeName, List<Long> consumerIdList, String notifiedAt) {
         this.storeId = storeId;
         this.storeName = storeName;
         this.consumerIdList = consumerIdList;
-        this.updateAt = updateAt;
+        this.notifiedAt = notifiedAt;
     }
 
     public static CreateFavoriteNotification of(Long storeId, String storeName, List<Long> consumerIdList) {
@@ -35,7 +35,7 @@ public class CreateFavoriteNotification {
                 .storeId(storeId)
                 .storeName(storeName)
                 .consumerIdList(consumerIdList)
-                .updateAt(getDate(LocalDateTime.now()))
+                .notifiedAt(getDate(LocalDateTime.now()))
                 .build();
     }
 
@@ -51,7 +51,7 @@ public class CreateFavoriteNotification {
 
     public String getContent() {
 
-        return storeName + "의 음식 나눔이 시작됐어요.," + storeName + "," +  updateAt;
+        return storeName + "의 음식 나눔이 시작됐어요.," + storeName + "," +  notifiedAt;
     }
 
     public String getTitle() {
