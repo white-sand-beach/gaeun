@@ -104,37 +104,72 @@ const OrderDetail: React.FC = () => {
             )}
           </div>
 
-          {/* 현재 결제 상태에 따라 노출될 버튼들 */}
+          <hr className="border-2 my-4" />
 
+          {/* 현재 결제 상태에 따라 노출될 버튼들 */}
           {/* status가 PAID (결제 완료) 상태일 때 */}
           {detailInfo.orderStatus === "결제 완료" && (
-            <div className="flex flex-row gap-3">
-              {/* 준비 할게요 */}
-              <button onClick={() => handleStatusChange("IN_PROGRESS", 30)}>
-                준비할게요
-              </button>
-              {/* 거절 할게요 */}
-              <button onClick={() => handleStatusChange("DENIED")}>거절</button>
+            <div className="flex flex-row gap-3 justify-between">
+              <p className="text-[20px] font-bold">
+                주문이 들어왔어요! 수락 버튼을 눌러 보세요!
+              </p>
+              <div>
+                {/* 준비 할게요 */}
+                <button
+                  className="bg-mainColor py-1 px-4 mr-2 text-white rounded-lg hover:bg-orange-400"
+                  onClick={() => handleStatusChange("IN_PROGRESS", 30)}
+                >
+                  수락
+                </button>
+                {/* 거절 할게요 */}
+                <button
+                  className="bg-white py-1 px-4 text-mainColor border-mainColor border-2 rounded-lg hover:bg-orange-400 hover:text-white"
+                  onClick={() => handleStatusChange("DENIED")}
+                >
+                  거절
+                </button>
+              </div>
             </div>
           )}
 
           {/* status가 IN_PROGRESS (진행 중) 상태일 때 */}
           {detailInfo.orderStatus === "진행 중" && (
-            <div className="flex flex-row gap-3">
-              {/* 준비 다 했어요 */}
-              <button onClick={() => handleStatusChange("PREPARED")}>
-                준비 다 햇어요
-              </button>
-              {/* 취소 할게요 */}
-              <button onClick={() => handleStatusChange("CANCEL")}>취소</button>
+            <div className="flex flex-row gap-3 justify-between">
+              <p className="text-[20px] font-bold">
+                음식 준비가 완료되면 준비 완료 버튼을 눌러보세요!
+              </p>
+              <div>
+                {/* 준비 다 했어요 */}
+                <button
+                  className="bg-mainColor py-1 px-4 mr-2 text-white rounded-lg hover:bg-orange-400"
+                  onClick={() => handleStatusChange("PREPARED")}
+                >
+                  준비 완료
+                </button>
+                {/* 취소 할게요 */}
+                <button
+                  className="bg-white py-1 px-4 text-mainColor border-mainColor border-2 rounded-lg hover:bg-orange-400 hover:text-white"
+                  onClick={() => handleStatusChange("CANCEL")}
+                >
+                  취소
+                </button>
+              </div>
             </div>
           )}
           {/* status가 PREPARED (준비 완료) 상태일 때 */}
           {detailInfo.orderStatus === "준비 완료" && (
             // 손님이 가져갔어요
-            <button onClick={() => handleStatusChange("FINISHED")}>
-              수령 완료 처리
-            </button>
+            <div className="flex justify-between items-center">
+              <p className="text-[20px] font-bold">
+                손님이 음식을 수령해 가면 판매 완료 버튼을 눌러주세요!
+              </p>
+              <button
+                className="bg-mainColor py-1 px-4 mr-2 text-white rounded-lg hover:bg-orange-400"
+                onClick={() => handleStatusChange("FINISHED")}
+              >
+                판매 완료
+              </button>
+            </div>
           )}
         </div>
       ) : (
