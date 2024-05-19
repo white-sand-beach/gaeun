@@ -9,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE consumer SET deleted_at = CONVERT_TZ(NOW(), '+00:00', '+09:00') WHERE consumer_id = ?")
 public class Consumer extends BaseTime {
@@ -41,6 +44,14 @@ public class Consumer extends BaseTime {
     @Column(length = 20, nullable = true)
     private String phoneNumber;
 
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer orderCnt;
+
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private Boolean isDonated; // 일반인 or 소방관, 경찰관, 결식아동 등 여부
+
     @OneToMany(mappedBy = "consumer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Location> locations = new ArrayList<>();
 
@@ -48,15 +59,20 @@ public class Consumer extends BaseTime {
     private List<Favorite> favorites = new ArrayList<>();
 
     @Builder
-    private Consumer(OAuth2Provider socialType, String email, String nickname, String profileImage, String phoneNumber) {
+    private Consumer(OAuth2Provider socialType, String email, String nickname, String profileImage, String phoneNumber, Boolean isDonated) {
         this.socialType = socialType;
         this.email = email;
         this.nickname = nickname;
         this.profileImage = profileImage;
         this.phoneNumber = phoneNumber;
+        this.isDonated = isDonated;
     }
 
     public boolean isJoined() {
         return this.nickname != null && this.phoneNumber != null;
+    }
+
+    public void updateOrderCnt(int value) {
+        this.orderCnt += value;
     }
 }

@@ -17,6 +17,9 @@ public enum SuccessType {
     GET_FAVORITES_SUCCESS("찜 목록 조회에 성공하였습니다."),
 
     // review
+    CREATE_REVIEW_SUCCESS("리뷰 등록에 성공하였습니다."),
+    GET_CONSUMER_REVIEW_SUCCESS("소비자 리뷰 목록 조회에 성공하였습니다."),
+    GET_SELLER_REVIEW_SUCCESS("판매자 리뷰 목록 조회에 성공하였습니다."),
 
     // location
     CREATE_LOCATION_SUCCESS("위치 등록에 성공하였습니다."),
@@ -35,6 +38,16 @@ public enum SuccessType {
 
 
     // order
+    CREATE_ORDER_SUCCESS("주문 등록에 성공하였습니다."),
+    VALIDATE_ORDER_SUCCESS("결제 인증에 성공하였습니다."),
+    UPDATE_ORDER_SELLER_SUCCESS("판매자 주문 상태 수정에 성공하였습니다."),
+    UPDATE_ORDER_CONSUMER_SUCCESS("소비자 주문 상태 수정에 성공하였습니다."),
+    GET_ORDER_LIST_CONSUMER_SUCCESS("소비자 주문 목록 조회에 성공하였습니다."),
+    GET_ORDER_IN_PROGRESS_LIST_SELLER_SUCCESS("판매자 진행 중인 주문 목록 조회에 성공하였습니다."),
+    GET_ORDER_FINISHED_LIST_SELLER_SUCCESS("판매자 종료된 주문 목록 조회에 성공하였습니다."),
+    GET_ORDER_DETAIL_CONSUMER_SUCCESS("소비자 주문 상세 조회에 성공하였습니다."),
+    GET_ORDER_DETAIL_SELLER_SUCCESS("판매자 주문 상세 조회에 성공하였습니다."),
+    GET_ORDER_IN_PROGRESS_CONSUMER_SUCCESS("소비자 주문 현황 조회에 성공하였습니다."),
 
     // seller
     CREATE_SELLER_SUCCESS("판매자 회원가입에 성공하였습니다."),
@@ -46,6 +59,7 @@ public enum SuccessType {
     GET_SELLER_SUCCESS("판매자 회원 정보 조회에 성공하였습니다."),
     UPDATE_PASSWORD_SELLER_SUCCESS("판매자 비밀번호 수정에 성공하였습니다."),
     UPDATE_PHONE_NUMBER_SELLER_SUCCESS("판매자 전화번호 수정에 성공하였습니다."),
+    LOGOUT_SELLER_SUCCESS("판매자 로그아웃에 성공하였습니다."),
 
     // store
     CREATE_STORE_SUCCESS("가게 등록에 성공하였습니다."),
@@ -73,9 +87,29 @@ public enum SuccessType {
     CREATE_SALE_SUCCESS("판매 등록에 성공하였습니다."),
     GET_SALE_LIST_SUCCESS("판매 목록 조회에 성공하였습니다."),
     GET_SALE_DETAIL_SUCCESS("판매 상세 조회에 성공하였습니다."),
-    UPDATE_SALE_STATUS_SUCCESS("판매 상태 변경에 성공하였습니다."),
-    UPDATE_SALE_CONTENT_SUCCESS("판매 내용 변경에 성공하였습니다."),
-    UPDATE_SALE_STOCK_SUCCESS("판매 재고 변경에 성공하였습니다."),
+    UPDATE_SALE_SUCCESS("판매 수정에 성공하였습니다."),
+    UPDATE_SALE_IS_FINISHED_ALL_SUCCESS("모든 판매 종료에 성공하였습니다."),
+
+    // fcm token
+    CREATE_FCM_TOKEN_SUCCESS("FCM 토큰 등록에 성공하였습니다."),
+    DELETE_FCM_TOKEN_SUCCESS("FCM 토큰 삭제에 성공하였습니다."),
+
+    //statistic
+    GET_CONSUMER_RECEIPT_ALL_SUCCESS("소비자 수령 된 총 구매량 조회에 성공하였습니다."),
+    GET_SELLER_RECEIPT_ALL_SUCCESS("판매자 수령 된 총 판매량 조회에 성공하였습니다."),
+    GET_SELLER_REGISTRATION_WEEK_SUCCESS("판매자 등록 된 주(오늘까지 7일간) 판매량 조회에 성공하였습니다."),
+    GET_SELLER_REGISTRATION_MONTH_SUCCESS("판매자 등록 된 월(오늘까지 30일간) 판매량 조회에 성공하였습니다."),
+
+    // searchKeyword
+    GET_POPULAR_SEARCH_LIST_SUCCESS("인기 검색어 조회에 성공하였습니다."),
+    
+    // notification
+    GET_SELLER_NOTIFICATION_LIST_SUCCESS("판매자 알림 목록 조회에 성공하였습니다."),
+    GET_SELLER_NOTIFICATION_COUNT_SUCCESS("판매자 미확인 알림 개수 조회에 성공하였습니다."),
+    UPDATE_SELLER_NOTIFICATION_IS_READ_TRUE("판매자 알림 읽음 처리에 성공하였습니다."),
+    GET_CONSUMER_NOTIFICATION_LIST_SUCCESS("소비자 알림 목록 조회에 성공하였습니다."),
+    GET_CONSUMER_NOTIFICATION_COUNT_SUCCESS("소비자 미확인 알림 개수 조회에 성공하였습니다."),
+    UPDATE_CONSUMER_NOTIFICATION_IS_READ_TRUE("소비자 알림 읽음 처리에 성공하였습니다.")
     ;
 
     private final String msg;

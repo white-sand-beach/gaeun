@@ -16,6 +16,9 @@ public class GetConsumerListStoreResponse {
 
     private List<StoreInfo> storeList;
 
+    @Schema(description = "나눔 여부", example = "false")
+    private Boolean isDonated;
+
     @Schema(description = "현재 페이지", example = "0")
     private Integer page;
 
@@ -26,7 +29,7 @@ public class GetConsumerListStoreResponse {
     @Setter
     public static class StoreInfo {
 
-        @Schema(description = "가게 아이디", example = "1")
+        @Schema(description = "가게 고유번호", example = "1")
         private Long storeId;
 
         @Schema(description = "지번 주소", example = "OO시 OO구 OO동 OOO-OO")
@@ -44,34 +47,48 @@ public class GetConsumerListStoreResponse {
         @Schema(description = "가게 명", example = "가게")
         private String name;
 
+        @Schema(description = "대표 이미지", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/store-image/img.png")
+        private String imageURL;
+
         @Schema(description = "영업 시간", example = "00시 ~ 24시")
         private String operatingTime;
 
         @Schema(description = "리뷰 수", example = "0")
-        private int reviewCnt;
+        private Integer reviewCnt;
 
         @Schema(description = "찜 수", example = "0")
-        private int favoriteCnt;
+        private Integer favoriteCnt;
 
         @Schema(description = "해당 위치와 거리", example = "1500")
-        private Double distance;
+        private Integer distance;
 
         @Schema(description = "카테고리 목록", example = "{name: 카테고리1, image: https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/store-image/img1.png, name: 카테고리2, image: https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/store-image/img2.png}")
         private List<CategoryInfo> categoryList;
 
-        // todo 메뉴 리스트 추가 해야 함
+        @Schema(description = "판매 이미지 목록", example = "{image: https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/img1.png, image: https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/img2.png}")
+        private List<SaleImageURL> saleImageURLList;
+
+        @Getter
+        @Setter
+        public static class SaleImageURL {
+
+            @Schema(description = "판매 이미지", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/menu-image/img1.png")
+            private String imageURL;
+        }
     }
 
     @Builder
-    private GetConsumerListStoreResponse(List<StoreInfo> storeList, Integer page, Boolean hasNext) {
+    private GetConsumerListStoreResponse(List<StoreInfo> storeList, Boolean isDonated, Integer page, Boolean hasNext) {
         this.storeList = storeList;
+        this.isDonated = isDonated;
         this.page = page;
         this.hasNext = hasNext;
     }
 
-    static public GetConsumerListStoreResponse of(List<StoreInfo> storeList, Integer page, Boolean hasNext) {
+    static public GetConsumerListStoreResponse of(List<StoreInfo> storeList, Boolean isDonated, Integer page, Boolean hasNext) {
         return builder()
                 .storeList(storeList)
+                .isDonated(isDonated)
                 .page(page)
                 .hasNext(hasNext)
                 .build();

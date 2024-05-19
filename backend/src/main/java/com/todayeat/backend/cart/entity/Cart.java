@@ -1,5 +1,6 @@
 package com.todayeat.backend.cart.entity;
 
+import com.todayeat.backend.cart.dto.request.CreateCartRequest;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ public class Cart implements Serializable {
     @Id
     private String id;
 
-    private Integer quantity; //담은 수량
+    private Integer quantity; // 담은 수량
 
     @Indexed
     private Long consumerId;

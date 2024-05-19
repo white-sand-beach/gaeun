@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface CartRepository extends CrudRepository<Cart, String> {
 
-    List<Cart> findAllByConsumerId (Long consumerId);
+    List<Cart> findAllByConsumerId(Long consumerId);
 
     Optional<Cart> findByConsumerIdAndSaleId(Long consumerId, Long saleId);
 }
