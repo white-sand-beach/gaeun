@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import OrderDetailButton from "../button/OrderDetailButton";
 import CallButton from "../button/CallButton";
 import { OrderInfo } from "../../types/OrderType";
@@ -7,6 +8,21 @@ interface OrderInfoProps {
 }
 
 const Ordertarget = ({ orderData }: OrderInfoProps) => {
+  const navigate = useNavigate();
+  const handleMoveSubmit = () => {
+    if (
+      orderData.orderStatus === "수령 완료" ||
+      orderData.orderStatus === "거절됨" ||
+      orderData.orderStatus === "취소됨"
+    ) {
+      return;
+    } else {
+      navigate(`/order-state`, {
+        state: { orderInfoId: orderData.orderInfoId },
+      });
+    }
+  };
+
   return (
     <div className="w-screen px-2">
       <div className="mb-2 border-2 rounded-xl">
@@ -23,7 +39,18 @@ const Ordertarget = ({ orderData }: OrderInfoProps) => {
         </div>
         <div className="mx-4 mb-2 between">
           <CallButton storeTel={String(orderData.storeTel)} />
-          <OrderDetailButton orderInfoId={orderData.orderInfoId} />
+          {orderData.orderStatus === "수령 완료" ||
+          orderData.orderStatus === "거절됨" ||
+          orderData.orderStatus === "취소됨" ? (
+            <div>
+              <OrderDetailButton orderInfoId={orderData.orderInfoId} />
+            </div>
+          ) : (
+            <button
+              onClick={handleMoveSubmit}
+              className="order-detail-button"
+            >{`주문현황 보러가기 >`}</button>
+          )}
         </div>
       </div>
     </div>
