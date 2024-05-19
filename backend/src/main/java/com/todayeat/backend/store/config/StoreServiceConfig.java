@@ -5,6 +5,7 @@ import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
+import com.todayeat.backend.order.repository.OrderInfoRepository;
 import com.todayeat.backend.sale.repository.SaleRepository;
 import com.todayeat.backend.searchKeyword.service.SearchKeywordService;
 import com.todayeat.backend.seller.repository.SellerRepository;
@@ -25,6 +26,7 @@ public class StoreServiceConfig {
     private final ElasticsearchOperations elasticsearchOperations;
     private final StoreDocumentRepository storeDocumentRepository;
     private final StoreCategoryRepository storeCategoryRepository;
+    private final OrderInfoRepository orderInfoRepository;
     private final FavoriteRepository favoriteRepository;
     private final CategoryRepository categoryRepository;
     private final SellerRepository sellerRepository;
@@ -37,10 +39,10 @@ public class StoreServiceConfig {
     @Bean
     public StoreService storeService() {
 
-        //return new StoreServiceQueryDSLImpl(storeCategoryRepository, favoriteRepository, categoryRepository,
+        //return new StoreServiceQueryDSLImpl(storeCategoryRepository, orderInfoRepository, favoriteRepository, categoryRepository,
         //        sellerRepository, storeRepository, securityUtil, s3Util);
 
-        return new StoreServiceElasticsearchImpl(elasticsearchOperations, storeDocumentRepository, storeCategoryRepository, favoriteRepository, categoryRepository,
+        return new StoreServiceElasticsearchImpl(elasticsearchOperations, storeDocumentRepository, storeCategoryRepository, orderInfoRepository, favoriteRepository, categoryRepository,
                 sellerRepository, storeRepository, saleRepository, searchKeywordService, securityUtil, s3Util);
     }
 }

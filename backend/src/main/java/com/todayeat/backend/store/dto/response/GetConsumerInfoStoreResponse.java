@@ -30,7 +30,10 @@ public class GetConsumerInfoStoreResponse {
     private BigDecimal longitude;
 
     @Schema(description = "영업중 여부", example = "false")
-    private boolean isOpened;
+    private Boolean isOpened;
+
+    @Schema(description = "모범 여부", example = "false")
+    private Boolean isExample;
 
     @Schema(description = "대표 이미지", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/seller/1/store-image/img.png")
     private String imageURL;
@@ -39,11 +42,11 @@ public class GetConsumerInfoStoreResponse {
     private String operatingTime;
 
     @Schema(description = "리뷰 수", example = "0")
-    private int reviewCnt;
+    private Integer reviewCnt;
 
     @Schema(description = "찜 수", example = "0")
-    private int favoriteCnt;
+    private Integer favoriteCnt;
 
     @Schema(description = "찜 여부", example = "false")
-    private boolean isFavorite;
+    private Boolean isFavorite;
 }

@@ -1,5 +1,6 @@
 package com.todayeat.backend.order.repository;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.todayeat.backend._common.statistic.dto.SaleStatistic;
 import com.todayeat.backend._common.statistic.dto.response.GetSellerRegistrationMonthResponse;
@@ -7,6 +8,7 @@ import com.todayeat.backend._common.statistic.dto.response.GetSellerRegistration
 import com.todayeat.backend.order.entity.OrderInfoStatus;
 import com.todayeat.backend.order.entity.QOrderInfo;
 import com.todayeat.backend.order.entity.QOrderInfoItem;
+import com.todayeat.backend.store.dto.GetStoreSaleCountInfo;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -52,6 +54,23 @@ public class OrderInfoRepositoryQueryDSLImpl implements OrderInfoRepositoryQuery
                         .and(orderInfo.status.eq(OrderInfoStatus.FINISHED))
                         .and(orderInfo.createdAt.after(LocalDateTime.now().minusDays(days))))
                 .groupBy(orderInfoItem.name)
+                .fetch();
+    }
+
+    @Override
+    public List<GetStoreSaleCountInfo> countFinishedOrdersByStore(LocalDateTime startDate, LocalDateTime endDate) {
+
+        QOrderInfo orderInfo = QOrderInfo.orderInfo;
+
+        return jpaQueryFactory
+                .select(Projections.constructor(
+                        GetStoreSaleCountInfo.class,
+                        orderInfo.store.id,
+                        orderInfo.count()))
+                .from(orderInfo)
+                .where(orderInfo.status.eq(OrderInfoStatus.FINISHED)
+                        .and(orderInfo.createdAt.between(startDate, endDate)))
+                .groupBy(orderInfo.store.id)
                 .fetch();
     }
 }

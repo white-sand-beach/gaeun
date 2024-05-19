@@ -24,13 +24,13 @@ public class MailConfig {
     private String password;
 
     @Value("${spring.mail.properties.mail.smtp.auth}")
-    private boolean auth;
+    private Boolean auth;
 
     @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
-    private boolean starttlsEnable;
+    private Boolean starttlsEnable;
 
     @Value("${spring.mail.properties.mail.smtp.starttls.required}")
-    private boolean starttlsRequired;
+    private Boolean starttlsRequired;
 
     @Value("${spring.mail.properties.mail.smtp.connectiontimeout}")
     private int connectionTimeout;

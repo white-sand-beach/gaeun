@@ -11,6 +11,7 @@ import com.todayeat.backend.category.mapper.StoreCategoryMapper;
 import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
+import com.todayeat.backend.order.repository.OrderInfoRepository;
 import com.todayeat.backend.sale.dto.SaleInfo;
 import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.sale.mapper.SaleMapper;
@@ -19,6 +20,7 @@ import com.todayeat.backend.searchKeyword.service.SearchKeywordService;
 import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
+import com.todayeat.backend.store.dto.GetStoreSaleCountInfo;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.*;
@@ -47,6 +49,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -64,6 +70,7 @@ public class StoreServiceElasticsearchImpl implements StoreService {
     private final ElasticsearchOperations elasticsearchOperations;
     private final StoreDocumentRepository storeDocumentRepository;
     private final StoreCategoryRepository storeCategoryRepository;
+    private final OrderInfoRepository orderInfoRepository;
     private final FavoriteRepository favoriteRepository;
     private final CategoryRepository categoryRepository;
     private final SellerRepository sellerRepository;
@@ -218,7 +225,7 @@ public class StoreServiceElasticsearchImpl implements StoreService {
                 })
                 .collect(Collectors.toList());
 
-        boolean hasNext = pageRequest.getPageNumber() + 1 < (searchHits.getTotalHits() / pageRequest.getPageSize()) + 1;
+        Boolean hasNext = pageRequest.getPageNumber() + 1 < (searchHits.getTotalHits() / pageRequest.getPageSize()) + 1;
 
         return GetConsumerListStoreResponse.of(storeInfoList, securityUtil.getConsumer().getIsDonated(), page, hasNext);
     }
@@ -292,6 +299,36 @@ public class StoreServiceElasticsearchImpl implements StoreService {
                 .build();
 
         elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
+    }
+
+    @Override
+    @Transactional
+    public void updateAllIsExample() {
+
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.HOURS);
+
+        YearMonth lastMonth = YearMonth.from(now.minusMonths(1));
+        LocalDateTime startDate = lastMonth.atDay(1).atStartOfDay();
+        LocalDateTime endDate = lastMonth.atEndOfMonth().atTime(23, 59, 59);
+
+        List<GetStoreSaleCountInfo> result = orderInfoRepository.countFinishedOrdersByStore(startDate, endDate);
+
+        result.forEach(getStoreSaleCountInfo -> {
+            Store store = storeRepository.findByIdAndDeletedAtIsNull(getStoreSaleCountInfo.getStoreId())
+                    .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
+            Boolean isExample = getStoreSaleCountInfo.getOrderFinishedCnt() >= 10;
+
+            store.updateIsExample(isExample);
+
+            Document document = Document.create();
+            document.put("isExample", isExample);
+
+            UpdateQuery updateQuery = UpdateQuery.builder(store.getId().toString())
+                    .withDocument(document)
+                    .build();
+
+            elasticsearchOperations.update(updateQuery, IndexCoordinates.of("store"));
+        });
     }
 
     @Override
