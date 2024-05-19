@@ -1,6 +1,13 @@
-export interface NotificationListType {
-  orderNum: string;
-  orderDate: string;
-  foodName: string;
-  price: string;
+export interface Notification {
+  notificationList?: NotiList[]
+  page: number;
+  hasNext?: boolean;
+}
+
+export interface NotiList {
+  id: number;
+  type?: string[];
+  typeId: number;
+  content: string[];
+  isRead?: boolean;
 }
