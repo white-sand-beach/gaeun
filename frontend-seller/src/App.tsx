@@ -8,9 +8,10 @@ import InprogressListPage from "./pages/order/InprogressListPage.tsx";
 import NotificationPage from "./pages/notification/NotificationPage.tsx";
 import RegisterShopPage from "./pages/shop/RegisterShopPage.tsx";
 import RegisterFoodPage from "./pages/foods/RegisterFoodPage.tsx";
-import SaleslistPage from "./pages/sales/SaleslistPage.tsx";
+// import SaleslistPage from "./pages/sales/SaleslistPage.tsx";
 import ShopInfoPage from "./pages/shop/ShopInfoPage.tsx";
 import MenuListPage from "./pages/menu/MenuListPage.tsx";
+import FinishListPage from "./pages/order/FinishListPage.tsx";
 import Cookies from "universal-cookie";
 import UpdateFoodPage from "./pages/foods/UpdateFoodPage.tsx";
 import OrderDetailPage from "./pages/order/OrderInfoPage.tsx";
@@ -75,8 +76,8 @@ const App = () => {
         <Route path="/order/:orderInfoId" element={<OrderDetailPage />} />
         <Route path="/notification" element={<NotificationPage />} />
         <Route path="/menus" element={<MenuListPage />} />
+        <Route path="/sales" element={<FinishListPage />} />
         <Route path="/statistics" element={<StatisticsPage />} />
-        <Route path="/sales" element={<SaleslistPage />} />
         <Route path="/mystore" element={<ShopInfoPage />} />
       </Routes>
     </BrowserRouter>
