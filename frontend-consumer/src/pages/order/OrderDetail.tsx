@@ -47,6 +47,7 @@ const OrderDetail = () => {
 
   useEffect(() => {
     console.log(orderDetail);
+    console.log(orderDetail.reviewId);
   });
 
   return (
@@ -98,8 +99,14 @@ const OrderDetail = () => {
           <BannerSlider />
         </div>
         {/* 편지 작성 버튼 */}
-        <div onClick={toggleModal}>
-          <ReviewButton orderStatus={orderDetail.orderStatus} />
+        <div className="flex items-center justify-center h-14">
+          {orderDetail.reviewId == null ? (
+            <div onClick={toggleModal}>
+              <ReviewButton orderStatus={orderDetail.orderStatus} />
+            </div>
+          ) : (
+            <div className="mt-3 w-[290px] mx-4 border-[1px] py-3" /> // ReviewButton의 예상 크기
+          )}
         </div>
         {showModal && (
           <div className="modal">
