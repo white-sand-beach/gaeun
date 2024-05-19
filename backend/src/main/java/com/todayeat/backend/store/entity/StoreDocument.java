@@ -60,7 +60,10 @@ public class StoreDocument {
     private String introduction;
 
     @Field(type = FieldType.Boolean)
-    private boolean isOpened;
+    private Boolean isOpened;
+
+    @Field(type = FieldType.Boolean)
+    private Boolean isExample;
 
     @Field(type = FieldType.Integer)
     private int reviewCnt;

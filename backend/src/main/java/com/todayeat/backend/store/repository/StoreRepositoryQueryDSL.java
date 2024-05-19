@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface StoreRepositoryQueryDSL {
 
-    GetConsumerListStoreResponse findStoreList(Location location, Integer radius, String keyword, Long categoryId, Pageable pageable);
+    GetConsumerListStoreResponse findStoreList(Location location, Integer radius, String keyword, Long categoryId, Pageable pageable, Boolean isDonated);
 }

@@ -64,6 +64,10 @@ public class Store extends BaseTime {
     private Boolean isOpened;
 
     @Column(nullable = false)
+    @ColumnDefault("false")
+    private Boolean isExample;
+
+    @Column(nullable = false)
     @ColumnDefault("0")
     private Integer saleCnt;
 
@@ -78,6 +82,11 @@ public class Store extends BaseTime {
     public void updateIsOpened(Boolean isOpened) {
 
         this.isOpened = isOpened;
+    }
+
+    public void updateIsExample(Boolean isExample) {
+
+        this.isExample = isExample;
     }
 
     public void updateSaleCnt(int value) {

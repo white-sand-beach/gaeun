@@ -105,7 +105,7 @@ public class JwtUtil {
         throw new JwtException(null);
     }
 
-    public boolean isExpiredToken(String token) {
+    public Boolean isExpiredToken(String token) {
         try {
             return getClaims(token).getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {

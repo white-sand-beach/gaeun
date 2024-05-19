@@ -40,7 +40,7 @@ public class DistributedLockAspect {
         String lockName = rLock.getName();
 
         try {
-            boolean available = rLock.tryLock(
+            Boolean available = rLock.tryLock(
                                     distributedLock.waitTime(),
                                     distributedLock.leaseTime(),
                                     distributedLock.timeUnit());

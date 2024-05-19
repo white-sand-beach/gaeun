@@ -157,7 +157,7 @@ public class ConsumerService {
         cookieUtil.deleteCookie(request, response, REFRESH_TOKEN_COOKIE_NAME);
     }
 
-    private boolean existsByNickname(String nickname) {
+    private Boolean existsByNickname(String nickname) {
 
         return consumerRepository.existsByNicknameAndDeletedAtIsNull(nickname);
     }

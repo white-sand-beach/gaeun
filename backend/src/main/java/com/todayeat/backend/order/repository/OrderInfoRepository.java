@@ -48,5 +48,4 @@ public interface OrderInfoRepository extends JpaRepository<OrderInfo, Long>, Ord
             "and o.orderNo like %:orderNo% " +
             "and o.deletedAt is null")
     Slice<OrderInfo> findAllByStoreIdAndStatusAndOrderNoAndDeletedAtIsNull(Long storeId, List<OrderInfoStatus> statusList, String orderNo, Pageable pageable);
-
 }

@@ -68,7 +68,7 @@ public class Consumer extends BaseTime {
         this.isDonated = isDonated;
     }
 
-    public boolean isJoined() {
+    public Boolean isJoined() {
         return this.nickname != null && this.phoneNumber != null;
     }
 

@@ -14,7 +14,7 @@ public interface ConsumerRepository extends JpaRepository<Consumer, Long> {
 
     Optional<Consumer> findByIdAndDeletedAtIsNull(Long consumerId);
 
-    boolean existsByNicknameAndDeletedAtIsNull(String nickname);
+    Boolean existsByNicknameAndDeletedAtIsNull(String nickname);
 
     @Modifying
     @Query("update Consumer c " +
