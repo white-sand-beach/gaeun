@@ -57,7 +57,7 @@ const App = () => {
 
   onMessage(messaging, (payload) => {
     console.log("메시지 받았어요", payload)
-    alert(`${payload.notification?.title} \n ${payload.notification?.body}`)
+    alert(`${payload.data?.title} \n ${payload.data?.body}`)
   })
 
 
