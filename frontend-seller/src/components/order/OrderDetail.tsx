@@ -54,7 +54,7 @@ const OrderDetail: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 bg-gray-100 w-full">
+    <div className="flex items-center justify-center min-h-screen p-4 w-full">
       {detailInfo ? (
         <div className="w-full max-w-8xl p-6 bg-white rounded-lg shadow-md">
           {/* 현재 결제 상태에 따라 노출될 버튼들 */}
@@ -139,11 +139,11 @@ const OrderDetail: React.FC = () => {
           </p>
           <div className="flex justify-between mt-2">
             <p className="font-bold text-[30px]">주문 시간</p>
-            <p className="text-[20px]">{detailInfo.orderDate}</p>
+            <p className="font-bold text-[30px]">{detailInfo.orderDate}</p>
           </div>
           <div className="flex justify-between mt-4">
             <p className="font-bold text-[30px]">주문 번호</p>
-            <p>{detailInfo.orderNo}</p>
+            <p className="font-bold text-[30px]">{detailInfo.orderNo}</p>
           </div>
           <div className="pt-8 mt-2 border-t border-gray-300">
             <p className="mb-4 font-bold text-[30px]">주문 내역</p>
@@ -166,7 +166,7 @@ const OrderDetail: React.FC = () => {
             </div>
             <div className="flex justify-between mt-2">
               <p className="font-bold">총 결제금액</p>
-              <p className="text-lg text-[30px] font-bold text-blue-500">
+              <p className="text-[30px] font-bold text-blue-500">
                 {detailInfo.paymentPrice.toLocaleString()}원
               </p>
             </div>

@@ -26,14 +26,14 @@ const MenuList: React.FC<MenuListType> = (props) => {
       {props.menusInfo.map((menu) => (
         <div
           key={menu.menuId}
-          className="relative w-full h-[300px] gap-3 border-2 bg-gray-100 shadow-2xl rounded-3xl p-2 flex"
+          className="relative w-full h-[300px] gap-3 border-2 shadow-2xl rounded-3xl p-2 flex"
         >
           <div className="flex justify-between w-screen mx-5">
-            <div className="flex justify-center items-center w-[400px] h-full bg-gray-100 border-6 border-white rounded-3xl shadow-lg">
+            <div className="flex justify-center items-center w-[400px] h-full border-6 border-gray-200 rounded-3xl shadow-lg">
               <img
                 src={menu.imageUrl}
                 alt="메뉴 사진"
-                className="object-cover w-11/12 h-11/12 rounded-2xl"
+                className="object-cover w-full h-full rounded-2xl"
               />
             </div>
             <div className="flex flex-col w-full gap-2 my-auto ml-10">
@@ -74,8 +74,8 @@ const MenuList: React.FC<MenuListType> = (props) => {
                       saleList: [
                         {
                           sellPrice: menu.sellPrice,
-                          content: "테스트 신청",
-                          stock: 10,
+                          content: "맛있어요!",
+                          stock: 100,
                           menuId: menu.menuId,
                         },
                       ],

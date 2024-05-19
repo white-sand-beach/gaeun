@@ -231,7 +231,7 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
             <textarea
               name="shopIntro"
               placeholder="가게 소개를 입력해주세요."
-              className="resize-none register-textarea-tag"
+              className="resize-none register-textarea-tag whitespace-pre-line"
               value={props.shopIntro}
               onChange={handleChangeInfo}
             />
@@ -243,7 +243,7 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
             <textarea
               name="FoodOrigin"
               placeholder="재료 및 원산지를 입력해주세요."
-              className="resize-none register-textarea-tag"
+              className="resize-none register-textarea-tag whitespace-pre-line"
               value={props.FoodOrigin}
               onChange={handleChangeInfo}
             />
@@ -257,7 +257,7 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
             <textarea
               name="shopWorkday"
               placeholder="영업시간을 입력해주세요."
-              className="resize-none register-textarea-tag"
+              className="resize-none register-textarea-tag whitespace-pre-line"
               value={props.shopWorkday}
               onChange={handleChangeInfo}
             />
@@ -268,7 +268,7 @@ const RegisterShop: React.FC<InputRegisterShop> = (props) => {
             <textarea
               name="shopHoliday"
               placeholder="휴무일을 입력해주세요."
-              className="resize-none register-textarea-tag"
+              className="resize-none register-textarea-tag whitespace-pre-line"
               value={props.shopHoliday}
               onChange={handleChangeInfo}
             />

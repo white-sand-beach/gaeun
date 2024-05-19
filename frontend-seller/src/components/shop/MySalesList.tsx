@@ -57,7 +57,7 @@ const MySalesList: React.FC<SalesListInfoType> = (props) => {
           key={list.saleId}
           className="flex flex-row justify-around items-center h-[300px] gap-4 border-4 border-orange-500 rounded-[20px] mx-4"
         >
-          <div className="bg-gray-150 w-full h-[270px] flex justify-center items-center rounded-xl shadow-lg ">
+          <div className="w-full h-[270px] flex justify-center items-center rounded-xl shadow-lg ">
             <img
               src={list.imageUrl}
               alt="메뉴 사진"

@@ -29,7 +29,7 @@ const Header: React.FC = () => {
     case "/register-shop":
       title = "가게등록";
       break;
-    case "/order-finished":
+    case "/sales":
       title = "판매내역";
       break;
     case "/statistics":
@@ -41,6 +41,9 @@ const Header: React.FC = () => {
     case "/menus":
       title = "메뉴";
       break;
+    case "/mystore":
+      title = "나의 가게 정보"
+      break;
   }
 
   return (
@@ -48,7 +51,7 @@ const Header: React.FC = () => {
       <button onClick={() => navigate(-1)}>
         <img src={GotoBack} alt="뒤로가기" className="w-[40px] h-[40px]" />
       </button>
-      <h1>{title}</h1>
+      <p className="text-3xl font-bold">{title}</p>
       <button onClick={() => navigate("/notification")}>
         <img src={NotiIcon} alt="알림" className="w-[40px] h-[40px]" />
       </button>

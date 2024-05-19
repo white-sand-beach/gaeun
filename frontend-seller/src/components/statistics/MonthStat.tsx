@@ -104,10 +104,10 @@ const MonthStat = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-[880px] h-[770px] mx-auto">
-      {monthInfo ? (
+      {monthInfo.saleStatisticList.length > 0 ? (
         <Bar data={monthChartData} options={chartOptions} />
       ) : (
-        <h1>판매량 데이터가 없어요😭</h1>
+        <p className="text-6xl">판매량 데이터가 없어요😢</p>
       )}
     </div>
   );

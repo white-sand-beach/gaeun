@@ -44,7 +44,7 @@ const ShopInfoPage = () => {
   }, []);
 
   return (
-    <div className="bg-gray-100 flex justify-center pt-24 pb-24">
+    <div className="flex justify-center pt-24 pb-24">
       <div className=" bg-white w-[800px] border-gray-300 border-4 rounded-[40px] p-10  overflow-y-scroll ">
         <ShopInfo
           imageURL={shopInfo.imageURL}

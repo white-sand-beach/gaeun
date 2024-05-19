@@ -9,7 +9,7 @@ const ShopInfo: React.FC<getShopInfoType> = (props) => {
         <img
           src={props.imageURL}
           alt="가게 대표 이미지"
-          className="h-[300px] rounded-[20px]"
+          className="w-[300px] h-[300px] rounded-[20px]"
         />
         <div className="relative flex flex-col items-center border-2 rounded-[20px] gap-3 p-3">
           <img src={EditIcon} alt="수정버튼" className="absolute w-[20px] h-[20px] right-4"/>

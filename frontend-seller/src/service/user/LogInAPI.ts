@@ -51,12 +51,12 @@ const LoginAPI = () => {
                     .catch((err) => {
                         console.error("FCM토큰 에러: ", err)
                     })
-                if ((cookies.get("storeId") === null) || (cookies.get("storeId") === undefined)) {
-                    navigate("/register-shop")
-                }
-                else {
+                // if ((cookies.get("storeId") === null) || (cookies.get("storeId") === undefined)) {
+                //     navigate("/register-shop")
+                // }
+                // else {
                     navigate("/")
-                }
+                // }
             })
             .catch(err => {
                 console.error(err)

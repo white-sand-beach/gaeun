@@ -108,10 +108,10 @@ const WeekStat: React.FC = () => {
     <div className="flex flex-col items-center justify-center w-[880px] h-[770px] mx-auto">
       <div className="flex items-center justify-center w-full h-full">
         <div className="flex items-center justify-center w-full h-full max-w-screen-lg">
-          {weekInfo ? (
+          {weekInfo.saleStatisticList.length > 0 ? (
             <Bar data={weekChartData} options={chartOptions} />
           ) : (
-            <h1>판매량 데이터가 없어요😭</h1>
+            <p className="text-6xl">판매량 데이터가 없어요😢</p>
           )}
         </div>
       </div>
