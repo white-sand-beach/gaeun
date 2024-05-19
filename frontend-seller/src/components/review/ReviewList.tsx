@@ -4,18 +4,7 @@ import getReviewAPI from "../../service/review/getReviewAPI";
 
 const ReviewList: React.FC = () => {
   const [ reviewInfo, setReviewInfo ] = useState<ReviewListType>({
-    reviewList: [
-      {
-        reviewId: 0,
-        content: "",
-        imageUrl: "",
-        consumerId: 0,
-        nickname: "",
-        storeId: 0,
-        storeName: "",
-        createdAd: "",
-      },
-    ],
+    reviewList: [],
     page: 0,
     hasNext: false,
     totalCnt: 0,
@@ -26,14 +15,36 @@ const ReviewList: React.FC = () => {
       try {
         const response = await getReviewAPI(reviewInfo.page, 10);
         console.log(response.data.data)
-        setReviewInfo(response.data.data)
+        setReviewInfo((prev) => ({
+          ...prev,
+          reviewList: [...prev.reviewList, response.data.data.reviewList],
+          hasNext: response.data.data.hasNext,
+        }))
       }
       catch (err) {
         console.error(err)
       }
     }
     fetchReviewInfo()
-  }, []);
+  }, [reviewInfo.page]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollH = document.documentElement.scrollHeight;
+      const scrollT = document.documentElement.scrollTop;
+      const clientH = document.documentElement.clientHeight;
+
+      if (scrollT + clientH >= scrollH && reviewInfo.hasNext) {
+        setReviewInfo((prev) => ({
+          ...prev,
+          page: prev.page + 1,
+        }))
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [reviewInfo.hasNext])
   
 
   return (
