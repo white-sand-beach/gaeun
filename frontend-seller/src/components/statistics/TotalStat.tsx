@@ -19,9 +19,15 @@ const TotalStat = () => {
 
   if (totalInfo === 0) {
     return (
-      <div className="flex items-center justify-center h-screen pb-32">
+      <div className="flex items-center justify-center h-screen pb-56">
         <div>
-          <img className="rounded-full" src={logo} alt="로고" />
+          <div className="w-[450px] h-[450px]">
+            <img
+              className="object-cover w-full h-full rounded-full"
+              src={logo}
+              alt="로고"
+            />
+          </div>
           <h2 className="text-3xl font-bold text-center">
             사장님
             <span
