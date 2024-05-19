@@ -9,8 +9,8 @@ const FinishOrderList = async (page: number, size: number): Promise<any> => {
     const response = await axios.get(import.meta.env.VITE_BASE_URL + "/api/orders/finished", {
       params: {
         "store-id": storeId,
-        "page": page.toString(),
-        "size": size.toString(),
+        "page": page,
+        "size": size,
         "order-no": "",
       },
       headers: {
