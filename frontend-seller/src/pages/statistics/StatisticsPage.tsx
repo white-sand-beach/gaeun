@@ -10,40 +10,33 @@ const StatisticsPage = () => {
   };
 
   return (
-    <div className="flex h-full">
-      <div className="flex flex-col items-center justify-center h-full p-12 bg-gray-100">
-        <div className="flex flex-col gap-4 text-xl font-bold">
-          <button
-            className={`cursor-pointer p-10 rounded-lg w-full ${listTap === 1 ? "bg-mainColor text-white" : "bg-gray-200 text-gray-600"}`}
-            onClick={() => handleChangeTap(1)}
-            style={{ writingMode: "vertical-rl", textOrientation: "upright" }}
-          >
-            <p className="text-[35px]">총판매량</p>
-          </button>
-          <button
-            className={`cursor-pointer p-10 rounded-lg w-full ${listTap === 2 ? "bg-mainColor text-white" : "bg-gray-200 text-gray-600"}`}
-            onClick={() => handleChangeTap(2)}
-            style={{ writingMode: "vertical-rl", textOrientation: "upright" }}
-          >
-            <p className="text-[35px]">주간판매량</p>
-          </button>
-          <button
-            className={`cursor-pointer p-10 rounded-lg w-full ${listTap === 3 ? "bg-mainColor text-white" : "bg-gray-200 text-gray-600"}`}
-            onClick={() => handleChangeTap(3)}
-            style={{ writingMode: "vertical-rl", textOrientation: "upright" }}
-          >
-            <p className="text-[35px]">월별판매량</p>
-          </button>
-        </div>
+    <div className="flex flex-row justify-center items-center top-[75px] h-screen gap-4">
+      <div className="flex flex-col justify-center items-center p-4">
+        <button
+          className={`cursor-pointer p-10 rounded-lg w-full ${listTap === 1 ? "bg-mainColor text-white" : "bg-gray-200 text-gray-600"}`}
+          onClick={() => handleChangeTap(1)}
+          style={{ writingMode: "vertical-rl", textOrientation: "upright" }}
+        >
+          <p className="text-[35px]">총판매량</p>
+        </button>
+        <button
+          className={`cursor-pointer p-10 rounded-lg w-full ${listTap === 2 ? "bg-mainColor text-white" : "bg-gray-200 text-gray-600"}`}
+          onClick={() => handleChangeTap(2)}
+          style={{ writingMode: "vertical-rl", textOrientation: "upright" }}
+        >
+          <p className="text-[35px]">주간판매량</p>
+        </button>
+        <button
+          className={`cursor-pointer p-10 rounded-lg w-full ${listTap === 3 ? "bg-mainColor text-white" : "bg-gray-200 text-gray-600"}`}
+          onClick={() => handleChangeTap(3)}
+          style={{ writingMode: "vertical-rl", textOrientation: "upright" }}
+        >
+          <p className="text-[35px]">월별판매량</p>
+        </button>
       </div>
-
-      <div className="flex-grow p-12 bg-gray-100 md:p-32">
-        <div className="flex items-center justify-center max-w-screen-lg mx-auto">
-          {listTap === 1 && <TotalStat />}
-          {listTap === 2 && <WeekStat />}
-          {listTap === 3 && <MonthStat />}
-        </div>
-      </div>
+      {listTap === 1 && <TotalStat />}
+      {listTap === 2 && <WeekStat />}
+      {listTap === 3 && <MonthStat />}
     </div>
   );
 };
