@@ -2,7 +2,6 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Link,
   useNavigate,
 } from "react-router-dom";
 import Main from "./components/ui/Main.tsx";
