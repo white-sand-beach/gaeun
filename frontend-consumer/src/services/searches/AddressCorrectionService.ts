@@ -1,6 +1,6 @@
 import axiosInstance from "../authentication/AxiosSet";
 
-const AddressCirrectionForm = async (
+const AddressCorrectionForm = async (
   addressId: number,
   alias: string,
   onSuccess: () => void,
@@ -18,4 +18,4 @@ const AddressCirrectionForm = async (
   }
 };
 
-export default AddressCirrectionForm;
+export default AddressCorrectionForm;

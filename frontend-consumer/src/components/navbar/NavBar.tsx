@@ -4,6 +4,9 @@ import cart from "../../assets/navbar/cart.png";
 import ring from "../../assets/navbar/ring.png";
 import back from "../../assets/navbar/back.png";
 import home from "../../assets/navbar/home.png";
+import alarm from "../../assets/navbar/alarm.png";
+import { useEffect, useState } from "react";
+import NotificationCountForm from "../../services/notifications/NotificationCountService";
 
 const NavBar = () => {
   const { alias, roadAddress } = useUserLocation((state) => ({
@@ -63,6 +66,14 @@ const NavBar = () => {
     default:
       title = "";
   }
+  const [notificationCount, setNotificationCount] = useState<any>(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await NotificationCountForm();
+      setNotificationCount(response.count);
+    };
+    fetchData();
+  }, [location]);
 
   const showHomeAddress = location.pathname === "/";
   const showCartAndNotification = location.pathname !== "/sign-up";
@@ -105,7 +116,14 @@ const NavBar = () => {
             </Link>
           )}
           <Link to="/notification">
-            <img className="mx-4" src={ring} alt="알림" />
+            <div className="relative">
+              {notificationCount > 0 && (
+                <div className="absolute top-0 right-[14px]">
+                  <img className="w-[10px] h-[10px]" src={alarm} alt="미확인" />
+                </div>
+              )}
+              <img className="mx-4" src={ring} alt="알림" />
+            </div>
           </Link>
           <Link to="/cart">
             <img src={cart} alt="장바구니" />

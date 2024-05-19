@@ -11,7 +11,7 @@ const NotificationGetForm = async ({ page, size }: NotificationData): Promise<an
     `${import.meta.env.VITE_API_URL}/api/consumer-notifications`, {
     params: { page, size },
   });
-  return response.data;
+  return response.data.data;
 };
 
 export default NotificationGetForm;
