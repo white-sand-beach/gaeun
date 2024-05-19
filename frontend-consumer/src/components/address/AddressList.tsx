@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import point_white from "../../assets/search/point_white.png";
 import useUserLocation from "../../store/UserLocation";
-import AddressDeleteForm from "../../services/searchs/AddressDeleteService";
+import AddressDeleteForm from "../../services/searches/AddressDeleteService";
 
 interface AddressListProps {
   address?: string; // 'address' prop은 string이거나 undefined일 수 있습니다.
