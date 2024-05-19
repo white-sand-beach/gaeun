@@ -5,7 +5,7 @@ const cookies = new Cookies()
 const accessToken = cookies.get("accessToken")
 const RegisterFCM = async (token: string) => {
     try {
-        const response = await axios.post(import.meta.env.VITE_BASE_URL + "/api/fcmtokens", {
+        const response = await axios.post(import.meta.env.VITE_API_URL + "/api/fcmtokens", {
             "token": token,
         }, {
             headers: {
