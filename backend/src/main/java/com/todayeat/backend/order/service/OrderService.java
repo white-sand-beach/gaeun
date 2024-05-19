@@ -126,9 +126,11 @@ public class OrderService {
         orderInfoRepository.save(orderInfo);
 
         // 주문 아이템 정보 저장
+        List<OrderInfoItem> orderInfoItemList = new ArrayList<>();
+
         carts.iterator().forEachRemaining(
-                cart -> orderInfoItemRepository.save(
-                        OrderInfoItem.of(findSaleOrElseThrow(cart), cart.getQuantity(), orderInfo, isDonated))
+                cart -> orderInfoItemList.add(orderInfoItemRepository.save(
+                        OrderInfoItem.of(findSaleOrElseThrow(cart), cart.getQuantity(), orderInfo, isDonated)))
         );
 
         // 나눔일 경우
@@ -139,7 +141,7 @@ public class OrderService {
                     .iterator().forEachRemaining(cartRepository::delete);
 
             // 판매자 주문 요청 알림
-            getSellerNotification(orderInfo);
+            getSellerNotification(orderInfo, orderInfoItemList);
         }
 
         return CreateOrderResponse.of(orderInfo.getId(), paymentPrice, consumer);
@@ -228,7 +230,7 @@ public class OrderService {
                 .iterator().forEachRemaining(cartRepository::delete);
 
         // 판매자 주문 요청 알림
-        getSellerNotification(orderInfo);
+        getSellerNotification(orderInfo, orderInfo.getOrderInfoItemList());
     }
 
     @Transactional
@@ -394,7 +396,7 @@ public class OrderService {
                 createOrderNotification.getTitle(), createOrderNotification.getBody());
     }
 
-    private void getSellerNotification(OrderInfo orderInfo) {
+    private void getSellerNotification(OrderInfo orderInfo, List<OrderInfoItem> orderInfoItemList) {
 
         Optional<Seller> seller = sellerRepository.findByStoreAndDeletedAtIsNull(orderInfo.getStore());
 
@@ -403,8 +405,8 @@ public class OrderService {
 
         CreateOrderNotification createOrderNotification = CreateOrderNotification.of(
                 orderInfo,
-                orderInfo.getOrderInfoItemList().getFirst().getName(),
-                orderInfo.getOrderInfoItemList().size()
+                orderInfoItemList.getFirst().getName(),
+                orderInfoItemList.size()
         );
 
         sellerNotificationService.createOrderNotification(createOrderNotification, seller.get());
