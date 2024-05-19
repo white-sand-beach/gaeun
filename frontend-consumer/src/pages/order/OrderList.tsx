@@ -75,9 +75,9 @@ const OrderList = () => {
   };
 
   return (
-    <div className="pt-12">
+    <div className="pt-2">
       {/* 가게 및 메뉴 검색 */}
-      <div className="fixed flex items-center bg-white rounded-md">
+      <div className="fixed mt-10 flex items-center bg-white rounded-md">
         <div className="w-screen mt-4 center">
           <div className="w-11/12 search">
             <input
@@ -95,7 +95,7 @@ const OrderList = () => {
       </div>
 
       {/* 주문 목록 */}
-      <div className="pt-16 pb-14">
+      <div className="pt-28 pb-14">
         {orderData.length === 0 ? (
           <div className="h-screen pb-48 center">
             <div>

@@ -18,14 +18,17 @@ const Notification = () => {
     page: 0,
     hasNext: false,
   });
-  const [isCheck, setIsCheck] = useState<boolean>(false);
 
   const handleCheckSubmit = async (notification: any) => {
     try {
       if (!notification.isRead) {
         const response = await NotificationCheckForm(String(notification.id));
         console.log(response);
-        setIsCheck(true);
+        setNotificationData((prevNotifications) =>
+          prevNotifications.map((item) =>
+            item.id === notification.id ? { ...item, isRead: true } : item
+          )
+        );
       }
     } catch (error) {
       console.warn(error);
@@ -45,13 +48,12 @@ const Notification = () => {
           ...response.notificationList,
         ]);
         console.log(response);
-        setIsCheck(false);
       } catch (error) {
         console.error(error);
       }
     };
     fetchNotification();
-  }, [notificationInfo.page, isCheck]);
+  }, [notificationInfo.page]);
 
   useEffect(() => {
     const handleScroll = () => {
