@@ -16,4 +16,5 @@ export interface StoreList {
   categoryList: Category[];
   saleImageURLList: SaleImageURLType[];
   imageURL?: string;
+  isExample: boolean;
 }

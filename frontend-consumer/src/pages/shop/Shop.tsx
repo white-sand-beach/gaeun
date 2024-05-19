@@ -11,7 +11,7 @@ import ShopInfoGetForm from "../../services/shops/ShopInfoGetService";
 import { ShopInfo } from "../../types/ShopInfoType";
 import FavoritePostForm from "../../services/favorites/FavoritePostService";
 import ShoptFavoriteDeleteForm from "../../services/favorites/ShopFavoriteDeleteService";
-
+import badge from "../../assets/shop/badge.png";
 import logo from "../../../public/windows11/LargeTile.scale-100.png";
 
 const mapHeight = "105px"; // 예시 높이값
@@ -33,6 +33,7 @@ const Shop = () => {
     favoriteCnt: 0,
     opened: false,
     favorite: false,
+    isExample: false,
   });
 
   const makePhoneCall = (phoneNumber: string) => {
@@ -66,21 +67,23 @@ const Shop = () => {
     }
   };
 
-  // shopInfo.favorite 값이 변경될 때마다 isFavorite 상태 업데이트
-  useEffect(() => {
-    setIsFavorite(shopInfo.favorite);
-  }, [shopInfo.favorite]);
-
   // shopInfo.favoriteCnt 값이 변경될 때마다 favoriteCount 상태 업데이트
   useEffect(() => {
     setFavoriteCount(shopInfo.favoriteCnt);
   }, [shopInfo.favoriteCnt]);
+
+  // shopInfo.favorite 값이 변경될 때마다 isFavorite 상태 업데이트
+  useEffect(() => {
+    setIsFavorite(shopInfo.favorite);
+  }, [shopInfo.favorite]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await ShopInfoGetForm({ Id });
         setShopInfo(response);
+        setIsFavorite(response.favorite); // 여기서 초기값 설정
+        setFavoriteCount(response.favoriteCnt); // 여기서 초기값 설정
         console.log(response);
       } catch (error) {
         console.error("Error fetching shop info:", error);
@@ -103,7 +106,12 @@ const Shop = () => {
 
       <div className="my-4 text-center">
         {/* Shop Details */}
-        <h1 className="text-xl font-bold">{shopInfo.name}</h1>
+        <div className="flex items-center justify-center">
+          <h1 className="text-xl font-bold">{shopInfo.name}</h1>
+          {shopInfo.isExample && (
+            <img src={badge} alt="Badge" className="w-5 h-5" />
+          )}
+        </div>
 
         {/* Icons and details */}
         <div className="flex items-center justify-center mt-2 space-x-3">
