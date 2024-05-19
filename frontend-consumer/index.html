@@ -19,18 +19,18 @@
         <script type="module" src="/src/main.tsx"></script>
         <script>
             if ("serviceWorker" in navigator) {
-              window.addEventListener("load", () => {
-                navigator.serviceWorker
-                  .register("/firebase-messaging-sw.js")
-                  .then((registration) => {
-                    console.log("service-worker 등록 성공");
-                    console.log(registration);
-                  })
-                  .catch((err) => {
-                    console.log("service-worker 등록 실패");
-                    console.error(err);
-                  });
-              });
+                window.addEventListener("load", () => {
+                    navigator.serviceWorker
+                        .register("/consumer/firebase-messaging-sw.js")
+                        .then((registration) => {
+                            console.log("service-worker 등록 성공");
+                            console.log(registration);
+                        })
+                        .catch((err) => {
+                            console.log("service-worker 등록 실패");
+                            console.error(err);
+                        });
+                });
             }
         </script>
     </body>
