@@ -17,11 +17,12 @@ pipeline {
             }
         }
 
-        stage("CURRENT ID, GROUPS") {
+        stage("firebase-messaging-sw download") {
             steps {
-                script {
-                    sh 'id'
-                    sh 'groups'
+                withCredentials([file(credentialsId: 'ffirebase-messaging-sw', variable: 'configFile')]) {
+                    script {
+                        sh 'cp -rf $configFile /usr/share/nginx/html/firebase-messaging-sw.js'
+                    }
                 }
             }
         }
@@ -41,12 +42,6 @@ pipeline {
                         sh 'cp -rf $configFile ./frontend-consumer/.env'
                     }
                 }
-
-                //withCredentials([file(credentialsId: 'firebase-messaging-sw', variable: 'configFile')]) {
-                //    script {
-                //        sh 'cp -rf $configFile ./frontend-consumer/public/firebase-messaging-sw.js'
-                //    }
-                //}
             }
         }
         
@@ -83,12 +78,6 @@ pipeline {
                         sh 'cp -rf $configFile ./frontend-seller/.env'
                     }
                 }
-
-                //withCredentials([file(credentialsId: 'firebase-messaging-sw', variable: 'configFile')]) {
-                //    script {
-                //        sh 'cp -rf $configFile ./frontend-seller/public/firebase-messaging-sw.js'
-                //    }
-                //}
             }
         }
         
