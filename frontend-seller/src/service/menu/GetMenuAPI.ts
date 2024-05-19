@@ -5,7 +5,7 @@ import Cookies from "universal-cookie";
 const GetMenuAPI = () => {
   const cookies = new Cookies()
   const accessToken = cookies.get("accessToken")
-  const storeId = 1;
+  const storeId = cookies.get("storeId");
   const getMenu = (setMenuInfo:(menus: MenuInfoType[]) => void) => {
     axios.get(import.meta.env.VITE_BASE_URL + '/api/menus', {
       params: {

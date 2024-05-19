@@ -5,7 +5,7 @@ import { SaleStatisticList } from "../../types/statistics/SaleStatisticList";
 
 const cookies = new Cookies()
 const accessToken = cookies.get("accessToken")
-const storeId = 1
+const storeId = cookies.get("storeId")
 const WeekStatisticsAPI = async (): Promise<SaleStatisticList> => {
   try {
     const response = await axios.get(import.meta.env.VITE_BASE_URL + `/api/statistics/${storeId}/registration/week`, {

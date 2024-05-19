@@ -47,11 +47,11 @@ const InprogressListPage = () => {
   }, [inprogressOrderInfo.hasNext]);
 
   return (
-    <div className="gap-3 yes-footer top-[70px] w-screen justify-center">
+    <div className="gap-3 yes-footer top-[75px] w-screen">
       {inprogressOrderInfo.orderInfo.length === 0 ? (
-        <h1>
+        <div className="flex flex-col justify-center items-center w-screen h-screen">
           주문내역이 없어요 😭
-        </h1>
+        </div>
       ) : (
         <InprogressList inprogressOrderInfo={inprogressOrderInfo.orderInfo} />
       )}

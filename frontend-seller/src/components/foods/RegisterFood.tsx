@@ -2,7 +2,6 @@ import logo from "../../assets/logo/logo.png";
 import camera from "../../assets/addphoto.png";
 import React from "react";
 import { InputFoodType } from "../../types/foods/InputFoodType.ts";
-// import TotalButton from "../ui/TotalButton.tsx";
 
 const RegisterFood: React.FC<InputFoodType> = (props) => {
   const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,46 +13,44 @@ const RegisterFood: React.FC<InputFoodType> = (props) => {
   return (
     <div className="flex flex-col items-center top-[50px] gap-3">
       {/* 음식 이미지 추가 */}
-      <>
-        <div>
-          <label htmlFor="input-file">
-            <div className="relative flex justify-center items-center">
-              {!props.image ? (
-                <div className="border-[5px] rounded-full border-white p-2 bg-gray-50 shadow-lg">
-                  <img
-                    src={logo}
-                    alt="음식사진"
-                    className="w-[300px] rounded-full"
-                  />
-                </div>
-              ) : (
-                <div className="border-[5px] rounded-3xl border-white p-2 bg-gray-100 shadow-lg">
-                  <img
-                    src={URL.createObjectURL(props.image)}
-                    alt="음식사진"
-                    className="w-[300px] h-[300px] rounded-3xl object-cover"
-                  />
-                </div>
-              )}
-              <div>
+      <div>
+        <label htmlFor="input-file">
+          <div className="relative flex justify-center items-center">
+            {!props.image ? (
+              <div className="border-[5px] rounded-full border-white p-2 bg-gray-50 shadow-lg">
                 <img
-                  src={camera}
-                  alt="사진 추가"
-                  className="w-[60px] bottom-0 right-0 absolute z-10"
-                />
-                <input
-                  name="image"
-                  id="input-file"
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleImage}
+                  src={logo}
+                  alt="음식사진"
+                  className="w-[300px] rounded-full"
                 />
               </div>
+            ) : (
+              <div className="border-[5px] rounded-3xl border-white p-2 bg-gray-100 shadow-lg">
+                <img
+                  src={URL.createObjectURL(props.image)}
+                  alt="음식사진"
+                  className="w-[300px] h-[300px] rounded-3xl object-cover"
+                />
+              </div>
+            )}
+            <div>
+              <img
+                src={camera}
+                alt="사진 추가"
+                className="w-[60px] bottom-0 right-0 absolute z-10"
+              />
+              <input
+                name="image"
+                id="input-file"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImage}
+              />
             </div>
-          </label>
-        </div>
-      </>
+          </div>
+        </label>
+      </div>
 
       {/* 음식명 입력칸 */}
       <div className="py-14">
