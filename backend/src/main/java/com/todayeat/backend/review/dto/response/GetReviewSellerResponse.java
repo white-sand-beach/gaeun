@@ -26,6 +26,9 @@ public class GetReviewSellerResponse {
     @Schema(description = "리뷰 작성자 ID", example = "1")
     private Long consumerId;
 
+    @Schema(description = "리뷰 이미지", example = "https://todayeat-bucket.s3.ap-northeast-2.amazonaws.com/consumer/2/profile-image/2516e334-053e-4281-884d-77d66d85187c.jpg")
+    private String profileImage;
+
     @Schema(description = "작성자 닉네임", example = "맛잘알용가리")
     private String nickname;
 
@@ -39,11 +42,12 @@ public class GetReviewSellerResponse {
     private String createdAt;
 
     @Builder
-    private GetReviewSellerResponse(Long reviewId, String content, String imageUrl, Long consumerId, String nickname, Long storeId, String storeName, String createdAt) {
+    private GetReviewSellerResponse(Long reviewId, String content, String imageUrl, Long consumerId, String profileImage, String nickname, Long storeId, String storeName, String createdAt) {
         this.reviewId = reviewId;
         this.content = content;
         this.imageUrl = imageUrl;
         this.consumerId = consumerId;
+        this.profileImage = profileImage;
         this.nickname = nickname;
         this.storeId = storeId;
         this.storeName = storeName;
@@ -57,6 +61,7 @@ public class GetReviewSellerResponse {
                 .content(review.getContent())
                 .imageUrl(review.getImageUrl())
                 .consumerId(review.getConsumer().getId())
+                .profileImage(review.getConsumer().getProfileImage())
                 .nickname(review.getConsumer().getNickname())
                 .storeId(review.getStore().getId())
                 .storeName(review.getStore().getName())
