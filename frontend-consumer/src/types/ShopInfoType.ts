@@ -11,4 +11,5 @@ export interface ShopInfo {
   favoriteCnt: number;
   opened: boolean;
   favorite: boolean;
+  isExample: boolean;
 }
