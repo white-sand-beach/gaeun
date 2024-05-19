@@ -4,103 +4,75 @@ import { useNavigate } from "react-router-dom";
 import TotalButton from "../ui/TotalButton";
 import DeleteMenuAPI from "../../service/menu/DeleteMenuAPI";
 import RegisterSalesAPI from "../../service/sales/RegisterSalesAPI";
+import Cookies from "universal-cookie";
+import EditIcon from "../../assets/mypage-change-info.png";
+import DeleteIcon from "../../assets/trash-can-slash.png";
+import AddIcon from "../../assets/add-button.png";
 
 const MenuList: React.FC<MenuListType> = (props) => {
+  const cookies = new Cookies();
+  const storeId = cookies.get("storeId");
   const navigate = useNavigate();
   const { DeleteMenu } = DeleteMenuAPI();
   const { postSales } = RegisterSalesAPI();
-  // // 각 메뉴 아이템의 stock와 content 값을 관리하기 위한 상태 변수
-  // const [menuItems, setMenuItems] = useState(props.menusInfo.map(menu => ({
-  //   ...menu,
-  //   content: "",
-  //   stock: 0
-  // })));
-
-  // // 물품 재고 설정
-  // const handleChangeStock = (menuId: number, value: number) => {
-  //   setMenuItems(prevMenuItems =>
-  //     prevMenuItems.map(menu => {
-  //       if (menu.menuId === menuId) {
-  //         return {
-  //           ...menu,
-  //           stock: value
-  //         };
-  //       }
-  //       return menu;
-  //     })
-  //   );
-  // };
-
-  // // 물품 상세설명
-  // const handleChangeContent = (menuId: number, value: string) => {
-  //   setMenuItems(prevMenuItems =>
-  //     prevMenuItems.map(menu => {
-  //       if (menu.menuId === menuId) {
-  //         return {
-  //           ...menu,
-  //           content: value
-  //         };
-  //       }
-  //       return menu;
-  //     })
-  //   );
-  // };
 
   return (
-    <div className="flex flex-col items-center gap-8">
+    <div className="flex flex-col items-center w-full gap-4">
       <button
-        className="flex items-center justify-center w-32 h-12 mt-8 text-white bg-blue-500 rounded-lg"
+        className="fixed right-4 bottom-[80px] z-10 bg-white"
         onClick={() => navigate("/register-food")}
       >
-        메뉴 등록
+        <img src={AddIcon} alt="메뉴 추가하기" className="w-[80px] h-[80px]" />
       </button>
-      <h1 className="text-2xl font-bold">메뉴 리스트</h1>
-      <p className="text-lg">
-        여기서 바로 음식 수량을 결정하고 판매를 등록할 수 있습니다.
-      </p>
 
-      <div className="grid w-full max-w-screen-lg grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {props.menusInfo.map((menu) => (
-          <div
-            key={menu.menuId}
-            className="flex flex-col gap-3 p-4 bg-white border-2 rounded-lg shadow-lg"
-          >
+      {props.menusInfo.map((menu) => (
+        <div
+          key={menu.menuId}
+          className="relative h-[300px] gap-3 border-2 rounded-3xl p-2 w-[680px] flex flex-col"
+        >
+          <div className="flex flex-row w-[600px] justify-between items-center gap-6">
             <img
               src={menu.imageUrl}
-              alt={menu.name}
-              className="object-cover w-full h-32 rounded-lg"
+              alt="메뉴 사진"
+              className="w-[200px] h-[200px] rounded-3xl"
             />
-            <h2 className="text-xl font-semibold">{menu.name}</h2>
-            <p className="text-gray-700">원가: {menu.originalPrice}원</p>
-            <p className="text-gray-700">판매가: {menu.sellPrice}원</p>
-            <p className="text-gray-700">할인율: {menu.discountRate}%</p>
-            <TotalButton
-              title="메뉴 수정하기"
-              onClick={() => navigate(`/update/food/${menu.menuId}`)}
-            />
-            <TotalButton
-              title="메뉴 삭제하기"
-              onClick={() => DeleteMenu(menu.menuId)}
-            />
-            <TotalButton
-              title="판매 등록"
-              onClick={() =>
-                postSales({
-                  storeId: 1,
-                  saleList: [
-                    {
-                      sellPrice: menu.sellPrice,
-                      content: "테스트 신청",
-                      stock: 10,
-                      menuId: menu.menuId,
-                    },
-                  ],
-                })
-              }
-            />
+            <div className="flex flex-col w-full gap-3">
+              <p className="text-5xl font-bold">{menu.name}</p>
+              <h1>원가 : {menu.originalPrice}원</h1>
+              <h1>판매가 : {menu.sellPrice}원</h1>
+              <h1>할인율 : {menu.discountRate}%</h1>
+            </div>
           </div>
-        ))}
-      </div>
+          <img
+            src={EditIcon}
+            alt="메뉴 수정하기"
+            onClick={() => navigate(`/update/food/${menu.menuId}`)}
+            className="absolute w-[50px] h-[50px] right-[80px] top-4"
+          />
+          <img
+            src={DeleteIcon}
+            alt="메뉴 삭제하기"
+            onClick={() => DeleteMenu(menu.menuId)}
+            className="absolute w-[50px] h-[50px] right-[12px] top-4"
+          />
+          <TotalButton
+            title="판매 등록"
+            onClick={() =>
+              postSales({
+                storeId: storeId,
+                saleList: [
+                  {
+                    sellPrice: menu.sellPrice,
+                    content: "테스트 신청",
+                    stock: 10,
+                    menuId: menu.menuId,
+                  },
+                ],
+              })
+            }
+          />
+        </div>
+      ))}
     </div>
   );
 };

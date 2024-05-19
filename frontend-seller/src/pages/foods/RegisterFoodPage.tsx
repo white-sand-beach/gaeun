@@ -2,6 +2,7 @@ import { useState } from "react";
 import RegisterFood from "../../components/foods/RegisterFood.tsx";
 import RegisterFoodAPI from "../../service/foods/RegisterFoodAPI.ts";
 import TotalButton from "../../components/ui/TotalButton.tsx";
+import Cookies from "universal-cookie";
 
 type foodInfo = {
     image: File | null;
@@ -11,6 +12,8 @@ type foodInfo = {
 }
 const RegisterFoodPage = () => {
     // 등록할 음식에 대한 기본 정보
+    const cookies = new Cookies()
+    const storeId = cookies.get("storeId")
     const [foodInfo, setFoodInfo] = useState<foodInfo>({
         image: null,
         name: "",
@@ -44,7 +47,7 @@ const RegisterFoodPage = () => {
             name: foodInfo.name,
             originalPrice: foodInfo.originalPrice,
             sellPrice: foodInfo.sellPrice,
-            storeId: 1
+            storeId: storeId
         });
     };
 

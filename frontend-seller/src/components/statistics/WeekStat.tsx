@@ -43,16 +43,17 @@ const WeekStat: React.FC = () => {
     datasets: [
       {
         label: "통계",
-        backgroundColor: "rgba(255, 159, 64, 0.2)",
+        backgroundColor: "#FFAF38",
         borderColor: "rgba(0, 0, 0, 1)",
-        borderWidth: 2,
+        borderWidth: 1,
+        borderRadius: 14,
         data: weekInfo.saleStatisticList.map((stat) => stat.saleStatistic),
       },
     ],
   };
 
   const chartOptions: ChartOptions<"bar"> = {
-    responsive: false,
+    responsive: true, // 화면 크기에 따라서 그래프도 늘줄늘줄
     scales: {
       x: {
         type: "category",
