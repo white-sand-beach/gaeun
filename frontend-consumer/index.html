@@ -21,8 +21,8 @@
             if ("serviceWorker" in navigator) {
               window.addEventListener("load", () => {
                 navigator.serviceWorker
-                  .register("./public/firebase-messaging-sw.js")
-                  .then((registration: ServiceWorkerRegistration) => {
+                  .register("/firebase-messaging-sw.js")
+                  .then((registration) => {
                     console.log("service-worker 등록 성공");
                     console.log(registration);
                   })
