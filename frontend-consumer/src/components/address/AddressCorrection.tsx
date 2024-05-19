@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import company from "../../assets/search/company.png";
 import home from "../../assets/search/home.png";
 import point_white from "../../assets/search/point_white.png";
-import AddressCirrectionForm from "../../services/searchs/AddressCorrectionService";
+import AddressCorrectionForm from "../../services/searches/AddressCorrectionService";
 
 const AddressCorrection = () => {
   const location = useLocation();
@@ -68,7 +68,7 @@ const AddressCorrection = () => {
 
   const aliasComplete = () => {
     if (addressId && alias) {
-      AddressCirrectionForm(
+      AddressCorrectionForm(
         addressId,
         alias,
         () => {

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import company from "../../assets/search/company.png";
 import home from "../../assets/search/home.png";
 import point_white from "../../assets/search/point_white.png";
-import AddressRegistrationForm from "../../services/searchs/AddressRegistrationService";
+import AddressRegistrationForm from "../../services/searches/AddressRegistrationService";
 import useUserLocation from "../../store/UserLocation";
 
 const AddressRegistration = () => {
