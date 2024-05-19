@@ -1,7 +1,11 @@
 package com.todayeat.backend.order.service;
 
 import com.todayeat.backend._common.annotation.DistributedLock;
+import com.todayeat.backend._common.notification.dto.CreateOrderNotification;
+import com.todayeat.backend._common.notification.service.ConsumerNotificationService;
+import com.todayeat.backend._common.notification.service.SellerNotificationService;
 import com.todayeat.backend._common.response.error.exception.BusinessException;
+import com.todayeat.backend._common.util.FCMNotificationUtil;
 import com.todayeat.backend._common.util.SecurityUtil;
 import com.todayeat.backend.cart.entity.Cart;
 import com.todayeat.backend.cart.repository.CartRepository;
@@ -21,6 +25,7 @@ import com.todayeat.backend.order.repository.OrderInfoRepository;
 import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.sale.repository.SaleRepository;
 import com.todayeat.backend.seller.entity.Seller;
+import com.todayeat.backend.seller.repository.SellerRepository;
 import com.todayeat.backend.store.entity.Store;
 import com.todayeat.backend.store.repository.StoreRepository;
 import com.todayeat.backend.store.service.StoreService;
@@ -34,10 +39,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.todayeat.backend._common.response.error.ErrorType.*;
@@ -54,10 +56,14 @@ public class OrderService {
     private final StoreRepository storeRepository;
     private final SaleRepository saleRepository;
     private final CartRepository cartRepository;
+    private final SellerRepository sellerRepository;
+    private final ConsumerNotificationService consumerNotificationService;
+    private final SellerNotificationService sellerNotificationService;
 
     private final StoreService storeService;
 
     private final SecurityUtil securityUtil;
+    private final FCMNotificationUtil fcmNotificationUtil;
 
     private final IamportRequestClient iamportRequestClient;
 
@@ -131,6 +137,9 @@ public class OrderService {
             // 장바구니 삭제
             cartRepository.findAllByConsumerId(consumer.getId())
                     .iterator().forEachRemaining(cartRepository::delete);
+
+            // 판매자 주문 요청 알림
+            getSellerNotification(orderInfo);
         }
 
         return CreateOrderResponse.of(orderInfo.getId(), paymentPrice, consumer);
@@ -216,6 +225,9 @@ public class OrderService {
         // 장바구니 삭제
         cartRepository.findAllByConsumerId(consumer.getId())
                 .iterator().forEachRemaining(cartRepository::delete);
+
+        // 판매자 주문 요청 알림
+        getSellerNotification(orderInfo);
     }
 
     @Transactional
@@ -260,6 +272,9 @@ public class OrderService {
                 orderInfo.updateStatus(orderInfoStatus);
                 orderInfo.updateTakenTimeAndApprovedAt(request.getTakenTime());
 
+                // 소비자 음식 수락 알림
+                getConsumerNotification(orderInfo);
+
                 return;
             }
 
@@ -282,6 +297,9 @@ public class OrderService {
                     cancelPayment(orderInfo.getPaymentId());
                 }
 
+                // 소비자 음식 거절 알림
+                getConsumerNotification(orderInfo);
+
                 return;
             }
 
@@ -296,6 +314,9 @@ public class OrderService {
             if (orderInfoStatus == PREPARED) {
 
                 orderInfo.updateStatus(orderInfoStatus);
+
+                // 소비자 음식 준비완료 알림
+                getConsumerNotification(orderInfo);
 
                 return;
             }
@@ -345,12 +366,47 @@ public class OrderService {
                                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND)),
                         value);
 
+                // 소비자 음식 수령 알림
+                getConsumerNotification(orderInfo);
+
                 return;
             }
         }
 
         // 상태 수정 불가능한 상태
         throw new BusinessException(ORDER_STATUS_CANT_UPDATE);
+    }
+
+    private void getConsumerNotification(OrderInfo orderInfo) {
+
+        CreateOrderNotification createOrderNotification = CreateOrderNotification.of(
+                orderInfo,
+                orderInfo.getOrderInfoItemList().getFirst().getName(),
+                orderInfo.getOrderInfoItemList().size());
+
+        consumerNotificationService.createOrderNotification(createOrderNotification, orderInfo.getConsumer());
+
+        fcmNotificationUtil.sendToOne(orderInfo.getConsumer().getId(), "Consumer",
+                createOrderNotification.getTitle(), createOrderNotification.getBody());
+    }
+
+    private void getSellerNotification(OrderInfo orderInfo) {
+
+        Optional<Seller> seller = sellerRepository.findByStoreAndDeletedAtIsNull(orderInfo.getStore());
+
+        if(seller.isEmpty())
+            return;
+
+        CreateOrderNotification createOrderNotification = CreateOrderNotification.of(
+                orderInfo,
+                orderInfo.getOrderInfoItemList().getFirst().getName(),
+                orderInfo.getOrderInfoItemList().size()
+        );
+
+        sellerNotificationService.createOrderNotification(createOrderNotification, seller.get());
+
+        fcmNotificationUtil.sendToOne(seller.get().getId(), "Seller",
+                createOrderNotification.getTitle(), createOrderNotification.getBody());
     }
 
     @Transactional
