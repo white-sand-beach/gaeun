@@ -41,6 +41,11 @@ const OrderState = () => {
           setOrderCurrent(response);
         } catch (error) {
           console.log("현황 조회 실패:", error);
+        } finally {
+          if (orderCurrent.orderStatus === "취소됨") {
+            alert("주문이 취소되었습니다. 주문 내역 페이지로 이동합니다.");
+            navigate("/order-list");
+          }
         }
       };
 
