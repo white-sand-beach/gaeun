@@ -11,7 +11,9 @@ const Review = ({ reviewList }: { reviewList: reviewListItem[] }) => {
       <div className="h-screen pb-40 center">
         <div className="items-center justify-center">
           <img className="rounded-full" src={logo} alt="로고" />
-          <h2 className="text-lg font-bold center">감사편지를 써볼까요?</h2>
+          <h2 className="text-lg font-bold center">
+            감사편지를 쓴적없는 가게예요.
+          </h2>
         </div>
       </div>
     );
