@@ -1,7 +1,7 @@
 import React from "react";
-import { OrderType } from "../../types/order/OrderType.ts";
+import { NotificationListType } from "../../types/notification/NotificationListType";
 
-const NotificationList: React.FC<OrderType> = (props) => {
+const NotificationList: React.FC<NotificationListType> = (props) => {
     return (
         <div className="flex flex-col justify-around w-screen h-[160px] border-b-2 p-3">
             {/* 주문번호 및 주문날짜 */}

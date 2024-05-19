@@ -3,43 +3,66 @@ import SellListIcon from "../../assets/sell-list.png";
 import OrderListIcon from "../../assets/order-list.png";
 import AddProductIcon from "../../assets/add-product.png";
 import ProfileIcon from "../../assets/profile.png";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+  const accessToken = cookies.get("accessToken");
+  const handleIconClick = (path: string) => {
+    if (!accessToken) {
+      navigate("/login");
+    } else {
+      navigate(path);
+    }
+  };
+
   return (
     <footer>
-      <div className="flex flex-col items-center justify-center">
-        <img src={ChartIcon} alt="통계" />
+      <button
+        className="flex flex-col items-center justify-center gap-1 w-full"
+        onClick={() => handleIconClick("/statistics")}
+      >
+        <img src={ChartIcon} alt="통계" className="w-[24px] h-[24px]" />
         <p>통계</p>
-      </div>
+      </button>
 
-      <Link to={"/sales"}>
-        <div className="flex flex-col items-center justify-center">
-          <img src={SellListIcon} alt="판매내역" />
-          <p>판매내역</p>
-        </div>
-      </Link>
+      <button
+        className="flex flex-col items-center justify-center gap-1 w-full"
+        onClick={() => handleIconClick("/menus")}
+      >
+        <img
+          src={AddProductIcon}
+          alt="물품등록"
+          className="w-[24px] h-[24px]"
+        />
+        <p>메뉴</p>
+      </button>
 
-      <Link to={"/order"}>
-        <div className="flex flex-col items-center justify-center">
-          <img src={OrderListIcon} alt="주문현황" />
-          <p>주문현황</p>
-        </div>
-      </Link>
-      
-      <Link to={"/register/food"}>
-        <div className="flex flex-col items-center justify-center">
-          <img src={AddProductIcon} alt="물품등록" />
-          <p>등록하기</p>
-        </div>
-      </Link>
+      <button
+        className="flex flex-col items-center justify-center gap-1 w-full"
+        onClick={() => handleIconClick("/order")}
+      >
+        <img src={OrderListIcon} alt="주문현황" className="w-[24px] h-[24px]" />
+        <p>주문현황</p>
+      </button>
 
-      <Link to={"/mystore"}>
-        <div className="flex flex-col items-center justify-center">
-          <img src={ProfileIcon} alt="프로필" />
-          <p>프로필</p>
-        </div>
-      </Link>
+      <button
+        className="flex flex-col items-center justify-center gap-1 w-full"
+        onClick={() => handleIconClick("/sales")}
+      >
+        <img src={SellListIcon} alt="판매내역" className="w-[24px] h-[24px]" />
+        <p>판매내역</p>
+      </button>
+
+      <button
+        className="flex flex-col items-center justify-center gap-1 w-full"
+        onClick={() => handleIconClick("/mystore")}
+      >
+        <img src={ProfileIcon} alt="프로필" className="w-[24px] h-[24px]" />
+        <p>프로필</p>
+      </button>
     </footer>
   );
 };

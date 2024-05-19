@@ -13,10 +13,12 @@ const RegisterShopAPI = () => {
     const postRegisterShop = ({
         shopImage,
         shopName,
+        shopRegisteredName,
         shopOwner,
         shopNumber,
         shopzibunAddr,
         shoproadAddr,
+        shopDetailAddr,
         shopLat,
         shopLon,
         shopIntro,
@@ -26,10 +28,10 @@ const RegisterShopAPI = () => {
         shopCategoryId,
     }: InputRegisterShop) => {
         const formData = new FormData();
-        formData.append("registeredName", shopName);
+        formData.append("registeredName", shopRegisteredName);
         formData.append("bossName", shopOwner);
-        formData.append("address", shopzibunAddr);
-        formData.append("roadAddress", shoproadAddr);
+        formData.append("address", shopzibunAddr + " " + shopDetailAddr);
+        formData.append("roadAddress", shoproadAddr + " " + shopDetailAddr);
         formData.append("latitude", shopLat.toString());
         formData.append("longitude", shopLon.toString());
         formData.append("tel", shopNumber,);
@@ -39,38 +41,39 @@ const RegisterShopAPI = () => {
         formData.append("holiday", shopHoliday ?? "");
         formData.append("originCountry", FoodOrigin ?? "");
         formData.append("introduction", shopIntro ?? "");
-        formData.append("categoryIdList", shopCategoryId.toString());
+        shopCategoryId.forEach(id => {
+            formData.append("categoryIdList", id.toString())
+        })
         axios.post(import.meta.env.VITE_BASE_URL + "/api/stores", formData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
         })
-        .then(res => {
-            console.log(res.data)
-            window.alert("가게 등록 성공 ㅎㅎ")
-            cookies.set("storeId", res.data.data.storeId)
-            navigate("/")
-        })
-        .catch(err => {
-            console.error(err)
-            window.alert("가게등록 실패 ㅠㅠ")
-        })
+            .then(res => {
+                console.log(res)
+                window.alert("가게 등록 성공")
+                navigate("/")
+            })
+            .catch(err => {
+                console.error(err)
+                window.alert("가게등록 실패")
+            })
     };
 
     // 가게 카테고리 목록 불러오는 api
-    const getCategories = (setList:any) => {
+    const getCategories = (setList: any) => {
         axios.get(import.meta.env.VITE_BASE_URL + "/api/categories", {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
         })
-        .then(res => {
-            console.log(res.data.data)
-            setList(res.data.data.categoryList)
-        })
-        .catch(err => {
-            console.error(err)
-        })
+            .then(res => {
+                console.log(res.data.data)
+                setList(res.data.data.categoryList)
+            })
+            .catch(err => {
+                console.error(err)
+            })
     };
 
     return {

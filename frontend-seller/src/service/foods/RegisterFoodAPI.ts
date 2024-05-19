@@ -8,28 +8,27 @@ const RegisterFoodAPI = () => {
   const cookies = new Cookies()
   const accessToken = cookies.get("accessToken")
 
-  const postRegisterFood = ({image, name, originalPrice, sellPrice, storeId}: RegisterFoodType) => {
+  const postRegisterFood = ({ image, name, originalPrice, sellPrice, storeId }: RegisterFoodType) => {
     const formData = new FormData()
-    if (image) {
-      formData.append("image", image)
-    }
+    formData.append("image", image ?? "")
     formData.append("name", name)
     formData.append("originalPrice", originalPrice.toString())
     formData.append("sellPrice", sellPrice.toString())
     formData.append("storeId", storeId.toString())
     axios.post(import.meta.env.VITE_BASE_URL + '/api/menus', formData, {
+      withCredentials: true,
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
     })
-    .then(res => {
-      console.log(res)
-      window.alert("메뉴 등록 성공")
-      navigate("/menus")
-    })
-    .catch(err => {
-      console.error(err)
-    });
+      .then(res => {
+        console.log(res)
+        window.alert("메뉴 등록 성공")
+        navigate("/menus")
+      })
+      .catch(err => {
+        console.error(err)
+      });
   };
   return {
     postRegisterFood,
