@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
+import badge from "../../assets/shop/badge.png";
 import { StoreList } from "../../types/StoreList";
 import MainMenu from "./MainMenu";
 
@@ -34,10 +35,23 @@ const Shops = ({ store }: { store: StoreList }) => {
                 </p>
               </div>
             </div>
-            <p className="text-sm text-gray-500">{store.operatingTime}</p>
-            <p className="text-sm">
-              가게 찜 {store.favoriteCnt} · 편지 수 {store.reviewCnt}
-            </p>
+            <div className="flex justify-between">
+              <div>
+                <p className="text-sm text-gray-500">{store.operatingTime}</p>
+                <p className="text-sm">
+                  가게 찜 {store.favoriteCnt} · 편지 수 {store.reviewCnt}
+                </p>
+              </div>
+              <div className="w-10 h-10 mr-1">
+                {store.isExample && (
+                  <img
+                    src={badge}
+                    alt="Badge"
+                    className="object-cover w-full h-full"
+                  />
+                )}
+              </div>
+            </div>
           </div>
           {/* 이미지 슬라이더 부분 */}
           <div className="flex gap-2 mt-2 overflow-x-scroll scrollbar-hide">

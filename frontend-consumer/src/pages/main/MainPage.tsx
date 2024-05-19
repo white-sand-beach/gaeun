@@ -88,13 +88,9 @@ const Main: React.FC = () => {
             ...response.storeList,
           ]); // 이전 가게 리스트에 새로운 가게 리스트 추가
         }
-      } catch (error : any) {
+      } catch (error) {
         console.error("Error fetching store list:", error);
-        if (error.message === "Request failed with status code 400") {
-          return
-        } else {
-          navigate("/login");
-        }
+        navigate("/login");
       } finally {
         setAllData((prevState) => ({ ...prevState, loading: false }));
       }
