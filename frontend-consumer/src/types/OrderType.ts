@@ -18,6 +18,7 @@ export interface OrderDetailType {
   storeId: number;
   storeName?: string;
   storeTel?: string;
+  reviewId?: number;
 }
 
 export interface OrderInfo {

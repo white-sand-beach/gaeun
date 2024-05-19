@@ -11,6 +11,7 @@ import { LetterData } from "../../types/LetterDataType.ts";
 import LetterPostForm from "../../services/letters/LetterPostService.ts";
 import { sendHeartOptions } from "../../assets/lotties/lottieOptions.ts";
 import Lottie from "react-lottie";
+import { useNavigate } from "react-router-dom";
 
 interface LetterRegistraionModalProps {
   onClose: () => void;
@@ -25,7 +26,7 @@ const LetterRegistraionModal: React.FC<
       onClose();
     }
   };
-
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
   const [letterData, setLetterData] = useState<LetterData>({
     content: "",
@@ -74,6 +75,7 @@ const LetterRegistraionModal: React.FC<
           setIsLoading(false); // 3초 후 로딩 상태 종료
           onClose();
         }, 3000);
+        navigate(`/order-list`);
       } catch (error) {
         console.error("Failed to send letter:", error);
         console.log("보내기 실패");
