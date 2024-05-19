@@ -41,7 +41,7 @@ const MonthStat = () => {
     datasets: [
       {
         label: "통계",
-        backgroundColor: "#FF0000", // 두 번째 막대 그래프 색상
+        backgroundColor: "#FFAF38", // 두 번째 막대 그래프 색상
         borderColor: "rgba(0, 0, 0, 1)",
         borderWidth: 1,
         borderRadius: 14,
