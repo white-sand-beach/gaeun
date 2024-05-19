@@ -12,9 +12,9 @@ import java.util.Optional;
 
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
-    boolean existsByConsumerAndStoreAndDeletedAtIsNull(Consumer consumer, Store store);
+    Boolean existsByConsumerAndStoreAndDeletedAtIsNull(Consumer consumer, Store store);
 
-    boolean existsByConsumerAndStoreIdAndDeletedAtIsNull(Consumer consumer, Long storeId);
+    Boolean existsByConsumerAndStoreIdAndDeletedAtIsNull(Consumer consumer, Long storeId);
 
     Optional<Favorite> findByIdAndDeletedAtIsNull(Long favoriteId);
 

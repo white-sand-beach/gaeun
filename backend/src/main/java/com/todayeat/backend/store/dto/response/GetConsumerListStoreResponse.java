@@ -16,7 +16,7 @@ public class GetConsumerListStoreResponse {
 
     private List<StoreInfo> storeList;
 
-    @Schema(description = "나눔 여부", example = "false")
+    @Schema(description = "나눔 대상자 여부", example = "false")
     private Boolean isDonated;
 
     @Schema(description = "현재 페이지", example = "0")
@@ -52,6 +52,9 @@ public class GetConsumerListStoreResponse {
 
         @Schema(description = "영업 시간", example = "00시 ~ 24시")
         private String operatingTime;
+
+        @Schema(description = "모범 여부", example = "false")
+        private Boolean isExample;
 
         @Schema(description = "리뷰 수", example = "0")
         private Integer reviewCnt;

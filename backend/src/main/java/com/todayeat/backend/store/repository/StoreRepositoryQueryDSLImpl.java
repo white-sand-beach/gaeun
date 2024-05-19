@@ -3,7 +3,6 @@ package com.todayeat.backend.store.repository;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.core.types.dsl.PathBuilder;
@@ -37,7 +36,7 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
     private final SecurityUtil securityUtil;
 
     @Override
-    public GetConsumerListStoreResponse findStoreList(Location location, Integer radius, String keyword, Long categoryId, Pageable pageable) {
+    public GetConsumerListStoreResponse findStoreList(Location location, Integer radius, String keyword, Long categoryId, Pageable pageable, Boolean isDonated) {
 
         QStoreCategory storeCategory = QStoreCategory.storeCategory;
         QCategory category = QCategory.category;
@@ -55,6 +54,7 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
                         store.name,
                         store.imageURL,
                         store.operatingTime,
+                        store.isExample,
                         store.reviewCnt,
                         store.favoriteCnt,
                         getIntegerNumberTemplate(location, store)
@@ -135,14 +135,14 @@ public class StoreRepositoryQueryDSLImpl implements StoreRepositoryQueryDSL {
             info.setSaleImageURLList(saleImageURLs);
         }
 
-        boolean hasNext = false;
+        Boolean hasNext = false;
         if (storeInfos.size() > pageable.getPageSize()) {
 
             storeInfos.remove(pageable.getPageSize());
             hasNext = true;
         }
 
-        return GetConsumerListStoreResponse.of(storeInfos, securityUtil.getConsumer().getIsDonated(), pageable.getPageSize(), hasNext);
+        return GetConsumerListStoreResponse.of(storeInfos, isDonated, pageable.getPageSize(), hasNext);
     }
 
     private static NumberTemplate<Integer> getIntegerNumberTemplate(Location location, QStore store) {

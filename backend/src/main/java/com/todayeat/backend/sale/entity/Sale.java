@@ -76,7 +76,7 @@ public class Sale extends BaseTime {
         this.menu = menu;
     }
 
-    public boolean update(String content, Integer stock) {
+    public Boolean update(String content, Integer stock) {
 
         // todo 주문 접수 건수도 고려하기
 
@@ -90,7 +90,7 @@ public class Sale extends BaseTime {
         return true;
     }
 
-    public boolean isFinished(Boolean isFinished) {
+    public Boolean isFinished(Boolean isFinished) {
 
         return this.isFinished = Objects.equals(totalQuantity, stock) || isFinished;
     }

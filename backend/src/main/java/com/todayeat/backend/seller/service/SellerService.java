@@ -143,7 +143,7 @@ public class SellerService implements UserDetailsService {
             throw new BusinessException(TEMP_PASSWORD_NOT_FOUND);
         }
 
-        boolean passwordMatches = authCode.equals(checkTempPasswordSellerRequest.getTempPassword());
+        Boolean passwordMatches = authCode.equals(checkTempPasswordSellerRequest.getTempPassword());
 
         log.info("passwordMatches : {}", passwordMatches);
 

@@ -36,7 +36,7 @@ public interface StoreMapper {
 
     @Mapping(target = "latitude", source = "store.location.lat")
     @Mapping(target = "longitude", source = "store.location.lon")
-    GetConsumerInfoStoreResponse storeToGetConsumerStoreResponse(Store store, boolean favorite);
+    GetConsumerInfoStoreResponse storeToGetConsumerStoreResponse(Store store, Boolean isFavorite);
 
     GetConsumerDetailStoreResponse storeToGetConsumerDetailStoreResponse(Store store);
 
@@ -51,8 +51,7 @@ public interface StoreMapper {
 
     @Mapping(target = "latitude", source = "storeDocument.location.lat")
     @Mapping(target = "longitude", source = "storeDocument.location.lon")
-    @Mapping(target = "favorite", source = "isFavorite")
-    GetConsumerInfoStoreResponse storeDocumentToGetConsumerInfoStoreResponse(StoreDocument storeDocument, boolean isFavorite);
+    GetConsumerInfoStoreResponse storeDocumentToGetConsumerInfoStoreResponse(StoreDocument storeDocument, Boolean isFavorite);
 
     GetConsumerDetailStoreResponse storeDocumentToGetConsumerDetailStoreResponse(StoreDocument storeDocument);
 

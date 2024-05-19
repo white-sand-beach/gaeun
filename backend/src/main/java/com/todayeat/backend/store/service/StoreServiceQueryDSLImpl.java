@@ -11,10 +11,12 @@ import com.todayeat.backend.category.repository.CategoryRepository;
 import com.todayeat.backend.category.repository.StoreCategoryRepository;
 import com.todayeat.backend.consumer.entity.Consumer;
 import com.todayeat.backend.favorite.repository.FavoriteRepository;
+import com.todayeat.backend.order.repository.OrderInfoRepository;
 import com.todayeat.backend.sale.entity.Sale;
 import com.todayeat.backend.seller.entity.Location;
 import com.todayeat.backend.seller.entity.Seller;
 import com.todayeat.backend.seller.repository.SellerRepository;
+import com.todayeat.backend.store.dto.GetStoreSaleCountInfo;
 import com.todayeat.backend.store.dto.request.CreateStoreRequest;
 import com.todayeat.backend.store.dto.request.UpdateStoreRequest;
 import com.todayeat.backend.store.dto.response.*;
@@ -30,6 +32,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -45,6 +51,7 @@ import static com.todayeat.backend._common.response.error.ErrorType.*;
 public class StoreServiceQueryDSLImpl implements StoreService {
 
     private final StoreCategoryRepository storeCategoryRepository;
+    private final OrderInfoRepository orderInfoRepository;
     private final FavoriteRepository favoriteRepository;
     private final CategoryRepository categoryRepository;
     private final SellerRepository sellerRepository;
@@ -116,7 +123,7 @@ public class StoreServiceQueryDSLImpl implements StoreService {
 
         Store store = validateAndGetStore(storeId);
 
-        boolean isFavorite = favoriteRepository.existsByConsumerAndStoreAndDeletedAtIsNull(consumer, store);
+        Boolean isFavorite = favoriteRepository.existsByConsumerAndStoreAndDeletedAtIsNull(consumer, store);
 
         return StoreMapper.INSTANCE.storeToGetConsumerStoreResponse(store, isFavorite);
     }
@@ -133,7 +140,9 @@ public class StoreServiceQueryDSLImpl implements StoreService {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sort));
 
-        return storeRepository.findStoreList(Location.of(latitude, longitude), radius * 1000, keyword, categoryId, pageRequest);
+        Boolean isDonated = securityUtil.getConsumer().getIsDonated();
+
+        return storeRepository.findStoreList(Location.of(latitude, longitude), radius * 1000, keyword, categoryId, pageRequest, isDonated);
     }
 
     @Override
@@ -142,7 +151,7 @@ public class StoreServiceQueryDSLImpl implements StoreService {
 
         Store store = sellerRepository.findById(securityUtil.getSeller().getId())
                 .map(Seller::getStore)
-                .filter(s ->  Objects.equals(s.getId(), storeId))
+                .filter(s -> Objects.equals(s.getId(), storeId))
                 .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
 
         String imageURL = imageToURL(updateStoreRequest.getImage());
@@ -180,6 +189,27 @@ public class StoreServiceQueryDSLImpl implements StoreService {
     public void updateIsOpened(Store store, Boolean isOpened) {
 
         store.updateIsOpened(isOpened);
+    }
+
+    @Override
+    @Transactional
+    public void updateAllIsExample() {
+
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.HOURS);
+
+        YearMonth lastMonth = YearMonth.from(now.minusMonths(1));
+        LocalDateTime startDate = lastMonth.atDay(1).atStartOfDay();
+        LocalDateTime endDate = lastMonth.atEndOfMonth().atTime(23, 59, 59);
+
+        List<GetStoreSaleCountInfo> result = orderInfoRepository.countFinishedOrdersByStore(startDate, endDate);
+
+        result.forEach(getStoreSaleCountInfo -> {
+            Store store = storeRepository.findByIdAndDeletedAtIsNull(getStoreSaleCountInfo.getStoreId())
+                    .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
+            Boolean isExample = getStoreSaleCountInfo.getOrderFinishedCnt() >= 10;
+
+            store.updateIsExample(isExample);
+        });
     }
 
     @Override
