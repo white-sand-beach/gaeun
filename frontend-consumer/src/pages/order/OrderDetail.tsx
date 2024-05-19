@@ -100,10 +100,12 @@ const OrderDetail = () => {
         </div>
         {/* 편지 작성 버튼 */}
         <div className="flex items-center justify-center h-14">
-          {orderDetail.reviewId == null && (
+          {orderDetail.reviewId == null ? (
             <div onClick={toggleModal}>
               <ReviewButton orderStatus={orderDetail.orderStatus} />
             </div>
+          ) : (
+            <div className="mt-3 w-[290px] mx-4" /> // ReviewButton의 예상 크기
           )}
         </div>
         {showModal && (
