@@ -53,8 +53,37 @@
 
 <br>
 
-### 📱 서비스 화면
+### 📱 서비스 화면 및 주요 기능
+1. 내 위치 중심 가게 목록 조회
 
+    <img width="150" alt="image" src="/uploads/99c402d9fdce1e7761b1aa12b587c5dc/소비자_1.gif">
+
+    - 가까운 순, 나눔 순, 감사편지 순
+    - 지도에 가게 카테고리 아이콘 표시
+
+2. 가게 상세 조회
+
+    <img width="150" alt="image" src="/uploads/3c53bb760e7878904bda726d6195468c/소비자_2.gif">
+    
+    - 찜 기능
+    - 메뉴 / 정보, 원산지 / 내 감사편지 조회
+
+3. 메뉴 선택 및 장바구니 담기
+
+    <img width="150" alt="image" src="/uploads/649d9f17b133787864cb132e1af16e84/소비자_3.gif">
+
+    - 남은 수량보다 적은 수량만 장바구니 담기 가능
+    - 같은 가게의 메뉴만 장바구니 담기 가능
+
+4. 주문
+
+    <img width="150" alt="image" src="/uploads/d822335376193ff4cde5eb3526200fa6/소비자_4.gif">
+
+    <img width="300" alt="image" src="/uploads/39566354730a4d3d6628dedf48459a01/판매자.gif">
+
+    - 소비자 결제 시 주문 완료 및 사장님께 알림
+    - 주문 완료 / 진행 중 / 준비 완료 / 수령 완료 / 취소됨 / 거절됨
+    - 주문 상태에 따라 알림
 
 <br>
 
@@ -77,7 +106,7 @@
 | --- | --- | --- |
 | 김진영 | 팀장 <br> FE(소비자) <br> INFRA | - 메인 페이지(카카오맵 지도 연결) <br> - 가게 정보, 회원 프로필, 편지 페이지 <br> - 위치 관리 |
 | 박종혁 | FE(판매자) | - 전체 기능 <br> - FCM 푸시 알림 <br> - 통계(chart.js) |
-| 안현성 | FE(소비자) | - 소셜 로그인 및 토큰 관리 <br> - axiosInstance API 모듈화 <br> - 주문 및 결제(아임포트 API 연결)  <br> - 알림 / 카테고리 / 검색 / 장바구니 / 찜 등록 / 유저 정보 관련 API 연결 |
+| 안현성 | FE(소비자) | - 소셜 로그인 <br> - 액세스 토큰 관리 <br> - axiosInstance API 모듈화 <br> - 회원 가입 추가 정보, 프로필 수정, 카테고리 관련 검색 기능 <br> - 주문/장바구니/찜 등록/결제/알림 관련 API 연결 |
 | 김대영 | BE <br> INFRA | - FCM 푸시 알림 <br> - 장바구니, 리뷰, 메뉴, 판매 기능 <br> - S3 이미지 처리 |
 | 성영준 | BE | - ElasticSearch 및 Kibana(배포, 개별 보안 인증, 인덱싱 및 타입 처리, 한글 자소 분리 검색) <br> - 검색 관련 기능(데이터 색인을 통한 빠른 검색, 추천 검색어, 인기 검색어) <br> - 판매자 일반 로그인 및 가게 관리 기능(Spring Security, username-password 기반 인증, 스케줄링을 이용한 데이터 관리) <br> - MapStruct를 이용한 데이터 매핑 <br> - QueryDSL을 이용한 복잡한 쿼리 작성 |
 | 임수빈 | BE <br> INFRA | - 소셜 로그인(Spring Security, JWT, OAuth2) <br> - 주문(아임포트 결제 API 연동, 동시성 제어) <br> - 소비자, 위치, 찜 기능 |
@@ -86,3 +115,4 @@
 
 ### 📎 링크
 - [Notion](https://fearless-texture-68a.notion.site/PJT-D104-055746a1db1d43419428b6246b40d506?pvs=4)
+- [UCC](https://file.notion.so/f/f/de65c41a-93a6-47b8-ab61-23c47fe59465/97d46e8d-4872-4788-9969-4f474ba8c211/%EC%B5%9C%EC%A2%85.mp4?id=c2f26392-ef61-472a-8274-df99ee93ae85&table=block&spaceId=de65c41a-93a6-47b8-ab61-23c47fe59465&expirationTimestamp=1716256800000&signature=4EK22I482AhcLQAH7agbCVD221rGgCN6iYaOkJOdxTY&downloadName=%EC%B5%9C%EC%A2%85.mp4)
