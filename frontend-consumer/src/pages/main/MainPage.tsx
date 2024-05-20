@@ -1,0 +1,394 @@
+import React, { useState, useEffect } from "react";
+import list from "../../assets/map/list.png";
+import gps from "../../assets/map/gps.png";
+import KakaoMap from "./Kakaomap";
+import Shops from "./Shops";
+import BannerSlider from "../../components/navbar/ServiceBanner";
+import useUserLocation from "../../store/UserLocation";
+import MainMapData from "../../types/MainMapDataType";
+import MapListForm from "../../services/maps/MapMainService";
+import { MainAllData } from "../../types/MainAllDataType";
+import { StoreList } from "../../types/StoreList";
+import { useNavigate } from "react-router-dom";
+import Lottie from "react-lottie";
+import { storeListLoadingOptions } from "../../assets/lotties/lottieOptions";
+
+interface LocationState {
+  lat: number | undefined;
+  lng: number | undefined;
+  updateCounter: number; // 변경 횟수를 추적
+}
+
+const Main: React.FC = () => {
+  // 패널이 열려있는지 여부를 관리하는 상태
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  // 패널이 확장된 상태인지 여부를 관리하는 상태
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  // 터치 시작의 Y좌표를 기록하는 상태
+  const [startTouchY, setStartTouchY] = useState<number>(0);
+  // 현재 터치의 Y좌표를 기록하는 상태
+  const [currentTouchY, setCurrentTouchY] = useState<number>(0);
+  // 지도의 높이를 패널 상태에 따라 결정
+  const mapHeight = isOpen ? "40%" : "100%";
+  const gpsButtonClass = isOpen
+    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-[47vh] z-10"
+    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl left-4 bottom-[5vh] z-10";
+  const listButtonClass = isOpen
+    ? "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-[47vh] z-10"
+    : "absolute p-3 transform -translate-y-full bg-white rounded-full shadow-xl right-4 bottom-[5vh] z-10";
+
+  const [sortType, setSortType] = useState("saleCnt"); // New state for sorting
+
+  const { lat, lng } = useUserLocation((state) => ({
+    lat: state.latitude,
+    lng: state.longitude,
+  })); // 스토어에서 위치 데이터 가져오기
+
+  const [findlocation, setLocation] = useState<LocationState>({
+    lat: lat,
+    lng: lng,
+    updateCounter: 0,
+  });
+
+  const [storeList, setStoreList] = useState<StoreList[]>([]);
+  const [allData, setAllData] = useState<MainAllData>({
+    storeList: [],
+    page: 0,
+    loading: false,
+    hasNext: false,
+    isDonated: false,
+  });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchStoreList = async () => {
+      setAllData((prevState) => ({ ...prevState, loading: true }));
+      try {
+        const mainData: MainMapData = {
+          longitude: lng,
+          latitude: lat,
+          page: allData.page,
+          size: 10,
+          radius: 3,
+          sort: sortType,
+        };
+        const response = await MapListForm(mainData);
+
+        setAllData((prevState) => ({
+          ...prevState,
+          hasNext: response.hasNext,
+          isDonated: response.isDonated,
+        }));
+
+        if (allData.page === 0) {
+          setStoreList(response.storeList); // 새로운 가게 리스트로 설정
+        } else {
+          setStoreList((prevStoreList) => [
+            ...prevStoreList,
+            ...response.storeList,
+          ]); // 이전 가게 리스트에 새로운 가게 리스트 추가
+        }
+      } catch (error) {
+        console.error("Error fetching store list:", error);
+        navigate("/login");
+      } finally {
+        setAllData((prevState) => ({ ...prevState, loading: false }));
+      }
+    };
+
+    fetchStoreList();
+  }, [lng, lat, allData.page, sortType]); // mainData 객체 자체를 의존성 배열에 추가
+
+  useEffect(() => {
+    // 페이지가 처음으로 로드될 때만 실행
+    if (!performance.navigation.type) {
+      window.location.reload();
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(allData);
+  }, [allData]);
+
+  const handleGPSButtonClick = async () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          console.log("Latitude:", latitude, "Longitude:", longitude);
+          console.log(findlocation);
+          // 강제 업데이트를 트리거하려면 상태를 갱신할 때마다 updateCounter를 증가시키기
+          const update = useUserLocation.getState().updateUserState; // 스토어의 상태 업데이트 함수를 가져옵니다.
+          if (update) {
+            update("latitude", position.coords.latitude);
+            update("longitude", position.coords.longitude);
+            update("alias", "현재위치");
+          }
+          setLocation((prev) => ({
+            lat: latitude,
+            lng: longitude,
+            updateCounter: prev.updateCounter + 1, // 항상 증가시키기
+          }));
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          setLocation((prev) => ({
+            ...prev,
+            updateCounter: prev.updateCounter + 1, // 오류가 발생하면 updateCounter만 증가
+          }));
+        },
+        { enableHighAccuracy: true }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      setLocation((prev) => ({
+        ...prev,
+        updateCounter: prev.updateCounter + 1, // 지원하지 않을 때도 updateCounter 증가
+      }));
+    }
+  };
+
+  useEffect(() => {
+    const modalContent = document.querySelector(".modalContent"); // 정확한 클래스명 확인
+
+    if (modalContent) {
+      const handleModalScroll = () => {
+        const { scrollHeight, scrollTop, clientHeight } = modalContent;
+
+        // 스크롤이 하단에 도달했는지 확인
+        if (
+          scrollTop + clientHeight >= scrollHeight - 5 &&
+          !allData.loading &&
+          allData.hasNext
+        ) {
+          setAllData((prevState) => ({
+            ...prevState,
+            page: prevState.page + 1,
+          }));
+        }
+      };
+
+      modalContent.addEventListener("scroll", handleModalScroll);
+
+      // 컴포넌트 언마운트 시 이벤트 리스너 제거
+      return () =>
+        modalContent.removeEventListener("scroll", handleModalScroll);
+    }
+  }, [allData.loading, allData.hasNext]); // 의존성 배열에 loading과 hasNext 추가
+
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 스크롤을 막습니다.
+    document.body.style.overflow = "hidden";
+
+    // 컴포넌트가 언마운트될 때 스크롤을 원상복구합니다.
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  const listButtonClick = () => {
+    if (isOpen && !isExpanded) {
+      // isOpen은 true이고, isExpanded는 false일 때
+      setIsExpanded(true); // 패널을 확장시킵니다.
+    } else if (!isOpen) {
+      // isOpen이 false일 때
+      setIsOpen(true); // 패널을 반 틈 엽니다.
+    }
+  };
+
+  // 사용자가 터치를 시작했을 때 호출되는 함수
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setStartTouchY(e.touches[0].clientY);
+  };
+
+  // 사용자가 터치하고 움직일 때 호출되는 함수
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    setCurrentTouchY(e.touches[0].clientY);
+  };
+
+  // 사용자가 터치를 끝냈을 때 호출되는 함수
+  const handleTouchEnd = () => {
+    const deltaY = currentTouchY - startTouchY;
+    // 아래로 드래그: 닫힘 처리
+    if (deltaY > 250) {
+      if (isExpanded) {
+        // 현재 패널이 확장된 상태라면 중간 크기로 줄이기
+        setIsExpanded(false);
+      } else {
+        // 이미 중간 크기라면 패널을 완전히 닫기
+        setIsOpen(false);
+      }
+    }
+    // 위로 드래그: 확장 처리
+    else if (deltaY < -250) {
+      setIsOpen(true);
+      setIsExpanded(!isExpanded); // 확장 상태 토글
+    }
+  };
+
+  // 이 값은 실제 높이를 계산하거나 CSS에서 지정한 높이값을 사용해야 합니다.
+  const topContainerHeight = 116; // 예시 높이값
+
+  // 패널 스타일을 계산하는 함수에서 maxHeight 설정을 수정합니다.
+  const getPanelStyle = () => {
+    if (!isOpen) {
+      return { top: "100vh" }; // 패널이 완전히 닫혔을 때
+    } else if (isExpanded) {
+      // 패널이 확장됐을 때, 이전보다 더 많은 영역을 커버하도록 조정합니다.
+      return {
+        top: `${topContainerHeight}px`,
+        maxHeight: `calc(100vh - ${topContainerHeight}px)`, // 이전의 maxHeight 설정이 잘못되었습니다.
+      };
+    } else {
+      // 패널이 축소됐을 때
+      return {
+        top: "50vh",
+        maxHeight: `calc(50vh - ${topContainerHeight}px)`, // 높이 계산 방식을 조정합니다.
+      };
+    }
+  };
+
+  const [activeButton, setActiveButton] = useState<string>("saleCnt");
+
+  return (
+    <div>
+      <div className="pt-14">
+        <div className="flex justify-between px-1 pt-3 pb-3 font-bold bg-gray-100">
+          <div
+            onClick={() => {
+              setSortType("distance");
+              setActiveButton("distance");
+            }}
+            className={`flex-1 p-1 px-3 mx-1 text-center border-2 shadow-xl rounded-xl ${
+              activeButton === "distance"
+                ? "bg-orange-400 border-orange-400 text-white"
+                : "bg-white border-white"
+            }`}
+          >
+            가까운 순
+          </div>
+          <div
+            onClick={() => {
+              setSortType("saleCnt");
+              setActiveButton("saleCnt");
+            }}
+            className={`flex-1 p-1 px-3 mx-1 text-center border-2 shadow-xl rounded-xl ${
+              activeButton === "saleCnt"
+                ? "bg-orange-400 border-orange-400 text-white"
+                : "bg-white border-white"
+            }`}
+          >
+            나눔 순
+          </div>
+          <div
+            onClick={() => {
+              setSortType("reviewCnt");
+              setActiveButton("reviewCnt");
+            }}
+            className={`flex-1 p-1 px-3 mx-1 text-center border-2 shadow-xl rounded-xl ${
+              activeButton === "reviewCnt"
+                ? "bg-orange-400 border-orange-400 text-white"
+                : "bg-white border-white"
+            }`}
+          >
+            감사편지 순
+          </div>
+        </div>
+      </div>
+      <div className="w-full h-screen">
+        <KakaoMap
+          key={isOpen ? "large-map" : "small-map"}
+          height={mapHeight}
+          lat={lat}
+          lng={lng}
+          updateCounter={findlocation.updateCounter}
+          storeList={storeList} // 근처 가게 리스트를 전달
+          isDonated={allData.isDonated}
+        />
+        {/* 왼쪽 버튼 */}
+        <button className={gpsButtonClass} onClick={handleGPSButtonClick}>
+          <div className="flex items-center justify-center w-5 h-5 rounded-full">
+            <img src={gps} alt="Gps Icon" className="object-cover" />
+          </div>
+        </button>
+
+        {/* 오른쪽 버튼 */}
+        <button className={listButtonClass} onClick={listButtonClick}>
+          <div className="flex items-center justify-center w-5 h-5 rounded-full">
+            <img src={list} alt="List Icon " className="object-cover w-3 h-3" />
+          </div>
+        </button>
+      </div>
+      {/* 슬라이드 업 패널 */}
+      <div
+        className={`absolute inset-x-0 transform transition-transform ${isOpen ? "z-10" : "z-0"}`}
+        style={{
+          ...getPanelStyle(),
+          maxHeight: isExpanded ? "calc(100vh - 50px)" : "50vh",
+          touchAction: "none",
+        }}
+      >
+        {/* 핸들러 부분 */}
+        <div
+          className="w-full p-2 bg-gray-200 cursor-pointer rounded-t-xl"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div className="w-8 h-1 m-auto bg-gray-500 rounded-full"></div>
+          {/* 슬라이드 업되는 패널 내용 */}
+          <div className="pt-2 bg-white rounded-t-lg shadow h-svh">
+            {/* 여기에 지도 아래 정보를 렌더링합니다. */}
+            <div className="flex items-center justify-center w-auto mx-3 mb-2 border-2 border-orange-400 h-14 rounded-xl">
+              <BannerSlider />
+            </div>
+            <hr className="w-full my-2" />
+
+            {/* 패널 내부 스크롤 부분 */}
+            <div
+              className="flex flex-col gap-2 py-2 pl-2 overflow-y-auto modalContent"
+              style={{ maxHeight: isExpanded ? "467px" : "212px" }}
+            >
+              {allData.loading && (
+                <div className="flex items-center justify-center">
+                  <Lottie
+                    options={storeListLoadingOptions}
+                    height={180}
+                    width={180}
+                  />
+                </div>
+              )}
+
+              {storeList && storeList.length > 0 ? (
+                storeList.map((store, index) => (
+                  <Shops key={index} store={store} /> // 각 요소에 대한 JSX 생성 및 Shops 컴포넌트에 데이터 전달
+                ))
+              ) : (
+                <div className="flex flex-col items-center justify-center">
+                  {/* 여기에 storeList가 비어 있을 때 보여줄 내용을 추가합니다 */}
+                  <span className="text-base">현재 가게 목록이 없습니다.</span>
+                  <Lottie
+                    options={storeListLoadingOptions}
+                    height={170}
+                    width={170}
+                  />
+                </div>
+              )}
+              {allData.loading && (
+                <div className="flex items-center justify-center">
+                  <Lottie
+                    options={storeListLoadingOptions}
+                    height={180}
+                    width={180}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Main;
