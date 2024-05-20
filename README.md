@@ -77,7 +77,7 @@
 | --- | --- | --- |
 | 김진영 | 팀장 <br> FE(소비자) <br> INFRA | - 메인 페이지(카카오맵 지도 연결) <br> - 가게 정보, 회원 프로필, 편지 페이지 <br> - 위치 관리 |
 | 박종혁 | FE(판매자) | - 전체 기능 <br> - FCM 푸시 알림 <br> - 통계(chart.js) |
-| 안현성 | FE(소비자) | - 소셜 로그인 및 토큰 관리 <br> - axiosInstance API 모듈화 <br> - 사용자 정보/ 카테고리/ 검색/ 주문/ 장바구니/ 찜 등록/ 결제/ 알림 관련 API 연결 |
+| 안현성 | FE(소비자) | - 소셜 로그인 및 토큰 관리 <br> - axiosInstance API 모듈화 <br> - 주문 및 결제(아임포트 API 연결)  <br> - 알림 / 카테고리 / 검색 / 장바구니 / 찜 등록 / 유저 정보 관련 API 연결 |
 | 김대영 | BE <br> INFRA | - FCM 푸시 알림 <br> - 장바구니, 리뷰, 메뉴, 판매 기능 <br> - S3 이미지 처리 |
 | 성영준 | BE | - ElasticSearch 및 Kibana(배포, 개별 보안 인증, 인덱싱 및 타입 처리, 한글 자소 분리 검색) <br> - 검색 관련 기능(데이터 색인을 통한 빠른 검색, 추천 검색어, 인기 검색어) <br> - 판매자 일반 로그인 및 가게 관리 기능(Spring Security, username-password 기반 인증, 스케줄링을 이용한 데이터 관리) <br> - MapStruct를 이용한 데이터 매핑 <br> - QueryDSL을 이용한 복잡한 쿼리 작성 |
 | 임수빈 | BE <br> INFRA | - 소셜 로그인(Spring Security, JWT, OAuth2) <br> - 주문(아임포트 결제 API 연동, 동시성 제어) <br> - 소비자, 위치, 찜 기능 |
