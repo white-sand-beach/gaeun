@@ -7,7 +7,7 @@
 
 ### 📝 서비스 소개
 참여 회원(결식 아동 및 공직자)에게는 음식을 나눔하고, <br>
-미참여 회원에게는 원래의 가격보다 저렴하게 음식을 판매합니다. <br>
+일반 회원에게는 원래의 가격보다 저렴하게 음식을 판매합니다. <br>
 지역 사회에 긍정적인 영향을 미치고, <br>
 따뜻한 분위기를 조성하여 나눔이 생활화되는 문화를 만들고자 합니다.
 
@@ -75,27 +75,59 @@
     - 남은 수량보다 적은 수량만 장바구니 담기 가능
     - 같은 가게의 메뉴만 장바구니 담기 가능
 
-4. 주문
+4. 주문 - 참여 사용자 (나눔)
 
     <img width="150" alt="image" src="/uploads/d822335376193ff4cde5eb3526200fa6/소비자_4.gif">
+   
+   주문 - 일반 사용자 (결제) <br>
+    <img width="150" alt="image" src="/uploads/f8b8109e408187430f16e74a100541c8/소비자_5.gif">
 
+   주문 - 사장님 <br>
     <img width="300" alt="image" src="/uploads/39566354730a4d3d6628dedf48459a01/판매자.gif">
 
     - 소비자 결제 시 주문 완료 및 사장님께 알림
     - 주문 완료 / 진행 중 / 준비 완료 / 수령 완료 / 취소됨 / 거절됨
     - 주문 상태에 따라 알림
 
+5. 감사 편지 작성 및 확인
+
+    <img width="150" alt="image" src="/uploads/c4dc8704add4552b6fc7f2a3e6d5cf1e/소비자_6.gif">
+    <img width="150" alt="image" src="/uploads/cb091a0386f8325bb2f35921f5d54ab0/소비자_7.gif">
+
+    - 주문 내역에 대해 감사 편지 작성 가능
+    - 이미지 첨부 가능
+    - 각 가게 별로 내가 쓴 감사 편지만 보기 가능
+
+6. 실시간 급상승 검색어 순위 및 카테고리, 검색
+
+    <img width="150" alt="image" src="/uploads/bfb81ecb6c4a4300d74e2a2c868b69ad/소비자_8.gif
+f">
+
+    - 1시간 전 기준 실시간 급상승 검색어 순위 조회
+    - 카테고리 별 조회
+    - 검색 키워드 별 조회ㅑ
+
+7. 알림
+
+    <img width="150" alt="image" src="/uploads/430f1ad0e54d303ca51e42257318dd13/소비자_9.gif">
+
+    - 포그라운드 & 백그라운드 푸시 알림 및 알림 목록 조회
+    - 찜한 가게의 판매 등록 알림
+    - 주문 및 편지 관련 알림
+    - 상세 페이지 조회 및 읽음 처리 가능
+  
 <br>
+
 
 ### 📂 프로젝트 산출물
 **와이어프레임** <br>
 ![image](/uploads/5b4b9d80362ee0fe4a7e3ce7881d47b6/image.png)
-![image](/uploads/d73a7233c5789be653a070cad02bb19e/image.png)
+![image](/uploads/d73a7233c5789be653a070cad02bb19e/image.png) <br>
 **프로토타입** <br>
 ![image](/uploads/60bbc7dea7c7f1a36d2aa6fcc6caf0d6/image.png)
-![image](/uploads/bb3c8bb2191b1f867b6a3168297c074d/image.png)
+![image](/uploads/bb3c8bb2191b1f867b6a3168297c074d/image.png) <br>
 **ERD** <br>
-![image](/uploads/18f99c4ee6732ec6af58bbe3f5387e5c/image.png)
+![image](/uploads/18f99c4ee6732ec6af58bbe3f5387e5c/image.png) <br>
 **서비스 아키텍처** <br>
 ![image](/uploads/e17221d0ecf2b9502c160f7c155cacd7/image.png)
 
