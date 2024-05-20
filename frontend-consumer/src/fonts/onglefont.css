@@ -1,0 +1,8 @@
+/* fonts.css */
+@font-face {
+  font-family: "MyFont";
+  src: url("../fonts/onglefont.ttf") format("truetype");
+  /* 다른 폰트 포맷에 대해서도 src를 추가할 수 있습니다. */
+}
+
+/* 다른 스타일을 여기에 추가할 수 있습니다. */
