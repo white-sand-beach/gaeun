@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    @apply w-screen h-screen p-0 m-0;
+  }
+
+  h1 {
+    @apply text-2xl font-bold text-black;
+  }
+
+  header {
+    @apply fixed top-0 flex flex-row justify-between items-center w-full h-[70px] bg-mainColor p-4 z-10;
+  }
+
+  footer {
+    @apply fixed bottom-0 flex flex-row justify-evenly items-center gap-3 w-full h-[70px] bg-white border-t-2
+    text-[16px] text-gray-500 z-10;
+  }
+}
+
+@layer components {
+  .common-btn {
+    @apply w-[300px] h-[40px] bg-mainColor text-white font-bold rounded-[5px];
+  }
+
+  .detail-btn {
+    @apply h-[40px] border border-mainColor text-mainColor text-xs rounded-[5px];
+  }
+
+  .list-component {
+    @apply flex flex-col justify-around border-2 p-4 rounded-[5px] shadow-lg;
+  }
+
+  /* Footer 없는 경우 최상위 div container */
+  .no-footer {
+    @apply flex flex-col items-center absolute w-screen max-h-[calc(100vh-70px)] h-full;
+  }
+
+  /* Footer 있는 경우 */
+  .yes-footer {
+    @apply flex flex-col items-center absolute w-screen max-h-[calc(100vh-150px)];
+  }
+
+  /* 버튼 선택됐을 경우 */
+  .selected-btn {
+    @apply bg-mainColor text-white w-screen h-[60px] shadow-lg rounded-[5px] border font-bold text-xl;
+  }
+
+  /* 버튼 선택 안 했을 경우 */
+  .no-selected-btn {
+    @apply bg-white text-mainColor w-full h-[60px] shadow-lg rounded-[5px] border font-bold text-xl;
+  }
+
+  /* 가게등록 input tag */
+  .register-input-tag {
+    @apply w-[320px] h-[40px] border-b-2 bg-orange-50 rounded-lg p-2;
+  }
+
+  /* 가게등록 textarea tag */
+  .register-textarea-tag {
+    @apply border-b-2 bg-orange-50 w-[320px] h-[200px] rounded-lg p-2;
+  }
+}
+
+/* 스크롤바 투명하게 설정 */
+::-webkit-scrollbar {
+  width: 0px;
+  display: none;
+}
+
+body {
+  /* 텍스트 드래그 방지 */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: "prettyFont", sans-serif;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  /* overflow: hidden; */
+  /* padding: 16px; */
+  /* box-sizing: border-box; */
+  /* border: 1px solid black; */
+}
