@@ -100,12 +100,11 @@
 
 6. 실시간 급상승 검색어 순위 및 카테고리, 검색
 
-    <img width="150" alt="image" src="/uploads/bfb81ecb6c4a4300d74e2a2c868b69ad/소비자_8.gif
-f">
+    <img width="150" alt="image" src="/uploads/bfb81ecb6c4a4300d74e2a2c868b69ad/소비자_8.gif">
 
     - 1시간 전 기준 실시간 급상승 검색어 순위 조회
     - 카테고리 별 조회
-    - 검색 키워드 별 조회ㅑ
+    - 검색 키워드 별 조회
 
 7. 알림
 
