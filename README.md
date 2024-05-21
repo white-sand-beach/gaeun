@@ -148,4 +148,4 @@
 
 ### 📎 링크
 - [Notion](https://fearless-texture-68a.notion.site/PJT-D104-055746a1db1d43419428b6246b40d506?pvs=4)
-- [UCC](https://file.notion.so/f/f/de65c41a-93a6-47b8-ab61-23c47fe59465/97d46e8d-4872-4788-9969-4f474ba8c211/%EC%B5%9C%EC%A2%85.mp4?id=c2f26392-ef61-472a-8274-df99ee93ae85&table=block&spaceId=de65c41a-93a6-47b8-ab61-23c47fe59465&expirationTimestamp=1716256800000&signature=4EK22I482AhcLQAH7agbCVD221rGgCN6iYaOkJOdxTY&downloadName=%EC%B5%9C%EC%A2%85.mp4)
+- [UCC](https://youtube.com/shorts/0qMol47_TYQ?feature=share)
