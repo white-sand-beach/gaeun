@@ -130,7 +130,7 @@
 **ERD** <br>
 <img width="1000" alt="image" src="https://github.com/white-sand-beach/gaeun/assets/66028419/6ba22b76-d4c8-4db6-bda8-a67d4b48beb9"> <br>
 **서비스 아키텍처** <br>
-<img width="1000" alt="image" src="https://github.com/white-sand-beach/gaeun/assets/66028419/d78af2d3-97bf-4309-b43a-f8abf5a0701b">
+<img width="1000" alt="image" src="https://github.com/white-sand-beach/gaeun/assets/74356213/42e9b3aa-b4a3-48f3-9a4c-ade55b5d282f">
 
 <br>
 
