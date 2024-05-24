@@ -141,7 +141,15 @@
 | 박종혁 | FE(판매자) | - 전체 기능 <br> - FCM 푸시 알림 <br> - 통계(chart.js) |
 | 안현성 | FE(소비자) | - 소셜 로그인 <br> - 액세스 토큰 관리 <br> - axiosInstance API 모듈화 <br> - 회원 가입 추가 정보, 프로필 수정, 카테고리 관련 검색 기능 <br> - 주문/장바구니/찜 등록/결제/알림 관련 API 연결 |
 | 김대영 | BE <br> INFRA | - FCM 푸시 알림 <br> - 장바구니, 리뷰, 메뉴, 판매 기능 <br> - S3 이미지 처리 |
-| 성영준 | BE | - ElasticSearch 및 Kibana(배포, 개별 보안 인증, 인덱싱 및 타입 처리, 한글 자소 분리 검색) <br> - 검색 관련 기능(데이터 색인을 통한 빠른 검색, 추천 검색어, 인기 검색어) <br> - 판매자 일반 로그인 및 가게 관리 기능(Spring Security, username-password 기반 인증, 스케줄링을 이용한 데이터 관리) <br> - MapStruct를 이용한 데이터 매핑 <br> - QueryDSL을 이용한 복잡한 쿼리 작성 |
+| 성영준 | BE |  - ElasticSearch와 Kibana 배포 및 보안 인증 설정 <br>
+ - 검색 데이터에 대해 jaso-analyzer-plugin를 적용한 자소 분리 색인 <br>
+ - 벌크 데이터 및 누적 데이터를 이용한 추천 검색어 <br>
+ - 누적 데이터와 스케줄링, redis를 이용한 인기 검색어 <br>
+ - QueryDSL와 NativeQuery를 이용한 복잡한 쿼리 작성 및 성능 비교 <br>
+ - Spring Security, username-password 기반 유저 인증 <br>
+ - mail 및 redis를 이용한 비밀번호 분실 유저 관리 <br>
+ - 가게 관리 기능 및 스케줄링을 이용한 데이터 관리 <br>
+ - MapStruct를 이용한 간편한 데이터 매핑 |
 | 임수빈 | BE <br> INFRA | - 소셜 로그인(Spring Security, JWT, OAuth2) <br> - 주문(아임포트 결제 API 연동, 동시성 제어) <br> - 소비자, 위치, 찜 기능 |
 
 <br>
